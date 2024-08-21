@@ -19,8 +19,9 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(of = "id")
 @Table(name = "MEMBERS")
 public class Member implements UserDetails {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
-    @SequenceGenerator(name = "member_seq", sequenceName = "member_seq", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "members_seq")
+    @SequenceGenerator(name = "members_seq", sequenceName = "members_seq", allocationSize = 1)
     @Column(name = "member_id", updatable = false, unique = true, nullable = false)
     private Long id;
 
@@ -41,6 +42,7 @@ public class Member implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
@@ -70,6 +72,6 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;  // 이메일을 username으로 사용
+        return email; // 이메일을 username으로 사용
     }
 }

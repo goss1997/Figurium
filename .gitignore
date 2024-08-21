@@ -364,6 +364,7 @@ gradle-app.setting
 **/.idea/
 *.iml
 **/classes/
+.vscode/**
 
 ### End of ignore ###
 

@@ -1,7 +1,7 @@
 
 -- test9 계정 생성
 CREATE USER test9 IDENTIFIED BY test9;
-GRANT CONNECT TO test9;
+GRANT CONNECT, resource TO test9;
 
 -- 소셜 & 자체 회원 테이블
 
@@ -24,11 +24,11 @@ CREATE TABLE members (
     member_id NUMBER PRIMARY KEY,
     email VARCHAR2(100) NOT NULL UNIQUE,
     password VARCHAR2(100) NOT NULL,
-    roles VARCHAR2(255),
+    nickname VARCHAR2(255),
     address varchar2(200),
     phone varchar2(100),
-    profile_img varchar2(255),
-    refresh_token VARCHAR2(255)
+    profile_img varchar2(255)
+--    refresh_token VARCHAR2(255)
 );
 
 -- 소셜 회원 users
@@ -43,7 +43,7 @@ CREATE TABLE users (
  
 SELECT * FROM members;
 
-INSERT INTO members values(member_seq.nextval,'주소주소','goss1313@test.com','고테스터','{noop}1234','010-1111-1242','1234');
+INSERT INTO members values(members_seq.nextval,'goss1313@test.com','{noop}1234','고테스터','주소주소','010-1111-1242','iiiiiiiii');
 SELECT * FROM users;
 
 COMMIT;

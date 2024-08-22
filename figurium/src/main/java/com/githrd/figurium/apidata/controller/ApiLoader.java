@@ -1,11 +1,12 @@
 package com.githrd.figurium.apidata.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githrd.figurium.apidata.repository.ProductRepository;
 import com.githrd.figurium.apidata.vo.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.HttpEntity;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @Component
 @RequiredArgsConstructor
@@ -37,11 +40,8 @@ public class ApiLoader implements ApplicationRunner {
         List<String> category = Arrays.asList("반프레스토", "세가", "후류", "메가하우스", "반다이");
 
 
-
-
-
         String query = "피규어";
-        String apiUrl = "https://openapi.naver.com/v1/search/shop.json?query=" + query+"+"+category.get(0)+"&display=100";
+        String apiUrl = "https://openapi.naver.com/v1/search/shop.json?query=" + query + "+" + category.get(0) + "&display=100";
 
         // Create RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
@@ -60,21 +60,29 @@ public class ApiLoader implements ApplicationRunner {
 
         // Parse JSON response using Jackson ObjectMapper
         ObjectMapper objectMapper = new ObjectMapper();
+
+        // 알 수 없는 필드를 무시하도록 설정
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        // null 또는 빈 값 제외
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
         try {
             JsonNode rootNode = objectMapper.readTree(jsonResponse);
             JsonNode itemsNode = rootNode.path("items");
 
-
-            if (itemsNode.isArray() && itemsNode.size() > 0) {
+            if (itemsNode.isArray() && !itemsNode.isEmpty()) {
 
                 for (JsonNode node : itemsNode) {
 
-                // Convert JSON node to Product object
-                Product product = objectMapper.treeToValue(node, Product.class);
+                    // Convert JSON node to Product object
+                    Product product = objectMapper.treeToValue(node, Product.class);
 
-
-                // Add to list
-                productList.add(product);
+                    // brand와 maker가 공란이 아닌지 확인
+                    if (isNotBlank(product.getBrand()) && isNotBlank(product.getMaker())) {
+                        // 조건을 만족하는 경우만 리스트에 추가
+                        productList.add(product);
+                    }
 
                 }
 
@@ -90,4 +98,6 @@ public class ApiLoader implements ApplicationRunner {
         }
 
     }
+
+
 }

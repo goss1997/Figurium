@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,5 +9,8 @@
 </head>
 <body>
     <p>이건 index.html 입니다.</p>
+    <script>
+        location.href = "/homePage";
+    </script>
 </body>
 </html>

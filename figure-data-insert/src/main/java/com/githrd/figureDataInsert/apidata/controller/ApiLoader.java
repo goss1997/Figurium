@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.githrd.figureDataInsert.apidata.repository.CategoryRepository;
 import com.githrd.figureDataInsert.apidata.repository.ProductBulkRepository;
+import com.githrd.figureDataInsert.apidata.vo.Category;
 import com.githrd.figureDataInsert.apidata.vo.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * ApiLoader : springboot 실행 시 바로 실행하기 위해 ApplicationRunner를 상속받았다.
@@ -33,6 +36,7 @@ public class ApiLoader implements ApplicationRunner {
     private static final String CLIENT_SECRET = "H3EvTVFM8B"; // 네이버 개발자 센터에서 발급받은 클라이언트 시크릿
 
     private final ProductBulkRepository productBulkRepository;
+    private  final CategoryRepository categoryRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -43,8 +47,14 @@ public class ApiLoader implements ApplicationRunner {
 
         List<String> categories = Arrays.asList("반프레스토", "세가", "후류", "메가하우스", "반다이");
 
+
+
         // db 삽입용 메소드
         for (String category : categories) {
+
+            // 카테고리 db에 저장
+            Category productCategory = categoryRepository.save(new Category(category));
+
 
             // 처음(start=1) 100건 조회 후 그 다음 건부터 또 100건 조회를 위한 반복문
             // 총 1000건 조회
@@ -54,7 +64,7 @@ public class ApiLoader implements ApplicationRunner {
                 String apiUrl = "https://openapi.naver.com/v1/search/shop.json?query=피규어+" + category + "&display=100&start=" + start;
 
                 // api를 통해 db에 저장하는 메소드
-                insertDataFromNaverApiIntoDB(apiUrl, category);
+                insertDataFromNaverApiIntoDB(apiUrl, category, productCategory.getId());
 
             }
 
@@ -66,12 +76,13 @@ public class ApiLoader implements ApplicationRunner {
         double endTime = endTimeMillis / 1000.0;
 
         System.out.println("메소드 실행 시간: " + String.format("%.2f", (endTime - startTime)) + " 초");
+        System.out.println(" - - - - F I N I S H - - - - ");
 
         // 애플리케이션 종료
         System.exit(0);
     }
 
-    private void insertDataFromNaverApiIntoDB(String apiUrl, String category) {
+    private void insertDataFromNaverApiIntoDB(String apiUrl, String category, int id) {
 
         List<Product> productList = new ArrayList<>();
 
@@ -111,8 +122,23 @@ public class ApiLoader implements ApplicationRunner {
                     // Convert JSON node to Product object
                     Product product = objectMapper.treeToValue(node, Product.class);
 
+                    // Random 객체 생성
+                    Random random = new Random();
+
+                    // 1부터 10까지의 랜덤 정수 생성
+                    int randomNumber = random.nextInt(10) + 1;
+
+                    String maker = node.get("maker").asText();
+
                     // maker가 해당 category인 경우에만 추가
-                    if ((product.getMaker()).equals(category)) {
+                    if (maker.equals(category)) {
+
+                        // set categoryId
+                        product.setCategoryId(id);
+
+                        // set random quantity
+                        product.setQuantity(randomNumber);
+
                         // 조건을 만족하는 경우만 리스트에 추가
                         productList.add(product);
                     }

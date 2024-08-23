@@ -17,18 +17,18 @@ public class ProductBulkRepository {
 
     @Transactional
     public void bulkInsertProducts(List<Product> products) {
-        String sql = "INSERT INTO products (title, maker, link, price, image_url) " +
+        String sql = "INSERT INTO products (category_id, name, price, quantity, image_url) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 products,
                 products.size(),
                 (PreparedStatement ps, Product product) -> {
-                    ps.setString(1, product.getTitle());
-                    ps.setString(2, product.getMaker());
-                    ps.setString(3, product.getLink());
-                    ps.setString(4, product.getPrice());
-                    ps.setString(5, product.getImageUrl());
+                    ps.setInt(1, product.getCategoryId());
+                    ps.setString(2,product.getName());
+                    ps.setString(3,product.getPrice());
+                    ps.setInt(4,product.getQuantity());
+                    ps.setString(5,product.getImageUrl());
                 });
 
     }

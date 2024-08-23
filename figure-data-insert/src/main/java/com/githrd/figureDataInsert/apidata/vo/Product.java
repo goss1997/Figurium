@@ -13,20 +13,21 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private String title;
+    private int categoryId;
 
-    private String maker;
-
-    private String link;
+    @JsonProperty("title")
+    private String name;
 
     @JsonProperty("lprice")
     private String price;
 
+    private int quantity;
+
+
     @JsonProperty("image")
     private String imageUrl;
-
 
 
 

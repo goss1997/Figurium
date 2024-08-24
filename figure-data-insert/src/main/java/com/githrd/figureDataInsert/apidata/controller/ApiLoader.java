@@ -8,6 +8,7 @@ import com.githrd.figureDataInsert.apidata.repository.CategoryRepository;
 import com.githrd.figureDataInsert.apidata.repository.ProductBulkRepository;
 import com.githrd.figureDataInsert.apidata.vo.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.HttpEntity;
@@ -30,6 +31,7 @@ import java.util.Random;
 @Component
 @RequiredArgsConstructor
 public class ApiLoader implements ApplicationRunner {
+
 
     private static final String CLIENT_ID = "k3dOcVhGUB1aI43JnnPZ"; // 네이버 개발자 센터에서 발급받은 클라이언트 ID
     private static final String CLIENT_SECRET = "H3EvTVFM8B"; // 네이버 개발자 센터에서 발급받은 클라이언트 시크릿
@@ -84,6 +86,7 @@ public class ApiLoader implements ApplicationRunner {
         List<Product> productList = new ArrayList<>();
 
         // Create RestTemplate instance
+        // api 요청하는 객체
         RestTemplate restTemplate = new RestTemplate();
 
         // Set request headers
@@ -99,6 +102,7 @@ public class ApiLoader implements ApplicationRunner {
         String jsonResponse = response.getBody();
 
         // Parse JSON response using Jackson ObjectMapper
+        // json을 객체로 역직렬화를 위한 객체
         ObjectMapper objectMapper = new ObjectMapper();
 
         // 알 수 없는 필드를 무시하도록 설정
@@ -108,6 +112,7 @@ public class ApiLoader implements ApplicationRunner {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         try {
+            // reedTree
             JsonNode rootNode = objectMapper.readTree(jsonResponse);
             JsonNode itemsNode = rootNode.path("items");
             int total = Integer.parseInt(rootNode.get("total").asText());
@@ -117,6 +122,7 @@ public class ApiLoader implements ApplicationRunner {
                 for (JsonNode node : itemsNode) {
 
                     // Convert JSON node to Product object
+                    // 이 한줄로 json을 객체로 역직렬화.
                     Product product = objectMapper.treeToValue(node, Product.class);
 
                     // Random 객체 생성
@@ -143,6 +149,7 @@ public class ApiLoader implements ApplicationRunner {
                 }
 
                 // Bulk insert all product to database
+                // insert 묶음으로 날린다. 성능향상.
                 // 대량의 더미 데이터 삽입을 위해 bulk insert 하기
                 productBulkRepository.bulkInsertProducts(productList);
 

@@ -6,14 +6,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "products")
 @JsonIgnoreProperties(ignoreUnknown = true) // JSON에 있는 알려지지 않은 필드는 무시
 public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private int categoryId;
 

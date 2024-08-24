@@ -70,8 +70,6 @@ create table product_likes(
 );
 
 
-
-
 -- 상품 검색어 순위
 CREATE TABLE search_product (
                                 id 				INT AUTO_INCREMENT PRIMARY KEY, -- 고유 ID
@@ -92,49 +90,50 @@ CREATE TABLE carts (
                        FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-/*
--- 주문 정보 테이블
+
+-- 주문 테이블
 CREATE TABLE orders (
-    id                  INT             AUTO_INCREMENT PRIMARY KEY, -- 주문번호
-    user_id             INT             NOT NULL,                   -- 주문고객번호
-    coupon_id           INT             DEFAULT NULL,               -- 쿠폰 ID (NULL 허용)
-    buyer_name          VARCHAR(15)     NOT NULL,                   -- 주문자명
-    total_item_price    DECIMAL(8,0)    NOT NULL,                   -- 상품총금액
-    earn_point          DECIMAL(4,0)    DEFAULT 0,                  -- 적립금액
-    shipping_fee        DECIMAL(5, 0)   NOT NULL,                   -- 배송비
-    total_plus_price    DECIMAL(8, 0)   NOT NULL,                   -- 총금액 (상품 총금액 + 배송비)
-    total_minus_price   DECIMAL(8,0)    DEFAULT 0,                  -- 할인금액
-    total_price         DECIMAL(8,0)    DEFAULT 0,                  -- 결제금액
-    payment_type        VARCHAR(50)     NOT NULL,                   -- 결제 방식
-    order_status        VARCHAR(50)     NOT NULL,                   -- 주문 상태
-    order_time          DATETIME        DEFAULT NOW(),              -- 주문 시간
-    total_quantity      INT             NOT NULL,                   -- 총 상품 수량
-    FOREIGN KEY (user_id) REFERENCES users(id),                     -- 주문고객번호
-    FOREIGN KEY (coupon_id) REFERENCES coupons(id) ON DELETE SET NULL -- 쿠폰 번호 연결
+                        id                  INT             AUTO_INCREMENT PRIMARY KEY, -- 주문 고유 번호
+                        user_id             INT             NOT NULL,                   -- 사용자 고유 번호
+                        payment_type        VARCHAR(50)     NOT NULL,                   -- 주문 결제 방식
+                        status 				VARCHAR(10)     DEFAULT '준비중'   ,        	-- 주문 상태(준비중 / 출고대기 / 배송중 / 배송완료)
+                        order_time          DATETIME        DEFAULT NOW(),              -- 주문 시간
+                        FOREIGN KEY (user_id) REFERENCES users(id)                      -- 주문고객번호
 );
 
--- 주문 상품 정보 테이블
+
+-- 주문 상품 테이블
 CREATE TABLE order_items (
-    id                  INT             AUTO_INCREMENT PRIMARY KEY, -- 일련번호
-    order_id            INT             NOT NULL,                   -- 주문번호
-    product_id          INT             NOT NULL,                   -- 상품번호
-    product_inventory   INT             NOT NULL,                   -- 주문 상품 갯수
-    product_price       DECIMAL(8,0)    NOT NULL,                   -- 상품 가격
-    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE, -- 주문번호 연결
-    FOREIGN KEY (product_id) REFERENCES products(id)                -- 상품번호 연결
+                             id INT AUTO_INCREMENT PRIMARY KEY,            		-- 주문 상품 고유 번호
+                             order_id INT,										-- 주문 고유 번호
+                             product_id INT,                     				-- 상품 ID
+                             quantity INT,                       				-- 갯수
+                             FOREIGN KEY (order_id) REFERENCES orders(id), 		-- 주문 테이블과의 관계
+                             FOREIGN KEY (product_id) REFERENCES products(id)  	-- 상품 테이블과의 관계
 );
 
--- 배송지 정보 테이블
-CREATE TABLE shipping_addresses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    recipient_name VARCHAR(15),
-    phone VARCHAR(20),
-    address VARCHAR(100),
-    delivery_request VARCHAR(60),
-    FOREIGN KEY (order_id) REFERENCES order_items(id)
+
+-- 주문자 정보
+CREATE TABLE customers (
+                           id INT AUTO_INCREMENT PRIMARY KEY,
+                           order_id INT,
+                           name VARCHAR(15),
+                           phone VARCHAR(20) NOT NULL,
+                           email VARCHAR(50),
+                           FOREIGN KEY (order_id) REFERENCES order_items(id)
 );
-*/
+
+
+-- 배송지 정보
+CREATE TABLE shipping_addresses (
+                                    id INT AUTO_INCREMENT PRIMARY KEY,
+                                    order_id INT,
+                                    recipient_name VARCHAR(15),
+                                    phone VARCHAR(20),
+                                    address VARCHAR(100),
+                                    delivery_request VARCHAR(60),
+                                    FOREIGN KEY (order_id) REFERENCES order_items(id)
+);
 
 
 -- 리뷰 테이블
@@ -163,6 +162,3 @@ CREATE TABLE qa (
                     FOREIGN KEY (product_id) REFERENCES products(id),		-- 상품 참조키
                     FOREIGN KEY (user_id) REFERENCES users(id)		-- 상품 참조키
 );
-
-
-

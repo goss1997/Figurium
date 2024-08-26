@@ -1,4 +1,4 @@
-package com.githrd.figurium.controller;
+package com.githrd.figurium.home.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +9,7 @@ public class HomeController {
     @GetMapping("/")
     public String home() {
 
-        return "product/home";
+        return "home";
     }
 
 

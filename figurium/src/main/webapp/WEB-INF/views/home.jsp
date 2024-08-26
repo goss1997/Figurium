@@ -30,7 +30,7 @@
             <ul class="header-cart-wrapitem w-full">
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="${pageContext.request.contextPath}/resources/images/item-cart-01.jpg" alt="IMG">
+                        <img src="#" alt="IMG">
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
@@ -46,7 +46,7 @@
 
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="${pageContext.request.contextPath}/resources/images/item-cart-02.jpg" alt="IMG">
+                        <img src="#" alt="IMG">
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
@@ -62,7 +62,7 @@
 
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="${pageContext.request.contextPath}/resources/images/item-cart-03.jpg" alt="IMG">
+                        <img src="#" alt="IMG">
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
@@ -104,7 +104,7 @@
     <div class="wrap-slick1">
         <div class="slick1">
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/slide-01.jpg);">
+                 style="background-image: url(#);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -114,7 +114,7 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/slide-02.jpg);">
+                 style="background-image: url(#);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -123,7 +123,7 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/slide-03.jpg);">
+                 style="background-image: url(#);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -376,12 +376,13 @@
             </div>
         </div>
 
+        <!-- TODO : 상품(피규어) 조회  -->
         <div class="row isotope-grid">
             <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                 <!-- Block2 -->
                 <div class="block2">
                     <div class="block2-pic hov-img0"><img
-                            src="${pageContext.request.contextPath}/resources/images/product-01.jpg" alt="IMG-PRODUCT">
+                            src="#" alt="IMG-PRODUCT">
 
                         <a href="#"
                            class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
@@ -418,7 +419,7 @@
                 <!-- Block2 -->
                 <div class="block2">
                     <div class="block2-pic hov-img0">
-                        <img src="${pageContext.request.contextPath}/resources/images/product-02.jpg" alt="IMG-PRODUCT">
+                        <img src="#" alt="IMG-PRODUCT">
 
                         <a href="#"
                            class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
@@ -640,37 +641,37 @@
                             <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
                             <div class="slick3 gallery-lb">
-                                <div class="item-slick3" data-thumb="images/product-detail-01.jpg">
+                                <div class="item-slick3" data-thumb="#">
                                     <div class="wrap-pic-w pos-relative">
-                                        <img src="${pageContext.request.contextPath}/resources/images/product-detail-01.jpg"
+                                        <img src="#"
                                              alt="IMG-PRODUCT">
 
                                         <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="images/product-detail-01.jpg">
+                                           href="#">
                                             <i class="fa fa-expand"></i>
                                         </a>
                                     </div>
                                 </div>
 
-                                <div class="item-slick3" data-thumb="images/product-detail-02.jpg">
+                                <div class="item-slick3" data-thumb="#">
                                     <div class="wrap-pic-w pos-relative">
-                                        <img src="${pageContext.request.contextPath}/resources/images/product-detail-02.jpg"
+                                        <img src="#"
                                              alt="IMG-PRODUCT">
 
                                         <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="images/product-detail-02.jpg">
+                                           href="#">
                                             <i class="fa fa-expand"></i>
                                         </a>
                                     </div>
                                 </div>
 
-                                <div class="item-slick3" data-thumb="images/product-detail-03.jpg">
+                                <div class="item-slick3" data-thumb="#">
                                     <div class="wrap-pic-w pos-relative">
-                                        <img src="${pageContext.request.contextPath}/resources/images/product-detail-03.jpg"
+                                        <img src="#"
                                              alt="IMG-PRODUCT">
 
                                         <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="images/product-detail-03.jpg">
+                                           href="#">
                                             <i class="fa fa-expand"></i>
                                         </a>
                                     </div>

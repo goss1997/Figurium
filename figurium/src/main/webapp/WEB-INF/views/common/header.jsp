@@ -83,9 +83,11 @@
                         <li>
                             <a href="#">카테고리</a>
                             <ul class="sub-menu">
-                                <li><a href="#">카테고리 1</a></li>
-                                <li><a href="#">카테고리 2</a></li>
-                                <li><a href="#">카테고리 3</a></li>
+                                <li><a href="#">반프레스토</a></li>
+                                <li><a href="#">세가</a></li>
+                                <li><a href="#">후류</a></li>
+                                <li><a href="#">메가하우스</a></li>
+                                <li><a href="#">반다이</a></li>
                             </ul>
                         </li>
 
@@ -171,9 +173,11 @@
             <li>
                 <a href="#">카테고리</a>
                 <ul class="sub-menu-m">
-                    <li><a href="#">카테고리 1</a></li>
-                    <li><a href="#">카테고리 2</a></li>
-                    <li><a href="#">카테고리 3</a></li>
+                    <li><a href="#">반프레스토</a></li>
+                    <li><a href="#">세가</a></li>
+                    <li><a href="#">후류</a></li>
+                    <li><a href="#">메가하우스</a></li>
+                    <li><a href="#">반다이</a></li>
                 </ul>
                 <span class="arrow-main-menu-m">
 						<i class="fa fa-angle-right" aria-hidden="true"></i>

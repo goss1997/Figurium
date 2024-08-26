@@ -2,7 +2,6 @@ package com.githrd.figureDataInsert.apidata.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -22,7 +21,6 @@ public class Product {
 
     @JsonProperty("image")
     private String imageUrl;
-
 
 
 }

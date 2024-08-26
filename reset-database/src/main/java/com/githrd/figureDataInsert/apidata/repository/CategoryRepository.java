@@ -1,8 +1,6 @@
 package com.githrd.figureDataInsert.apidata.repository;
 
-import com.githrd.figureDataInsert.apidata.vo.Category;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;

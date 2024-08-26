@@ -17,8 +17,10 @@ public class ProductBulkRepository {
 
     @Transactional
     public void bulkInsertProducts(List<Product> products) {
-        String sql = "INSERT INTO products (category_id, name, price, quantity, image_url) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO products (category_id, name, price, quantity, image_url, created_at, updated_at)" +
+                " VALUES (?, ?, ?, ?, ?," +
+                " @random_date := DATE_ADD('2024-08-01 00:00:00', INTERVAL FLOOR(RAND() * 31) DAY)," + // create_at
+                " @random_date)" ;  // update_at
 
         jdbcTemplate.batchUpdate(sql,
                 products,

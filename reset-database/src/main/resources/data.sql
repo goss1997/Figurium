@@ -161,3 +161,24 @@ CREATE TABLE qa
     FOREIGN KEY (product_id) REFERENCES products (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+
+-- 더미 데이터
+-- 회원 테이블 더미데이터
+-- 사용자 1
+INSERT INTO users (email, password, name, role)
+VALUES
+    ('user1@example.com', '{noop}1234', '일용자', 0);
+
+-- 사용자 2
+INSERT INTO users (email, password, name, role)
+VALUES
+    ('user2@example.com', '{noop}1234', '이용자', 0);
+
+-- 관리자
+INSERT INTO users (email, password, name, role)
+VALUES
+    ('admin@example.com', '{noop}1234', '관리자', 1);
+
+
+

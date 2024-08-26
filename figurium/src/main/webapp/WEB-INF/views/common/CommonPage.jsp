@@ -16,7 +16,7 @@
 </head>
 
 <body>
-<!-- TODO : 메뉴바 -->
+<!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
@@ -25,7 +25,7 @@
   <!-- TODO : 컨텐츠 영역(당신이 사용할 공간) -->
 
 </div>
-<!-- TODO : 푸터바 -->
-<%--  <jsp:include page="../common/footer.jsp"/>--%>
+<!-- NOTE : 푸터바 -->
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

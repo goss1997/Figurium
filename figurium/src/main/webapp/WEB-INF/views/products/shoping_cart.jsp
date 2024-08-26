@@ -6,7 +6,7 @@
 	<title>장바구니</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<jsp:include page="../common/Header.jsp"/>
+	<jsp:include page="../common/header.jsp"/>
 </head>
 <body class="animsition">
 	

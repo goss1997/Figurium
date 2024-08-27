@@ -18,7 +18,7 @@ public class ShopingOrderController {
     @RequestMapping("order/inicis_pay.do")
     @ResponseBody
     public String inicis_pay() {
-        
+
         return "";
     }
 

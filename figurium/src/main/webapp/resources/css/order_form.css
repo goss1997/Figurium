@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Pretendard-Regular';
+    font-size: 14px;
+    background: #0b0b0b;
+}
+
+
+/* 주문자 입력창 */
+.order_box_l {
+    display: flex; /* Flexbox를 사용하여 가로로 배치 */
+    align-items: flex-start; /* 세로 정렬을 위쪽으로 설정 */
+    width: 1400px; /* 전체 너비 사용 */
+    margin: auto;
+}
+
+.table {
+    font-size: 12px;
+    width: 60% !important; /* 필요에 따라 조정 */
+    border-bottom: 0.2px solid #d9d9d9 !important;
+}
+
+.td_title {
+    width: 130px;
+    border-right: 0.2px solid #d9d9d9 !important;
+    vertical-align: middle !important;
+}
+
+th > h2 {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+th {
+    border: 0px !important;
+}
+
+tr {
+  height: 65px;
+}
+
+td > input {
+    width: 300px !important;
+    vertical-align: middle !important;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+
+
+/* 결제창 CSS */
+#order_box {
+    width: 30%;
+    min-height: 150px; /* 최소 높이 설정 */
+    background: gray;
+    margin-left: auto; /* 오른쪽 끝에 붙도록 설정 */
+}

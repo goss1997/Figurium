@@ -5,10 +5,8 @@
     font-style: normal;
 }
 
-body {
+* {
     font-family: 'Pretendard-Regular';
-    font-size: 14px;
-    background: #0b0b0b;
 }
 
 #content_title {
@@ -31,37 +29,72 @@ h1 {
     vertical-align: middle !important;
 }
 
-.item_list_table > thead {
-    height: 30px !important;
+#item_list_table_name {
+    width: 600px;
 }
 
-.table-active > th {
+.item_list_table > thead {
+    height: 40px !important;
+}
+
+.table-active {
+    background-color: #c4c4c4 !important;
+    height: 40px;
+    font-weight: 100;
+    font-size: 14px;
+}
+
+.table-active th {
     vertical-align: middle !important;
     text-align: center !important;
 }
 
+.table_content td {
+    vertical-align: middle !important;
+    text-align: center !important;
+    height: 100px;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#table_content_img {
+    text-align: left !important;
+    font-weight: 100 !important;
+}
+
+td > img {
+    width: 100px;
+}
+
+.order_box_both {
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    margin: auto;
+}
 
 
 /* 주문자 입력창 */
 .order_box_l {
     display: flex; /* Flexbox를 사용하여 가로로 배치 */
-    justify-content: space-between; /* 자식 요소 간의 공간을 균등하게 분배 */
+    /*justify-content: space-between; !* 자식 요소 간의 공간을 균등하게 분배 *!*/
     /*align-items: flex-start; !* 세로 정렬을 위쪽으로 설정 *!*/
     flex-direction: column; /* 세로 방향 정렬 */
     width: 1400px; /* 전체 너비 사용 */
+    height: auto;
     margin: auto;
     margin-bottom: 50px;
 }
 
 .form_container {
-    flex: 0.5; /* 남은 공간을 채우도록 설정 */
+    /*flex: 0.5; !* 남은 공간을 채우도록 설정 *!*/
     margin-right: 20px; /* 오른쪽 여백 */
     margin-top: 50px;
 }
 
 .form_container > .table {
     font-size: 12px;
-    width: 60% !important; /* 필요에 따라 조정 */
+    width: 900px !important; /* 필요에 따라 조정 */
     border-bottom: 0.2px solid #d9d9d9 !important;
 }
 
@@ -96,13 +129,105 @@ td > input {
     font-size: 12px; /* 원하는 크기로 조정 */
 }
 
+#delivery_request {
+    width: 500px !important;
+    height: 100px !important;
+}
+
 
 
 /* 결제창 CSS */
 #order_box {
-    width: 30%;
-    min-height: 500px; /* 최소 높이 설정 */
-    background: gray;
-    margin-left: auto; /* 오른쪽 끝에 붙도록 설정 */
-    float: right;
+    width: 500px;
+    min-height: 1200px; /* 최소 높이 설정 */
+    background: #f8f8f8;
+    border-radius: 5px;
+
+    margin-top: 50px;
+    margin-bottom: 150px;
+    padding: 30px; /* 내부 여백 */
+}
+
+#order_box_first {
+    border-bottom: 0.5px solid;
+}
+
+.payment-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.payment-info-price {
+    font-weight: bold;
+    color: black;
+}
+
+.payment-info-price-red {
+    font-weight: bold;
+    color: red;
+}
+
+#payment-info-bottom {
+    margin-bottom: 30px;
+}
+
+#hr1 {
+    margin-bottom: 80px;
+}
+
+.payment-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+.payment-method {
+    margin-top: 20px;
+}
+
+.payment-method-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.payment-option {
+    display: flex; /* 가로 방향으로 배치 */
+    align-items: center; /* 수직 정렬 */
+    margin-bottom: 10px; /* 각 옵션 간 간격 */
+    font-size: 13px;
+}
+
+.payment-option input {
+    margin-right: 10px; /* 체크박스와 텍스트 간 간격 */
+}
+
+.agreement {
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    background: #e7e7e7;
+}
+
+.agreement input {
+    margin-right: 0; /* 체크박스와 텍스트 간 간격 제거 */
+    vertical-align: middle; /* 수직 정렬 */
+}
+
+.order-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 20px; /* 버튼 내 여백 */
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.order-button:hover {
+    background-color: #0056b3; /* 호버 시 색상 변경 */
 }

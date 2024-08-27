@@ -223,35 +223,32 @@
     <table class="table item_list_table table-hover">
       <thead>
       <tr class="table-active">
-        <th>상품명</th>
+        <th id="item_list_table_name">상품명</th>
         <th>가격</th>
         <th>수량</th>
         <th>총 금액</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-        <td>10,000</td>
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-        <td>10,000</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-        <td>10,000</td>
+      <tr class="table_content">
+        <td id="table_content_img"><img src="${pageContext.request.contextPath}/resources/images/example.jpg" alt="IMG">
+        [25년2월입고] 최애의 아이 2기 반프레스토 아쿠아 토우키ver
+        </td>
+        <td>10,000원</td>
+        <td>1</td>
+        <td>10,000원</td>
       </tr>
       </tbody>
     </table>
 
+
+
 </div>
+
+
+
+<div class="order_box_both">
+
 
 <div class="order_box_l mt-3">
   <div class="form_container">
@@ -300,19 +297,85 @@
       </tr>
       <tr>
         <td class="td_title">주소</td>
-        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="text" class="form-control" id="address" placeholder="주소" name="address"></td>
       </tr>
       <tr>
         <td class="td_title">배송시요청사항</td>
-        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="text" class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>
       </tr>
       </tbody>
     </table>
   </div>
+</div>
 
   <div id="order_box">
-    <p>오른쪽 박스</p>
+
+      <div class="payment-title">결제 정보</div>
+
+      <div class="payment-info">
+        <span>상품 합계</span>
+        <span class="payment-info-price">10,000원</span>
+      </div>
+
+      <div class="payment-info">
+        <span>배송료</span>
+        <span class="payment-info-price">(+)3,000원</span>
+      </div>
+
+      <div class="payment-info" id="payment-info-bottom">
+        <span>총 결제 금액</span>
+        <span class="payment-info-price-red">13,000원</span>
+      </div>
+
+    <hr id="hr1">
+
+
+    <div class="payment-method">
+      <div class="payment-method-title">결제 수단</div>
+
+      <div class="payment-option">
+        <input type="radio" id="paynow" name="payment" value="paynow">
+        <label for="paynow">Paynow</label>
+      </div>
+
+      <div class="payment-option">
+        <input type="radio" id="credit_card" name="payment" value="credit_card">
+        <label for="credit_card">신용카드</label>
+      </div>
+
+      <div class="payment-option">
+        <input type="radio" id="bank_transfer" name="payment" value="bank_transfer">
+        <label for="bank_transfer">실시간 계좌이체</label>
+      </div>
+
+      <div class="payment-option">
+        <input type="radio" id="virtual_account" name="payment" value="bank_transfer">
+        <label for="bank_transfer">에스크로 가상계좌</label>
+      </div>
+
+      <div class="payment-option">
+        <input type="radio" id="depositor" name="payment" value="bank_transfer">
+        <label for="bank_transfer">무통장 입금</label>
+      </div>
+
+      <div class="payment-option">
+        <input type="radio" id="phone_transfer" name="payment" value="bank_transfer">
+        <label for="bank_transfer">휴대폰 결제</label>
+      </div>
+
+    </div>
+
+    <hr id="hr2">
+
+    <div class="agreement">
+      <input type="checkbox" id="agreement" name="agreement">
+      <label for="agreement">결제 정보를 확인하였으며, 구매 진행에 동의합니다.</label>
+    </div>
+
+    <button class="order-button">주문하기</button>
+
   </div>
+
 </div>
 
 

@@ -1,5 +1,5 @@
 -- figurium 데이터 베이스 삭제
- DROP DATABASE figurium_db;
+DROP DATABASE figurium_db;
 
 -- figurium 데이터 베이스 생성
 CREATE DATABASE figurium_db;
@@ -11,25 +11,26 @@ USE figurium_db;
 -- 회원 테이블
 CREATE TABLE users
 (
-    id          INT AUTO_INCREMENT PRIMARY KEY COMMENT '회원 고유 ID (자동 증가)',
-    email       VARCHAR(200) UNIQUE NOT NULL COMMENT '회원 이메일 (유일 값)',
-    password    VARCHAR(255) COMMENT '회원 비밀번호 (소셜 로그인의 경우 NULL 가능)',
-    name        VARCHAR(100) NOT NULL COMMENT '회원 이름',
-    phone       VARCHAR(15) COMMENT '회원 전화번호',
-    address     TEXT COMMENT '회원 주소',
-    profile_img VARCHAR(255) COMMENT '회원 프로필 이미지',
-    role        TINYINT DEFAULT 0 COMMENT '회원 역할 (0: 사용자, 1: 관리자)',
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '계정 생성 시간',
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '계정 정보 수정 시간'
+    id              INT AUTO_INCREMENT PRIMARY KEY COMMENT '회원 고유 ID (자동 증가)',
+    email           VARCHAR(200) UNIQUE NOT NULL COMMENT '회원 이메일 (유일 값)',
+    password        VARCHAR(255) COMMENT '회원 비밀번호 (소셜 로그인의 경우 NULL 가능)',
+    name            VARCHAR(100)        NOT NULL COMMENT '회원 이름',
+    phone           VARCHAR(15) COMMENT '회원 전화번호',
+    address         TEXT COMMENT '회원 주소',
+    profile_img_url VARCHAR(255) COMMENT '회원 프로필 이미지 url',
+    role            TINYINT(1)   DEFAULT 0 COMMENT '회원 역할 (0: 사용자, 1: 관리자)',
+    deleted         TINYINT(1)   DEFAULT 0 COMMENT '삭제 여부(1: 삭제)',
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '계정 생성 시간',
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '계정 정보 수정 시간'
 );
 
 -- 소셜 회원 테이블
 CREATE TABLE social_accounts
 (
     id               INT AUTO_INCREMENT PRIMARY KEY COMMENT '소셜 계정 고유 ID (자동 증가)',
-    user_id          INT NOT NULL COMMENT '회원 테이블과 연결된 회원 ID',
+    user_id          INT                                                          NOT NULL COMMENT '회원 테이블과 연결된 회원 ID',
     provider         VARCHAR(20) CHECK (provider IN ('google', 'kakao', 'naver')) NOT NULL COMMENT '소셜 로그인 제공자',
-    provider_user_id VARCHAR(100) NOT NULL COMMENT '소셜 제공자에 의해 부여된 사용자 고유 ID',
+    provider_user_id VARCHAR(100)                                                 NOT NULL COMMENT '소셜 제공자에 의해 부여된 사용자 고유 ID',
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '소셜 계정 생성 시간',
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     UNIQUE KEY unique_provider_user (provider, provider_user_id) COMMENT '소셜 제공자별로 고유한 사용자 ID'
@@ -38,22 +39,21 @@ CREATE TABLE social_accounts
 -- 카테고리 테이블
 CREATE TABLE categories
 (
-    id   INT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 고유 ID (자동 증가)',
-    name VARCHAR(60) NOT NULL COMMENT '카테고리 이름'
+    name VARCHAR(60) PRIMARY KEY COMMENT '카테고리 이름'
 );
 
 -- 상품 테이블
 CREATE TABLE products
 (
     id          INT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 고유 ID (자동 증가)',
-    category_id INT COMMENT '카테고리 테이블과 연결된 카테고리 ID',
+    category_name VARCHAR(60) COMMENT '카테고리 테이블과 연결된 카테고리 ID',
     name        VARCHAR(255) NOT NULL COMMENT '상품 이름',
-    price       INT NOT NULL COMMENT '상품 가격',
-    quantity    INT NOT NULL COMMENT '상품 재고 수량',
+    price       INT          NOT NULL COMMENT '상품 가격',
+    quantity    INT          NOT NULL COMMENT '상품 재고 수량',
     image_url   VARCHAR(255) COMMENT '상품 이미지 URL',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '상품 등록 시간',
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '상품 수정 시간',
-    FOREIGN KEY (category_id) REFERENCES categories (id),
+    FOREIGN KEY (category_name) REFERENCES categories (name),
     INDEX (name) COMMENT '상품 이름에 대한 인덱스를 추가해 조회기능 향상'
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE search_product
 (
     id           INT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 검색어 고유 ID (자동 증가)',
     search_name  VARCHAR(255) NOT NULL COMMENT '검색어',
-    search_count INT DEFAULT 0 COMMENT '해당 검색어 검색 횟수',
+    search_count INT       DEFAULT 0 COMMENT '해당 검색어 검색 횟수',
     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '검색어 작성 시간',
     INDEX (search_name) COMMENT '검색어에 대한 인덱스 추가로 검색 기능 향상'
 );
@@ -84,7 +84,7 @@ CREATE TABLE carts
     user_id    INT NOT NULL COMMENT '회원 ID',
     product_id INT NOT NULL COMMENT '상품 ID',
     quantity   INT NOT NULL DEFAULT 1 COMMENT '상품 수량',
-    added_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록 시간',
+    added_time DATETIME     DEFAULT CURRENT_TIMESTAMP COMMENT '등록 시간',
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
 );
@@ -93,11 +93,11 @@ CREATE TABLE carts
 CREATE TABLE orders
 (
     id           INT AUTO_INCREMENT PRIMARY KEY COMMENT '주문 고유 번호',
-    user_id      INT NOT NULL COMMENT '사용자 고유 번호',
+    user_id      INT         NOT NULL COMMENT '사용자 고유 번호',
     payment_type VARCHAR(50) NOT NULL COMMENT '주문 결제 방식',
-    price        INT NOT NULL COMMENT '주문한 상품 총 가격',
+    price        INT         NOT NULL COMMENT '주문한 상품 총 가격',
     status       VARCHAR(20) DEFAULT '준비중' CHECK (status IN ('준비중', '출고대기', '배송중', '배송완료')) COMMENT '주문 상태(준비중 / 출고대기 / 배송중 / 배송완료)',
-    order_time   DATETIME DEFAULT NOW() COMMENT '주문 시간',
+    order_time   DATETIME    DEFAULT NOW() COMMENT '주문 시간',
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
@@ -156,7 +156,7 @@ CREATE TABLE qa
     id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
     product_id INT COMMENT '상품 ID',
     user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
-    title varchar(100)COMMENT '질문제목',
+    title      varchar(100) COMMENT '질문제목',
     content    VARCHAR(400) COMMENT '질문내용',
     recontent  VARCHAR(400) COMMENT '질문 답글',
     created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
@@ -170,18 +170,15 @@ CREATE TABLE qa
 -- 회원 테이블 더미데이터
 -- 사용자 1
 INSERT INTO users (email, password, name, role)
-VALUES
-    ('user1@example.com', '{noop}1234', '일용자', 0);
+VALUES ('user1@example.com', '{noop}1234', '일용자', 0);
 
 -- 사용자 2
 INSERT INTO users (email, password, name, role)
-VALUES
-    ('user2@example.com', '{noop}1234', '이용자', 0);
+VALUES ('user2@example.com', '{noop}1234', '이용자', 0);
 
 -- 관리자
 INSERT INTO users (email, password, name, role)
-VALUES
-    ('admin@example.com', '{noop}1234', '관리자', 1);
+VALUES ('admin@example.com', '{noop}1234', '관리자', 1);
 
 
 

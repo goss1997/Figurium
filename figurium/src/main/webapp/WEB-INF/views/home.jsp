@@ -399,11 +399,11 @@
                             </a>
 
                             <span class="stext-105 cl3">
-									${products.price}
+                                    상품 가격 : ${products.price}￦
                             </span>
 
                             <span class="stext-105 cl3">
-                                    ${products.createdAt}
+                                   상품 등록일 : ${products.createdAt}
                             </span>
                         </div>
 

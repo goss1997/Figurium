@@ -8,7 +8,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true) // JSON에 있는 알려지지 않은 필드는 무시
 public class Product {
 
-    private int categoryId;
+    private String categoryName;
 
     @JsonProperty("title")
     private String name;

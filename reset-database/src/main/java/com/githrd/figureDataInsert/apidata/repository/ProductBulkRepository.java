@@ -17,7 +17,7 @@ public class ProductBulkRepository {
 
     @Transactional
     public void bulkInsertProducts(List<Product> products) {
-        String sql = "INSERT INTO products (category_id, name, price, quantity, image_url, created_at, updated_at)" +
+        String sql = "INSERT INTO products (category_name, name, price, quantity, image_url, created_at, updated_at)" +
                 " VALUES (?, ?, ?, ?, ?," +
                 " @random_date := DATE_ADD('2024-08-01 00:00:00', INTERVAL FLOOR(RAND() * 31) DAY)," + // create_at
                 " @random_date)" ;  // update_at
@@ -26,7 +26,7 @@ public class ProductBulkRepository {
                 products,
                 products.size(),
                 (PreparedStatement ps, Product product) -> {
-                    ps.setInt(1, product.getCategoryId());
+                    ps.setString(1, product.getCategoryName());
                     ps.setString(2,product.getName());
                     ps.setString(3,product.getPrice());
                     ps.setInt(4,product.getQuantity());

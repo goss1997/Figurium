@@ -51,9 +51,8 @@ public class ApiLoader implements ApplicationRunner {
         for (String category : categories) {
             System.out.println(" - - - - - "+category+" 데이터 삽입 중~ - - - - - ");
 
-            // 카테고리 db에 저장 후 번호 반환
-            int categoryId = categoryRepository.insertCategory(category);
-
+            // db에 카테고리 저장.
+            categoryRepository.insertCategory(category);
 
             // 처음(start=1) 100건 조회 후 그 다음 건부터 또 100건 조회를 위한 반복문
             // 총 1000건 조회
@@ -63,7 +62,7 @@ public class ApiLoader implements ApplicationRunner {
                 String apiUrl = "https://openapi.naver.com/v1/search/shop.json?query=피규어+" + category + "&display=100&start=" + start;
 
                 // api를 통해 db에 저장하는 메소드
-                insertDataFromNaverApiIntoDB(apiUrl, category, categoryId);
+                insertDataFromNaverApiIntoDB(apiUrl, category);
 
             }
 
@@ -81,7 +80,7 @@ public class ApiLoader implements ApplicationRunner {
         System.exit(0);
     }
 
-    private void insertDataFromNaverApiIntoDB(String apiUrl, String category, int id) {
+    private void insertDataFromNaverApiIntoDB(String apiUrl, String category) {
 
         List<Product> productList = new ArrayList<>();
 
@@ -136,8 +135,8 @@ public class ApiLoader implements ApplicationRunner {
                     // maker가 해당 category인 경우에만 추가
                     if (maker.equals(category)) {
 
-                        // set categoryId
-                        product.setCategoryId(id);
+                        // set categoryName
+                        product.setCategoryName(category);
 
                         // set random quantity
                         product.setQuantity(randomNumber);

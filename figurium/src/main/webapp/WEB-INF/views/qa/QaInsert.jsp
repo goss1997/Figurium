@@ -17,6 +17,8 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<jsp:include page="../common/header.jsp"/>
+<div style="height: 90px"></div>
 <body>
 
 <div class="container pt-5">
@@ -50,7 +52,7 @@
   </form>
 
   <a href="/" role="button" class="btn btn-light">취소</a>
-  <button type="button" class="btn btn-dark" id="btn-save">등록</button>
+  <button type="button" class="btn btn-dark" id="btn-save"> 등록</button>
 
 </div>
 

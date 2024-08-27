@@ -97,7 +97,7 @@
                         </li>
 
                         <li>
-                            <a href="#">Q&A</a>
+                            <a href="qa/list.do">Q&A</a>
                         </li>
                     </ul>
                 </div>
@@ -178,7 +178,7 @@
             </li>
 
             <li>
-                <a href="#">Q&A</a>
+                <a href="qa/list.do">Q&A</a>
             </li>
         </ul>
     </div>

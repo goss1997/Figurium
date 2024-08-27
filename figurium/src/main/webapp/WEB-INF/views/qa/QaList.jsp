@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: mac
@@ -17,10 +18,12 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<jsp:include page="../common/header.jsp"/>
+<div style="height: 90px"></div>
 <body>
 
 <div class="container pt-5">
-    <h1>Q&A게시판</h1>
+    <h1 style="color: black !important;">Q&A게시판</h1>
     <table class="table table-hover">
         <thead class="thead-light">
         <tr>
@@ -33,19 +36,22 @@
         </thead>
         <tbody>
         <tr>
-            <th>1</th>
-            <th>test</th>
-            <th>미답변</th>
-            <th>test</th>
-            <th>8월26일</th>
+            <c:forEach var="qa" items="${qaList}">
+            <th>${ qa.id }</th>
+            <th>${ qa.title }</th>
+            <th>${ qa.status }</th>
+            <th>${ qa.userId }</th>
+            <th>${ qa.created }</th>
+            </c:forEach>
         </tr>
         </tbody>
     </table>
 
     <hr>
-    <a class="btn btn-dark float-right">글쓰기</a>
+    <button class="btn btn-dark float-right" style="color:#FFFFFF !important;"
+            onclick="location.href='QaInsert.do'">글쓰기</button>
 
-    <ul class="pagination justify-content-center" style="margin:20px 0">
+    <ul class="pagination justify-content-center" style="margin:20px 0;">
     <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
     <li class="page-item"><a class="page-link" href="#">1</a></li>
     <li class="page-item"><a class="page-link" href="#">2</a></li>

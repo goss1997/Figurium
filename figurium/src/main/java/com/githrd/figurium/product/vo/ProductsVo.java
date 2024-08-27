@@ -1,4 +1,4 @@
 package com.githrd.figurium.product.vo;
 
-public class ExampleVo {
+public class ProductsVo {
 }

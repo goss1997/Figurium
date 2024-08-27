@@ -13,7 +13,7 @@ public class Products {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false) // 외래 키 필드 이름을 지정
+    @JoinColumn(name = "category_name", nullable = false) // 외래 키 필드 이름을 지정
     private Category category;
 
     private String name;

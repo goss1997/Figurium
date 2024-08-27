@@ -11,8 +11,6 @@ import lombok.Data;
 public class Category {
 
     @Id
-    private int Id;
-
     private String Name;
 
 }

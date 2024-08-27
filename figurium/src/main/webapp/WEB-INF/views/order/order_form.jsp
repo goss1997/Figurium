@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +10,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/order_form.css">
+
+  <%-- 결제 API --%>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+  <%-- 결제 API 결제 로직 --%>
+  <script type="text/javascript">
+
+    <%--var mem_name = "${sessionScope.user.mem_name}";--%>
+
+    var IMP = window.IMP;
+    IMP.init("imp25608413");
+
+    //
+    function buy_items(mem_point) {
+
+      IMP.request_pay({
+        pg: 'html5_inicis',
+        pay_method: 'vbank',
+        merchant_uid: 'merchant_' + new Date().getTime(),
+        name: '피규리움 결제창',
+        amount: mem_point,
+        buyer_email: "",
+        buyer_name: mem_point
+      }, function(rsp) {
+        console.log(rsp);
+
+        // 결제 성공 시
+        if(rsp.success) {
+          var msg = "결제가 완료되었습니다.";
+
+          $.ajax({
+            type : "GET",
+            url : "inicis_pay.do",
+            data : {
+              mem_point : mem_point,
+              mem_name : mem_name
+            },
+            success: function(res_data){
+              location.href="list.do";
+            },
+            error: function(err){
+              alert(err.responseText);
+            }
+          });
+        }else {
+          var msg = "결제에 실패했습니다.";
+          msg += '에러내용 : ' + rsp.error_msg;
+        }
+        alert(msg);
+      });
+    };
+  </script>
+
   <jsp:include page="../common/header.jsp"/>
 </head>
 <body class="animsition">
@@ -329,7 +385,7 @@
 
     <hr id="hr1">
 
-
+    <%--  결제 수단 정렬  --%>
     <div class="payment-method">
       <div class="payment-method-title">결제 수단</div>
 
@@ -369,10 +425,11 @@
 
     <div class="agreement">
       <input type="checkbox" id="agreement" name="agreement">
-      <label for="agreement">결제 정보를 확인하였으며, 구매 진행에 동의합니다.</label>
+      <p>결제 정보를 확인하였으며,<br>구매 진행에 동의합니다.</p>
     </div>
 
-    <button class="order-button">주문하기</button>
+    <%--  결제버튼  --%>
+    <button class="order-button" onclick="buy_items(100);">주문하기</button>
 
   </div>
 

@@ -298,15 +298,15 @@
       <tbody>
       <tr>
         <td class="td_title">기존 배송지</td>
-        <td><input type="text" class="form-control" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+        <td><input type="text" class="form-control" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
       </tr>
       <tr>
         <td class="td_title">받으시는 분</td>
-        <td><input type="text" class="form-control" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+        <td><input type="text" class="form-control" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="email" class="form-control" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
       </tr>
 
 

@@ -8,12 +8,12 @@ function buy_items(mem_point) {
 
     IMP.request_pay({
         pg: 'html5_inicis',
-        pay_method: 'vbank',
+        pay_method: 'vbank', // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
         merchant_uid: 'merchant_' + new Date().getTime(),
-        name: '피규리움 결제창',
-        amount: mem_point,
-        buyer_email: "",
-        buyer_name: mem_point
+        name: '피규리움 결제창',   // 상품명
+        amount: mem_point,  // 상품 가격
+        buyer_email: "",    // 구매자 이메일
+        buyer_name: mem_point   // 구매자 이름
     }, function(rsp) {
         console.log(rsp);
 
@@ -29,7 +29,7 @@ function buy_items(mem_point) {
                     mem_name : mem_name
                 },
                 success: function(res_data){
-                    location.href="list.do";
+                    location.href="/";
                 },
                 error: function(err){
                     alert(err.responseText);
@@ -49,7 +49,7 @@ function buy_items(mem_point) {
 function find_addr(){
 
     var themeObj = {
-        bgColor: "#B51D1D" //바탕 배경색
+        bgColor: "#349fef" //바탕 배경색
     };
 
     new daum.Postcode({

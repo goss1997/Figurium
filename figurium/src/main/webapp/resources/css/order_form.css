@@ -139,7 +139,7 @@ td > input {
 /* 결제창 CSS */
 #order_box {
     width: 500px;
-    min-height: 1200px; /* 최소 높이 설정 */
+    min-height: 1000px; /* 최소 높이 설정 */
     background: #f8f8f8;
     border-radius: 5px;
 
@@ -207,19 +207,26 @@ td > input {
 
 .agreement {
     width: 100%;
-    height: 100px;
+    height: 60px;
     margin-top: 20px;
+    padding-left: 15px;
     background: #e7e7e7;
+    font-size: 13px;
+
+    display: flex; /* 플렉스 박스를 사용하여 수평 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
 .agreement input {
-    margin-right: 0; /* 체크박스와 텍스트 간 간격 제거 */
-    vertical-align: middle; /* 수직 정렬 */
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
 .order-button {
     margin-top: 20px;
     width: 100%;
+    height: 60px;
+
     padding: 10px 20px; /* 버튼 내 여백 */
     background-color: #007bff; /* 버튼 배경색 */
     color: white; /* 버튼 텍스트 색상 */

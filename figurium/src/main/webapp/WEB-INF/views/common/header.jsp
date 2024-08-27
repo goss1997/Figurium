@@ -57,6 +57,16 @@
 
     <title>제목</title>
 
+    <style>
+        .categori{
+            cursor: pointer;
+        }
+        .categori{
+            color: #0056b3;
+        }
+
+    </style>
+
 </head>
 <body>
 <!-- Header -->
@@ -68,7 +78,7 @@
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
+                <a href="/" class="logo">
                     <img src="${pageContext.request.contextPath}/resources/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
 
@@ -80,16 +90,7 @@
                             <a href="/">Home</a>
                         </li>
 
-                        <li>
-                            <a href="#">카테고리</a>
-                            <ul class="sub-menu">
-                                <li><a href="#">반프레스토</a></li>
-                                <li><a href="#">세가</a></li>
-                                <li><a href="#">후류</a></li>
-                                <li><a href="#">메가하우스</a></li>
-                                <li><a href="#">반다이</a></li>
-                            </ul>
-                        </li>
+
 
                         <li <%--class="label1" data-label1="hot"--%>>
                             <a href="shopingCart.do">장바구니</a>
@@ -170,19 +171,7 @@
             <li>
                 <a href="/">Home</a>
             </li>
-            <li>
-                <a href="#">카테고리</a>
-                <ul class="sub-menu-m">
-                    <li><a href="#">반프레스토</a></li>
-                    <li><a href="#">세가</a></li>
-                    <li><a href="#">후류</a></li>
-                    <li><a href="#">메가하우스</a></li>
-                    <li><a href="#">반다이</a></li>
-                </ul>
-                <span class="arrow-main-menu-m">
-						<i class="fa fa-angle-right" aria-hidden="true"></i>
-					</span>
-            </li>
+
 
             <li>
                 <a href="shopingCart.do">장바구니</a>

@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
-    @Query(value = "SELECT * FROM products limit 20",nativeQuery = true)
-    List<Products> findAll();
+    @Query(value = "SELECT * FROM products ORDER BY created_at DESC LIMIT 80", nativeQuery = true)
+    List<Products> findAllByCreatedAtDesc();
+
 
 }

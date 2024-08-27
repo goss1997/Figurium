@@ -1,28 +1,27 @@
 package com.githrd.figurium.product.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table
+@Table(name = "products")  // 실제 테이블 이름을 명시적으로 지정합니다.
 public class Products {
 
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID가 자동으로 생성되도록 설정
+    private int id;
 
-    int categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false) // 외래 키 필드 이름을 지정
+    private Category category;
 
-    String name;
+    private String name;
 
-    int price;
-    int quantity;
+    private int price;
+    private int quantity;
 
-    String image_url;
-    String created_at;
-    String updated_at;
-
-
+    private String imageUrl;
+    private String createdAt;
+    private String updatedAt;
 }

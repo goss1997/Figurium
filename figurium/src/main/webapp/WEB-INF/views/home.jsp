@@ -377,16 +377,16 @@
             </div>
         </div>
 
-        <!-- TODO : 상품(피규어) 조회  -->
+        <!-- 상품(피규어) 조회  -->
         <div class="row isotope-grid">
-            <c:forEach var="productsList" items="${ requestScope.productsList }">
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item 반프레스토">
+            <c:forEach var="products" items="${ requestScope.productsList }">
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.category.name}">
                 <!-- Block2 -->
                 <div class="block2">
                     <div class="block2-pic hov-img0"><img
-                            src="${productsList.image_url}" alt="IMG-PRODUCT">
+                            src="${products.imageUrl}" alt="IMG-PRODUCT">
 
-                        <a href="${productsList.image_url}"
+                        <a href="${products.imageUrl}"
                            class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
                             상품 상세
                         </a>
@@ -395,12 +395,16 @@
                     <div class="block2-txt flex-w flex-t p-t-14">
                         <div class="block2-txt-child1 flex-col-l ">
                             <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                ${productsList.name}
+                                ${products.name}
                             </a>
 
                             <span class="stext-105 cl3">
-									${productsList.price}
-								</span>
+									${products.price}
+                            </span>
+
+                            <span class="stext-105 cl3">
+                                    ${products.createdAt}
+                            </span>
                         </div>
 
                         <div class="block2-txt-child2 flex-r p-t-3">
@@ -501,6 +505,7 @@
                     </div>
                 </div>
 
+                <!-- 상품 상세 모달 -->
                 <div class="col-md-6 col-lg-5 p-b-30">
                     <div class="p-r-50 p-t-5 p-lr-0-lg">
                         <h4 class="mtext-105 cl2 js-name-detail p-b-14">
@@ -657,6 +662,7 @@
         });
     });
 </script>
+
 <!--===============================================================================================-->
 <script src="${pageContext.request.contextPath}/resources/vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->

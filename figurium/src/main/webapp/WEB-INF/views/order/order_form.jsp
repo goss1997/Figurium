@@ -214,33 +214,108 @@
 
 
 <%-- Content --%>
+
+<div id="content_title">
+  <h1>주문서</h1>
+
+<%-- 상단 아이템 주문 리스트 --%>
+  <div class="item_list">
+    <table class="table item_list_table table-hover">
+      <thead>
+      <tr class="table-active">
+        <th>상품명</th>
+        <th>가격</th>
+        <th>수량</th>
+        <th>총 금액</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+        <td>10,000</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+        <td>10,000</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+        <td>10,000</td>
+      </tr>
+      </tbody>
+    </table>
+
+</div>
+
 <div class="order_box_l mt-3">
-  <table class="table table-hover">
-    <thead>
-    <th>
-      <h2>주문자 입력</h2>
-    </th>
-    </thead>
-    <tbody>
-    <tr>
-      <td class="td_title">주문하시는 분</td>
-      <td><input type="text" class="form-control" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
-    </tr>
-    <tr>
-      <td class="td_title">전화번호</td>
-      <td><input type="text" class="form-control" id="order_phone" placeholder="전화번호" name="order_phone"></td>
-    </tr>
-    <tr>
-      <td class="td_title">이메일</td>
-      <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="form_container">
+    <table class="table table-hover">
+      <thead>
+      <th>
+        <h2>주문자 입력</h2>
+      </th>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="td_title">주문하시는 분</td>
+        <td><input type="text" class="form-control" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+      </tr>
+      <tr>
+        <td class="td_title">전화번호</td>
+        <td><input type="text" class="form-control" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+      </tr>
+      <tr>
+        <td class="td_title">이메일</td>
+        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form_container">
+    <table class="table table-hover">
+      <thead>
+      <th>
+        <h2>배송지 정보</h2>
+      </th>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="td_title">기존 배송지</td>
+        <td><input type="text" class="form-control" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+      </tr>
+      <tr>
+        <td class="td_title">받으시는 분</td>
+        <td><input type="text" class="form-control" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+      </tr>
+      <tr>
+        <td class="td_title">전화번호</td>
+        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+      </tr>
+      <tr>
+        <td class="td_title">주소</td>
+        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+      </tr>
+      <tr>
+        <td class="td_title">배송시요청사항</td>
+        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div id="order_box">
-
+    <p>오른쪽 박스</p>
   </div>
 </div>
+
+
 
 
 

@@ -11,16 +11,55 @@ body {
     background: #0b0b0b;
 }
 
+#content_title {
+    margin-top: 60px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* 아이템 리스트 */
+.item_list {
+    margin: auto;
+    margin-top: 50px;
+    width: 1400px;
+}
+
+.item_list_table {
+    vertical-align: middle !important;
+}
+
+.item_list_table > thead {
+    height: 30px !important;
+}
+
+.table-active > th {
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+
 
 /* 주문자 입력창 */
 .order_box_l {
     display: flex; /* Flexbox를 사용하여 가로로 배치 */
-    align-items: flex-start; /* 세로 정렬을 위쪽으로 설정 */
+    justify-content: space-between; /* 자식 요소 간의 공간을 균등하게 분배 */
+    /*align-items: flex-start; !* 세로 정렬을 위쪽으로 설정 *!*/
+    flex-direction: column; /* 세로 방향 정렬 */
     width: 1400px; /* 전체 너비 사용 */
     margin: auto;
+    margin-bottom: 50px;
 }
 
-.table {
+.form_container {
+    flex: 0.5; /* 남은 공간을 채우도록 설정 */
+    margin-right: 20px; /* 오른쪽 여백 */
+    margin-top: 50px;
+}
+
+.form_container > .table {
     font-size: 12px;
     width: 60% !important; /* 필요에 따라 조정 */
     border-bottom: 0.2px solid #d9d9d9 !important;
@@ -34,7 +73,8 @@ body {
 
 th > h2 {
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 800;
+    margin-bottom: 10px;
 }
 
 th {
@@ -52,12 +92,17 @@ td > input {
     margin-top: 3px;
 }
 
+.form-control::placeholder {
+    font-size: 12px; /* 원하는 크기로 조정 */
+}
+
 
 
 /* 결제창 CSS */
 #order_box {
     width: 30%;
-    min-height: 150px; /* 최소 높이 설정 */
+    min-height: 500px; /* 최소 높이 설정 */
     background: gray;
     margin-left: auto; /* 오른쪽 끝에 붙도록 설정 */
+    float: right;
 }

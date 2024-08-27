@@ -315,7 +315,7 @@
 										</div>
 									</td>
 									<td class="column-2">피규어 1</td>
-									<td class="column-3">13,000\</td>
+									<td class="column-3">13,000</td>
 									<td class="column-4">
 										<div class="wrap-num-product flex-w m-l-auto m-r-0">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -329,7 +329,7 @@
 											</div>
 										</div>
 									</td>
-									<td class="column-5">13,000\</td>
+									<td class="column-5">13,000</td>
 								</tr>
 
 

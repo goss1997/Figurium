@@ -10,58 +10,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/order_form.css">
+  <%-- 자바스크립트 경로 --%>
+  <script src="${pageContext.request.contextPath}/resources/js/order_form.js"></script>
 
   <%-- 결제 API --%>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-  <%-- 결제 API 결제 로직 --%>
-  <script type="text/javascript">
+  <%-- 주소 API --%>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <%--var mem_name = "${sessionScope.user.mem_name}";--%>
-
-    var IMP = window.IMP;
-    IMP.init("imp25608413");
-
-    //
-    function buy_items(mem_point) {
-
-      IMP.request_pay({
-        pg: 'html5_inicis',
-        pay_method: 'vbank',
-        merchant_uid: 'merchant_' + new Date().getTime(),
-        name: '피규리움 결제창',
-        amount: mem_point,
-        buyer_email: "",
-        buyer_name: mem_point
-      }, function(rsp) {
-        console.log(rsp);
-
-        // 결제 성공 시
-        if(rsp.success) {
-          var msg = "결제가 완료되었습니다.";
-
-          $.ajax({
-            type : "GET",
-            url : "inicis_pay.do",
-            data : {
-              mem_point : mem_point,
-              mem_name : mem_name
-            },
-            success: function(res_data){
-              location.href="list.do";
-            },
-            error: function(err){
-              alert(err.responseText);
-            }
-          });
-        }else {
-          var msg = "결제에 실패했습니다.";
-          msg += '에러내용 : ' + rsp.error_msg;
-        }
-        alert(msg);
-      });
-    };
-  </script>
 
   <jsp:include page="../common/header.jsp"/>
 </head>
@@ -278,7 +235,7 @@
   <div class="item_list">
     <table class="table item_list_table table-hover">
       <thead>
-      <tr class="table-active">
+      <tr class="table-light">
         <th id="item_list_table_name">상품명</th>
         <th>가격</th>
         <th>수량</th>
@@ -351,10 +308,25 @@
         <td class="td_title">전화번호</td>
         <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
       </tr>
+
+
       <tr>
         <td class="td_title">주소</td>
-        <td><input type="text" class="form-control" id="address" placeholder="주소" name="address"></td>
+        <td>
+          <div class="address-container">
+            <div class="address-inputs">
+              <input type="text" class="form-control" id="address" placeholder="우편번호" name="address">
+              <button id="a_search" type="button" onclick="find_addr();">우편번호 찾기</button>
+            </div>
+            <div class="zipcode-container">
+              <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
+              <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
+            </div>
+          </div>
+        </td>
       </tr>
+
+
       <tr>
         <td class="td_title">배송시요청사항</td>
         <td><input type="text" class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>

@@ -158,7 +158,7 @@ CREATE TABLE qa
     user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
     title      varchar(100) COMMENT '질문제목',
     content    VARCHAR(400) COMMENT '질문내용',
-    recontent  VARCHAR(400) COMMENT '질문 답글',
+    reply      VARCHAR(400) COMMENT '질문 답글',
     created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
     updated    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
     FOREIGN KEY (product_id) REFERENCES products (id),

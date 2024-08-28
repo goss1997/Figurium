@@ -175,3 +175,173 @@
 .price_cart_btn:hover{
     background-color: #dddfe2;
 }
+
+
+/* 리뷰 영역 */
+
+.reviews_box{
+    margin: auto;
+    margin-top: 100px;
+    width: 1300px;
+}
+
+/* 리뷰 작성 버튼 */
+.reviewInsert_btn_box{
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 50px;
+}
+
+.reviewInsert_btn{
+    width: 100px;
+    height: 30px;
+    background-color: #81bcff;
+    color: white;
+    border: 1px solid #b3d7ff;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.reviewInsert_btn:hover{
+    background-color: #489aff;
+}
+
+
+/* 리뷰 테이블의 요소 */
+
+.review_table{
+    margin: auto;
+    margin-top: 30px;
+    width: 1300px;
+    text-align: center;
+}
+
+.review_table th{
+    background-color: whitesmoke;
+    height: 50px;
+}
+
+.review_table td{
+    height: 50px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.review_table .review_number{
+    width: 10%;
+}
+
+.review_table .review_title{
+    width: 45%;
+}
+
+.review_table .review_name{
+    width: 10%;
+}
+
+.review_table .review_regdate{
+    width: 25%;
+}
+
+.review_table .review_star{
+    width: 10%;
+}
+
+
+.review_td_title{
+    text-align: left;
+}
+
+
+
+/* Comment Test 용 CSS */
+.commu-box {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.comments {
+    border-top: 1px solid #ddd;
+    padding : 10px;
+    font-size: 0px;
+}
+
+.comment-input {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+.comment-input textarea {
+    width: 85%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+.content-cell{
+    height: 200px;
+    vertical-align: top;
+}
+
+.comment-list{
+    margin: auto;
+    border-top: 5px solid #000000;
+    height: 50px;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.c-div{
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.comment-reply{
+    font-size: 14px;
+}
+
+.comment-deco{
+    font-size: 14px;
+}
+
+.comment-date{
+    font-size: 14px;
+    color: #ababab;
+}
+
+.comment-content{
+    font-size: 18px;
+}
+
+.comments .comment-content{
+    padding: 7px;
+}
+.comment-input textarea {
+    width: 1280px;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+    font-size: 18px;
+}
+
+.comment-btn{
+    text-align: right;
+    margin-right: 10px ;
+}
+
+.comment-btn button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.comment-btn button:hover {
+    background-color: #0056b3;
+}

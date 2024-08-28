@@ -86,8 +86,90 @@
 
         </div>
     </form>
+    <!-- TODO 리뷰 , Q&A 선택-->
 
+    <!-- 리뷰영역 -->
+    <div class="reviews_box">
 
+        <span class="reviewInsert_btn_box">
+            <input class="reviewInsert_btn" type="button" value="리뷰작성">
+        </span>
+
+        <table class="review_table">
+            <tr>
+                <th class="review_number">번호</th>
+                <th class="review_title">제목</th>
+                <th class="review_name">작성자</th>
+                <th class="review_regdate">작성일</th>
+                <th class="review_star">별점</th>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">리뷰</td>
+                <td>에이스</td>
+                <td>2024-08-28</td>
+                <td>5</td>
+            </tr>
+
+            <!-- 테이블의 더미 데이터 -->
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">리뷰</td>
+                <td>에이스</td>
+                <td>2024-08-28</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">리뷰</td>
+                <td>에이스</td>
+                <td>2024-08-28</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">리뷰</td>
+                <td>에이스</td>
+                <td>2024-08-28</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">리뷰</td>
+                <td>에이스</td>
+                <td>2024-08-28</td>
+                <td>5</td>
+            </tr>
+
+        </table>
+
+        <!-- Comment Test 용 -->
+        <div class="comment-list">
+            <div class="c-div">댓글목록</div>
+        </div>
+        <div class="comments">
+
+            <div class="comment-update">
+                <span class="comment-reply">이름</span>
+                <span class="comment-reply">&nbsp; │ &nbsp;</span>
+                <span class="comment-date">2024-08-28</span>
+            </div>
+
+        </div>
+
+        <form class="fo">
+            <div class="comment-input">
+                <textarea placeholder="댓글을 입력하세요" name="cmt_content"></textarea>
+            </div>
+            <div class="comment-btn">
+                <button onclick="comment_insert(this.form); return false;">댓글등록</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 

@@ -3,6 +3,8 @@ package com.githrd.figurium.product.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "products")  // 실제 테이블 이름을 명시적으로 지정합니다.
@@ -22,6 +24,12 @@ public class Products {
     private int quantity;
 
     private String imageUrl;
-    private String createdAt;
-    private String updatedAt;
+
+    // String Type -> LocalDateTime 변경
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
 }

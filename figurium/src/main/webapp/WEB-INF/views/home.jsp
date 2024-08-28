@@ -6,13 +6,14 @@
 <head>
     <title>Figurium</title>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <jsp:include page="./common/header.jsp"/>
 <body class="animsition">
 
 
 
-<!-- Cart -->
+<!-- 장바구니 모달 -->
 <div class="wrap-header-cart js-panel-cart">
     <div class="s-full js-hide-cart"></div>
 
@@ -141,7 +142,7 @@
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
-               ★ Figurium Best Figure ★
+                ★ Figurium New Figure ★
             </h3>
         </div>
 
@@ -153,10 +154,9 @@
                 </button>
 
                 <c:forEach var="categori" items="${categoriesList}">
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".${categori.name}">
-                    ${categori.name}
-                </button>
+                    <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".${categori.name}">
+                            ${categori.name}
+                    </button>
                 </c:forEach>
             </div>
 
@@ -364,59 +364,51 @@
             </div>
         </div>
 
-        <!-- 상품(피규어) 조회  -->
-        <div class="row isotope-grid">
-            <c:forEach var="products" items="${ requestScope.productsList }">
-            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.category.name}">
-                <!-- Block2 -->
-                <div class="block2">
-                    <div class="block2-pic hov-img0"><img
-                            src="${products.imageUrl}" alt="IMG-PRODUCT">
-
-                        <a href="${products.imageUrl}"
-                           class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                            상품 상세
-                        </a>
-                    </div>
-
-                    <div class="block2-txt flex-w flex-t p-t-14">
-                        <div class="block2-txt-child1 flex-col-l ">
-                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                ${products.name}
+        <!-- 상품(피규어) 조회 -->
+        <div id="productsList" class="row isotope-grid">
+            <!-- 초기 80개의 제품이 여기에 렌더링됩니다 -->
+            <c:forEach var="products" items="${requestScope.productsList}">
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.category.name}">
+                    <!-- Block2 -->
+                    <div class="block2">
+                        <div class="block2-pic hov-img0">
+                            <img src="${products.imageUrl}" alt="IMG-PRODUCT">
+                            <a href="${products.imageUrl}"
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                상품 상세
                             </a>
-
-                            <span class="stext-105 cl3">
-                                    상품 가격 : ${products.price}￦
-                            </span>
-
-                            <span class="stext-105 cl3">
-                                   상품 등록일 : ${products.createdAt}
-                            </span>
                         </div>
-
-                        <div class="block2-txt-child2 flex-r p-t-3">
-                            <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                <img class="icon-heart1 dis-block trans-04"
-                                     src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
-                                     alt="ICON">
-                                <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                     src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-02.png"
-                                     alt="ICON">
-                            </a>
+                        <div class="block2-txt flex-w flex-t p-t-14">
+                            <div class="block2-txt-child1 flex-col-l ">
+                                <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        ${products.name}
+                                </a>
+                                <span class="stext-105 cl3">
+                                상품 가격 : ${products.price}￦
+                            </span>
+                                <span class="stext-105 cl3">
+                                상품 등록일 : ${products.createdAt}
+                            </span>
+                            </div>
+                            <div class="block2-txt-child2 flex-r p-t-3">
+                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                    <img class="icon-heart1 dis-block trans-04"
+                                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
+                                         alt="ICON">
+                                    <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-02.png"
+                                         alt="ICON">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </c:forEach>
-
-
         </div>
 
         <!-- Load more -->
-        <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                Load More
-            </a>
+        <div class="laedMoreBtn" style="text-align: center">
+            <button id="load-more-btn" class="btn btn-info">Load More</button>
         </div>
     </div>
 </section>
@@ -602,6 +594,7 @@
     </div>
 </div>
 
+
 <!--===============================================================================================-->
 <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -620,9 +613,74 @@
     })
 </script>
 <script>
+    // =================================== 보류 =============================================
+    $(document).ready(function() {
+        // 페이지 로드 시 마지막 상품의 ID를 가져옵니다.
+        var lastProductId = $('.isotope-item').last().data('id') || 0; // 기본값 0으로 설정
 
+        // Isotope 초기화
+        var $container = $('#productsList').isotope({
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows'
+        });
 
+        $('#load-more-btn').click(function() {
+            $.ajax({
+                url: '/load-more-products',
+                method: 'GET',
+                data: { lastId: lastProductId },
+                success: function(data) {
+                    if (data.products.length > 0) {
+                        var $newItems = data.products.map(function(product) {
+                            return $(
+                                `<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${product.category.name}" data-id="${product.id}">
+                                <div class="block2">
+                                    <div class="block2-pic hov-img0">
+                                        <img src="${product.imageUrl}" alt="IMG-PRODUCT">
+                                        <a href="${product.imageUrl}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                            상품 상세
+                                        </a>
+                                    </div>
+                                    <div class="block2-txt flex-w flex-t p-t-14">
+                                        <div class="block2-txt-child1 flex-col-l ">
+                                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                                ${product.name}
+                                            </a>
+                                            <span class="stext-105 cl3">
+                                                상품 가격 : ${product.price}￦
+                                            </span>
+                                            <span class="stext-105 cl3">
+                                                상품 등록일 : ${product.createdAt}
+                                            </span>
+                                        </div>
+                                        <div class="block2-txt-child2 flex-r p-t-3">
+                                            <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                                <img class="icon-heart1 dis-block trans-04" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png" alt="ICON">
+                                                <img class="icon-heart2 dis-block trans-04 ab-t-l" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-02.png" alt="ICON">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+                            );
+                        });
 
+                        // 새 아이템을 추가하고 Isotope 레이아웃을 업데이트합니다.
+                        $container.append($newItems).isotope('appended', $newItems);
+
+                        // 마지막 상품 ID 업데이트
+                        lastProductId = data.products[data.products.length - 1].id;
+                    } else {
+                        $('#load-more-btn').prop('disabled', true); // 더 이상 로드할 상품이 없으면 버튼 비활성화
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading products:', error);
+                }
+            });
+        });
+    });
+    // ===============================================================================================
 </script>
 <!--===============================================================================================-->
 <script src="${pageContext.request.contextPath}/resources/vendor/daterangepicker/moment.min.js"></script>

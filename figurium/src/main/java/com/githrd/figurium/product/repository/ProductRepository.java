@@ -2,8 +2,10 @@ package com.githrd.figurium.product.repository;
 
 
 import com.githrd.figurium.product.entity.Products;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,8 +13,11 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
-    @Query(value = "SELECT * FROM products ORDER BY created_at DESC LIMIT 80", nativeQuery = true)
-    List<Products> findAllByCreatedAtDesc();
+    @Query("SELECT p FROM Products p ORDER BY p.createdAt DESC")
+    List<Products> findProductsWithPagination(Pageable pageable);
+
+    @Query("SELECT p FROM Products p WHERE p.id > :lastId ORDER BY p.id ASC")
+    List<Products> findByIdGreaterThanOrderByIdAsc(@Param("lastId") int lastId, Pageable pageable);
 
 
 }

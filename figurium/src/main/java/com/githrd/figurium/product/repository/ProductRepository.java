@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p ORDER BY p.createdAt DESC")
     List<Products> findProductsWithPagination(Pageable pageable);
 
-    @Query("SELECT p FROM Products p WHERE p.id > :lastId ORDER BY p.id ASC")
+        //@Query("SELECT p FROM Products p WHERE p.id > :lastId ORDER BY p.id ASC")
         //List<Products> findByIdGreaterThanOrderByIdAsc(@Param("lastId") int lastId, Pageable pageable);
 
     // select one

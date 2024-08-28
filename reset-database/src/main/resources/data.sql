@@ -97,7 +97,7 @@ CREATE TABLE orders
     payment_type VARCHAR(50) NOT NULL COMMENT '주문 결제 방식',
     price        INT         NOT NULL COMMENT '주문한 상품 총 가격',
     status       VARCHAR(20) DEFAULT '준비중' CHECK (status IN ('준비중', '출고대기', '배송중', '배송완료')) COMMENT '주문 상태(준비중 / 출고대기 / 배송중 / 배송완료)',
-    order_time   DATETIME    DEFAULT NOW() COMMENT '주문 시간',
+    created_at   DATETIME    DEFAULT NOW() COMMENT '주문 시간',
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 

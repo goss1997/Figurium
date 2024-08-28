@@ -5,12 +5,11 @@ import com.githrd.figurium.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,8 +18,14 @@ public class UserController {
 
     private final UserService userService;
     private final HttpSession session;
-    private final HttpServletRequest request;
 
+
+    /**
+     * 로그인
+     * @param email : 이메일
+     * @param password : 비밀번호
+     * @return : ResponseEntity
+     */
     @PostMapping("login.do")
     @ResponseBody
     public ResponseEntity<?> login(String email, String password) {
@@ -42,14 +47,51 @@ public class UserController {
         }
     }
 
-    //로그아웃
-    @RequestMapping("logout.do")
-    public String logout() {
+    /**
+     * 로그아웃
+     * @return : 메인 페이지
+     */
+    @GetMapping("logout.do")
+    public String logout(HttpServletRequest request) {
 
+        // session에 사용자의 정보 제거.
         session.removeAttribute("user");
 
-        return "redirect:/";
+        String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+        return "redirect:"+ referer; // 이전 페이지로 리다이렉트
     }
+
+    /**
+     * 회원가입 페이지
+     */
+    @GetMapping("login-form.do")
+    public String signUpForm() {
+        return "user/signUpForm";
+    }
+
+    /**
+     * 이메일 확인
+     * @param email : 가입 이메일
+     * @return : json
+     */
+    @RequestMapping(value = "check_email.do", produces="application/json; charset=utf-8;")
+    @ResponseBody
+    public String checkEmail(String email) {
+
+        
+        // null이 아니면 사용중인 이메일 > isUsed = true
+        boolean isUsed = (userService.findByEmail(email) != null);
+
+        System.out.println("isUsed = " + isUsed);
+        
+        JSONObject json = new JSONObject();
+        json.put("isUsed", isUsed);
+
+        return json.toString();
+
+    }
+
+    
 
 
 }

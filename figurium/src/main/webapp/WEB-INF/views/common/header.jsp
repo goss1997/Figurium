@@ -56,8 +56,8 @@
     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>제목</title>
 
@@ -182,7 +182,7 @@
                     <ul class="main-menu">
 
                         <li>
-                            <a href="/">Home</a>
+                            <a href="${pageContext.request.contextPath}/">Home</a>
                         </li>
 
 
@@ -242,7 +242,7 @@
                                 </div>
                                 <br>
                                 <input type="button" class="btn btn-secondary" value="로그인" onclick="login();" />
-                                <input type="button" class="btn btn-secondary" value="회원가입" />
+                                <input type="button" class="btn btn-secondary" value="회원가입" onclick="location.href='${pageContext.request.contextPath}/user/login-form.do';" />
                         </div>
 
                         <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>

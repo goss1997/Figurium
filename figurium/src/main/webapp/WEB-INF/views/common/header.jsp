@@ -236,15 +236,13 @@
                         <br>
                         <!-- 개인 회원 로그인 폼 -->
                         <div class="login-form">
-                            <form id="signInForm">
                                 <div class="login-input-area">
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                                 </div>
                                 <br>
-                                <input type="button" class="btn btn-secondary" value="로그인" onclick="login(this.form);" />
+                                <input type="button" class="btn btn-secondary" value="로그인" onclick="login();" />
                                 <input type="button" class="btn btn-secondary" value="회원가입" />
-                            </form>
                         </div>
 
                         <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>
@@ -357,8 +355,10 @@
         const span = document.getElementsByClassName('login-modal-close')[0];
 
         // Open the modal
-        btn.onclick = function () {
-            modal.style.display = 'block';
+        if(btn) {
+            btn.onclick = function () {
+                modal.style.display = 'block';
+            }
         }
 
         // Close the modal when the user clicks on <span> (x)
@@ -376,11 +376,21 @@
     });
 
     /**
+     * Enter 키 press 시 로그인 함수 실행.
+     */
+    $('#password').on('keydown', function (e) {
+        if(e.key === 'Enter') {
+            login();
+        }
+    })
+
+
+    /**
      * 로그인
      */
-    function login(f) {
-        let email = f.email.value;
-        let password = f.password.value;
+    function login() {
+        let email = $("#email").val();
+        let password = $("#password").val();
 
         if( !(email && password) ) {
             alert("이메일 혹은 비밀번호를 입력해주세요!");
@@ -396,12 +406,11 @@
                 method : 'post',
                 data : { email : email, password : password },
                 success : function (result) {
-                    console.log(result);
                     location.reload();
                 },
-                error: function(xhr, status, error) {
+                error: function(error) {
                     // 에러가 발생하면 서버로부터 응답 메시지를 받아 alert 창 띄우기
-                    alert(xhr.responseText);  // 서버에서 전송한 에러 메시지를 alert로 출력
+                    alert(error.responseText);  // 서버에서 전송한 에러 메시지를 alert로 출력
                 }
             });
 

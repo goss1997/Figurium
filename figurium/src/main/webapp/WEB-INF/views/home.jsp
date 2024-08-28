@@ -373,8 +373,8 @@
                     <div class="block2">
                         <div class="block2-pic hov-img0">
                             <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <a href="${products.imageUrl}"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                            <a href="/productInfo.do"
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 상품 상세
                             </a>
                         </div>
@@ -440,43 +440,17 @@
                 <div class="col-md-6 col-lg-7 p-b-30">
                     <div class="p-l-25 p-r-30 p-lr-0-lg">
                         <div class="wrap-slick3 flex-sb flex-w">
-                            <div class="wrap-slick3-dots"></div>
+
                             <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
                             <div class="slick3 gallery-lb">
-                                <div class="item-slick3" data-thumb="#">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img src="#"
-                                             alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="#">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
 
                                 <div class="item-slick3" data-thumb="#">
                                     <div class="wrap-pic-w pos-relative">
                                         <img src="#"
                                              alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="#">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="item-slick3" data-thumb="#">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img src="#"
-                                             alt="IMG-PRODUCT">
-
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                           href="#">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -488,16 +462,15 @@
                 <div class="col-md-6 col-lg-5 p-b-30">
                     <div class="p-r-50 p-t-5 p-lr-0-lg">
                         <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-                            Lightweight Jacket
+                            상품 이름
                         </h4>
 
                         <span class="mtext-106 cl2">
-								$58.79
+							상품 가격
 							</span>
 
                         <p class="stext-102 cl3 p-t-23">
-                            Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare
-                            feugiat.
+                            상품
                         </p>
 
                         <!--  -->

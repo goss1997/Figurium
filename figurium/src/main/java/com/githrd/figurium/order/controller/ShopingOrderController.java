@@ -30,8 +30,16 @@ public class ShopingOrderController {
         // 지훈이형 Product DB 아무거나 던져보기
         Pageable pageable = PageRequest.of(0, 2);
         List<Products> cartsList = productRepository.findBuyProductsTwo(pageable);
-        model.addAttribute("cartsList", cartsList);
 
+        // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
+        int totalPrice = 0;
+
+        for(Products products:cartsList) {
+            totalPrice += products.getPrice() * products.getQuantity();
+        }
+
+        model.addAttribute("cartsList", cartsList);
+        model.addAttribute("totalPrice", totalPrice);
         return "order/orderForm";
     }
 

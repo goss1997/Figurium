@@ -1,8 +1,10 @@
+<%@ page import="com.githrd.figurium.product.entity.Products, java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,13 +160,11 @@
         var itemNames = [];
         var itemPrices = [];
         var itemQuantities = [];
-        var totalAmount = 0;
 
         <c:forEach var="item" items="${ requestScope.cartsList }">
           itemNames.push("${ item.name }");
           itemPrices.push("${ item.price }");
           itemQuantities.push("${ item.quantity }");
-          totalAmount += ${ item.price } * ${ item.quantity };
         </c:forEach>
       </script>
 
@@ -304,11 +304,11 @@
       </div>
     </c:if>
 
-    <c:if test="${ itemList != null }">
+    <c:if test="${ cartsList != null }">
       <div class="payment-info">
         <span>상품 합계</span>
         <span class="payment-info-price">
-          <fmt:formatNumber type="currency" value="${ totalAmount }" currencySymbol=""/>원
+          <fmt:formatNumber type="currency" value="${ totalPrice }" currencySymbol=""/>원
         </span>
       </div>
 
@@ -321,7 +321,7 @@
         <span>총 결제 금액</span>
 
         <span class="payment-info-price-red">
-          <fmt:formatNumber type="currency" value="${ totalAmount + 3000 }" currencySymbol=""/>원
+          <fmt:formatNumber type="currency" value="${ totalPrice + 3000 }" currencySymbol=""/>원
         </span>
       </div>
     </c:if>

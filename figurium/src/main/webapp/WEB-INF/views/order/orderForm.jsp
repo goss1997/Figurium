@@ -19,20 +19,44 @@
   <%-- 주소 API --%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
+
+
     // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
-    // var mem_name = "${sessionScope.user.mem_name}";
-
-    // var
-
+    // 관리자 계정 정보 (결제 api 사용에 필요함)
     var IMP = window.IMP;
     IMP.init("imp25608413");
 
 
-    function buy_items(item_price) {
+    function buyItems(item_price) {
+
+      // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
+      let selectedOption = document.querySelector('input[name="payment"]:checked');
+      if (selectedOption == null) {
+        alert("결제방식을 선택하고 결제를 진행해주세요.");
+        return;
+      }
+
+      // var mem_name = "${sessionScope.user.mem_name}";
+
+      // 주문 리스트에 저장될 값들 전부 변수로 저장
+
+      let order_name = f.order_name.value;              // 보낸 사람 이름
+      let order_phone = f.order_phone.value;            // 보낸 사람 전화번호
+      let order_email = f.order_email.value;            // 이메일
+
+      let shipping_address = f.shipping_address.value;  // 배송지
+      let shipping_name = f.shipping_name.value;        // 받는 사람
+      let shipping_phone = f.shipping_phone.value;      // 받는 사람 전화번호
+      let delivery_request = f.delivery_request.value;  // 배송시 요청사항
+
+      // var itemNames = [ 아이템 이름 배열 저장 ];
+      // var itemPrices = [ 아이템 가격 배열 저장 ];
+      // var itemQuantities = [ 아이템 갯수 배열 저장 ];
+
 
       IMP.request_pay({
         pg: 'html5_inicis',
-        pay_method: 'vbank', // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
+        pay_method: selectedOption, // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
         merchant_uid: 'merchant_' + new Date().getTime(),
         name: '피규리움 결제창',   // 상품명
         amount: item_price,  // 상품 가격
@@ -50,7 +74,17 @@
             url : "order/inicisPay.do",
             data : {
               item_price : item_price,
-              mem_name : mem_name
+              mem_name : mem_name,
+              order_name : order_name,
+              order_phone : order_phone,
+              order_email : order_email,
+              shipping_address : shipping_address,
+              shipping_name : shipping_name,
+              shipping_phone : shipping_phone,
+              delivery_request : delivery_request,
+              itemNames : itemNames,
+              itemPrices : itemPrices,
+              itemQuantities : itemQuantities
             },
             success: function(res_data){
               location.href="/";
@@ -121,11 +155,15 @@
     <c:if test="${ itemList != null }">
       <script type="text/javascript">
         var itemNames = [];
+        var itemPrices = [];
+        var itemQuantities = [];
       </script>
 
-      <c:forEach var="item" items="${ requestScope.itemList }">
+      <c:forEach var="item" items="${ requestScope.cartsList }">
       <scirpt type="text/javascript">
         itemNames.push("${ item.name }");
+        itemPrices.push("${ item.price }");
+        itemQuantities.push("${ item.quantity }");
       </scirpt>
 
         <table class="table item_list_table table-hover">
@@ -142,9 +180,9 @@
             <td id="table_content_img"><img src="${pageContext.request.contextPath}${ item.imageUrl }" alt="IMG">
             ${ item.name }
             </td>
-            <td>${ item.price }</td>
+            <td>${ item.price }원</td>
             <td>${ item.quantity }</td>
-            <td>${ item.price * item.quantity }</td>
+            <td>${ item.price * item.quantity }원</td>
           </tr>
           </tbody>
         </table>
@@ -302,7 +340,7 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buy_items(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(100);">주문하기</button>
 
   </div>
 

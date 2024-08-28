@@ -53,8 +53,7 @@ CREATE TABLE products
     image_url   VARCHAR(255) COMMENT '상품 이미지 URL',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '상품 등록 시간',
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '상품 수정 시간',
-    FOREIGN KEY (category_name) REFERENCES categories (name),
-    INDEX (name) COMMENT '상품 이름에 대한 인덱스를 추가해 조회기능 향상'
+    FOREIGN KEY (category_name) REFERENCES categories (name)
 );
 
 -- 상품 좋아요 테이블
@@ -63,18 +62,18 @@ CREATE TABLE product_likes
     id         INT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 좋아요 고유 ID (자동 증가)',
     user_id    INT COMMENT '사용자 고유 번호',
     product_id INT COMMENT '상품 고유 번호',
+    product_count INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
 );
 
 -- 상품 검색어 순위
-CREATE TABLE search_product
+CREATE TABLE product_search_history
 (
     id           INT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 검색어 고유 ID (자동 증가)',
     search_name  VARCHAR(255) NOT NULL COMMENT '검색어',
     search_count INT       DEFAULT 0 COMMENT '해당 검색어 검색 횟수',
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '검색어 작성 시간',
-    INDEX (search_name) COMMENT '검색어에 대한 인덱스 추가로 검색 기능 향상'
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '검색어 작성 시간'
 );
 
 -- 장바구니 테이블
@@ -146,7 +145,7 @@ CREATE TABLE reviews
     content    TEXT COMMENT '리뷰 내용',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '리뷰 작성 시간',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '리뷰 수정 시간',
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
 

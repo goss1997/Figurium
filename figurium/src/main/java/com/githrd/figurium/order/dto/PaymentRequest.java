@@ -15,6 +15,7 @@ public class PaymentRequest {
     private String shippingName;
     private String shippingPhone;
     private String deliveryRequest;
+    private String paymentType;
     private String[] itemNames;
     private int[] itemPrices;
     private int[] itemQuantities;

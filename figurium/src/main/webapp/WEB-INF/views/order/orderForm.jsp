@@ -29,11 +29,11 @@
     IMP.init("imp25608413");
 
 
-    function buyItems(item_price) {
+    function buyItems(price) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
-      let selectedOption = document.querySelector('input[name="payment"]:checked');
-      if (selectedOption == null) {
+      let paymentType = document.querySelector('input[name="payment"]:checked');
+      if (paymentType == null) {
         alert("결제방식을 선택하고 결제를 진행해주세요.");
         return;
       }
@@ -58,12 +58,12 @@
 
       IMP.request_pay({
         pg: 'html5_inicis',
-        pay_method: selectedOption, // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
+        pay_method: paymentType, // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
         merchant_uid: 'merchant_' + new Date().getTime(),
         name: '피규리움 결제창',   // 상품명
-        amount: item_price,  // 상품 가격
+        amount: price,  // 상품 가격
         buyer_email: "",    // 구매자 이메일
-        buyer_name: item_price   // 구매자 이름
+        buyer_name: price   // 구매자 이름
       }, function(rsp) {
         console.log(rsp);
 
@@ -75,7 +75,7 @@
             type : "GET",
             url : "order/inicisPay.do",
             data : {
-              item_price : item_price,
+              price : price,
               mem_name : mem_name,
               order_name : order_name,
               order_phone : order_phone,
@@ -84,6 +84,7 @@
               shipping_name : shipping_name,
               shipping_phone : shipping_phone,
               delivery_request : delivery_request,
+              paymentType : paymentType,
               itemNames : itemNames,
               itemPrices : itemPrices,
               itemQuantities : itemQuantities

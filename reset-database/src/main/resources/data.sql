@@ -170,15 +170,19 @@ CREATE TABLE qa
 -- 회원 테이블 더미데이터
 -- 사용자 1
 INSERT INTO users (email, password, name, role)
-VALUES ('user1@example.com', '{noop}1234', '일용자', 0);
+VALUES ('user1@example.com', '1234', '일용자', 0);
 
 -- 사용자 2
 INSERT INTO users (email, password, name, role)
 VALUES ('user2@example.com', '{noop}1234', '이용자', 0);
 
--- 관리자
+-- 관리자 1
 INSERT INTO users (email, password, name, role)
-VALUES ('admin@example.com', '{noop}1234', '관리자', 1);
+VALUES ('admin@example.com', '1234', '관리자M', 1);
+
+-- 관리자 2
+INSERT INTO users (email, password, name, role)
+VALUES ('admin1@example.com', '1234', '관리자1', 1);
 
 
 

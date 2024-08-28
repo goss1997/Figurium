@@ -12,20 +12,9 @@ import java.util.List;
 @Controller
 public class ProductsController {
 
-   /* private final ProductRepository productRepository;
-
-    @Autowired
-    ProductsController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    @GetMapping("/productInfo.do")
+    public String producesList() {
+        return "products/productInfo";
     }
-
-    @GetMapping("/productsList.do")
-    public String producesList(Model model) {
-
-        List<Products> list = productRepository.findAll();
-        model.addAttribute("list", list);
-
-        return "home";
-    }*/
 
 }

@@ -9,7 +9,7 @@ public class ShopingCartController {
     @GetMapping("/shopingCart.do")
         public String shopingCart(){
 
-            return "products/shoping_cart";
+            return "products/shopingCart";
         }
 
 

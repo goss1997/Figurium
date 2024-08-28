@@ -12,7 +12,6 @@
 <body class="animsition">
 
 
-
 <!-- 장바구니 모달 -->
 <div class="wrap-header-cart js-panel-cart">
     <div class="s-full js-hide-cart"></div>
@@ -366,7 +365,7 @@
 
         <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
-            <!-- 초기 80개의 제품이 여기에 렌더링됩니다 -->
+            <!-- 초기 40개의 제품이 여기에 렌더링됩니다 -->
             <c:forEach var="products" items="${requestScope.productsList}">
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.category.name}">
                     <!-- Block2 -->
@@ -384,11 +383,11 @@
                                         ${products.name}
                                 </a>
                                 <span class="stext-105 cl3">
-                                상품 가격 : ${products.price}￦
-                            </span>
+                        상품 가격 : ${products.price}￦
+                    </span>
                                 <span class="stext-105 cl3">
-                                상품 등록일 : ${products.createdAt}
-                            </span>
+                        상품 등록일 : ${products.createdAt}
+                    </span>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
                                 <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
@@ -408,6 +407,8 @@
 
         <!-- Load more -->
         <div class="laedMoreBtn" style="text-align: center">
+            <input type="hidden" id="currentPage" value="0">
+            <input type="hidden" id="pageSize" value="20">
             <button id="load-more-btn" class="btn btn-info">Load More</button>
         </div>
     </div>
@@ -416,7 +417,6 @@
 
 <!-- Footer -->
 <jsp:include page="common/footer.jsp"/>
-
 
 
 <!-- Back to top -->
@@ -585,9 +585,9 @@
         });
     })
 </script>
+
 <script>
-    // =================================== 보류 =============================================
-    $(document).ready(function() {
+    $(document).ready(function () {
         // 페이지 로드 시 마지막 상품의 ID를 가져옵니다.
         var lastProductId = $('.isotope-item').last().data('id') || 0; // 기본값 0으로 설정
 
@@ -597,64 +597,73 @@
             layoutMode: 'fitRows'
         });
 
-        $('#load-more-btn').click(function() {
+        $('#load-more-btn').click(function () {
             $.ajax({
                 url: '/load-more-products',
                 method: 'GET',
-                data: { lastId: lastProductId },
-                success: function(data) {
-                    if (data.products.length > 0) {
-                        var $newItems = data.products.map(function(product) {
-                            return $(
-                                `<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${product.category.name}" data-id="${product.id}">
-                                <div class="block2">
-                                    <div class="block2-pic hov-img0">
-                                        <img src="${product.imageUrl}" alt="IMG-PRODUCT">
-                                        <a href="${product.imageUrl}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                            상품 상세
-                                        </a>
-                                    </div>
-                                    <div class="block2-txt flex-w flex-t p-t-14">
-                                        <div class="block2-txt-child1 flex-col-l ">
-                                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                                ${product.name}
-                                            </a>
-                                            <span class="stext-105 cl3">
-                                                상품 가격 : ${product.price}￦
-                                            </span>
-                                            <span class="stext-105 cl3">
-                                                상품 등록일 : ${product.createdAt}
-                                            </span>
-                                        </div>
-                                        <div class="block2-txt-child2 flex-r p-t-3">
-                                            <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                                <img class="icon-heart1 dis-block trans-04" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png" alt="ICON">
-                                                <img class="icon-heart2 dis-block trans-04 ab-t-l" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-02.png" alt="ICON">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`
-                            );
+                data: {
+                    lastId: lastProductId
+                },
+                success: function (response) {
+                    const products = response.products; // API 응답에서 products 배열 추출
+
+                    if (products.length === 0) {
+                        $('#load-more-btn').hide(); // 더 이상 데이터가 없으면 버튼 숨김
+                    } else {
+                        let html = '';
+                        console.log(products);
+                        products.forEach(function (product) {
+                            console.log(product.category.name);
+                            console.log(product.name);
+                            html += `
+            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.category.name}' >
+                <div class="block2">
+                    <div class="block2-pic hov-img0">
+                        <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
+                        <a href="/productInfo.do"
+                           class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                            상품 상세
+                        </a>
+                    </div>
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l">
+                            <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                \${product.name}
+                            </a>
+                            <span class="stext-105 cl3">
+                                상품 가격 : \${product.price}￦
+                            </span>
+                            <span class="stext-105 cl3">
+                                상품 등록일 : \${product.createdAt}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
                         });
 
                         // 새 아이템을 추가하고 Isotope 레이아웃을 업데이트합니다.
-                        $container.append($newItems).isotope('appended', $newItems);
+                        const $newItems = $(html);
+                        $('#productsList').append($newItems).isotope('appended', $newItems);
 
                         // 마지막 상품 ID 업데이트
-                        lastProductId = data.products[data.products.length - 1].id;
-                    } else {
-                        $('#load-more-btn').prop('disabled', true); // 더 이상 로드할 상품이 없으면 버튼 비활성화
+                        lastProductId = products[products.length - 1].id;
+
+                        // 다음 페이지가 없으면 버튼 숨김
+                        if (!response.hasNext) {
+                            $('#load-more-btn').hide();
+                        }
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error loading products:', error);
                 }
             });
         });
     });
-    // ===============================================================================================
 </script>
+
+
 <!--===============================================================================================-->
 <script src="${pageContext.request.contextPath}/resources/vendor/daterangepicker/moment.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/vendor/daterangepicker/daterangepicker.js"></script>

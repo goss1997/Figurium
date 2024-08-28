@@ -124,6 +124,7 @@
 
 <%-- 상단 아이템 주문 리스트 --%>
     <%--  장바구니 예시 테이블 : 0828 --%>
+  <c:if test="${ cartsList == null }">
   <div class="item_list">
     <table class="table item_list_table table-hover">
       <thead>
@@ -145,28 +146,31 @@
       </tr>
       </tbody>
     </table>
-
+  </c:if>
 
     <%-- form 시작 지점 --%>
     <form>
 
     <%-- 만약에 장바구니에 담겼던 item 값이 넘어왔다면 list에 호출 : 0828 --%>
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
-    <c:if test="${ itemList != null }">
+    <c:if test="${ cartsList != null }">
       <script type="text/javascript">
         var itemNames = [];
         var itemPrices = [];
         var itemQuantities = [];
+        var totalAmount = 0;
+
+        <c:forEach var="item" items="${ requestScope.cartsList }">
+          itemNames.push("${ item.name }");
+          itemPrices.push("${ item.price }");
+          itemQuantities.push("${ item.quantity }");
+          totalAmount += ${ item.price } * ${ item.quantity };
+        </c:forEach>
       </script>
 
-      <c:forEach var="item" items="${ requestScope.cartsList }">
-      <scirpt type="text/javascript">
-        itemNames.push("${ item.name }");
-        itemPrices.push("${ item.price }");
-        itemQuantities.push("${ item.quantity }");
-      </scirpt>
 
-        <table class="table item_list_table table-hover">
+
+      <table class="table item_list_table table-hover">
           <thead>
           <tr class="table-light">
             <th id="item_list_table_name">상품명</th>
@@ -175,18 +179,21 @@
             <th>총 금액</th>
           </tr>
           </thead>
-          <tbody>
+
+        <tbody>
+        <c:forEach var="item" items="${ requestScope.cartsList }">
           <tr class="table_content">
             <td id="table_content_img"><img src="${pageContext.request.contextPath}${ item.imageUrl }" alt="IMG">
-            ${ item.name }
+              <span id="table_content_img_text">${ item.name }</span>
             </td>
-            <td>${ item.price }원</td>
+            <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol=""/>원</td>
             <td>${ item.quantity }</td>
-            <td>${ item.price * item.quantity }원</td>
+            <td><fmt:formatNumber type="currency" value="${ item.price * item.quantity }" currencySymbol=""/>원</td>
           </tr>
-          </tbody>
-        </table>
-      </c:forEach>
+        </c:forEach>
+        </tbody>
+      </table>
+
     </c:if>
 
 
@@ -279,9 +286,30 @@
 
       <div class="payment-title">결제 정보</div>
 
+      <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
+      <c:if test="${ itemList == null }">
       <div class="payment-info">
         <span>상품 합계</span>
-        <span class="payment-info-price">10,000원</span>
+        <span class="payment-info-price">0원</span>
+      </div>
+
+      <div class="payment-info">
+        <span>배송료</span>
+        <span class="payment-info-price">(+)0원</span>
+      </div>
+
+      <div class="payment-info" id="payment-info-bottom">
+        <span>총 결제 금액</span>
+        <span class="payment-info-price-red">0원</span>
+      </div>
+    </c:if>
+
+    <c:if test="${ itemList != null }">
+      <div class="payment-info">
+        <span>상품 합계</span>
+        <span class="payment-info-price">
+          <fmt:formatNumber type="currency" value="${ totalAmount }" currencySymbol=""/>원
+        </span>
       </div>
 
       <div class="payment-info">
@@ -291,8 +319,12 @@
 
       <div class="payment-info" id="payment-info-bottom">
         <span>총 결제 금액</span>
-        <span class="payment-info-price-red">13,000원</span>
+
+        <span class="payment-info-price-red">
+          <fmt:formatNumber type="currency" value="${ totalAmount + 3000 }" currencySymbol=""/>원
+        </span>
       </div>
+    </c:if>
 
     <hr id="hr1">
 

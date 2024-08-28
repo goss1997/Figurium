@@ -19,10 +19,10 @@ h1 {
 }
 
 /* 아이템 리스트 */
-.item_list {
+.table {
+    width: 1400px !important;
     margin: auto;
     margin-top: 50px;
-    width: 1400px;
 }
 
 .item_list_table {
@@ -58,8 +58,22 @@ h1 {
 }
 
 #table_content_img {
+    width: 600px !important;
     text-align: left !important;
     font-weight: 100 !important;
+    display: flex;
+    align-items: center;
+}
+
+#table_content_img img {
+    margin-right: 15px;
+}
+
+#table_content_img_text {
+    width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;    /* 범위 넘어가는 text ..으로 처리 */
+    white-space: nowrap;        /* 줄바꿈 방지 */
 }
 
 td > img {

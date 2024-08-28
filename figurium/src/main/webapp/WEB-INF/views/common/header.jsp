@@ -54,15 +54,110 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/util.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/main.css">
     <!--===============================================================================================-->
-
+    <!-- bootstrap4 & jquery -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>제목</title>
 
     <style>
-        .categori{
+        .categori {
             cursor: pointer;
         }
-        .categori{
+
+        .categori {
             color: #0056b3;
+        }
+
+        /* The Modal (background) */
+        .login-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: hidden; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .login-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 28%; /* Could be more or less, depending on screen size */
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        /* The Close Button */
+        .login-modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .login-modal-close:hover,
+        .login-modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .login-button {
+            margin: 10px;
+            width: 10%;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .login-button img {
+            width: 10%;
+            height: 100%;
+        }
+
+        .login-button img:hover {
+            transform: scale(1.2);
+        }
+
+        .login-form {
+            margin-bottom: 20px;
+
+        }
+
+        .login-form input {
+            margin: auto;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+
+        .login-input-area input {
+            margin-bottom: 5px;
+            width: 70%;
+
+        }
+
+        .login-form button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 20%;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .login-form button:hover {
+            background-color: #45a049;
         }
 
     </style>
@@ -91,7 +186,6 @@
                         </li>
 
 
-
                         <li <%--class="label1" data-label1="hot"--%>>
                             <a href="shopingCart.do">장바구니</a>
                         </li>
@@ -104,9 +198,19 @@
 
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-                        <i class="zmdi zmdi-account-circle"></i>
-                    </div>
+                    <!-- NOTE : 로그인 아이콘 -->
+                    <c:if test="${empty user}">
+                        <div id="loginBtn" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+
+                            <i class="zmdi zmdi-account-circle"></i>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty user}">
+                        <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px">
+                            <a style="text-decoration: none; color: black" href="user/logout.do">${user.name}님</a>
+                        </div>
+
+                    </c:if>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
                         <i class="zmdi zmdi-search"></i>
@@ -121,6 +225,48 @@
                        data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+                </div>
+
+                <!-- Login Modal Structure -->
+                <div id="loginModal" class="login-modal">
+                    <div class="login-modal-content">
+                        <span class="login-modal-close">&times;</span>
+
+                        <h2>Login</h2>
+                        <br>
+                        <!-- 개인 회원 로그인 폼 -->
+                        <div class="login-form">
+                            <form id="signInForm">
+                                <div class="login-input-area">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                </div>
+                                <br>
+                                <input type="button" class="btn btn-secondary" value="로그인" onclick="login(this.form);" />
+                                <input type="button" class="btn btn-secondary" value="회원가입" />
+                            </form>
+                        </div>
+
+                        <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>
+                        <br>
+                        <div>
+                            <!-- Google Login Button -->
+                            <a href="/oauth2/authorization/google" class="login-button">
+                                <img src="${pageContext.request.contextPath}/resources/images/social/google_login_btn.png" alt="Google Logo">
+                            </a>
+
+                            <!-- Naver Login Button -->
+                            <a href="/oauth2/authorization/naver" class="login-button">
+                                <img src="${pageContext.request.contextPath}/resources/images/social/naver_login_btn.png" alt="Naver Logo">
+                            </a>
+
+                            <!-- Kakao Login Button -->
+                            <a href="/oauth2/authorization/kakao" class="login-button">
+                                <img src="${pageContext.request.contextPath}/resources/images/social/kakao_login_btn.png" alt="Kakao Logo">
+                            </a>
+                        </div>
+                        <br>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -200,5 +346,84 @@
     </div>
 </header>
 
+
+<script>
+    /**
+     * 로그인 모달 띄우기
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('loginModal');
+        const btn = document.getElementById('loginBtn');
+        const span = document.getElementsByClassName('login-modal-close')[0];
+
+        // Open the modal
+        btn.onclick = function () {
+            modal.style.display = 'block';
+        }
+
+        // Close the modal when the user clicks on <span> (x)
+        span.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        // Close the modal when the user clicks anywhere outside of the modal
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+    });
+
+    /**
+     * 로그인
+     */
+    function login(f) {
+        let email = f.email.value;
+        let password = f.password.value;
+
+        if( !(email && password) ) {
+            alert("이메일 혹은 비밀번호를 입력해주세요!");
+            return;
+        }
+
+        // 이메일 유효성 체크
+        if(emailCheck(email)) {
+            // 유효한 이메일일 경우
+            // 로그인 요청
+            $.ajax({
+                url : 'user/login.do',
+                method : 'post',
+                data : { email : email, password : password },
+                success : function (result) {
+                    console.log(result);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // 에러가 발생하면 서버로부터 응답 메시지를 받아 alert 창 띄우기
+                    alert(xhr.responseText);  // 서버에서 전송한 에러 메시지를 alert로 출력
+                }
+            });
+
+
+        } else {
+           alert("유효하지 않은 이메일 주소입니다.");
+        }
+
+    }
+
+    /**
+     * 이메일 유효성 체크 함수
+     */
+    function emailCheck(email){
+        let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+        if(!email_regex.test(email)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+</script>
 </body>
 </html>

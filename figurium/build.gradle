@@ -24,6 +24,8 @@ repositories {
 	mavenCentral()
 }
 
+// 0828 선일 iamport 테스트 주입
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -34,6 +36,7 @@ dependencies {
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+	implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
 	providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -48,4 +51,11 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// 0828 선일 테스트 주입
+allprojects {
+	repositories {
+		maven { url 'https://jitpack.io' }
+	}
 }

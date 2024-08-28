@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ShopingOrderController {
@@ -54,15 +56,20 @@ public class ShopingOrderController {
     @ResponseBody
     public String inicisPay(@RequestBody PaymentRequest paymentRequest) {
 
-        // 주문자 정보 insert
-        Orders orders = new Orders();
-        orders.setPrice(paymentRequest.getPirce());
-        orders.setPaymentType(paymentRequest.getPaymentType());
+        int price = paymentRequest.getPirce();
+        String paymentType = paymentRequest.getPaymentType();
 
-        orderRepository.insertOrder(orders);
+        // 주문자 정보 insert
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("price",price);
+        map.put("paymentType",paymentType);
+
+        orderRepository.insertOrder(map);
         System.out.println("결제성공");
 
-        return "home";
+        map.put("status", "success");
+
+        return "map";
     }
 
 

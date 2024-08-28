@@ -5,6 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 @Repository
 public class OrderRepository {
 
@@ -16,7 +18,7 @@ public class OrderRepository {
     }
 
     // 결제완료시 orders table에 insert
-    public void insertOrder(Orders orders) {
-        sqlSession.insert("orders.insertOrders", orders);
+    public void insertOrder(Map<String, Object> map) {
+        sqlSession.insert("orders.insertOrders", map);
     }
 }

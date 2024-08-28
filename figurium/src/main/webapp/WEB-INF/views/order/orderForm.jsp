@@ -29,7 +29,7 @@
     IMP.init("imp25608413");
 
 
-    function buyItems(f) {
+    function buyItems(price) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       let paymentType = document.querySelector('input[name="payment"]:checked');
@@ -38,9 +38,38 @@
         return;
       }
 
-      // var mem_name = "${sessionScope.user.mem_name}";
+      IMP.request_pay({
+        pg: 'html5_inicis',
+        pay_method: 'vbank', // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
+        merchant_uid: 'merchant_' + new Date().getTime(),
+        name: '피규리움 결제창',   // 상품명
+        amount: price,  // 상품 가격
+        buyer_email: "gildong@gmail.com",    // 구매자 이메일
+        buyer_name: "고길동",   // 구매자 이름
+        buyer_tel: "010-1234-1234",
+        buyer_addr: "인천 판교",
+        buyer_postcode: "01234"
+      }, function (rsp) { // callback
+        $.ajax({
+          type: 'POST',
+          url: '/verify/' + rsp.imp_uid
+        }).done(function(data) {
+          if(rsp.paid_amount === data.response.amount){
+            alert("결제 성공");
+          } else {
+            alert("결제 실패");
+          }
+        });
+      });
+    }
+
+    function insertInformation() {
 
       // 주문 리스트에 저장될 값들 전부 변수로 저장
+
+      // var itemNames = [ 아이템 이름 배열 저장 ];
+      // var itemPrices = [ 아이템 가격 배열 저장 ];
+      // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
       let order_name = f.order_name.value;              // 보낸 사람 이름
       let order_phone = f.order_phone.value;            // 보낸 사람 전화번호
@@ -51,59 +80,36 @@
       let shipping_phone = f.shipping_phone.value;      // 받는 사람 전화번호
       let delivery_request = f.delivery_request.value;  // 배송시 요청사항
 
-      // var itemNames = [ 아이템 이름 배열 저장 ];
-      // var itemPrices = [ 아이템 가격 배열 저장 ];
-      // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
-      console.log("여기까지 확인");
-
-      IMP.request_pay({
-        pg: 'html5_inicis',
-        pay_method: paymentType, // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
-        merchant_uid: 'merchant_' + new Date().getTime(),
-        name: '피규리움 결제창',   // 상품명
-        amount: 100,  // 상품 가격
-        buyer_email: "",    // 구매자 이메일
-        buyer_name: 100   // 구매자 이름
-      }, function(rsp) {
-        console.log(rsp);
-
-        // 결제 성공 시
-        if(rsp.success) {
-          var msg = "결제가 완료되었습니다.";
-
-          $.ajax({
-            type : "GET",
-            url : "order/inicisPay.do",
-            data : {
-              price : 100,
-              mem_name : mem_name,
-              order_name : order_name,
-              order_phone : order_phone,
-              order_email : order_email,
-              shipping_address : shipping_address,
-              shipping_name : shipping_name,
-              shipping_phone : shipping_phone,
-              delivery_request : delivery_request,
-              paymentType : paymentType,
-              itemNames : itemNames,
-              itemPrices : itemPrices,
-              itemQuantities : itemQuantities
-            },
-            success: function(res_data){
-              location.href="home.jsp";
-            },
-            error: function(err){
-              alert(err.responseText);
-            }
-          });
-        }else {
-          var msg = "결제에 실패했습니다.";
-          msg += '에러내용 : ' + rsp.error_msg;
+      $.ajax({
+        type : "GET",
+        url : "order/inicisPay.do",
+        data : {
+          price : price,
+          mem_name : mem_name,
+          order_name : order_name,
+          order_phone : order_phone,
+          order_email : order_email,
+          shipping_address : shipping_address,
+          shipping_name : shipping_name,
+          shipping_phone : shipping_phone,
+          delivery_request : delivery_request,
+          paymentType : paymentType,
+          itemNames : itemNames,
+          itemPrices : itemPrices,
+          itemQuantities : itemQuantities
+        },
+        success: function(res_data){
+          alert("축하드려요");
+          //location.href="home.jsp";
+        },
+        error: function(err){
+          alert(err.responseText);
         }
-        alert(msg);
       });
-    };
+
+
+    }
   </script>
 
 
@@ -282,6 +288,8 @@
   </div>
 </div>
 
+  </form>
+  <%-- form end 지점 --%>
 
   <div id="order_box">
 
@@ -368,15 +376,12 @@
     <hr id="hr2">
 
     <div class="agreement">
-      <input type="checkbox" id="agreement" name="agreement">
+      <input type="checkbox" id="agreement">
       <p>결제 정보를 확인하였으며,<br>구매 진행에 동의합니다.</p>
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(this.form);">주문하기</button>
-
-    </form>
-    <%-- form end 지점 --%>
+    <button class="order-button" onclick="buyItems(100);">주문하기</button>
 
   </div>
 

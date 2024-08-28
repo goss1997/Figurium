@@ -3,7 +3,7 @@ package com.githrd.figurium.order.vo;
 import lombok.Data;
 
 @Data           // Getter + Setter
-public class Order_items {
+public class OrderItems {
 
     // 주문 상품 테이블 (Create table order_items)
     int id;         // primary key

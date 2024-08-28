@@ -11,13 +11,13 @@ public class ShopingOrderController {
     @GetMapping("order/orderForm.do")
     public String orderForm() {
 
-        return "order/order_form";
+        return "order/orderForm";
     }
 
     // inicis 결제 요청 처리하기
-    @RequestMapping("order/inicis_pay.do")
+    @RequestMapping("order/inicisPay.do")
     @ResponseBody
-    public String inicis_pay() {
+    public String inicisPay() {
 
         return "";
     }

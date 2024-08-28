@@ -6,7 +6,7 @@ import lombok.Data;
 // 받아오는 parameter 값을 더 깔끔하게 쓰기위해서 DTO 클래스를 분리
 @Data
 public class PaymentRequest {
-    private int itemPrice;
+    private int pirce;
     private String memName;
     private String orderName;
     private String orderPhone;

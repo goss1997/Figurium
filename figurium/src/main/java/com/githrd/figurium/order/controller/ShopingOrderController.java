@@ -1,6 +1,8 @@
 package com.githrd.figurium.order.controller;
 
+import com.githrd.figurium.order.dao.OrderRepository;
 import com.githrd.figurium.order.dto.PaymentRequest;
+import com.githrd.figurium.order.vo.Orders;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,12 @@ import java.util.List;
 public class ShopingOrderController {
 
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public ShopingOrderController(ProductRepository productRepository) {
+    public ShopingOrderController(ProductRepository productRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -50,9 +54,15 @@ public class ShopingOrderController {
     @ResponseBody
     public String inicisPay(@RequestBody PaymentRequest paymentRequest) {
 
+        // 주문자 정보 insert
+        Orders orders = new Orders();
+        orders.setPrice(paymentRequest.getPirce());
+        orders.setPaymentType(paymentRequest.getPaymentType());
 
+        orderRepository.insertOrder(orders);
+        System.out.println("결제성공");
 
-        return "";
+        return "home";
     }
 
 

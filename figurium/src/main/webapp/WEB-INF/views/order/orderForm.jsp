@@ -29,7 +29,7 @@
     IMP.init("imp25608413");
 
 
-    function buyItems(price) {
+    function buyItems(f) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       let paymentType = document.querySelector('input[name="payment"]:checked');
@@ -55,15 +55,16 @@
       // var itemPrices = [ 아이템 가격 배열 저장 ];
       // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
+      console.log("여기까지 확인");
 
       IMP.request_pay({
         pg: 'html5_inicis',
         pay_method: paymentType, // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
         merchant_uid: 'merchant_' + new Date().getTime(),
         name: '피규리움 결제창',   // 상품명
-        amount: price,  // 상품 가격
+        amount: 100,  // 상품 가격
         buyer_email: "",    // 구매자 이메일
-        buyer_name: price   // 구매자 이름
+        buyer_name: 100   // 구매자 이름
       }, function(rsp) {
         console.log(rsp);
 
@@ -75,7 +76,7 @@
             type : "GET",
             url : "order/inicisPay.do",
             data : {
-              price : price,
+              price : 100,
               mem_name : mem_name,
               order_name : order_name,
               order_phone : order_phone,
@@ -90,7 +91,7 @@
               itemQuantities : itemQuantities
             },
             success: function(res_data){
-              location.href="/";
+              location.href="home.jsp";
             },
             error: function(err){
               alert(err.responseText);
@@ -280,8 +281,7 @@
     </table>
   </div>
 </div>
-</form>
-<%-- form end 지점 --%>
+
 
   <div id="order_box">
 
@@ -373,7 +373,10 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(this.form);">주문하기</button>
+
+    </form>
+    <%-- form end 지점 --%>
 
   </div>
 

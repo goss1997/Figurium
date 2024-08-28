@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.order.dao.OrderRepository">
 
     <insert id="insertOrders" parameterType="orders">
-        insert into orders(id, user_id, payment_type, price, status, creat_at)
+        insert into orders(id, user_id, payment_type, price, status, created_at)
         values(
                 null,
                 1,

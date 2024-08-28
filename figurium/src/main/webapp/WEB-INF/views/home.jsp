@@ -152,25 +152,12 @@
                     전체상품
                 </button>
 
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".반프레스토">
-                    반프레스토
-                </button>
+                <c:forEach var="categori" items="${categoriesList}">
 
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".세가">
-                    세가
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".${categori.name}">
+                    ${categori.name}
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".후류">
-                    후류
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".메가하우스">
-                    메가하우스
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".반다이">
-                    반다이
-                </button>
+                </c:forEach>
             </div>
 
             <!-- Filter button -->

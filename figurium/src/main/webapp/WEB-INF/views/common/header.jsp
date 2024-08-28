@@ -207,7 +207,8 @@
                     </c:if>
                     <c:if test="${not empty user}">
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px">
-                            <a style="text-decoration: none; color: black" href="user/logout.do">${user.name}님</a>
+                            <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="20px;">
+                            <a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/user/logout.do">${user.name} 님</a>
                         </div>
 
                     </c:if>
@@ -402,7 +403,7 @@
             // 유효한 이메일일 경우
             // 로그인 요청
             $.ajax({
-                url : 'user/login.do',
+                url : '/user/login.do',
                 method : 'post',
                 data : { email : email, password : password },
                 success : function (result) {

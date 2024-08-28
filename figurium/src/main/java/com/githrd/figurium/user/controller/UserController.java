@@ -91,7 +91,19 @@ public class UserController {
 
     }
 
-    
+    /**
+     * 회원가입
+     */
+    @PostMapping("sign-up.do")
+    public String signup(User user) {
 
+        User save = userService.save(user);
+
+        if (save == null) {
+            return "redirect:/user/login.do";
+        }else {
+            return "redirect:/";
+        }
+    }
 
 }

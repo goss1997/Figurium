@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -36,23 +37,19 @@ public class User {
     private String address;
 
     @Column(name = "profile_img_url")
-    private String profileImgUrl;
+    private String profileImgUrl = "/resources/images/FiguriumHand.png";
 
-    @ColumnDefault("0")
     @Column(name = "role")
-    private Boolean role;
+    private int role = 0;
 
-    @ColumnDefault("0")
     @Column(name = "deleted")
-    private Boolean deleted;
+    private Boolean deleted = true;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    private String createdAt = LocalDateTime.now().toString();
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private String updatedAt = LocalDateTime.now().toString();
 
     @OneToMany(mappedBy = "user")
     private Set<SocialAccount> socialAccounts = new LinkedHashSet<>();

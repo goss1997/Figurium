@@ -1,10 +1,11 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
     <!-- 주소검색 API  -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>회원가입</title>
@@ -50,17 +51,19 @@
     <form class="form-inline">
         <div id="box">
             <div class="panel panel-primary">
-                <div class="panel-heading" style="text-align: center"><h2>회원가입</h2></div>
-                <span style="text-align: left; font-size: 12px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span>
-                <br>
+                <div class="panel-heading" style="text-align: center; margin-bottom: 20px;"><h2>회원가입</h2></div>
+                    <div style="margin-bottom: 10px;">
+                        <span style="text-align: left; font-weight: bold; font-size: 13px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span> <br>
+                        <span style="text-align: left; font-size: 13px; color: #b4b2b2; margin-left: 10px;">휴대폰 번호와 주소를 입력하시면 주문을 원활하게 진행하실 수 있습니다.</span>
+                    </div>
                 <div class="panel-body">
                     <table class="table">
                         <tr>
                             <th>이메일*</th>
                             <td>
                                 <input style="width:50%;"  class="form-control" type="text" name="email"  id="signup-email">
-                                <input class="btn  btn-secondary"  type="button"  value="이메일확인" onclick="check_email();">
-                                <span  id="check_email_msg"></span>
+                                <input class="btn  btn-secondary"  type="button"  value="중복 확인" onclick="check_email();">
+                                <span style="font-size: 13px;"  id="check_email_msg"></span>
                             </td>
                         </tr>
 
@@ -95,8 +98,8 @@
                         <tr>
                             <td colspan="2" align="center">
                                 <input class="btn btn-secondary" type="button"  value="홈으로"
-                                       onclick="location.href='../photo/list.do'" >
-                                <input id="btn_register"  class="btn btn-secondary" type="button"  value="가입하기" disabled="disabled"
+                                       onclick="location.href='/'" >
+                                <input id="btn_register"  class="btn btn-secondary" type="button"  value="가입하기"
                                        onclick="send(this.form);" >
                             </td>
                         </tr>
@@ -109,10 +112,33 @@
 </div>
 
 <script>
+    $(function () {
+        if(${not empty user}) {
+            alert('메인페이지로 이동합니다.');
+            location.href = "/";
+        }
+    });
+</script>
 
+<script>
+
+    // 이메일 중복 체크
     function check_email() {
 
-        let email = $("#signup-email").val();
+        let email = $("#signup-email").val().trim();
+
+        if(email == ''){
+            alert('이메일을 입력해주세요');
+            $("#signup-email").focus();
+            return;
+        }
+
+        // header.jsp에 있는 이메일 유효성 체크 함수
+        if(!emailCheck(email)) {
+            alert('유효하지 않은 이메일 주소입니다.\n 다시 입력해주세요!');
+            $("#signup-email").focus();
+            return;
+        }
 
         // 이메일 확인
         $.ajax({
@@ -121,21 +147,23 @@
             dataType:	"json",
             success	:	function(res_data){
                 if(res_data.isUsed){
-                    $("#check_email_msg").html("이미 사용중인 이메일 입니다").css("color","red");
+                    $("#check_email_msg").html("이미 사용중입니다").css("color","red");
 
                 }else{
-                    $("#check_email_msg").html("사용가능한 이메일 입니다").css("color","blue");
-                    return true;
-
+                    if(confirm('사용가능한 이메일입니다. \n 사용하시겠습니까?')) {
+                        $("#signup-email").attr('readonly',true);
+                        $("#check_email_msg").html("사용가능").css("color","blue");
+                    }
                 }
             },
             error	:	function(err){
                 alert(err.responseText);
+                return false;
             }
         });
     }//end:check_id()
 
-
+    // 주소 api
     function find_addr(){
 
         var themeObj = {
@@ -147,7 +175,7 @@
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
                 // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-                $("#addr").val(data.address);     //주소넣기
+                $("#address").val(data.address);     //주소넣기
 
             }
         }).open();
@@ -156,10 +184,26 @@
 
 
     function send(f){
-
+        let email = f.email.value.trim();
         let name 	= f.name.value.trim();
         let password  	= f.password.value.trim();
-        let address 	= f.address.value.trim() + $("#detail-address").val();
+        let address = f.address.value.trim() + " , " + $("#detail-address").val();
+
+        if(email==''){
+            alert("이메일을 입력하세요");
+            f.email.value="";
+            f.email.focus();
+            return;
+        }
+
+        let isReadonly = $("#signup-email").attr("readonly") !== undefined;
+
+        // 이메일 확인 안 한 경우
+        if(!isReadonly) {
+            alert('이메일을 다시 확인해주세요!');
+            f.email.focus();
+            return;
+        }
 
         if(name==''){
             alert("이름을 입력하세요");
@@ -175,15 +219,14 @@
             return;
         }
 
+        // 주소 합치기
+        if(f.address.value != '') {
+            f.address.value = address;
 
-        if(address==''){
-            alert("주소를 입력하세요");
-            f.address.value="";
-            f.address.focus();
-            return;
         }
 
-        f.action = "sing-up.do";  //MemberInsertAction
+        f.action = "sign-up.do";
+        f.method = 'post'
         f.submit(); //전송
 
     }//end:send()

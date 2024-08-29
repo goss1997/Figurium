@@ -191,7 +191,7 @@
                         </li>
 
                         <li>
-                            <a href="qa/list.do">Q&A</a>
+                            <a href="qa/QaList.do">Q&A</a>
                         </li>
                     </ul>
                 </div>

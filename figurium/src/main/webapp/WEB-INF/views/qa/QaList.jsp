@@ -34,16 +34,16 @@
             <th>작성일</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <c:forEach var="qa" items="${qaList}">
-            <th>${ qa.id }</th>
-            <th>${ qa.title }</th>
-            <th>${ qa.status }</th>
-            <th>${ qa.userId }</th>
-            <th>${ qa.created }</th>
-            </c:forEach>
-        </tr>
+        <tbody style="min-height: 300px;"   >
+        <c:forEach var="qa" items="${qaList}">
+            <tr>
+                <td>${qa.id}</td>
+                <td><a href="${pageContext.request.contextPath}/qa/select?id=${qa.id}">${qa.title}</a></td>
+                <td>${qa.reply != null ? '답변완료' : '미답변'}</td>
+                <td>${qa.userId}</td>
+                <td>${qa.created}</td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 
@@ -60,5 +60,8 @@
     </ul>
 
 </div>
+
+<!-- NOTE : 푸터바 -->
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

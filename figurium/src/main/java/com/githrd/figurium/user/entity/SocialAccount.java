@@ -32,6 +32,6 @@ public class SocialAccount {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    private String createdAt;
 
 }

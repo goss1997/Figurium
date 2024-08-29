@@ -11,8 +11,8 @@
     <title>회원가입</title>
     <style>
         #content-wrap-area{
-            height: 100%;
             margin-top: 30px;
+            margin-bottom: 30px;
         }
 
         #box{
@@ -34,12 +34,34 @@
             margin-left: 10px;
             /*  border : 1px solid red; */
         }
+        .preview-img {
+            width: 150px;
+            height: 150px;
+            display: block;
+            margin: 10px auto;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
     </style>
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
 </head>
 
 <body>
@@ -48,7 +70,7 @@
 
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
-    <form class="form-inline">
+    <form class="form-inline" enctype="multipart/form-data">
         <div id="box">
             <div class="panel panel-primary">
                 <div class="panel-heading" style="text-align: center; margin-bottom: 20px;"><h2>회원가입</h2></div>
@@ -56,6 +78,22 @@
                         <span style="text-align: left; font-weight: bold; font-size: 13px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span> <br>
                         <span style="text-align: left; font-size: 13px; color: #b4b2b2; margin-left: 10px;">휴대폰 번호와 주소를 입력하시면 주문을 원활하게 진행하실 수 있습니다.</span>
                     </div>
+                <div class="card" style="width: 50%;">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">프로필 이미지 업로드</h4>
+                        <img id="preview" class="preview-img" src="#" alt="이미지 미리보기" style="display:none;">
+                    </div>
+                        <label for="image" style="width: 30%;" class="btn btn-primary btn-block">
+                            이미지 선택
+                            <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(this)" style="display:none;" required>
+                        </label>
+                    <script>
+                        document.getElementById('image').addEventListener('change', function() {
+                            document.getElementById('preview').style.display = 'block';
+                        });
+                    </script>
+                </div>
+                <hr>
                 <div class="panel-body">
                     <table class="table">
                         <tr>

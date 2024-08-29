@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -95,9 +96,9 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("sign-up.do")
-    public String signup(User user) {
+    public String signup(User user, @RequestParam MultipartFile profileImage) {
 
-        User save = userService.save(user);
+        User save = userService.save(user,profileImage);
 
         if (save == null) {
             return "redirect:/user/login.do";

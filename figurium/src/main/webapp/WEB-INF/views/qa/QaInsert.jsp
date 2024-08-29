@@ -27,10 +27,10 @@
     <hr>
     <form action="${pageContext.request.contextPath}/qa/QaSave.do" method="post">
       <div class="form-group">
-        <input type="text" class="form-control" id="title" placeholder="작성자명을 입력하세요">
+        <input type="text" name="userId" class="form-control" id="title" placeholder="작성자명을 입력하세요">
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" id="author" placeholder="비밀번호를 입력하세요">
+        <input type="password" name="pwd" class="form-control" id="author" placeholder="비밀번호를 입력하세요">
       </div>
       <form>
         <select name="cars" class="custom-select">
@@ -45,7 +45,7 @@
       </form>
       <br>
       <div class="form-group">
-        <input type="text" class="form-control" id="author1" placeholder="제목을 입력하세요">
+        <input type="text" name="title" class="form-control" id="author1" placeholder="제목을 입력하세요">
       </div>
       <div class="form-group" >
         <textarea class="form-control" style="resize: none; min-height: 300px;" id="content" placeholder="내용을 입력하세요"></textarea>

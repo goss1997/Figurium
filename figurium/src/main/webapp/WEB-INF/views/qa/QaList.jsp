@@ -17,7 +17,28 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        function qaInsert() {
+            // 로그인 체크 (안되어 있으면)
+            var isUserLoggedIn = "${user != null && !empty user ? 'true' : 'false'}";
+
+            if (isUserLoggedIn === 'false') {
+                alert("글쓰기는 로그인 후 가능합니다.");
+                // 로그인 폼으로 이동
+                location.href = "QaList.do";
+            } else {
+                // 게시글 작성 폼으로 이동
+                location.href = "QaInsert.do";
+            }
+        }
+    </script>
+
+
+
 </head>
+
+
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <body>
@@ -48,8 +69,10 @@
     </table>
 
     <hr>
-    <button class="btn btn-dark float-right" style="color:#FFFFFF !important;"
-            onclick="location.href='QaInsert.do'">글쓰기</button>
+
+    <button type="button" class="btn btn-dark float-right" style="color:#FFFFFF !important;"
+            onclick="qaInsert()">글쓰기</button>
+
 
     <ul class="pagination justify-content-center" style="margin:20px 0;">
     <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>

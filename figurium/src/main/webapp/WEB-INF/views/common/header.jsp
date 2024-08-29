@@ -191,7 +191,7 @@
                         </li>
 
                         <li>
-                            <a href="qa/QaList.do">Q&A</a>
+                            <a href="${pageContext.request.contextPath}/qa/QaList.do">Q&A</a>
                         </li>
                     </ul>
                 </div>

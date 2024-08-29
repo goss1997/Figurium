@@ -5,9 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.reviews.dao.ReviewDao">
 
 
-   <select id="selectList" resultType="dept">
-      select * from reviews
-   </select>
+<!--   <select id="selectList" resultType="dept">-->
+<!--      select * from reviews-->
+<!--   </select>-->
 
 
 

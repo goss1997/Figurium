@@ -207,15 +207,27 @@
                     </c:if>
                     <c:if test="${not empty user}">
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
-                            <div style="height: 5px;"></div>
-                            <div style="display: inline-block">
-                                <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="50px;">
-                            </div>
                             <div>
-                                <a style="text-decoration: none; color: black;" href="${pageContext.request.contextPath}/user/logout.do">${user.name} 님</a>
+                                <div style="display: inline-block">
+                                    <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="50px;">
+                                </div>
+                                <div style="display: inline-block">
+                                    <ul class="main-menu">
+                                        <li style="padding : 0;">
+                                            <a href="#">${user.name}</a>
+                                            <ul style="margin-top: 15px;" class="sub-menu">
+                                                <li><a href="#">마이페이지</a></li>
+                                                <li><a href="#">주문 내역</a></li>
+                                                <li><a href="#">반품 내역</a></li>
+                                                <li><a href="#">위시리스트</a></li>
+                                                <hr>
+                                                <li style="font-weight: bold;"><a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
                     </c:if>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
@@ -248,7 +260,7 @@
                                 </div>
                                 <br>
                                 <input type="button" class="btn btn-secondary" value="로그인" onclick="login();" />
-                                <input type="button" class="btn btn-secondary" value="회원가입" onclick="location.href='${pageContext.request.contextPath}/user/login-form.do';" />
+                                <input type="button" class="btn btn-secondary" value="회원가입" onclick="location.href='${pageContext.request.contextPath}/user/signup-form.do';" />
                         </div>
 
                         <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>

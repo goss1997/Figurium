@@ -22,7 +22,7 @@ public class UserService {
     public User save(User user, MultipartFile profileImage) {
 
         // s3에 해당 이미지 업로드 후 user에 set하고 db에 저장하기.
-        if(profileImage != null) {
+        if(!profileImage.isEmpty()) {
             String profileImgUrl = s3ImageService.uploadS3(profileImage);
             user.setProfileImgUrl(profileImgUrl);
         }

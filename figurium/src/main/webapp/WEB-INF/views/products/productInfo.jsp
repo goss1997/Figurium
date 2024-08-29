@@ -107,7 +107,7 @@
     <div class="reviews_box">
 
         <span class="reviewInsert_btn_box">
-            <input class="reviewInsert_btn" type="button" value="리뷰작성">
+            <input class="reviewInsert_btn" type="button" value="리뷰작성" onclick="reviewInsertForm();">
         </span>
 
         <table class="review_table">
@@ -326,5 +326,15 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('total_price').innerHTML = totalPrice; // 해당 ID값에 뿌림
     }
 </script>
+
+<script>
+    // 리뷰작성 버튼 클릭 함수
+    function reviewInsertForm(){
+        location.href = "/reviewInsert.do"
+    }
+
+</script>
+
+
 
 </html>

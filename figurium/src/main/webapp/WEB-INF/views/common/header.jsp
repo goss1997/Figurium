@@ -206,9 +206,14 @@
                         </div>
                     </c:if>
                     <c:if test="${not empty user}">
-                        <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px">
-                            <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="20px;">
-                            <a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/user/logout.do">${user.name} 님</a>
+                        <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
+                            <div style="height: 5px;"></div>
+                            <div style="display: inline-block">
+                                <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="50px;">
+                            </div>
+                            <div>
+                                <a style="text-decoration: none; color: black;" href="${pageContext.request.contextPath}/user/logout.do">${user.name} 님</a>
+                            </div>
                         </div>
 
                     </c:if>

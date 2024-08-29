@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public abstract class QaServiceImpl implements QaService {
+public class QaServiceImpl implements QaService {
 
     @Autowired
     private QaDao qaDao;

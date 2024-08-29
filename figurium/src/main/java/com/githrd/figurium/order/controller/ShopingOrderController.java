@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ShopingOrderController {
@@ -54,14 +56,14 @@ public class ShopingOrderController {
         System.out.println("TEST");
 
         // 주문자 정보 insert
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("price",price);
-//        map.put("paymentType",paymentType);
-//
-//        int res = orderMapper.insertOrders(map);
-//        System.out.println("결제성공");
-//
-//        map.put("status", "success");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("price",price);
+        map.put("paymentType",paymentType);
+
+        int res = orderMapper.insertOrders(map);
+        System.out.println("결제성공");
+
+        map.put("status", "success");
 
         return "map";
     }

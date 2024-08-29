@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>상품상세</title>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
@@ -38,8 +39,13 @@
 
             <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
             <div class="product_info">
-                <h3>dddddddddddddddddddddddddddddddddddddddddddddddd</h3>
+                <h3>에이스</h3>
                 <h5>15,000 원</h5>
+                <div class="block2-txt-child2">
+                    <a href="#" id="product_like" class="btn-addwish-b2">
+                        <img id="heart-icon" class="icon-heart" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png" alt="Empty Heart Icon">
+                    </a>
+                </div>
                 <hr>
                 <table class="info_table">
                     <tr>
@@ -86,7 +92,15 @@
 
         </div>
     </form>
-    <!-- TODO 리뷰 , Q&A 선택-->
+    <!-- 리뷰,Q&A Tap-->
+
+    <div class="tap_box">
+        <ul class="tap_detail">
+           <li class="tap_review"><a href="#">Reviews(0)</a></li>
+           <li class="tap_qa"><a href="#">Q&A(0)</a></li>
+        </ul>
+
+    </div>
 
     <!-- 리뷰영역 -->
     <div class="reviews_box">
@@ -106,10 +120,16 @@
 
             <tr>
                 <td>1</td>
-                <td class="review_td_title">리뷰</td>
-                <td>에이스</td>
+                <td class="review_td_title">더미 제목</td>
+                <td>길동홍</td>
                 <td>2024-08-28</td>
-                <td>5</td>
+                <td class="review_star">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9734;</span>
+                </td>
             </tr>
 
             <!-- 테이블의 더미 데이터 -->
@@ -118,7 +138,13 @@
                 <td class="review_td_title">리뷰</td>
                 <td>에이스</td>
                 <td>2024-08-28</td>
-                <td>5</td>
+                <td class="review_star">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9734;</span>
+                </td>
             </tr>
 
             <tr>
@@ -126,7 +152,13 @@
                 <td class="review_td_title">리뷰</td>
                 <td>에이스</td>
                 <td>2024-08-28</td>
-                <td>5</td>
+                <td class="review_star">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </td>
             </tr>
 
             <tr>
@@ -134,7 +166,13 @@
                 <td class="review_td_title">리뷰</td>
                 <td>에이스</td>
                 <td>2024-08-28</td>
-                <td>5</td>
+                <td class="review_star">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9734;</span>
+                    <span class="star">&#9734;</span>
+                    <span class="star">&#9734;</span>
+                    <span class="star">&#9734;</span>
+                </td>
             </tr>
 
             <tr>
@@ -142,34 +180,89 @@
                 <td class="review_td_title">리뷰</td>
                 <td>에이스</td>
                 <td>2024-08-28</td>
-                <td>5</td>
+                <td class="review_star">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9734;</span>
+                    <span class="star">&#9734;</span>
+                </td>
             </tr>
 
         </table>
-
-        <!-- Comment Test 용 -->
-        <div class="comment-list">
-            <div class="c-div">댓글목록</div>
-        </div>
-        <div class="comments">
-
-            <div class="comment-update">
-                <span class="comment-reply">이름</span>
-                <span class="comment-reply">&nbsp; │ &nbsp;</span>
-                <span class="comment-date">2024-08-28</span>
-            </div>
-
-        </div>
-
-        <form class="fo">
-            <div class="comment-input">
-                <textarea placeholder="댓글을 입력하세요" name="cmt_content"></textarea>
-            </div>
-            <div class="comment-btn">
-                <button onclick="comment_insert(this.form); return false;">댓글등록</button>
-            </div>
-        </form>
     </div>
+
+
+    <!-- Q&A Tap -->
+
+    <div class="tap_box">
+        <ul class="tap_detail">
+            <li class="tap_review"><a href="#">Reviews(0)</a></li>
+            <li class="tap_qa"><a href="#">Q&A(0)</a></li>
+        </ul>
+
+    </div>
+    <!-- Q&A 영역 -->
+
+    <div class="reviews_box">
+
+        <span class="reviewInsert_btn_box">
+            <input class="reviewInsert_btn" type="button" value="리뷰작성">
+        </span>
+
+        <table class="review_table">
+            <tr>
+                <th class="review_number">번호</th>
+                <th class="review_title">제목</th>
+                <th class="review_name">작성자</th>
+                <th class="review_regdate">작성일</th>
+                <th class="review_star">상태</th>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">[기타문의]입고 문의</td>
+                <td>홍길동</td>
+                <td>2024-08-28</td>
+                <td>답변완료</td>
+            </tr>
+
+            <!-- 테이블의 더미 데이터 -->
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">[기타문의]입고 문의</td>
+                <td>홍길동</td>
+                <td>2024-08-28</td>
+                <td>미답변</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">[기타문의]입고 문의</td>
+                <td>홍길동</td>
+                <td>2024-08-28</td>
+                <td>미답변</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">[기타문의]입고 문의</td>
+                <td>홍길동</td>
+                <td>2024-08-28</td>
+                <td>답변완료</td>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td class="review_td_title">[기타문의]입고 문의</td>
+                <td>홍길동</td>
+                <td>2024-08-28</td>
+                <td>답변완료</td>
+            </tr>
+
+        </table>
+    </div>
+
 </div>
 
 
@@ -178,21 +271,23 @@
 
 
 <script>
-    // 수량을 정하는 버튼의 함수
+//
+document.addEventListener('DOMContentLoaded', function () {
+    var heartIcon = document.getElementById('heart-icon');
+    var isLiked = false;  // 하트가 클릭 되었는지 확인
 
-    function decreaseQuantity() {
-        var quantityInput = document.getElementById("quantity");
-        var currentValue = parseInt(quantityInput.value);
-        if (currentValue > 1) {
-            quantityInput.value = currentValue - 1;
+    heartIcon.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (isLiked) {
+            heartIcon.src = '/resources/images/icons/icon-heart-01.png'; // 빈 하트 이미지
+        } else {
+            heartIcon.src = '/resources/images/icons/icon-heart-02.png'; // 채워진 하트 이미지
         }
-    }
 
-    function increaseQuantity() {
-        var quantityInput = document.getElementById("quantity");
-        var currentValue = parseInt(quantityInput.value);
-        quantityInput.value = currentValue + 1;
-    }
+        isLiked = !isLiked;  // 클릭 시 마다 하트가 채워지고 사라지고 반복 가능
+    });
+});
 
 </script>
 

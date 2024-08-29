@@ -13,4 +13,5 @@ public interface CategoriesRepository extends JpaRepository<Category, Integer> {
     @Query(value = "SELECT * FROM categories" ,nativeQuery = true)
     List<Category> findAll();
 
+
 }

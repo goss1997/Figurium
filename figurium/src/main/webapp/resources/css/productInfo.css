@@ -27,7 +27,6 @@
 .product_img{
     width: 525px;
     height: 525px;
-    border: 1px solid silver;
 }
 /* 상품에 대한 모든 이미지는 부모크기의 100프로 만큼 사진이 확대 */
 .product_img img{

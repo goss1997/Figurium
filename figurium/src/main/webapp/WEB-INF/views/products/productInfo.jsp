@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +34,14 @@
             <div class="product_img_box">
                 <!-- 상품의 이미지가 들어 갈 곳 -->
                 <div class="product_img">
-                    <img src="../../../resources/images/example.jpg">
+                    <img src="${product.imageUrl}">
                 </div>
             </div>
 
             <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
             <div class="product_info">
-                <h3>에이스</h3>
-                <h5>15,000 원</h5>
+                <h3>${product.name}</h3>
+                <h5>${product.price}￦</h5>
                 <div class="block2-txt-child2">
                     <a href="#" id="product_like" class="btn-addwish-b2">
                         <img id="heart-icon" class="icon-heart" src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png" alt="Empty Heart Icon">
@@ -50,17 +51,17 @@
                 <table class="info_table">
                     <tr>
                         <th>제조사</th>
-                        <td>반프레스토</td>
+                        <td>${product.category.name}</td>
                     </tr>
 
                     <tr>
                         <th>남은재고</th>
-                        <td>4</td>
+                        <td>${product.quantity}</td>
                     </tr>
 
                     <tr>
                         <th>출고 날짜</th>
-                        <td>2024-08-28</td>
+                        <td>${fun:substring(product.createdAt,0,10)}</td>
                     </tr>
 
                     <tr>
@@ -78,7 +79,7 @@
                 <hr>
                 <div class="total_price_box">
                     <span class="total_price">총 결제금액</span>
-                    <p>50000</p>원
+                    <p id="total_price">${product.price}</p>원
                 </div>
 
                 <div class="price_bye">
@@ -271,7 +272,7 @@
 
 
 <script>
-//
+//상품의 좋아요 하트 채우기
 document.addEventListener('DOMContentLoaded', function () {
     var heartIcon = document.getElementById('heart-icon');
     var isLiked = false;  // 하트가 클릭 되었는지 확인
@@ -291,5 +292,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
+
+<script>
+// 상품의 수량 선택 버튼이 동작 될 때마다 가격 변동 설정
+    const pricePerUnit = ${product.price}; // 상품의 가격
+    const maxQuantity = ${product.quantity}; // 최대 재고량
+
+    function decreaseQuantity() {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+            updateTotalPrice();
+        }
+    }
+
+    function increaseQuantity() {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+        var maxQuantity = ${product.quantity}; // 상품의 재고량까지
+
+        if (currentQuantity < maxQuantity) {
+            quantityInput.value = currentQuantity + 1;
+            updateTotalPrice();
+        }
+    }
+
+    function updateTotalPrice() {
+        var quantity = parseInt(document.getElementById('quantity').value);
+        var pricePerUnit = ${product.price}; // 상품의 가격
+        var totalPrice = quantity * pricePerUnit; // 상품의 총 가격 = 현재 수량 * 상품의 가격
+        document.getElementById('total_price').innerHTML = totalPrice; // 해당 ID값에 뿌림
+    }
+</script>
 
 </html>

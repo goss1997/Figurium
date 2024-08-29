@@ -2,17 +2,18 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.githrd.figurium.order.dao.OrderRepository">
+<mapper namespace="com.githrd.figurium.order.dao.OrderMapper">
 
     <insert id="insertOrders" parameterType="Map">
-        insert into orders(id, user_id, payment_type, price, status, created_at)
+        insert into orders(id, user_id, payment_type, price, status, created_at, valid)
         values(
                 null,
                 1,
                 #{ paymentType },
                 #{ price },
                 '준비중',
-                CURRENT_TIMESTAMP
+                CURRENT_TIMESTAMP,
+                'y'
                 )
     </insert>
 

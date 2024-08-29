@@ -62,12 +62,39 @@
             // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
             if(rsp.paid_amount == data.response.amount) {
               alert("결제 및 결제 검증완료");  // 결제검증이 성공적으로 이뤄지면 실행되는 로직
+              sil(price);
 
             } else {
               alert("결제 실패")  // 결제검증이 실패하면 이뤄지는 실패 로직
             }
           });
       });
+    }
+
+    let paymentType = document.querySelector('input[name="payment"]:checked');
+
+    function sil(price) {
+
+      alert("sil 실행");
+
+      //결제 완료된 주문 데이터 저장
+      $.ajax({
+        type : "POST",
+        url  : "/order/inicisPay.do",
+        data : {
+          price : price,
+          paymentType : "카드"
+        },
+
+        success: function(res_data){
+          location.href="/";
+        },
+
+        error: function(err){
+          alert(err.responseText);
+        }
+      });
+
     }
 
 
@@ -419,7 +446,7 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(100);">주문하기</button>
+    <button class="order-button" onclick="sil(100);">주문하기</button>
 
   </div>
 

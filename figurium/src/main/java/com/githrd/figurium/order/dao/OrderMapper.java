@@ -8,5 +8,4 @@ import java.util.Map;
 public interface OrderMapper {
 
     int insertOrders(Map<String, Object> map);
-
 }

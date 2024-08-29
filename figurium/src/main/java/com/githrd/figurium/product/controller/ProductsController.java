@@ -28,4 +28,9 @@ public class ProductsController {
         return "products/productInfo";
     }
 
+    @GetMapping("/productInsertForm.do")
+    public String productInsertForm(){
+        return "products/ProductInsertForm";
+    }
+
 }

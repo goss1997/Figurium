@@ -54,7 +54,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// 0828 선일 테스트 주입
+// 결제 api
 allprojects {
 	repositories {
 		mavenCentral()

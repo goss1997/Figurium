@@ -39,29 +39,67 @@
       }
 
       IMP.request_pay({
-        pg: 'html5_inicis',
-        pay_method: 'vbank', // card(신용카드), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제)
-        merchant_uid: 'merchant_' + new Date().getTime(),
+        pg : 'kcp', // PG사 코드표에서 선택
+        pay_method : 'card', // 결제 방식
+        merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
         name: '피규리움 결제창',   // 상품명
-        amount: price,  // 상품 가격
-        buyer_email: "gildong@gmail.com",    // 구매자 이메일
-        buyer_name: "고길동",   // 구매자 이름
-        buyer_tel: "010-1234-1234",
-        buyer_addr: "인천 판교",
-        buyer_postcode: "01234"
+        amount : price, // 가격
+        buyer_email : 'cktjsdlf4636@naver.com',
+        buyer_name : '피규리움 기술지원팀',
+        buyer_tel : '010-1234-5678',
+        buyer_addr : '서울특별시 강남구 삼성동',
+        buyer_postcode : '123-456'
       }, function (rsp) { // callback
-        $.ajax({
-          type: 'POST',
-          url: '/verify/' + rsp.imp_uid
-        }).done(function(data) {
-          if(rsp.paid_amount === data.response.amount){
-            alert("결제 성공");
-          } else {
-            alert("결제 실패");
-          }
-        });
+          console.log(rsp);
+          // 결제검증
+          $.ajax({
+            type : "POST",
+            url  : "/verifyIamport/" + rsp.imp_uid
+          }).done(function(data){
+            console.log(data);
+
+            // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
+            // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
+            if(rsp.paid_amount == data.response.amount) {
+              alert("결제 및 결제 검증완료");  // 결제검증이 성공적으로 이뤄지면 실행되는 로직
+
+            } else {
+              alert("결제 실패")  // 결제검증이 실패하면 이뤄지는 실패 로직
+            }
+          });
       });
     }
+
+
+/*
+      IMP.request_pay({
+        pg : 'kcp', // PG사 코드표에서 선택
+        pay_method : 'card', // 결제 방식
+        merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
+        name: '피규리움 결제창',   // 상품명
+        amount : price, // 가격
+        buyer_email : 'Iamport@chai.finance',
+        buyer_name : '아임포트 기술지원팀',
+        buyer_tel : '010-1234-5678',
+        buyer_addr : '서울특별시 강남구 삼성동',
+        buyer_postcode : '123-456'
+      }, function (rsp) { // callback
+        if (rsp.success) {
+          console.log(rsp);
+          // 결제검증
+          $.ajax({
+            type : "POST",
+            url  : "/verifyIamport/" + rsp.imp_uid
+          }).done(function(data){
+            console.log(data);
+
+          })
+        } else {
+          console.log(rsp);
+        }
+      });
+    }
+*/
 
     function insertInformation() {
 

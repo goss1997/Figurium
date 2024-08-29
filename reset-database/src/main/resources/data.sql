@@ -169,20 +169,20 @@ CREATE TABLE qa
 -- 더미 데이터
 -- 회원 테이블 더미데이터
 -- 사용자 1
-INSERT INTO users (email, password, name, role)
-VALUES ('user1@example.com', '1234', '일용자', 0);
+INSERT INTO users (email, password, name, role, profile_img_url)
+VALUES ('user1@example.com', '1234', '일용자', 0, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/smoker-smoke.png');
 
 -- 사용자 2
 INSERT INTO users (email, password, name, role)
 VALUES ('user2@example.com', '{noop}1234', '이용자', 0);
 
 -- 관리자 1
-INSERT INTO users (email, password, name, role)
-VALUES ('admin@example.com', '1234', '관리자M', 1);
+INSERT INTO users (email, password, name, role, profile_img_url)
+VALUES ('admin@example.com', '1234', '관리자M', 1, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/tom-smoke.png');
 
 -- 관리자 2
-INSERT INTO users (email, password, name, role)
-VALUES ('admin1@example.com', '1234', '관리자1', 1);
+INSERT INTO users (email, password, name, role, profile_img_url)
+VALUES ('admin1@example.com', '1234', '관리자1', 1, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/akainu-smoke.png');
 
 
 

@@ -159,6 +159,12 @@
                 </c:forEach>
             </div>
 
+            <div>
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4" >
+                    <a onclick="ProductInsert();">상품등록</a>
+                </div>
+            </div>
+
             <!-- Filter button -->
             <div class="flex-w flex-c-m m-tb-10">
                 <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
@@ -372,7 +378,7 @@
                     <div class="block2">
                         <div class="block2-pic hov-img0">
                             <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <a href="/productInfo.do"
+                            <a href="/productInfo.do?id=${products.id}"
                                class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 상품 상세
                             </a>

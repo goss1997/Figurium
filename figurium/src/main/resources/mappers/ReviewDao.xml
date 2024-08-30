@@ -8,15 +8,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 특정 상품 ID에 따른 리뷰 목록 조회 -->
     <select id="reviewsByProductId" parameterType="Integer" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
         SELECT
+            @rownum := @rownum + 1 AS number,
             id,
             title,
             content,
             created_at AS createdAt,
             rating
-        FROM reviews
+        FROM reviews, (SELECT @rownum := 0) AS r
         WHERE product_id = #{productId}
-        ORDER BY created_at DESC
+        ORDER BY number DESC
     </select>
+
 
     <!-- 해당 상품에 대한 리뷰의 갯수 -->
     <select id="reviewCountByProductId" parameterType="int" resultType="int">

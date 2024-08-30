@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -392,7 +393,7 @@
                         상품 가격 : ${products.price}￦
                     </span>
                                 <span class="stext-105 cl3">
-                        상품 등록일 : ${products.createdAt}
+                        상품 등록일 : ${fun:substring(products.createdAt,0,10)} ${fun:substring(products.createdAt,11,16)}
                     </span>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">

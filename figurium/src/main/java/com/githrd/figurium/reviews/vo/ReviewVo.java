@@ -15,6 +15,7 @@ public class ReviewVo {
     private int userId;
     private int productId;
     private int rating;
+    private int number; // number를 주기위해 추가
 
     private String title;
     private String content;

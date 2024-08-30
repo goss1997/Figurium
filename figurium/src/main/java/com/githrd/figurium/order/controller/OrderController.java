@@ -107,25 +107,20 @@ public class OrderController {
         int orderId = orderMapper.selectOneLast().getId();
 
 
-        OrderItems orderItems = new OrderItems();
-        orderItems.setOrderId(orderId);
 
         for(int i = 0; i < productIds.toArray().length; i++) {
 
-            for (int productId : productIds) {
-                System.out.println(productId);
-                orderItems.setProductId(productId);
-            }
+            OrderItems orderItems = new OrderItems();
+            orderItems.setOrderId(orderId);
 
-            for (int itemPrice : itemPrices) {
-                System.out.println(itemPrice);
-                orderItems.setItemPrice(itemPrice);
-            }
+            int productId = productIds.get(i);
+            int itemPrice = itemPrices.get(i);
+            int itemQuantity = itemQuantities.get(i);
 
-            for (int itemQuantity : itemQuantities) {
-                System.out.println(itemQuantity);
-                orderItems.setItemQuantity(itemQuantity);
-            }
+            // 각 값을 저장
+            orderItems.setProductId(productId);
+            orderItems.setItemPrice(itemPrice);
+            orderItems.setItemQuantity(itemQuantity);
 
             orderItemsMapper.insertOrderItems(orderItems);
 

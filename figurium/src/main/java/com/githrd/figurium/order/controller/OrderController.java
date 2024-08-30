@@ -1,9 +1,11 @@
 package com.githrd.figurium.order.controller;
 
 import com.githrd.figurium.order.dao.CustomersMapper;
+import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.dao.ShippingAddressesMapper;
 import com.githrd.figurium.order.vo.Customers;
+import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -22,22 +25,24 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ShopingOrderController {
+public class OrderController {
 
     private final ProductRepository productRepository;
     private OrderMapper orderMapper;
     private CustomersMapper customersMapper;
     private ShippingAddressesMapper shippingAddressesMapper;
+    private OrderItemsMapper orderItemsMapper;
     private HttpSession session;
 
     @Autowired
-    public ShopingOrderController(ProductRepository productRepository, OrderMapper orderMapper,
-                                  CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
-                                  HttpSession session) {
+    public OrderController(ProductRepository productRepository, OrderMapper orderMapper,
+                           CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
+                           OrderItemsMapper orderItemsMapper, HttpSession session) {
         this.productRepository = productRepository;
         this.orderMapper = orderMapper;
         this.customersMapper = customersMapper;
         this.shippingAddressesMapper = shippingAddressesMapper;
+        this.orderItemsMapper = orderItemsMapper;
         this.session = session;
     }
 
@@ -88,13 +93,45 @@ public class ShopingOrderController {
     @ResponseBody
     public String insertInformation(String name, String phone, String email,
                                     String address, String recipientName,
-                                    String shippingPhone, String deliveryRequest) {
+                                    String shippingPhone, String deliveryRequest,
+                                    @RequestParam(value="productIds[]") List<Integer> productIds,
+                                    @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
+                                    @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities
+                                    ) {
 
         System.out.println("insertInformation 입력완료");
+
 
         // Customers insert
         // 최근에 생성된 order_id의 idx 주입
         int orderId = orderMapper.selectOneLast().getId();
+
+
+        OrderItems orderItems = new OrderItems();
+        orderItems.setOrderId(orderId);
+
+        for(int i = 0; i < productIds.toArray().length; i++) {
+
+            for (int productId : productIds) {
+                System.out.println(productId);
+                orderItems.setProductId(productId);
+            }
+
+            for (int itemPrice : itemPrices) {
+                System.out.println(itemPrice);
+                orderItems.setItemPrice(itemPrice);
+            }
+
+            for (int itemQuantity : itemQuantities) {
+                System.out.println(itemQuantity);
+                orderItems.setItemQuantity(itemQuantity);
+            }
+
+            orderItemsMapper.insertOrderItems(orderItems);
+
+        }
+
+
 
         Customers customers = new Customers();
 

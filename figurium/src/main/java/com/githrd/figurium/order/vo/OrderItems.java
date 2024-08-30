@@ -11,7 +11,7 @@ public class OrderItems {
     int id;         // primary key
     int orderId;   // orders foreign key
     int productId; // products foreign key
-    int price;
-    int quantity;
+    int itemPrice;
+    int itemQuantity;
 
 }

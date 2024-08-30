@@ -123,20 +123,14 @@
       let memZipcode1 = document.getElementById('mem_zipcode1').value;
       let memZipcode2 = document.getElementById('mem_zipcode2').value;
 
-      let address = {
-        memZipcode0: memZipcode0,
-        memZipcode1: memZipcode1,
-        memZipcode2: memZipcode2
-      };
+      let address = memZipcode0 + ' ' + memZipcode1 + ' ' + memZipcode2;
 
       let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
       let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
       let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
 
 
-      console.log(name);
-      console.log(phone);
-      console.log(email);
+      console.log(address);
 
   /*    let shipping_address = f.shipping_address.value;  // 배송지
       let shipping_name = f.shipping_name.value;        // 받는 사람
@@ -145,7 +139,7 @@
 
 
       $.ajax({
-        type : "GET",
+        type : "POST",
         url : "insertInformation.do",
         data : {
           name : name,
@@ -154,7 +148,10 @@
           address : address,
           recipientName : recipientName,
           shippingPhone : shippingPhone,
-          deliveryRequest : deliveryRequest
+          deliveryRequest : deliveryRequest,
+          productIds : productIds,
+          itemPrices : itemPrices,
+          itemQuantities : itemQuantities
 /*          shipping_address : shipping_address,
           paymentType : paymentType,
           itemNames : itemNames,
@@ -227,12 +224,12 @@
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
     <c:if test="${ cartsList != null }">
       <script type="text/javascript">
-        var itemNames = [];
-        var itemPrices = [];
-        var itemQuantities = [];
+        let productIds = [];
+        let itemPrices = [];
+        let itemQuantities = [];
 
         <c:forEach var="item" items="${ requestScope.cartsList }">
-          itemNames.push("${ item.name }");
+          productIds.push("${ item.id }");
           itemPrices.push("${ item.price }");
           itemQuantities.push("${ item.quantity }");
         </c:forEach>
@@ -240,7 +237,7 @@
 
 
 
-      <table class="table item_list_table table-hover">
+      <table class="table item_list_table">
           <thead>
           <tr class="table-light">
             <th id="item_list_table_name">상품명</th>
@@ -278,7 +275,7 @@
 <%-- 주문 테이블 customers --%>
 <div class="order_box_l mt-3">
   <div class="form_container">
-    <table class="table table-hover">
+    <table class="table">
       <thead>
       <th>
         <h2>주문자 입력</h2>
@@ -301,9 +298,14 @@
     </table>
   </div>
 
+  <div id="table_under_box">
+    <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
+    <input type="button" class="form-control" id="user_change_btn" value="회원정보수정">
+  </div>
+
   <%-- 주문 테이블 shipping_address --%>
   <div class="form_container">
-    <table class="table table-hover">
+    <table class="table">
       <thead>
       <th>
         <h2>배송지 정보</h2>
@@ -343,7 +345,10 @@
 
       <tr>
         <td class="td_title">배송시요청사항</td>
-        <td><input type="text" class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>
+        <td>
+          <textarea class="form-control" rows="5" id="delivery_request" placeholder="배송시 요청사항" placeholer="배송시 요청사항을 적어주세요."></textarea>
+        </td>
+        <%--<td><textarea class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>--%>
       </tr>
       </tbody>
     </table>

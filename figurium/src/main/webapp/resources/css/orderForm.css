@@ -37,18 +37,19 @@ h1 {
     height: 40px !important;
 }
 
-#thead {
-    background-color: #c4c4c4 !important;
+.item_list_table > thead > tr > th {
+    background-color: #f5f5f5 !important;
 }
 
 .table-light {
     height: 40px;
-    font-weight: 100;
     font-size: 14px;
 }
 
 .table-light th {
+    color: #a6a6a6;
     vertical-align: middle !important;
+    font-weight: 0 !important;
     text-align: center !important;
 }
 
@@ -121,6 +122,35 @@ td > img {
     vertical-align: middle !important;
 }
 
+#table_under_box {
+    display: flex;
+    align-items: center;
+    margin-left: 47px;
+    width: 900px;
+    height: 65px;
+
+    font-size: 12px;
+    border-bottom: 0.2px solid #d9d9d9 !important;
+}
+
+#table_under_box > span {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#user_change_btn {
+    width: 90px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 0px;
+    background-color: black;
+
+    font-size: 12px;
+    color: white;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
 .address-container {
     display: flex;
     flex-direction: column; /* 세로 정렬 */
@@ -186,6 +216,7 @@ td > input {
 #delivery_request {
     width: 500px !important;
     height: 100px !important;
+    margin-left: 10px;
 }
 
 

@@ -13,7 +13,6 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
@@ -33,6 +32,7 @@
         <input type="password" name="pwd" class="form-control" id="author" placeholder="비밀번호를 입력하세요">
       </div>
       <form>
+        <div>
         <select name="cars" class="custom-select">
           <option selected>:::분류 선택:::</option>
           <option value="volvo">배송문의</option>
@@ -42,20 +42,22 @@
           <option value="audi">배송지변경문의</option>
           <option value="audi">기타문의</option>
         </select>
+        </div>
+        <br>
+        <div class="form-group">
+          <input type="text" name="title" class="form-control" placeholder="제목을 입력하세요" required>
+        </div>
+        <div class="form-group">
+          <textarea name="content" class="form-control" style="resize: none; min-height: 300px;" placeholder="내용을 입력하세요" required></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-dark" onclick="location.href='qaSave.do'">등록</button>
+          <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/qa/QaList.do'">취소</button>
+        </div>
       </form>
-      <br>
-      <div class="form-group">
-        <input type="text" name="title" class="form-control" id="author1" placeholder="제목을 입력하세요">
-      </div>
-      <div class="form-group" >
-        <textarea class="form-control" style="resize: none; min-height: 300px;" id="content" placeholder="내용을 입력하세요"></textarea>
-      </div>
     </form>
 
-    <div>
-      <button type="button" class="btn btn-light" onclick="location.href='QaList.do'">취소</button>
-      <button type="button" class="btn btn-dark" id="btn-save" onclick="location.href='QaSelect.do'"> 등록</button>
-    </div>
 
   </div>
 

@@ -4,7 +4,7 @@ public class QaVo {
     private Integer id;
     private String title;
     private String content;
-    private String userId;
+    private Integer userId;  // 정수형 사용자 ID
     private String created;
     private String reply;
 
@@ -33,11 +33,11 @@ public class QaVo {
         this.content = content;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

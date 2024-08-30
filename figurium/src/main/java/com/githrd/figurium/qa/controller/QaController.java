@@ -16,49 +16,49 @@ public class QaController {
     @Autowired
     private QaService qaService;
 
-    @RequestMapping("/QaList.do")
+    @RequestMapping("/qaList.do")
     public String getAllQas(Model model) {
         List<QaVo> qaList = qaService.getAllQas();
         model.addAttribute("qaList", qaList);
-        return "qa/QaList";  // qaList.jsp
+        return "qaList";  // qaList.jsp
     }
 
-    @RequestMapping("/QaInsert.do")
+    @RequestMapping("/qaInsert.do")
     public String showQaInsertForm() {
-        return "qa/QaInsert";  // qaInsert.jsp
+        return "qaInsert";  // qaInsert.jsp
     }
 
-    @PostMapping("/QaSave.do")
+    @PostMapping("/qaSave.do")
     public String saveQa(@ModelAttribute QaVo qa) {
         if (qa.getTitle() == null || qa.getContent() == null) {
-            return "redirect:QaInsert.do";  // 유효성 검사 실패 시 폼으로 리다이렉트
+            return "redirect:qaInsert.do";  // 유효성 검사 실패 시 폼으로 리다이렉트
         }
         qaService.createQa(qa);
-        return "redirect:QaList.do";  // 저장 후 목록 페이지로 리다이렉트
+        return "redirect:qaList.do";  // 저장 후 목록 페이지로 리다이렉트
     }
 
-    @GetMapping("/QaSelect.do")
+    @GetMapping("/qaSelect.do")
     public String viewQa(@RequestParam Integer id, Model model) {
         QaVo qa = qaService.getQaById(id);
         if (qa == null) {
             return "error";  // 에러 페이지로 이동 (찾을 수 없는 경우)
         }
         model.addAttribute("qa", qa);
-        return "qa/QaSelect";  // qaSelect.jsp
+        return "qaSelect";  // qaSelect.jsp
     }
 
-    @PostMapping("/QaUpdate.do")
+    @PostMapping("/qaUpdate.do")
     public String updateQa(@ModelAttribute QaVo qa) {
         if (qa.getId() == null) {
-            return "redirect:QaList.do";  // 유효성 검사 실패 시 목록 페이지로 리다이렉트
+            return "redirect:qaList.do";  // 유효성 검사 실패 시 목록 페이지로 리다이렉트
         }
         qaService.updateQa(qa);
-        return "redirect:QaList.do";  // 업데이트 후 목록 페이지로 리다이렉트
+        return "redirect:qaList.do";  // 업데이트 후 목록 페이지로 리다이렉트
     }
 
-    @GetMapping("/QaDelete.do")
+    @GetMapping("/qaDelete.do")
     public String deleteQa(@RequestParam Integer id) {
         qaService.deleteQa(id);
-        return "redirect:QaList.do";  // 삭제 후 목록 페이지로 리다이렉트
+        return "redirect:qaList.do";  // 삭제 후 목록 페이지로 리다이렉트
     }
 }

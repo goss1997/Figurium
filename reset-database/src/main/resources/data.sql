@@ -121,7 +121,7 @@ CREATE TABLE customers
     name     VARCHAR(15) COMMENT '주문자 이름',
     phone    VARCHAR(20) NOT NULL COMMENT '주문자 전화번호',
     email    VARCHAR(50) COMMENT '주문자 이메일',
-    FOREIGN KEY (order_id) REFERENCES order_items (id)
+    FOREIGN KEY (order_id) REFERENCES orders (id)
 );
 
 -- 배송지 정보
@@ -133,7 +133,7 @@ CREATE TABLE shipping_addresses
     phone            VARCHAR(20) COMMENT '수령인 전화번호',
     address          VARCHAR(100) COMMENT '배송 주소',
     delivery_request VARCHAR(200) COMMENT '배송 요청 사항',
-    FOREIGN KEY (order_id) REFERENCES order_items (id)
+    FOREIGN KEY (order_id) REFERENCES orders (id)
 );
 
 -- 리뷰 테이블

@@ -1,6 +1,9 @@
 package com.githrd.figurium.order.controller;
 
+import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
+import com.githrd.figurium.order.dto.PaymentRequest;
+import com.githrd.figurium.order.vo.Customers;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -21,11 +25,14 @@ public class ShopingOrderController {
 
     private final ProductRepository productRepository;
     private OrderMapper orderMapper;
+    private CustomersMapper customersMapper;
 
     @Autowired
-    public ShopingOrderController(ProductRepository productRepository, OrderMapper orderMapper) {
+    public ShopingOrderController(ProductRepository productRepository, OrderMapper orderMapper,
+                                  CustomersMapper customersMapper) {
         this.productRepository = productRepository;
         this.orderMapper = orderMapper;
+        this.customersMapper = customersMapper;
     }
 
 
@@ -63,6 +70,38 @@ public class ShopingOrderController {
         int res = orderMapper.insertOrders(map);
         System.out.println("결제성공");
 
+        map.put("status", "success");
+
+        return "map";
+    }
+
+    @RequestMapping(value = "order/insertInformation.do")
+    @ResponseBody
+    public String insertInformation(@RequestParam PaymentRequest paymentRequest) {
+
+        System.out.println("insertInformation 입력완료");
+
+        // Customers insert
+        String name = paymentRequest.getOrderName();
+        String phone = paymentRequest.getOrderPhone();
+        String email = paymentRequest.getOrderEmail();
+        // 최근에 생성된 order_id의 idx 주입
+        int orderId = orderMapper.selectOneLast().getId();
+
+        Customers customers = new Customers();
+
+        customers.setOrderId(orderId);
+        customers.setName(name);
+        customers.setPhone(phone);
+        customers.setEmail(email);
+
+        int res = customersMapper.insertCustomers(customers);
+
+
+        System.out.println("입력성공");
+
+
+        Map<String , Object> map = new HashMap<>();
         map.put("status", "success");
 
         return "map";

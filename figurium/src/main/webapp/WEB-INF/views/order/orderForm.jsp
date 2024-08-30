@@ -87,7 +87,7 @@
         },
 
         success: function(res_data){
-          location.href="/";
+          insertInformation();
         },
 
         error: function(err){
@@ -98,36 +98,6 @@
     }
 
 
-/*
-      IMP.request_pay({
-        pg : 'kcp', // PG사 코드표에서 선택
-        pay_method : 'card', // 결제 방식
-        merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
-        name: '피규리움 결제창',   // 상품명
-        amount : price, // 가격
-        buyer_email : 'Iamport@chai.finance',
-        buyer_name : '아임포트 기술지원팀',
-        buyer_tel : '010-1234-5678',
-        buyer_addr : '서울특별시 강남구 삼성동',
-        buyer_postcode : '123-456'
-      }, function (rsp) { // callback
-        if (rsp.success) {
-          console.log(rsp);
-          // 결제검증
-          $.ajax({
-            type : "POST",
-            url  : "/verifyIamport/" + rsp.imp_uid
-          }).done(function(data){
-            console.log(data);
-
-          })
-        } else {
-          console.log(rsp);
-        }
-      });
-    }
-*/
-
     function insertInformation() {
 
       // 주문 리스트에 저장될 값들 전부 변수로 저장
@@ -136,37 +106,36 @@
       // var itemPrices = [ 아이템 가격 배열 저장 ];
       // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
-      let order_name = f.order_name.value;              // 보낸 사람 이름
-      let order_phone = f.order_phone.value;            // 보낸 사람 전화번호
-      let order_email = f.order_email.value;            // 이메일
 
-      let shipping_address = f.shipping_address.value;  // 배송지
+      let orderName = document.getElementById("order_name").value;         // 보낸 사람 이름
+      let orderPhone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
+      let orderEmail = document.getElementById("order_email").value;       // 이메일
+
+  /*    let shipping_address = f.shipping_address.value;  // 배송지
       let shipping_name = f.shipping_name.value;        // 받는 사람
       let shipping_phone = f.shipping_phone.value;      // 받는 사람 전화번호
-      let delivery_request = f.delivery_request.value;  // 배송시 요청사항
+      let delivery_request = f.delivery_request.value;  // 배송시 요청사항*/
 
 
       $.ajax({
         type : "GET",
-        url : "order/inicisPay.do",
+        url : "order/insertInformation.do",
         data : {
-          price : price,
-          mem_name : mem_name,
-          order_name : order_name,
-          order_phone : order_phone,
-          order_email : order_email,
-          shipping_address : shipping_address,
+          orderName : orderName,
+          orderPhone : orderPhone,
+          orderEmail : orderEmail,
+/*          shipping_address : shipping_address,
           shipping_name : shipping_name,
           shipping_phone : shipping_phone,
           delivery_request : delivery_request,
           paymentType : paymentType,
           itemNames : itemNames,
           itemPrices : itemPrices,
-          itemQuantities : itemQuantities
+          itemQuantities : itemQuantities*/
         },
         success: function(res_data){
           alert("축하드려요");
-          //location.href="home.jsp";
+          location.href="/";
         },
         error: function(err){
           alert(err.responseText);

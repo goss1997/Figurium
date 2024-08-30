@@ -1,6 +1,8 @@
 package com.githrd.figurium.product.controller;
 
+import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
+import com.githrd.figurium.product.repository.CategoriesRepository;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
@@ -19,11 +21,12 @@ public class ProductsController {
     private final ProductsService productsService;
     private final ReviewService reviewService;
 
+
     @Autowired
-    public ProductsController(ProductsService productsService,
-                              ReviewService reviewService) {
+    public ProductsController(ProductsService productsService,ReviewService reviewService, CategoriesRepository categoriesRepository) {
         this.productsService = productsService;
-        this.reviewService = reviewService;
+            this.reviewService = reviewService;
+        this.categoriesRepository = categoriesRepository;
     }
 
 
@@ -48,7 +51,10 @@ public class ProductsController {
     }
 
     @GetMapping("/productInsertForm.do")
-    public String productInsertForm(){
+    public String productInsertForm(Model model){
+        List<Category> categoriesList = categoriesRepository.findAll();
+        model.addAttribute("categoriesList", categoriesList);
+
         return "products/productInsertForm";
     }
 

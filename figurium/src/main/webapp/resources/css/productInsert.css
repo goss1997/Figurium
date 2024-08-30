@@ -1,0 +1,418 @@
+
+/* Home > 상품상세   디자인 */
+.info_title{
+    height: 100px;
+    margin-left: 150px;
+    margin-top: 30px;
+}
+
+
+.product_title{
+    margin: auto;
+    width: 1200px;
+    padding: 10px;
+}
+
+
+/* 상품에 대한 상세보기 이미지와 설명*/
+
+.product_img_box{
+    width: 550px;
+    height: 550px;
+    border: 1px solid silver;
+    padding: 10px;
+    float: left;
+}
+
+.product_img{
+    width: 525px;
+    height: 525px;
+}
+/* 상품에 대한 모든 이미지는 부모크기의 100프로 만큼 사진이 확대 */
+.product_img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 상품에 대한 상세 내용이 들어 갈 곳 */
+.product_info{
+    display: inline-block;
+    width: 400px;
+    height: 500px;
+    margin-left: 100px;
+    clear: both;
+    word-wrap: break-word;
+}
+
+.product_info hr{
+    border: 1px solid #1d2124;
+}
+
+.product_info h3{
+    margin: 10px;
+    font-weight: bold;
+}
+
+.product_info h5{
+    display: inline-block;
+    margin: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+/* 좋아요 버튼 */
+
+.block2-txt-child2{
+    display: inline-block !important;
+    margin-left: 260px;
+}
+.icon-heart {
+    width: 24px;
+    height: 21px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icon-heart:hover {
+    transform: scale(1.2);
+}
+
+.btn-addwish-b2 {
+    display: inline-block;
+}
+
+/* 상품 수량을 정하는 버튼 요소 */
+.quantity-box {
+    display: inline-flex;
+    border: 1px solid silver;
+    background-color: white;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.quantity-btn {
+    background-color: white;
+    border: none;
+    padding: 2px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: black;
+}
+.quantity-btn:hover {
+    background-color: whitesmoke;
+}
+
+.decrease {
+    border-radius: 50px 0 0 50px; /* 왼쪽 버튼 모서리 둥글게 */
+}
+
+.increase {
+    border-radius: 0 50px 50px 0; /* 오른쪽 버튼 모서리 둥글게 */
+}
+
+#quantity {
+    width: 140px;
+    text-align: center;
+    border: none;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    outline: none;
+}
+
+
+
+/* 상품의 상세 설명 테이블의 요소 */
+.info_table th{
+    width: 150px;
+    padding: 15px;
+    color: #868e96;
+}
+
+.info_table td{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+/* 결제 관련 요소 */
+.total_price_box{
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.total_price{
+    display: inline-block;
+    width: 250px;
+    margin-left: 15px;
+
+}
+
+.product_info p{
+    text-align: right;
+    display: inline-block;
+    width: 100px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ff6623;
+}
+
+/* 결제 or 장바구니 버튼 요소 */
+.price_bye input{
+    margin: auto;
+    margin-top: 15px;
+    width: 100%;
+    height: 50px;
+
+}
+
+/* 상품등록 버튼 요소 */
+.product_btn input{
+    margin: auto;
+    margin-top: 15px;
+    width: 100%;
+    height: 50px;
+
+}
+.price_bye_btn{
+    border: 1px #0b0b0b solid;
+    background-color: #0b0b0b;
+    color: white;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+
+
+.price_bye_btn:hover{
+    background-color: #32383e;
+}
+
+
+/* 상품 등록 관련 css */
+
+
+/* 상품등록 버튼 요소 */
+.product_cancel input{
+    display: inline-block;
+    margin: auto;
+    margin-top: 15px;
+    width: 30%;
+    height: 50px;
+
+}
+.product_cancel_btn{
+    border: 1px #0b0b0b solid;
+    background-color: #0b0b0b;
+    color: white;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+
+
+.product_cancel_btn:hover{
+    background-color: #32383e;
+}
+
+
+.product_insert_btn{
+    border: 1px black solid;
+    background-color: whitesmoke;
+    color: black;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+.product_insert_btn:hover{
+    background-color: #dddfe2;
+}
+
+/* end:상품등록 버튼 요소 */
+
+.price_cart input{
+    margin: auto;
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+}
+
+.price_cart_btn{
+    border: 1px black solid;
+    background-color: whitesmoke;
+    color: black;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+.price_cart_btn:hover{
+    background-color: #dddfe2;
+}
+
+
+/* Review or Q&A Tap */
+
+.tap_box{
+    margin-top: 200px;
+    border-bottom: 1px solid #d6d6d6;
+
+}
+
+
+.tap_detail{
+    margin-right: 35px;
+    margin-bottom: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.tap_detail li{
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+    font-size: 26px;
+    padding: 0 40px;
+    text-decoration: none;
+
+}
+
+.tap_review li{
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+    font-size: 26px;
+    padding: 0 40px;
+    text-decoration: none;
+
+}
+
+.tap_review a{
+    display: block;
+    color: #717171;
+    width: 200px;
+    padding-bottom: 15px;
+}
+
+.tap_review a:hover{
+    color: #393838;
+    text-decoration: none;
+    border-bottom: 3px solid #ff6623;
+}
+
+
+.tap_qa a {
+    display: block;
+    color: #717171;
+    width: 200px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid white;
+}
+
+.tap_qa a:hover{
+    color: #393838;
+    text-decoration: none;
+    border-bottom: 3px solid #ff6623;
+}
+
+
+
+
+/* 리뷰 영역 */
+
+.reviews_box{
+    margin: auto;
+    margin-top: 75px;
+    width: 1300px;
+}
+
+/* 리뷰 작성 버튼 */
+.reviewInsert_btn_box{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.reviewInsert_btn{
+    width: 100px;
+    height: 30px;
+    background-color: #232323;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.reviewInsert_btn:hover{
+    background-color: #404040;
+}
+
+
+/* 리뷰 테이블의 요소 */
+
+.review_table{
+    margin: auto;
+    margin-top: 15px;
+    width: 1300px;
+    text-align: center;
+}
+
+.review_table th{
+    background-color: whitesmoke;
+    height: 50px;
+}
+
+.review_table td{
+    height: 50px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.review_table .review_number{
+    width: 10%;
+}
+
+.review_table .review_title{
+    width: 45%;
+}
+
+.review_table .review_name{
+    width: 10%;
+}
+
+.review_table .review_regdate{
+    width: 25%;
+}
+
+.review_table .review_star{
+    width: 10%;
+}
+
+
+.review_td_title{
+    text-align: left;
+}
+
+/* 리뷰의 별점 */
+.star {
+    color: #ff3d3d;  /* 채워진 별의 색상 */
+    font-size: 20px;
+}
+
+.star.empty {
+    color: lightgray; /* 빈 별의 색상 */
+}
+
+
+.form-control-sm {
+    border: none !important;
+}
+
+input[type=file]::file-selector-button {
+    width: 100px;
+    height: 25px;
+    background: #fff;
+    border: 1px solid rgb(77,77,77);
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgb(77,77,77);
+    color: #fff;
+}

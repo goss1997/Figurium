@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -5,13 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <title>상품등록</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/productInsert.css">
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
-<div style="height: 90px">
-    <div style="height: 50px;"></div>
+<div style="height: 90px"></div>
+
 
 
     <div class="info_title">
@@ -34,14 +34,20 @@
                 <div class="product_img_box">
                     <!-- 상품의 이미지가 들어 갈 곳 -->
                     <div class="product_img">
-                        <img src="../../../resources/images/example.jpg">
+                        <img src="${pageContext.request.contextPath}/resources/images/noImage1.png">
                     </div>
+
                 </div>
 
                 <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
 
                 <div class="product_info">
+
                     <table class="info_table">
+                        <tr>
+                            <th>사진 :</th>
+                            <td><input type="file" class="form-control form-control-sm" name="productImage" onclick="insertImage();"></td>
+                        </tr>
                         <tr>
                             <th>상품명 :</th>
                             <td><input class="form-control form-control" name="product_name"></td>
@@ -56,10 +62,9 @@
                             <td >
                                     <select class="form-control form-control" id="sel1" name="sellist1"
                                     style="margin: 0px;">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                        <c:forEach var="categori" items="${categoriesList}">
+                                        <option>${categori.name}</option>
+                                        </c:forEach>
                                     </select>
                             </td>
                         </tr>
@@ -89,5 +94,12 @@
     <jsp:include page="../common/footer.jsp"/>
 </body>
 
+<script>
+
+    function insertImage(){
+
+        
+    }
+</script>
 
 </html>

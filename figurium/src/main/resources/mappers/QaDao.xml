@@ -19,17 +19,17 @@
     <!-- 전체 조회 -->
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT q.id, q.product_id, q.user_id, q.title, q.content, q.reply, q.created, q.updated,
-        p.name AS product_name, u.username AS user_name
+               p.name AS product_name, u.username AS user_name
         FROM qa q
-        JOIN products p ON q.product_id = p.id
-        JOIN users u ON q.user_id = u.id
+                 JOIN products p ON q.product_id = p.id
+                 JOIN users u ON q.user_id = u.id
     </select>
 
     <!-- 업데이트 -->
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
         UPDATE qa
         SET product_id = #{productId}, user_id = #{userId}, title = #{title}, content = #{content},
-        reply = #{reply}, created = #{created}, updated = #{updated}
+            reply = #{reply}, created = #{created}, updated = #{updated}
         WHERE id = #{id}
     </update>
 

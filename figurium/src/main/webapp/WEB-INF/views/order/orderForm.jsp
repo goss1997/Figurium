@@ -107,9 +107,29 @@
       // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
 
-      let orderName = document.getElementById("order_name").value;         // 보낸 사람 이름
-      let orderPhone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
-      let orderEmail = document.getElementById("order_email").value;       // 이메일
+      let name = document.getElementById("order_name").value;         // 보낸 사람 이름
+      let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
+      let email = document.getElementById("order_email").value;       // 이메일
+
+      // 받는 사람 주소
+      let memZipcode0 = document.getElementById('address').value;
+      let memZipcode1 = document.getElementById('mem_zipcode1').value;
+      let memZipcode2 = document.getElementById('mem_zipcode2').value;
+
+      let address = {
+        memZipcode0: memZipcode0,
+        memZipcode1: memZipcode1,
+        memZipcode2: memZipcode2
+      };
+
+      let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
+      let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
+      let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
+
+
+      console.log(name);
+      console.log(phone);
+      console.log(email);
 
   /*    let shipping_address = f.shipping_address.value;  // 배송지
       let shipping_name = f.shipping_name.value;        // 받는 사람
@@ -119,15 +139,16 @@
 
       $.ajax({
         type : "GET",
-        url : "order/insertInformation.do",
+        url : "insertInformation.do",
         data : {
-          orderName : orderName,
-          orderPhone : orderPhone,
-          orderEmail : orderEmail,
+          name : name,
+          phone : phone,
+          email : email,
+          address : address,
+          recipientName : recipientName,
+          shippingPhone : shippingPhone,
+          deliveryRequest : deliveryRequest
 /*          shipping_address : shipping_address,
-          shipping_name : shipping_name,
-          shipping_phone : shipping_phone,
-          delivery_request : delivery_request,
           paymentType : paymentType,
           itemNames : itemNames,
           itemPrices : itemPrices,

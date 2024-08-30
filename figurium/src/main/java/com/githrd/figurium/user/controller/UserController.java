@@ -9,6 +9,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,10 +44,11 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
             }
             // 로그인 성공 시
-            session.setAttribute("user", user);
+            session.setAttribute("loginUser", user);
             return ResponseEntity.ok("Login successful");
         }
     }
+
 
     /**
      * 로그아웃
@@ -56,11 +58,12 @@ public class UserController {
     public String logout(HttpServletRequest request) {
 
         // session에 사용자의 정보 제거.
-        session.removeAttribute("user");
+        session.removeAttribute("loginUser");
 
         String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
         return "redirect:"+ referer; // 이전 페이지로 리다이렉트
     }
+
 
     /**
      * 회원가입 페이지
@@ -69,6 +72,7 @@ public class UserController {
     public String signUpForm() {
         return "user/signUpForm";
     }
+
 
     /**
      * 이메일 확인
@@ -105,6 +109,28 @@ public class UserController {
         }else {
             return "redirect:/";
         }
+    }
+
+    /**
+     * 마이페이지
+     */
+    @GetMapping("my-page.do")
+    public String myPage(Model model) {
+
+        User loginUser = (User)session.getAttribute("loginUser");
+
+        if( loginUser != null ) {
+
+            User user = userService.findUserById(loginUser.getId());
+
+            model.addAttribute("user", user);
+
+            return "user/myPage";
+        }
+        else {
+            return "redirect:/";
+        }
+
     }
 
 }

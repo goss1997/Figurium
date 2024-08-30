@@ -179,7 +179,7 @@
         }
 
         // 이메일 확인
-        $.ajax({
+        $.ajax({11
             url		:	"check_email.do",
             data	:	{"email":email},
             dataType:	"json",

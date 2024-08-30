@@ -46,10 +46,10 @@ public class User {
     private Boolean deleted = true;
 
     @Column(name = "created_at")
-    private String createdAt = LocalDateTime.now().toString();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
-    private String updatedAt = LocalDateTime.now().toString();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user")
     private Set<SocialAccount> socialAccounts = new LinkedHashSet<>();

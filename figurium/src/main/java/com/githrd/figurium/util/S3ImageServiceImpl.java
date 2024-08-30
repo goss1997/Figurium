@@ -40,6 +40,7 @@ public class S3ImageServiceImpl implements S3ImageService{
     }
 
     // S3에 업로드.
+    @Override
     public String uploadS3(MultipartFile image) {
         // 가져온 이미지 파일이 빈 파일인지 검증하기.
         if (image.isEmpty() || Objects.isNull(image.getOriginalFilename())) {
@@ -52,7 +53,7 @@ public class S3ImageServiceImpl implements S3ImageService{
     // S3에 다중 업로드.
     public List<String> uploadS3(List<MultipartFile> images) {
 
-        List<String> imgUrlList = new ArrayList<>();
+        List<String> imgUrlList = new ArrayList<>(); // imageUrls
 
         // 리스트가 비어있는지 검증하기.
         if (images.isEmpty()) {
@@ -145,6 +146,7 @@ public class S3ImageServiceImpl implements S3ImageService{
         try {
             amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("S3에 이미지 삭제에 실패하였습니다.");
         }
     }

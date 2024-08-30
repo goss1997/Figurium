@@ -199,24 +199,24 @@
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <!-- NOTE : 로그인 아이콘 -->
-                    <c:if test="${empty user}">
+                    <c:if test="${empty loginUser}">
                         <div id="loginBtn" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
 
                             <i class="zmdi zmdi-account-circle"></i>
                         </div>
                     </c:if>
-                    <c:if test="${not empty user}">
+                    <c:if test="${not empty loginUser}">
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img style="padding-bottom: 5px;" src="${user.profileImgUrl}" width="50px;">
+                                    <img style="padding-bottom: 5px;" src="${loginUser.profileImgUrl}" width="50px;">
                                 </div>
                                 <div style="display: inline-block">
                                     <ul class="main-menu">
                                         <li style="padding : 0;">
-                                            <a href="#">${user.name}</a>
+                                            <a href="#">${loginUser.name}</a>
                                             <ul style="margin-top: 15px;" class="sub-menu">
-                                                <li><a href="#">마이페이지</a></li>
+                                                <li><a href="${pageContext.request.contextPath}/user/my-page.do">마이페이지</a></li>
                                                 <li><a href="#">주문 내역</a></li>
                                                 <li><a href="#">반품 내역</a></li>
                                                 <li><a href="#">위시리스트</a></li>

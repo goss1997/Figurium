@@ -7,6 +7,7 @@ import com.githrd.figurium.order.vo.Customers;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +28,17 @@ public class ShopingOrderController {
     private OrderMapper orderMapper;
     private CustomersMapper customersMapper;
     private ShippingAddressesMapper shippingAddressesMapper;
+    private HttpSession session;
 
     @Autowired
     public ShopingOrderController(ProductRepository productRepository, OrderMapper orderMapper,
-                                  CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper) {
+                                  CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
+                                  HttpSession session) {
         this.productRepository = productRepository;
         this.orderMapper = orderMapper;
         this.customersMapper = customersMapper;
         this.shippingAddressesMapper = shippingAddressesMapper;
+        this.session = session;
     }
 
 
@@ -51,6 +55,9 @@ public class ShopingOrderController {
         for(Products products:cartsList) {
             totalPrice += products.getPrice() * products.getQuantity();
         }
+
+        // session 가져오기
+        session.getAttribute("user");
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);

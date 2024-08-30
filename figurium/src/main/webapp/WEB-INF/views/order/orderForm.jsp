@@ -37,6 +37,13 @@
         alert("결제방식을 선택하고 결제를 진행해주세요.");
         return;
       }
+      // 약관 동의 체크
+      let agreementCheckbox = document.getElementById("agreement");
+      if(!agreementCheckbox.checked) {
+        alert("약관에 동의해주세요.");
+        return;
+      }
+
 
       IMP.request_pay({
         pg : 'kcp', // PG사 코드표에서 선택
@@ -192,7 +199,7 @@
   <c:if test="${ cartsList == null }">
   <div class="item_list">
     <table class="table item_list_table table-hover">
-      <thead>
+      <thead id="thead">
       <tr class="table-light">
         <th id="item_list_table_name">상품명</th>
         <th>가격</th>
@@ -280,15 +287,15 @@
       <tbody>
       <tr>
         <td class="td_title">주문하시는 분</td>
-        <td><input type="text" class="form-control" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.user.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="text" class="form-control" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.user.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
       </tr>
       <tr>
         <td class="td_title">이메일</td>
-        <td><input type="email" class="form-control" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="email" class="form-control" value="${ sessionScope.user.email }" id="order_email" placeholder="이메일" name="order_email"></td>
       </tr>
       </tbody>
     </table>
@@ -305,15 +312,15 @@
       <tbody>
       <tr>
         <td class="td_title">기존 배송지</td>
-        <td><input type="text" class="form-control" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.user.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
       </tr>
       <tr>
         <td class="td_title">받으시는 분</td>
-        <td><input type="text" class="form-control" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.user.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="email" class="form-control" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
+        <td><input type="email" class="form-control" value="${ sessionScope.user.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
       </tr>
 
 

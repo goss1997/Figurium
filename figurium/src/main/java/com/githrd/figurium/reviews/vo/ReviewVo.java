@@ -3,19 +3,23 @@ package com.githrd.figurium.reviews.vo;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor  // Default Constructor
 @AllArgsConstructor // All Property넣어준 Overload된 생성자
 @Alias("reviews")
 public class ReviewVo {
 
-    int id;
-    int userId;
-    int productId;
-    int rating;
+    private int id;
+    private int userId;
+    private int productId;
+    private int rating;
 
-    String content;
-    String createdAt;
-    String updatedAt;
+    private String title;
+    private String content;
+    private String imageUrl;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

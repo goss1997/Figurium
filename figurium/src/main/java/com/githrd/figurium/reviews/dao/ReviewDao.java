@@ -10,4 +10,6 @@ public interface ReviewDao {
 
     List<ReviewVo> selectList();
 
+    int insertReview(ReviewVo reviewVo);
+
 }

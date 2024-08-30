@@ -1,7 +1,18 @@
 package com.githrd.figurium.reviews.service;
 
-import org.springframework.stereotype.Service;
+import com.githrd.figurium.reviews.vo.ReviewVo;
 
-@Service
+import java.util.List;
+
+
 public interface ReviewService {
+
+    List<ReviewVo> selectList();
+
+    int insertReview(ReviewVo reviewVo);
+
+
+
+
+
 }

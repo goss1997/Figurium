@@ -8,6 +8,24 @@
     <title>상품상세</title>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var productId = "${productId}";
+                //showMessage();
+                setTimeout(showMessage, 100);//0.1초후에 메시지 띄워라
+
+            });
+
+            function showMessage() {
+                if ("${ param.reason == 'not_session'}" == "true") {
+
+                        location.href = 'productInfo.do?id=' + productId;
+                }
+
+            }
+        </script>
+
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
@@ -105,10 +123,12 @@
 
     <!-- 리뷰영역 -->
     <div class="reviews_box">
-
-        <span class="reviewInsert_btn_box">
-            <input class="reviewInsert_btn" type="button" value="리뷰작성" onclick="reviewInsertForm();">
-        </span>
+        <form>
+            <input type="hidden" name="productId" value="${product.id}">
+                <span class="reviewInsert_btn_box">
+                    <input class="reviewInsert_btn" type="button" value="리뷰작성" onclick="reviewInsertForm(this.form);">
+                </span>
+        </form>
 
         <table class="review_table">
             <tr>
@@ -271,6 +291,7 @@
 </body>
 
 
+
 <script>
 //상품의 좋아요 하트 채우기
 document.addEventListener('DOMContentLoaded', function () {
@@ -329,8 +350,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
     // 리뷰작성 버튼 클릭 함수
-    function reviewInsertForm(){
-        location.href = "/reviewInsert.do"
+    function reviewInsertForm(f){
+
+        let productId = f.productId.value;
+
+        if (productId == null){
+            alert("에러")
+            return;
+        }
+
+        f.action = 'reviewInsertForm.do';
+        f.method = "POST";
+        f.submit();
+
     }
 
 </script>

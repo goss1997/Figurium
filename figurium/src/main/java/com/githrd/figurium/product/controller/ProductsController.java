@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -19,7 +20,7 @@ public class ProductsController {
     }
 
 
-    @GetMapping("/productInfo.do")
+    @RequestMapping("/productInfo.do")
     public String producesList(@RequestParam(value = "id", required = false) Integer id, Model model) {
 
         Products selectOne = productsService.getProductById(id);
@@ -30,7 +31,7 @@ public class ProductsController {
 
     @GetMapping("/productInsertForm.do")
     public String productInsertForm(){
-        return "products/ProductInsertForm";
+        return "products/productInsertForm";
     }
 
 }

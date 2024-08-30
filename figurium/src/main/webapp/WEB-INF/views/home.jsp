@@ -378,9 +378,8 @@
                     <div class="block2">
                         <div class="block2-pic hov-img0">
                             <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <a href="#"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
-                               onclick="submitHiddenForm(${products.id})">
+                            <a href="productInfo.do?id=${products.id}"
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 상품 상세
                             </a>
                         </div>
@@ -527,27 +526,6 @@
             });
         });
     });
-</script>
-
-<script>
-    // a 태그 -> POST 방식으로 전송
-    function submitHiddenForm(productId) {
-        // 폼 생성
-        var form = document.createElement('form');
-        form.method = 'POST'; // POST 방식으로 데이터 전송
-        form.action = '/productInfo.do'; // 데이터가 전송될 URL
-
-        // 숨겨진 필드 생성
-        var inputId = document.createElement('input');
-        inputId.type = 'hidden';
-        inputId.name = 'id';
-        inputId.value = productId;
-        form.appendChild(inputId);
-
-        // 폼을 문서에 추가하고 제출
-        document.body.appendChild(form);
-        form.submit();
-    }
 </script>
 
 

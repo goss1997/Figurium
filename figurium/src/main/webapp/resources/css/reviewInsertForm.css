@@ -83,13 +83,13 @@
 
 /* 체크된 별과 그 왼쪽 별들에 색상 적용 */
 .rating input:checked ~ label {
-    color: #f5c518;
+    color: #ff3d3d;
 }
 
 /* 마우스 오버 시 색상 적용 */
 .rating label:hover,
 .rating label:hover ~ label {
-    color: #f5c518;
+    color: #ff3d3d;
 }
 
 

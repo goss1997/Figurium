@@ -4,6 +4,7 @@
 <head>
     <title>리뷰작성</title>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/reviewInsertForm.css">
+
 </head>
 <body>
 <div class="review-form-container">
@@ -24,7 +25,7 @@
 
 
         <div class="form-group">
-            <label for="reviewContent">후기 내용</label>
+            <label for="reviewContent">리뷰 내용</label>
             <textarea id="reviewContent" name="content" rows="6" placeholder="리뷰를 작성하세요"></textarea>
         </div>
         <div class="form-group">
@@ -46,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            <input class="insert_btn" type="button" value="리뷰 작성" onclick="reviewInsert(this.form)">
+            <input class="insert_btn" type="button" value="리뷰 작성" onclick="sendReview(this.form)">
         </div>
     </form>
 </div>
@@ -54,7 +55,7 @@
 
 </body>
 
-<script>
+<script type="text/javascript">
     function imgupload() {
         let productImg = document.getElementById("reviewImage").files;
 
@@ -87,7 +88,7 @@
 
 <script>
     // 리뷰 작성 버튼 클릭 시 검증
-    function reviewInsert(f){
+    function sendReview(f){
 
 //        let id    = f.id.value;
         let title = f.title.value.trim();
@@ -95,12 +96,28 @@
         let content = f.content.value.trim();
         let rating = f.rating.value.trim();
 
-        if (title = ""){
+        if (title == ""){
             alert("제목을 입력하세요");
-
+            title.value="";
+            title.focus();
+            return;
         }
 
+        if (content == ""){
+            alert("리뷰하실 상품에 대한 내용을 작성해 주세요");
+            content.value="";
+            content.focus();
+            return;
+        }
 
+        if (rating == ""){
+            alert("상품에 대한 평점을 남겨주세요");
+            rating.value="";
+        }
+
+        f.method="POST";
+        f.action="sendReview.do";
+        f.submit();
 
 
     }

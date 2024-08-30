@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <insert id="insertReview" parameterType="com.githrd.figurium.reviews.vo.ReviewVo">
         INSERT INTO reviews(user_id, product_id,rating,title,content,image_url,created_at,updated_at)
-        VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},#{createdAt},#{updateAt})
+        VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},#{createdAt},#{updatedAt})
     </insert>
 
 

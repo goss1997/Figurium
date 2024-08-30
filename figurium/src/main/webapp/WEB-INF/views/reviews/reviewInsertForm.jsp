@@ -11,7 +11,8 @@
     <h2 class="review-title">상품 리뷰 작성</h2>
 
     <form id="reviewForm" class="review-form">
-       <%-- <input type="hidden" name="id" value="${vo.id}">--%>
+        <input type="hidden" name="userId" value="${sessionScope.user.id}">
+        <input type="hidden" name="productId" value="${productId}">
         <div class="form-group">
             <label for="reviewTitle">리뷰 제목</label>
             <input type="text" id="reviewTitle" name="title" placeholder="리뷰 제목을 입력하세요">
@@ -90,7 +91,7 @@
     // 리뷰 작성 버튼 클릭 시 검증
     function sendReview(f){
 
-//        let id    = f.id.value;
+        let userId    = f.userId.value;
         let title = f.title.value.trim();
         let image_url = f.image_url.value;
         let content = f.content.value.trim();
@@ -113,6 +114,7 @@
         if (rating == ""){
             alert("상품에 대한 평점을 남겨주세요");
             rating.value="";
+            return;
         }
 
         f.method="POST";

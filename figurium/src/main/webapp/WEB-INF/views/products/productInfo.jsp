@@ -9,23 +9,6 @@
     <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                var productId = "${productId}";
-                //showMessage();
-                setTimeout(showMessage, 100);//0.1초후에 메시지 띄워라
-
-            });
-
-            function showMessage() {
-                if ("${ param.reason == 'not_session'}" == "true") {
-
-                        location.href = 'productInfo.do?id=' + productId;
-                }
-
-            }
-        </script>
-
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
@@ -354,8 +337,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let productId = f.productId.value;
 
-        if (productId == null){
-            alert("에러")
+        let user = "${sessionScope.user}";
+
+        if (user === "null" || user === "") {
+            alert("로그인이 필요한 서비스 입니다.");
             return;
         }
 

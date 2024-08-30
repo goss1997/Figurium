@@ -20,6 +20,7 @@ public class ProductsController {
 
     private final ProductsService productsService;
     private final ReviewService reviewService;
+    private final CategoriesRepository categoriesRepository;
 
 
     @Autowired

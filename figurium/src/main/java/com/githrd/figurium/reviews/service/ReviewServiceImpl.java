@@ -17,12 +17,14 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewDao = reviewDao;
     }
 
-
-
+    @Override
+    public List<ReviewVo> reviewsByProductId(Integer productId) {
+        return reviewDao.reviewsByProductId(productId);
+    }
 
     @Override
-    public List<ReviewVo> selectList() {
-        return reviewDao.selectList();
+    public int reviewCountByProductId(int productId) {
+        return reviewDao.reviewCountByProductId(productId);
     }
 
     @Override

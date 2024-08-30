@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ReviewService {
 
-    List<ReviewVo> selectList();
+    List<ReviewVo> reviewsByProductId(Integer productId);
+
+    int reviewCountByProductId(int productId);
 
     int insertReview(ReviewVo reviewVo);
 

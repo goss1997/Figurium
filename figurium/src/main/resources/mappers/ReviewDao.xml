@@ -5,13 +5,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.reviews.dao.ReviewDao">
 
 
-<!--   <select id="selectList" resultType="dept">-->
-<!--      select * from reviews-->
-<!--   </select>-->
+    <!-- 특정 상품 ID에 따른 리뷰 목록 조회 -->
+    <select id="reviewsByProductId" parameterType="Integer" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
+        SELECT
+            id,
+            title,
+            content,
+            created_at AS createdAt,
+            rating
+        FROM reviews
+        WHERE product_id = #{productId}
+        ORDER BY created_at DESC
+    </select>
 
+    <!-- 해당 상품에 대한 리뷰의 갯수 -->
+    <select id="reviewCountByProductId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM reviews
+        WHERE product_id = #{productId}
+    </select>
+
+
+
+    <!-- 해당 상품에 대한 리뷰 작성 -->
     <insert id="insertReview" parameterType="com.githrd.figurium.reviews.vo.ReviewVo">
         INSERT INTO reviews(user_id, product_id,rating,title,content,image_url,created_at,updated_at)
-        VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},#{createdAt},#{updatedAt})
+        VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},DEFAULT,DEFAULT)
     </insert>
 
 

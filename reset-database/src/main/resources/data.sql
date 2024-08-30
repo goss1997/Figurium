@@ -143,14 +143,15 @@ CREATE TABLE reviews
     user_id    INT COMMENT '회원 테이블과 연결된 회원 ID',
     product_id INT COMMENT '상품 테이블과 연결된 상품 ID',
     rating     INT CHECK (rating BETWEEN 1 AND 5) COMMENT '별점 (1~5 사이)',
-    title	   TEXT NOT NULL COMMENT '리뷰 제목',
+    title      TEXT NOT NULL COMMENT '리뷰 제목',
     content    TEXT NOT NULL COMMENT '리뷰 내용',
     image_url  VARCHAR(255) COMMENT '리뷰 할 상품 이미지 URL',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '리뷰 작성 시간',
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '리뷰 수정 시간',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '리뷰 작성 시간',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '리뷰 수정 시간',
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
+
 
 -- 상품 Q&A 통합 테이블
 CREATE TABLE qa

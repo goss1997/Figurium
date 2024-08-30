@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,11 +85,11 @@
                 </div>
 
                 <div class="price_bye">
-                    <input class="price_bye_btn" type="button" value="바로구매">
+                    <input class="price_bye_btn" type="button" value="바로구매" onclick="location.href='shopingCart2.do'">
                 </div>
 
                 <div class="price_cart">
-                    <input class="price_cart_btn" type="button" value="장바구니">
+                    <input class="price_cart_btn" type="button" value="장바구니" onclick="location.href='shopingCart.do'">
                 </div>
             </div>
 
@@ -98,7 +99,7 @@
 
     <div class="tap_box">
         <ul class="tap_detail">
-           <li class="tap_review"><a href="#">Reviews(0)</a></li>
+           <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
            <li class="tap_qa"><a href="#">Q&A(0)</a></li>
         </ul>
 
@@ -122,77 +123,23 @@
                 <th class="review_star">별점</th>
             </tr>
 
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">더미 제목</td>
-                <td>길동홍</td>
-                <td>2024-08-28</td>
-                <td class="review_star">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9734;</span>
-                </td>
-            </tr>
-
-            <!-- 테이블의 더미 데이터 -->
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">리뷰</td>
-                <td>에이스</td>
-                <td>2024-08-28</td>
-                <td class="review_star">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9734;</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">리뷰</td>
-                <td>에이스</td>
-                <td>2024-08-28</td>
-                <td class="review_star">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">리뷰</td>
-                <td>에이스</td>
-                <td>2024-08-28</td>
-                <td class="review_star">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">리뷰</td>
-                <td>에이스</td>
-                <td>2024-08-28</td>
-                <td class="review_star">
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9733;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                </td>
-            </tr>
-
+            <c:forEach var="review" items="${reviewList}">
+                <tr>
+                    <td>${review.id}</td>
+                    <td class="review_td_title">${review.title}</td>
+                    <td>${review.content}</td>
+                    <td>${fun:substring(review.createdAt,0,10)}</td>
+                    <td class="review_star">
+                        <!-- 별점 예시: review.rating 값에 따라 별 표시 -->
+                        <c:forEach var="i" begin="1" end="${review.rating}">
+                            <span class="star">&#9733;</span>
+                        </c:forEach>
+                        <c:forEach var="i" begin="${review.rating + 1}" end="5">
+                            <span class="star">&#9734;</span>
+                        </c:forEach>
+                    </td>
+                </tr>
+            </c:forEach>
         </table>
     </div>
 
@@ -201,7 +148,7 @@
 
     <div class="tap_box">
         <ul class="tap_detail">
-            <li class="tap_review"><a href="#">Reviews(0)</a></li>
+            <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
             <li class="tap_qa"><a href="#">Q&A(0)</a></li>
         </ul>
 

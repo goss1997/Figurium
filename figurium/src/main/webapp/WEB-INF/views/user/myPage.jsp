@@ -127,15 +127,21 @@
             var formData = new FormData();
             formData.append('file',file);
 
-            alert('가져왓음');
             $.ajax({
                 url : "update-profile-image.do",
                 type : 'POST',
                 processData: false, // 필수: jQuery가 데이터를 처리하지 않도록 설정
                 contentType: false, // 필수: contentType을 false로 설정하여 jQuery가 자동으로 처리하지 않도록 설정
-                data : {"file" : file},
-                dataType : "json",
+                data : formData,
+                success : function () {
+                    location.reload();
+                },
+                error : function (error) {
+                    alert(error.responseText);
+                }
+
             })
+
         }
     }
 </script>

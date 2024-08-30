@@ -133,4 +133,23 @@ public class UserController {
 
     }
 
+    /**
+     * 사용자 프로필 이미지 수정
+     */
+    @PostMapping("update-profile-image.do")
+    @ResponseBody
+    public ResponseEntity<?> updateProfileImage(@RequestParam MultipartFile file) {
+        User user = (User) session.getAttribute("loginUser");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인한 사용자만 요청 가능합니다.");
+        }
+
+        User updateUser = userService.updateProfileImage(user, file);
+        if(updateUser == null ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 이미지를 수정할 수 없습니다.");
+        }else {
+            return ResponseEntity.ok("update profile image successful");
+        }
+    }
+
 }

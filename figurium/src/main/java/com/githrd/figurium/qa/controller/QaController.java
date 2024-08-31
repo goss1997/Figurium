@@ -22,7 +22,7 @@ public class QaController {
     @GetMapping("/qaList.do")
     public String list(Model model) {
         model.addAttribute("qaList", qaService.getAllQa());
-        return "qa/qaList";  // 이 이름이 JSP 파일과 일치해야 합니다.
+        return "qa/qaList";
     }
 
     @GetMapping("/qaInsert.do")
@@ -46,7 +46,12 @@ public class QaController {
         }
 
         QaVo qaVo = new QaVo();
-        qaVo.setUserId(loginUser.getId()); // 로그인한 사용자의 ID를 사용
+        // User ID 처리
+        if (loginUser.getId() != null) {
+            // Integer 타입일 경우
+            qaVo.setUserId(loginUser.getId());
+        }
+
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);

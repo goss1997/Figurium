@@ -3,53 +3,29 @@ package com.githrd.figurium.qa.vo;
 import java.time.LocalDateTime;
 
 public class QaVo {
+    private Integer id;
+    private Integer userId;  // Integer 타입으로 설정
+    private String title;
+    private String content;
+    private String reply;
+    private java.util.Date created;
+    private java.util.Date updated;
+    private String category; // 추가된 필드
 
-    private int id;           // Q&A 게시물 IDX
-    private int productId;    // 상품 ID
-    private int userId;       // 사용자 ID
-    private String title;     // 질문 제목
-    private String content;   // 질문 내용
-    private String reply;     // 질문 답글
-    private LocalDateTime created;     // 작성일자
-    private LocalDateTime updated;     // 수정일자
-
-    // 기본 생성자
-    public QaVo() {}
-
-    // 모든 필드를 포함한 생성자
-    public QaVo(int id, int productId, int userId, String title, String content, String reply, LocalDateTime created, LocalDateTime updated) {
-        this.id = id;
-        this.productId = productId;
-        this.userId = userId;
-        this.title = title;
-        this.content = content;
-        this.reply = reply;
-        this.created = created;
-        this.updated = updated;
-    }
-
-    // Getter 및 Setter 메서드
-    public int getId() {
+    // Getter and Setter methods
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -77,33 +53,27 @@ public class QaVo {
         this.reply = reply;
     }
 
-    public LocalDateTime getCreated() {
+    public java.util.Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(java.util.Date created) {
         this.created = created;
     }
 
-    public LocalDateTime getUpdated() {
+    public java.util.Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(LocalDateTime updated) {
+    public void setUpdated(java.util.Date updated) {
         this.updated = updated;
     }
 
-    @Override
-    public String toString() {
-        return "QAVo{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", userId=" + userId +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", reply='" + reply + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
-                '}';
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

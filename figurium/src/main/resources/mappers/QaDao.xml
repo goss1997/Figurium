@@ -4,27 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.githrd.figurium.qa.dao.QaDao">
+    <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
+        SELECT * FROM qa
+    </select>
 
-    <!-- Create -->
+    <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
+        SELECT * FROM qa WHERE id = #{id}
+    </select>
+
     <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
         INSERT INTO qa (product_id, user_id, title, content, reply, created, updated)
         VALUES (#{productId}, #{userId}, #{title}, #{content}, #{reply}, #{created}, #{updated})
     </insert>
 
-    <!-- Read -->
-    <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
-        SELECT * FROM qa WHERE id = #{id}
-    </select>
-
-    <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
-        SELECT * FROM qa
-    </select>
-
-    <select id="selectByProductId" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
-        SELECT * FROM qa WHERE product_id = #{productId}
-    </select>
-
-    <!-- Update -->
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
         UPDATE qa
         SET title = #{title},
@@ -34,9 +26,7 @@
         WHERE id = #{id}
     </update>
 
-    <!-- Delete -->
     <delete id="delete" parameterType="int">
         DELETE FROM qa WHERE id = #{id}
     </delete>
-
 </mapper>

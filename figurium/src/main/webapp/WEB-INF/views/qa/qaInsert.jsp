@@ -13,6 +13,7 @@
       <title>Title</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     </head>
@@ -23,37 +24,38 @@
     <div class="container pt-5">
         <h1>게시글 작성</h1>
         <hr>
-        <form>
+        <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" id="title" placeholder="사용자명을 입력하세요">
+                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="author" placeholder="비밀번호를 입력하세요">
+                <input type="password" class="form-control" id="author" name="author" placeholder="비밀번호를 입력하세요">
             </div>
             <form>
-                <select name="cars" class="custom-select">
+                <select name="category" class="custom-select">
                     <option selected>:::분류 선택:::</option>
-                    <option value="volvo">배송문의</option>
-                    <option value="fiat">취소문의</option>
-                    <option value="audi">교환</option>
-                    <option value="audi">반품문의</option>
-                    <option value="audi">배송지변경문의</option>
-                    <option value="audi">기타문의</option>
+                    <option value="배송문의">배송문의</option>
+                    <option value="취소문의">취소문의</option>
+                    <option value="교환">교환</option>
+                    <option value="반품문의">반품문의</option>
+                    <option value="배송지변경문의">배송지변경문의</option>
+                    <option value="기타문의">기타문의</option>
                 </select>
             </form>
             <br>
             <div class="form-group">
-                <input type="text" class="form-control" id="author1" placeholder="제목을 입력하세요">
+                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
             </div>
             <div class="form-group">
-                <textarea class="form-control" style="resize: none; height: 180px;" id="content" placeholder="내용을 입력하세요"></textarea>
+                <textarea class="form-control" style="resize: none; height: 180px;" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
             </div>
+            <button type="submit" class="btn btn-dark" style="margin-bottom: 10px;" >등록</button>
+            <button type="button" class="btn btn-light" role="button" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'" style="margin-bottom: 10px;">취소</button>
         </form>
-
-        <button type="button" class="btn btn-light" role="button" onclick="location.href='/'" style="margin-bottom: 10px;">취소</button>
-        <button type="button" class="btn btn-dark" id="btn-save" style="margin-bottom: 10px;" onclick="location.href='qaList.do'">등록</button>
-
     </div>
+
+
+
 
 
     <!-- NOTE : 푸터바 -->

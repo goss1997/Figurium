@@ -32,6 +32,7 @@
 
     <form>
         <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
+        <input type="hidden" value="${product.id}">
         <div class="product_title">
             <div class="product_img_box">
                 <!-- 상품의 이미지가 들어 갈 곳 -->
@@ -95,7 +96,8 @@
 
                 <div class="price_cart">
                     <input class="price_cart_btn" type="button" value="장바구니"
-                           onclick="location.href='shopingCart.do'">
+                           onclick="location.href='shopingCart.do?productId='
+                                   + ${product.id} + '&quantity=' + ${product.quantity}">
                 </div>
             </div>
 

@@ -2,15 +2,15 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.githrd.figurium.order.dao.CartsMapper">
+<mapper namespace="com.githrd.figurium.product.dao.CartsMapper">
 
-    <insert id="insertCarts" parameterType="carts">
+    <insert id="insertCarts" parameterType="Map">
         insert into carts(id, user_id, product_id, quantity, added_time)
         values(
                 null,
-                #{ user_id },
-                #{ product_id },
-                #{ phone },
+                #{ loginUserId },
+                #{ productId },
+                #{ quantity },
                 CURRENT_TIMESTAMP
                 )
     </insert>

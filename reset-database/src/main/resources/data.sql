@@ -153,21 +153,19 @@ CREATE TABLE reviews
 );
 
 
-    -- 상품 Q&A 통합 테이블
-    CREATE TABLE qa
-    (
-        id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
-        product_id INT COMMENT '상품 ID',
-        user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
-        title      varchar(100) COMMENT '질문제목',
-        content    VARCHAR(400) COMMENT '질문내용',
-        reply      VARCHAR(400) COMMENT '질문 답글',
-        created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
-        updated    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
-        FOREIGN KEY (product_id) REFERENCES products (id),
-        FOREIGN KEY (user_id) REFERENCES users (id)
-    );
-
+CREATE TABLE qa
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
+    product_id INT COMMENT '상품 ID',
+    user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
+    title      VARCHAR(100) COMMENT '질문제목',
+    content    VARCHAR(400) COMMENT '질문내용',
+    reply      VARCHAR(400) COMMENT '질문 답글',
+    created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
+    updated    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
+    FOREIGN KEY (product_id) REFERENCES products (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
 
 -- 더미 데이터
 -- 회원 테이블 더미데이터
@@ -199,3 +197,23 @@ select
 from orders o inner join order_items oi on o.id = oi.order_id
               inner join customers c on o.id = c.order_id
               inner join shipping_addresses s on o.id = s.order_id
+
+-- Q&A 게시판 더미데이터
+-- 게시글 1
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (1, '첫 번째 게시글 제목', '여기는 첫 번째 게시글 내용입니다. 게시판 기능을 테스트하기 위한 내용입니다.', '답변 1');
+-- 게시글 2
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (2, '두 번째 게시글 제목', '이 게시글은 두 번째 게시글 내용입니다. 게시판 기능의 테스트를 위한 추가 내용입니다.', '답변 2');
+-- 게시글 3
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (1, '세 번째 게시글 제목', '여기는 세 번째 게시글의 내용입니다. 다양한 데이터를 삽입하여 테스트하는 내용입니다.', '답변 3');
+-- 게시글 4
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (3, '네 번째 게시글 제목', '네 번째 게시글의 내용입니다. 추가적인 테스트를 위해 사용되는 내용입니다.', '답변 4');
+-- 게시글 5
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (2, '다섯 번째 게시글 제목', '다섯 번째 게시글 내용으로, 여러 가지 기능을 테스트하기 위해 작성된 게시글입니다.', '답변 5');
+-- 게시글 6
+INSERT INTO qa (user_id, title, content, reply)
+VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글의 내용입니다. 다양한 시나리오에 대한 테스트를 위한 게시글입니다.', '답변 6');

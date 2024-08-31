@@ -153,20 +153,20 @@ CREATE TABLE reviews
 );
 
 
--- 상품 Q&A 통합 테이블
-CREATE TABLE qa
-(
-    id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
-    product_id INT COMMENT '상품 ID',
-    user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
-    title      varchar(100) COMMENT '질문제목',
-    content    VARCHAR(400) COMMENT '질문내용',
-    reply      VARCHAR(400) COMMENT '질문 답글',
-    created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
-    updated    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
-    FOREIGN KEY (product_id) REFERENCES products (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
-);
+    -- 상품 Q&A 통합 테이블
+    CREATE TABLE qa
+    (
+        id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
+        product_id INT COMMENT '상품 ID',
+        user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
+        title      varchar(100) COMMENT '질문제목',
+        content    VARCHAR(400) COMMENT '질문내용',
+        reply      VARCHAR(400) COMMENT '질문 답글',
+        created    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
+        updated    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
+        FOREIGN KEY (product_id) REFERENCES products (id),
+        FOREIGN KEY (user_id) REFERENCES users (id)
+    );
 
 
 -- 더미 데이터

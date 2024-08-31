@@ -3,38 +3,39 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.githrd.figurium.qa.dao.QaMapper">
+<mapper namespace="com.githrd.figurium.qa.dao.QaDao">
 
-    <!-- 항목 추가 -->
+    <!-- Create -->
     <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
         INSERT INTO qa (product_id, user_id, title, content, reply, created, updated)
         VALUES (#{productId}, #{userId}, #{title}, #{content}, #{reply}, #{created}, #{updated})
     </insert>
 
-    <!-- ID로 조회 -->
-    <select id="selectById" parameterType="Integer" resultType="com.githrd.figurium.qa.vo.QaVo">
+    <!-- Read -->
+    <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT * FROM qa WHERE id = #{id}
     </select>
 
-    <!-- 전체 조회 -->
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
-        SELECT q.id, q.product_id, q.user_id, q.title, q.content, q.reply, q.created, q.updated,
-               p.name AS product_name, u.username AS user_name
-        FROM qa q
-                 JOIN products p ON q.product_id = p.id
-                 JOIN users u ON q.user_id = u.id
+        SELECT * FROM qa
     </select>
 
-    <!-- 업데이트 -->
+    <select id="selectByProductId" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
+        SELECT * FROM qa WHERE product_id = #{productId}
+    </select>
+
+    <!-- Update -->
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
         UPDATE qa
-        SET product_id = #{productId}, user_id = #{userId}, title = #{title}, content = #{content},
-            reply = #{reply}, created = #{created}, updated = #{updated}
+        SET title = #{title},
+            content = #{content},
+            reply = #{reply},
+            updated = #{updated}
         WHERE id = #{id}
     </update>
 
-    <!-- 삭제 -->
-    <delete id="delete" parameterType="Integer">
+    <!-- Delete -->
+    <delete id="delete" parameterType="int">
         DELETE FROM qa WHERE id = #{id}
     </delete>
 

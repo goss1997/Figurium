@@ -2,12 +2,12 @@ package com.githrd.figurium.qa.controller;
 
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
+import com.githrd.figurium.user.entity.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/qa")
@@ -16,49 +16,49 @@ public class QaController {
     @Autowired
     private QaService qaService;
 
-    @RequestMapping("/qaList.do")
-    public String getAllQas(Model model) {
-        List<QaVo> qaList = qaService.getAllQas();
-        model.addAttribute("qaList", qaList);
-        return "qaList";  // qaList.jsp
+    @Autowired
+    private HttpSession session;
+
+    @GetMapping("/qaList.do")
+    public String list(Model model) {
+        model.addAttribute("qaList", qaService.getAllQa());
+        return "qa/qaList";  // 이 이름이 JSP 파일과 일치해야 합니다.
     }
 
-    @RequestMapping("/qaInsert.do")
-    public String showQaInsertForm() {
-        return "qaInsert";  // qaInsert.jsp
+    @GetMapping("/qaInsert.do")
+    public String insertForm(Model model) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        // 로그인 상태를 확인
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+        return "qa/qaInsert";
     }
 
     @PostMapping("/qaSave.do")
-    public String saveQa(@ModelAttribute QaVo qa) {
-        if (qa.getTitle() == null || qa.getContent() == null) {
-            return "redirect:qaInsert.do";  // 유효성 검사 실패 시 폼으로 리다이렉트
+    public String save(@RequestParam("title") String title,
+                       @RequestParam("content") String content,
+                       @RequestParam(value = "reply", required = false) String reply) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        // 로그인 상태를 확인
+        if (loginUser == null) {
+            return "redirect:/";
         }
-        qaService.createQa(qa);
-        return "redirect:qaList.do";  // 저장 후 목록 페이지로 리다이렉트
+
+        QaVo qaVo = new QaVo();
+        qaVo.setUserId(loginUser.getId()); // 로그인한 사용자의 ID를 사용
+        qaVo.setTitle(title);
+        qaVo.setContent(content);
+        qaVo.setReply(reply);
+        qaService.saveQa(qaVo);
+
+        return "redirect:/qa/qaList.do";
     }
 
     @GetMapping("/qaSelect.do")
-    public String viewQa(@RequestParam Integer id, Model model) {
-        QaVo qa = qaService.getQaById(id);
-        if (qa == null) {
-            return "error";  // 에러 페이지로 이동 (찾을 수 없는 경우)
-        }
-        model.addAttribute("qa", qa);
-        return "qaSelect";  // qaSelect.jsp
-    }
-
-    @PostMapping("/qaUpdate.do")
-    public String updateQa(@ModelAttribute QaVo qa) {
-        if (qa.getId() == null) {
-            return "redirect:qaList.do";  // 유효성 검사 실패 시 목록 페이지로 리다이렉트
-        }
-        qaService.updateQa(qa);
-        return "redirect:qaList.do";  // 업데이트 후 목록 페이지로 리다이렉트
-    }
-
-    @GetMapping("/qaDelete.do")
-    public String deleteQa(@RequestParam Integer id) {
-        qaService.deleteQa(id);
-        return "redirect:qaList.do";  // 삭제 후 목록 페이지로 리다이렉트
+    public String select(@RequestParam("id") int id, Model model) {
+        QaVo qaVo = qaService.getQaById(id);
+        model.addAttribute("qa", qaVo);
+        return "qaSelect";
     }
 }

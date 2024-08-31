@@ -14,27 +14,27 @@ public class QaServiceImpl implements QaService {
     private QaDao qaDao;
 
     @Override
-    public void createQa(QaVo qa) {
-        qaDao.createQa(qa);
+    public List<QaVo> getAllQa() {
+        return qaDao.selectAll();
     }
 
     @Override
-    public QaVo getQaById(Integer id) {
-        return qaDao.getQaById(id);
+    public QaVo getQaById(int id) {
+        return qaDao.selectById(id);
     }
 
     @Override
-    public List<QaVo> getAllQas() {
-        return qaDao.getAllQas();
+    public void saveQa(QaVo qaVo) {
+        qaDao.insert(qaVo);
     }
 
     @Override
-    public void updateQa(QaVo qa) {
-        qaDao.updateQa(qa);
+    public void updateQa(QaVo qaVo) {
+        qaDao.update(qaVo);
     }
 
     @Override
-    public void deleteQa(Integer id) {
-        qaDao.deleteQa(id);
+    public void deleteQa(int id) {
+        qaDao.delete(id);
     }
 }

@@ -4,10 +4,11 @@ import com.githrd.figurium.qa.vo.QaVo;
 
 import java.util.List;
 
+
 public interface QaService {
-    void createQa(QaVo qa);
-    QaVo getQaById(Integer id);
-    List<QaVo> getAllQas();
-    void updateQa(QaVo qa);
-    void deleteQa(Integer id);
+    List<QaVo> getAllQa();
+    QaVo getQaById(int id);
+    void saveQa(QaVo qaVo);
+    void updateQa(QaVo qaVo);
+    void deleteQa(int id);
 }

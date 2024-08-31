@@ -24,48 +24,39 @@
 <!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
+
+
 <div id="content-wrap-area">
   <!-- TODO : 컨텐츠 영역(당신이 사용할 공간) -->
-<div class="container mt-5">
-  <h2>Q&A게시판</h2>
- <br>
-  <hr>
-  <div class="row">
-    <div class="col-sm-1">제목</div>
-    <div class="col-sm-4">${ qa.title }</div>
-    <div class="col-sm-1">작성일자</div>
-    <div class="col-sm-4">${ qa.created}</div>
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-sm-1">작성자</div>
-    <div class="col-sm-4">${ qa.userId }</div>
-    <div class="col-sm-1">답변여부</div>
-    <div class="col-sm-4">${qa.reply != null ? qa.reply : '없음'}</div>
-  </div>
-  <hr>
-    <div class="row mt-2">
-        <div class="col-sm-2"><strong>내용:</strong></div>
-        <div class="col-sm-10">${qa.content}</div>
-    </div>
-  <hr>
-  <div>
-    <button type="button" class="btn btn-dark float-right"  id="btn-save" a href="${pageContext.request.contextPath}/qa/QaList.do"> 목록</button>
-  </div>
-  <br>
-  <br>
-
-</div>
-
-    <div class="container">
+    <div class="container mt-5">
+        <h2>${qa.title}</h2>
         <hr>
-    <div class="form-group">
-        <textarea class="form-control col-sm-11" style="resize: none; display: inline-block;" rows="5" id="comment"></textarea>
-        <button type="button" style="margin-top: 90px;" class="btn btn-light float-right" id="btn-submit">전송</button>
+        <div class="row">
+            <div class="col-sm-2">작성일자</div>
+            <div class="col-sm-10">${fn:formatDate(qa.created, 'yyyy-MM-dd HH:mm:ss')}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">작성자</div>
+            <div class="col-sm-10">${qa.userId}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">답변여부</div>
+            <div class="col-sm-10">${qa.reply != null ? qa.reply : '없음'}</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-2"><strong>내용:</strong></div>
+            <div class="col-sm-10">${qa.content}</div>
+        </div>
+        <hr>
+        <div class="text-right">
+            <button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/list'">목록</button>
+            <c:if test="${sessionScope.userId != null && sessionScope.userId == qa.userId}">
+                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/qa/edit/${qa.id}'">수정</button>
+                <button type="button" class="btn btn-danger" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/qa/delete/${qa.id}'">삭제</button>
+            </c:if>
+        </div>
     </div>
-    </div>
-
-</div>
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>
 </body>

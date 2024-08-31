@@ -11,10 +11,13 @@ public class CartsVo {
 
     // 쇼핑 카트 테이블 (Create table carts)
     int id;         // primary key
-    int user_id;
-    int product_id;
+    int userId;
+    int productId;
     int quantity;
-    Date added_time;
+    Date addedTime;
 
+    String name;
+    int price;
+    String imageUrl;
 
 }

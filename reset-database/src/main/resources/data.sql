@@ -196,7 +196,14 @@ select
     c.email,s.recipient_name,s.phone as '받는사람 전화번호',s.address,s.delivery_request
 from orders o inner join order_items oi on o.id = oi.order_id
               inner join customers c on o.id = c.order_id
-              inner join shipping_addresses s on o.id = s.order_id
+              inner join shipping_addresses s on o.id = s.order_id;
+
+-- Cart에 넣는 데이터
+create or replace view product_cart_view
+as
+select
+    p.id,p.name,p.price,p.image_url,c.quantity,c.user_id
+from products p inner join carts c on p.id = c.product_id;
 
 -- Q&A 게시판 더미데이터
 -- 게시글 1

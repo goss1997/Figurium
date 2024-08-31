@@ -34,7 +34,7 @@ public class CartsController {
 
 
     @GetMapping("/shopingCart.do")
-        public String shopingCart(Model model, String productId, int quantity) {
+        public String shopingCart(Model model, int productId, int quantity) {
 
         // 세션에서 로그인 사용자 정보 가져오기
         User loginUser = (User)session.getAttribute("loginUser");
@@ -45,20 +45,30 @@ public class CartsController {
             return "redirect:/";
         }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("loginUserId", loginUser.getId());
-        map.put("productId", productId);
-        map.put("quantity", quantity);
+        // 이 상품이 추가가 되어있으면, 장바구니에 상품 추가를 거치지 않고 넘기기
+        CartsVo checkCart = cartsMapper.selectCartsById(productId);
+        if (checkCart == null) {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("loginUserId", loginUser.getId());
+            map.put("productId", productId);
+            map.put("quantity", quantity);
+
+            // 정바구니에 해당 ID로 상품 추가
+            cartsMapper.insertCarts(map);
+
+        }
 
 
-        // 정바구니에 해당 ID로 상품 추가
-        cartsMapper.insertCarts(map);
+
+
+
 
         List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
         List<ProductsVo> products = new ArrayList<>();
 
         for (CartsVo vo : cartsVo) {
-            ProductsVo product = productsMapper.selectOneGetName(vo.getProduct_id());
+            ProductsVo product = productsMapper.selectOneGetName(vo.getProductId());
             products.add(product);
             System.out.println(product);
         }

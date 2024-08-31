@@ -96,9 +96,14 @@
 
                 <div class="price_cart">
                     <input class="price_cart_btn" type="button" value="장바구니"
-                           onclick="location.href='shopingCart.do?productId='
-                                   + ${product.id} + '&quantity=' + ${product.quantity}">
+                           onclick="addToCart(${product.id})">
                 </div>
+                <script>
+                    function addToCart(productId) {
+                        let quantity = $("#quantity").val();
+                        location.href = "shopingCart.do?productId=" + productId + "&quantity=" + quantity;
+                    }
+                </script>
             </div>
 
         </div>

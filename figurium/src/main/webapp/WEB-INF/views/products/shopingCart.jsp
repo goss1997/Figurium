@@ -10,6 +10,7 @@ pageEncoding="UTF-8" %>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- 우편번호 API 라이브러리 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../../resources/css/carts.css">
 </head>
 <jsp:include page="../common/header.jsp"/>
 
@@ -132,8 +133,6 @@ pageEncoding="UTF-8" %>
 
 								<!-- td -->
 								<c:forEach var="cart" items="${ requestScope.cartsVo }">
-								<c:forEach var="product" items="${ requestScope.products }">
-
 
 								<tr class="table_row" style="height: 100px;">
 									<td style="padding: 0px; margin: 0px; width: 1%;">
@@ -141,12 +140,12 @@ pageEncoding="UTF-8" %>
 									</td>
 									<td class="column-1" style="padding-bottom: 0px";>
 										<div class="how-itemcart1">
-											<img src="${pageContext.request.contextPath}/resources/images/example.jpg"
+											<img src="${pageContext.request.contextPath}${ cart.imageUrl }"
 												 alt="IMG">
 										</div>
 									</td>
-									<td class="column-2" style="padding-bottom: 0px;">${ product.name }</td>
-									<td class="column-3" style="padding-bottom: 0px;">${ product.price }</td>
+									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
+									<td class="column-3" style="padding-bottom: 0px;">${ cart.price }</td>
 									<td class="column-4" style="text-align: center; padding-bottom: 0px">
 										<div class="wrap-num-product flex-w m-auto">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -161,9 +160,8 @@ pageEncoding="UTF-8" %>
 											</div>
 										</div>
 									</td>
-									<td class="column-5" style="padding-bottom: 0px";>${ product.price }</td>
+									<td class="column-5" style="padding-bottom: 0px";>${ cart.price }</td>
 								</tr>
-								</c:forEach>
 								</c:forEach>
 							</table>
 						</div>
@@ -176,14 +174,14 @@ pageEncoding="UTF-8" %>
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-							style="width: 400px; padding: 10px; height: 50px">
+							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do'">
 						선택상품 결제
 					</button>
 				</div>
 
 				<div style="display: inline-block; margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-							style="width: 400px; padding: 10px; height: 50px">
+							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do'">
 						전체상품 결제
 					</button>
 				</div>

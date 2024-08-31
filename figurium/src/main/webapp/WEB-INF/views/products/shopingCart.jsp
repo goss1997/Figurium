@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8" %>
+pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,6 +131,10 @@
 
 
 								<!-- td -->
+								<c:forEach var="cart" items="${ requestScope.cartsVo }">
+								<c:forEach var="product" items="${ requestScope.products }">
+
+
 								<tr class="table_row" style="height: 100px;">
 									<td style="padding: 0px; margin: 0px; width: 1%;">
 										<input type="checkbox" style="margin-left: 20px;">
@@ -139,8 +145,8 @@
 												 alt="IMG">
 										</div>
 									</td>
-									<td class="column-2" style="padding-bottom: 0px;">피규어 1</td>
-									<td class="column-3" style="padding-bottom: 0px;">13,000</td>
+									<td class="column-2" style="padding-bottom: 0px;">${ product.name }</td>
+									<td class="column-3" style="padding-bottom: 0px;">${ product.price }</td>
 									<td class="column-4" style="text-align: center; padding-bottom: 0px">
 										<div class="wrap-num-product flex-w m-auto">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -148,15 +154,17 @@
 											</div>
 
 											<input class="mtext-104 cl3 txt-center num-product" type="number"
-												   name="num-product1" value="1">
+												   name="num-product1" value="${ cart.quantity }">
 
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
 										</div>
 									</td>
-									<td class="column-5" style="padding-bottom: 0px";>13,000</td>
+									<td class="column-5" style="padding-bottom: 0px";>${ product.price }</td>
 								</tr>
+								</c:forEach>
+								</c:forEach>
 							</table>
 						</div>
 					</div>

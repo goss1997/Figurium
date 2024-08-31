@@ -15,6 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 )
     </insert>
 
+    <select id="selectList" resultType="carts" parameterType="int">
+        select * from carts where user_id = #{ loginUserId }
+    </select>
+
 
 </mapper>
 

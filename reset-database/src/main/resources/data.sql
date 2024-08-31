@@ -189,3 +189,13 @@ VALUES ('admin1@example.com', '1234', '관리자1', 1, 'https://figurium-s3-buck
 
 
 
+-- 회원 상품 주문 기록
+create or replace view order_history_view
+as
+select
+    o.id as '주문번호',o.payment_type as '결제방식',o.user_id as '주문회원',
+    oi.price,oi.quantity,c.name,c.phone as '보낸사람 전화번호',
+    c.email,s.recipient_name,s.phone as '받는사람 전화번호',s.address,s.delivery_request
+from orders o inner join order_items oi on o.id = oi.order_id
+              inner join customers c on o.id = c.order_id
+              inner join shipping_addresses s on o.id = s.order_id

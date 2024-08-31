@@ -284,15 +284,15 @@
       <tbody>
       <tr>
         <td class="td_title">주문하시는 분</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.user.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.user.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
       </tr>
       <tr>
         <td class="td_title">이메일</td>
-        <td><input type="email" class="form-control" value="${ sessionScope.user.email }" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }" id="order_email" placeholder="이메일" name="order_email"></td>
       </tr>
       </tbody>
     </table>
@@ -314,15 +314,15 @@
       <tbody>
       <tr>
         <td class="td_title">기존 배송지</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.user.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
       </tr>
       <tr>
         <td class="td_title">받으시는 분</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.user.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="email" class="form-control" value="${ sessionScope.user.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
+        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
       </tr>
 
 

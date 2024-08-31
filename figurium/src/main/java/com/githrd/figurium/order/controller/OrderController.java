@@ -62,7 +62,7 @@ public class OrderController {
         }
 
         // session 가져오기
-        session.getAttribute("user");
+        session.getAttribute("loginUser");
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);

@@ -290,7 +290,7 @@
 
         let productId = f.productId.value;
 
-        let user = "${sessionScope.user}";
+        let user = "${sessionScope.loginUser}";
 
         if (user === "null" || user === "") {
             alert("로그인이 필요한 서비스 입니다.");

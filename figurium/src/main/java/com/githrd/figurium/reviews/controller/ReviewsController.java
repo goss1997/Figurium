@@ -48,7 +48,7 @@ public class ReviewsController {
 
 
 
-
+    // 리뷰 작성 폼 이동
     @RequestMapping("/reviewInsertForm.do")
     public String reviewInsert(RedirectAttributes ra,
                                @RequestParam(value = "productId") Integer id,
@@ -70,7 +70,7 @@ public class ReviewsController {
                              HttpSession session,
                              RedirectAttributes ra) {
 
-        User user = (User) session.getAttribute("user"); // 현제 로그인한 유저의 세션을 가져옴
+        User user = (User) session.getAttribute("loginUser"); // 현제 로그인한 유저의 세션을 가져옴
 
         // 현재 로그인 정보가 비어 있으면 처리
         if (user == null) {

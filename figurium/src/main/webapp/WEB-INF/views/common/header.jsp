@@ -62,6 +62,9 @@
     <title>제목</title>
 
     <style>
+        #content-wrap-area {
+            min-height: 1000px;
+        }
         .categori {
             cursor: pointer;
         }

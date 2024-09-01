@@ -160,7 +160,7 @@
                 <tr id="reviewContent-${review.id}" class="review-content" style="display:none;">
                     <td colspan="5">
                         <div id="spinner-${review.id}" class="spinner" style="display:none;">로딩 중...</div>
-                        <div id="reviewText-${review.id}" class="review-text-left"></div>
+                        <div id="reviewText-${review.id}" class="review-text"></div>
                     </td>
                 </tr>
             </c:forEach>

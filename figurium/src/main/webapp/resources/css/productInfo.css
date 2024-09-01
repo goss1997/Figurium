@@ -346,17 +346,15 @@
     background-color: #404040;
 }
 
+
 /* 리뷰 내용 왼쪽 정렬 */
 .review-text-left {
     text-align: left; /* 내용 왼쪽 정렬 */
     margin-left: 85px;
     margin-top: 50px;
     margin-bottom: 50px;
-    word-wrap: break-word; /* 긴 단어가 줄을 넘길 때 줄바꿈을 합니다 */
-    white-space: pre-wrap; /* 공백과 줄바꿈을 유지합니다 */
-    overflow-wrap: break-word; /* 긴 단어를 줄바꿈 합니다 */
-
-
+    margin-right: 50px;
+    overflow-wrap: anywhere;
 }
 
 /* 이미지 중앙 정렬 */

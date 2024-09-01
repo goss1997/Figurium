@@ -51,13 +51,14 @@ public class ReviewsController {
     // 리뷰 작성 폼 이동
     @RequestMapping("/reviewInsertForm.do")
     public String reviewInsert(RedirectAttributes ra,
-                               @RequestParam(value = "productId") Integer id,
+                               @RequestParam(value = "productId") Integer productId,
                                Model model) {
-        Products selectOne = productsService.getProductById(id);
-        model.addAttribute("productId", id);
+
+        model.addAttribute("productId", productId);
 
         return "reviews/reviewInsertForm";
     }
+
 
 
 
@@ -66,53 +67,54 @@ public class ReviewsController {
     */
     @PostMapping("/sendReview.do")
     public String sendReview(ReviewVo reviewVo,
-                             MultipartFile imageUrl,
+                             // 매핑 에러를 피하기 위해 param명을 view에서 다르게 주어서 받아온다.
+                             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                              HttpSession session,
                              RedirectAttributes ra) {
 
-        User user = (User) session.getAttribute("loginUser"); // 현제 로그인한 유저의 세션을 가져옴
+        User user = (User) session.getAttribute("loginUser");
 
-        // 현재 로그인 정보가 비어 있으면 처리
         if (user == null) {
-            ra.addAttribute("reason","not_session");
-            return "redirect:../";
+            ra.addAttribute("reason", "not_session");
+            return "redirect:/";
         }
 
         // 이미지 업로드 처리 로직
-        if (imageUrl != null && !imageUrl.isEmpty()) { // 이미지가 업로드되었을 경우
-
+        if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                String s3ImgUrl = s3ImageService.uploadS3(imageUrl);
+                // S3에 파일 업로드
+                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                // view에서 설정한 param명을 받아와서 imageUrl에 넣어준다.
                 reviewVo.setImageUrl(s3ImgUrl); // 업로드된 이미지의 URL을 reviewVo에 설정
-
-            } catch (Exception e) { // 업로드 실패시 처리
+            } catch (Exception e) {
                 ra.addAttribute("reason", "image_upload_failed");
                 return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
             }
-
         } else {
-            // 이미지는 선택 사항 이므로 만약에 이미지를 넣고 싶지 않으면 null이거나 공백을 빈 문자열로 처리하는 로직
-            reviewVo.setImageUrl("");
+            // 이미지가 없을 경우 빈 문자열 처리
+            reviewVo.setImageUrl(""); // imageUrl 필드가 문자열이므로 빈 값으로 처리합니다.
         }
 
         // 공백 전환
-        String content = reviewVo.getContent().replaceAll("\n","<br>");
+        String content = reviewVo.getContent().replaceAll("\n", "<br>");
         reviewVo.setContent(content);
 
-        // 성공시 숫자 1을 반환
+        // 리뷰 저장
         int success = reviewService.insertReview(reviewVo);
 
-        // 성공시와 실패시 처리 로직
-        if(success > 0) {
+        if (success > 0) {
             return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
-
         } else {
-            ra.addAttribute("reason","review_insert_failed");
+            ra.addAttribute("reason", "review_insert_failed");
             return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
         }
-
-
     }
+
+
+
+
+
+
 
     // 리뷰 1건에 해당하는 리뷰를 조회
     @RequestMapping("/getReviewContent")

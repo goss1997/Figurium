@@ -12,7 +12,7 @@
 <div class="review-form-container">
     <h2 class="review-title">상품 리뷰 작성</h2>
 
-    <form id="reviewForm" class="review-form">
+    <form id="reviewForm" class="review-form" enctype="multipart/form-data">
         <input type="hidden" name="userId" value="${sessionScope.loginUser.id}">
         <input type="hidden" name="productId" value="${productId}">
         <div class="form-group">
@@ -22,7 +22,8 @@
 
         <div class="form-group">
             <label for="reviewImage">상품 이미지 업로드</label>
-            <input type="file" id="reviewImage" name="image_url" value="사진선택" onchange="imgupload()">
+            <!-- 여기서 name은 Vo에 있는 imageUrl로 주면 매핑 에러가 발생해서 다르게 주어야 한다. -->
+            <input type="file" id="reviewImage" name="imageFile" value="사진선택" onchange="imgupload()">
             <div id="imagePreview" class="image-preview"></div>
         </div>
 
@@ -91,40 +92,39 @@
 
 <script>
     // 리뷰 작성 버튼 클릭 시 검증
-    function sendReview(f){
-
-        let userId    = f.userId.value;
+    function sendReview(f) {
+        let userId = f.userId.value;
         let title = f.title.value.trim();
-        let image_url = f.image_url.value;
+        let imageFile = f.imageFile.files[0]; // 파일 객체
         let content = f.content.value.trim();
         let rating = f.rating.value.trim();
 
-        if (title == ""){
+        // 제목 검증
+        if (title === "") {
             alert("제목을 입력하세요");
-            title.value="";
-            title.focus();
+            f.title.focus();
             return;
         }
 
-        if (content == ""){
+        // 리뷰 내용 검증
+        if (content === "") {
             alert("리뷰하실 상품에 대한 내용을 작성해 주세요");
-            content.value="";
-            content.focus();
+            f.content.focus();
             return;
         }
 
-        if (rating == ""){
+        // 평점 검증
+        if (rating === "") {
             alert("상품에 대한 평점을 남겨주세요");
-            rating.value="";
             return;
         }
 
-        f.method="POST";
-        f.action="sendReview.do";
-        f.submit();
-
-
+        // 폼 제출
+        f.method = "POST";
+        f.action = "sendReview.do";
+        f.submit(); // 폼 제출
     }
+
 
 </script>
 

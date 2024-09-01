@@ -30,7 +30,6 @@
         </div>
     </div>
 
-    <form>
         <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
         <input type="hidden" value="${product.id}">
         <div class="product_title">
@@ -107,7 +106,6 @@
             </div>
 
         </div>
-    </form>
     <!-- 리뷰,Q&A Tap-->
 
     <div class="tap_box">

@@ -280,7 +280,7 @@ pageEncoding="UTF-8" %>
 			<div class="total-container">
 				<div class="item">
 					<span class="label">총상품금액</span>
-					<span class="amount" id="totalAmount">62,000원</span>
+					<span class="amount" id="totalAmount">0원</span>
 				</div>
 				<div class="item">
 					<span class="label">+</span>
@@ -294,7 +294,7 @@ pageEncoding="UTF-8" %>
 				</div>
 				<div class="item total">
 					<span class="label">TOTAL</span>
-					<span class="amount highlight">65,000원</span>
+					<span class="amount highlight">3,000원</span>
 					<span class="extra">FIGU</span>
 				</div>
 			</div>

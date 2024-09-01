@@ -163,6 +163,13 @@
             background-color: #45a049;
         }
 
+        #profileImg {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
     </style>
 
 </head>
@@ -212,7 +219,7 @@
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img style="padding-bottom: 5px;" src="${loginUser.profileImgUrl}" width="50px;">
+                                    <img id="profileImg" src="${loginUser.profileImgUrl}" width="40px;">
                                 </div>
                                 <div style="display: inline-block">
                                     <ul class="main-menu">

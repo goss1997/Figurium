@@ -128,22 +128,24 @@
         </form>
 
         <table class="review_table">
+            <thead>
             <tr>
-                <th class="review_number">번호</th>
-                <th class="review_title">제목</th>
-                <th class="review_name">작성자</th>
-                <th class="review_regdate">작성일</th>
-                <th class="review_star">별점</th>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>별점</th>
             </tr>
-
+            </thead>
+            <tbody id="reviewTable">
             <c:forEach var="review" items="${reviewList}">
                 <tr>
-                    <td>${review.number}</td>
-                    <td class="review_td_title">${review.title}</td>
-                    <td>${review.content}</td>
+                    <td class="review_number">${review.number}</td>
                     <td>
-                            ${fun:substring(review.createdAt,0,10)} ${fun:substring(review.createdAt,11,16)}
+                        <a href="#" class="review-title" data-id="${review.id}">${review.title}</a>
                     </td>
+                    <td class="review_name">${review.userName}</td>
+                    <td class="review_regdate">${fun:substring(review.createdAt,0,10)} ${fun:substring(review.createdAt,11,16)}</td>
                     <td class="review_star">
                         <!-- 별점 예시: review.rating 값에 따라 별 표시 -->
                         <c:forEach var="i" begin="1" end="${review.rating}">
@@ -154,8 +156,19 @@
                         </c:forEach>
                     </td>
                 </tr>
+                <!-- 리뷰 내용을 표시할 영역 -->
+                <tr id="reviewContent-${review.id}" class="review-content" style="display:none;">
+                    <td colspan="5">
+                        <div id="spinner-${review.id}" class="spinner" style="display:none;">로딩 중...</div>
+                        <div id="reviewText-${review.id}" class="review-text-left"></div>
+                    </td>
+                </tr>
             </c:forEach>
+            </tbody>
         </table>
+
+
+    </div>
     </div>
 
 
@@ -232,7 +245,7 @@
 
 
 <jsp:include page="../common/footer.jsp"/>
-</body>
+
 
 
 <script>
@@ -312,5 +325,62 @@
 
 </script>
 
+
+
+<script>
+    $(document).ready(function() {
+        $('.review-title').on('click', function(e) {
+            e.preventDefault();
+
+            var reviewId = $(this).data('id');
+            var contentRow = $('#reviewContent-' + reviewId);
+            var spinner = $('#spinner-' + reviewId);
+            var reviewText = $('#reviewText-' + reviewId);
+
+            if (contentRow.is(':visible')) {
+                contentRow.hide();
+                return;
+            }
+
+            $('.review-content').hide();
+            spinner.show();
+
+            $.ajax({
+                url: 'getReviewContent',
+                type: 'GET',
+                data: { id: reviewId },
+                success: function(response) {
+                    var contentHtml = '<div class="review-text-left">' + response.content + '</div>';
+
+                    if (response.imageUrl) { // imageUrl이 있으면 이미지를 표시
+                        contentHtml += '<img src="' + response.imageUrl + '" alt="Review Image">';
+                    }
+
+                    reviewText.html(contentHtml);
+                    contentRow.show();
+                    spinner.hide();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var errorMessage = '리뷰 내용을 불러오는 데 실패했습니다.';
+
+                    // 에러 상태 코드와 메시지를 포함
+                    if (jqXHR.status) {
+                        errorMessage += ' 상태 코드: ' + jqXHR.status;
+                    }
+                    if (errorThrown) {
+                        errorMessage += ', 오류 메시지: ' + errorThrown;
+                    }
+
+                    alert(errorMessage);
+                    spinner.hide();
+                }
+            });
+        });
+    });
+
+</script>
+
+
+</body>
 
 </html>

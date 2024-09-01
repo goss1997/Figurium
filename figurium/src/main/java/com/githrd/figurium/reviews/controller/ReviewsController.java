@@ -12,13 +12,13 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ReviewsController {
@@ -109,6 +109,17 @@ public class ReviewsController {
         }
 
 
+    }
+
+    // 리뷰 1건에 해당하는 리뷰를 조회
+    @RequestMapping("/getReviewContent")
+    @ResponseBody
+    public Map<String, Object> getReviewContent(@RequestParam("id") int id) {
+        ReviewVo review = reviewService.getReviewById(id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("content", review.getContent());
+        result.put("imageUrl", review.getImageUrl());
+        return result;
     }
 
 

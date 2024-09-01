@@ -13,8 +13,5 @@ public interface ReviewService {
 
     int insertReview(ReviewVo reviewVo);
 
-
-
-
-
+    ReviewVo getReviewById(Integer id);
 }

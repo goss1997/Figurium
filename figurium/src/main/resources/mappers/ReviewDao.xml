@@ -5,19 +5,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.reviews.dao.ReviewDao">
 
 
-    <!-- 특정 상품 ID에 따른 리뷰 목록 조회 -->
+    <!-- 특정 상품 ID에 따른 리뷰 목록 조회 (작성자 정보 포함) -->
     <select id="reviewsByProductId" parameterType="Integer" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
         SELECT
-            @rownum := @rownum + 1 AS number,
-            id,
-            title,
-            content,
-            created_at AS createdAt,
-            rating
-        FROM reviews, (SELECT @rownum := 0) AS r
-        WHERE product_id = #{productId}
-        ORDER BY number DESC
+        @rownum := @rownum + 1 AS number,  <!-- 번호 매기기 -->
+        r.id,
+        r.title,
+        r.content,
+        r.image_url AS imageUrl,  <!-- 이미지 URL 가져오기 -->
+        r.created_at AS createdAt,
+        r.rating,             <!-- 별점 포함 -->
+        u.name AS userName  <!-- 작성자 이름 추가 -->
+        FROM reviews r
+        JOIN users u ON r.user_id = u.id  <!-- users 테이블과 조인 -->
+        CROSS JOIN (SELECT @rownum := 0) AS r  <!-- @rownum 초기화 -->
+        WHERE r.product_id = #{productId}
+        ORDER BY number DESC  <!-- 번호를 기준으로 내림차순 정렬 -->
     </select>
+
+
+
 
 
     <!-- 해당 상품에 대한 리뷰의 갯수 -->
@@ -34,6 +41,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INSERT INTO reviews(user_id, product_id,rating,title,content,image_url,created_at,updated_at)
         VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},DEFAULT,DEFAULT)
     </insert>
+
+
+    <!-- 해당 리뷰 ID 1건에 해당하는 리뷰조회 -->
+    <select id="getReviewById" parameterType="int" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
+        SELECT
+        content,
+        image_url
+        FROM
+        reviews
+        WHERE
+        id = #{id}
+    </select>
 
 
 </mapper>

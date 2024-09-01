@@ -7,6 +7,7 @@ import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,20 +25,24 @@ public class ProductsController {
     private final ProductsService productsService;
     private final ReviewService reviewService;
     private final CategoriesRepository categoriesRepository;
+    private final HttpSession session;
 
 
     @Autowired
-    public ProductsController(ProductsService productsService,ReviewService reviewService, CategoriesRepository categoriesRepository) {
+    public ProductsController(ProductsService productsService,
+                              ReviewService reviewService,
+                              CategoriesRepository categoriesRepository,
+                              HttpSession session) {
         this.productsService = productsService;
-            this.reviewService = reviewService;
+        this.reviewService = reviewService;
         this.categoriesRepository = categoriesRepository;
+        this.session = session;
     }
 
 
     @RequestMapping("/productInfo.do")
     public String list(@RequestParam(value = "id" , required = false) Integer id,
                        Model model) {
-
 
         // 해상 상품에 해당하는 ID를 받아옴
         Products selectOne = productsService.getProductById(id);

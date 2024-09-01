@@ -23,4 +23,6 @@ public class ReviewVo {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private String userName; // Join해서 데이터를 가져오기 위해 추가
+
 }

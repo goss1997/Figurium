@@ -17,4 +17,8 @@ public interface ReviewDao {
 
     // 해당 상품에 대한 리뷰의 리스트
     List<ReviewVo> reviewsByProductId(Integer productId);
+
+    // 리뷰 1건에 해당하는 Id를 이용해 해당 리뷰 조회
+    ReviewVo getReviewById(Integer id);
+
 }

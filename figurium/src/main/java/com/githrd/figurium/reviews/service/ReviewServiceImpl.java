@@ -31,4 +31,9 @@ public class ReviewServiceImpl implements ReviewService {
     public int insertReview(ReviewVo reviewVo) {
         return reviewDao.insertReview(reviewVo);
     }
+
+    @Override
+    public ReviewVo getReviewById(Integer id) {
+        return reviewDao.getReviewById(id);
+    }
 }

@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" href="../../../resources/css/reviewInsertForm.css">
 
 </head>
-<body>
+<jsp:include page="../common/header.jsp"/><body>
+<div style="height: 90px"></div>
+
 <div class="review-form-container">
     <h2 class="review-title">상품 리뷰 작성</h2>
 
@@ -54,7 +56,7 @@
 </div>
 
 
-</body>
+<jsp:include page="../common/footer.jsp"/>
 
 <script type="text/javascript">
     function imgupload() {
@@ -126,6 +128,6 @@
 
 </script>
 
-
+</body>
 
 </html>

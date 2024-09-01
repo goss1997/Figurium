@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
 
     private final UserService userService;
     private final HttpSession session;
-
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 로그인
@@ -39,7 +40,8 @@ public class UserController {
             // 로그인 실패 시 HTTP 상태 코드와 메시지 반환
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("가입되지 않은 이메일입니다.");
         } else {
-            if (!user.getPassword().equals(password)) {
+            // 입력한 비밀번호가 db에 암호화된 비밀번호와 일치하지 않을 경우
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
 
                 // 로그인 실패 시 HTTP 상태 코드와 메시지 반환
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
@@ -104,6 +106,10 @@ public class UserController {
      */
     @PostMapping("sign-up.do")
     public String signup(User user, @RequestParam MultipartFile profileImage) {
+
+        // 비밀번호 암호화
+        String encPwd = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encPwd);
 
         User save = userService.signup(user, profileImage);
 

@@ -78,8 +78,6 @@ public class OrderController {
     @ResponseBody
     public String inicisPay(int price, String paymentType) {
 
-        System.out.println("TEST");
-
         // 주문자 정보 insert
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("price",price);

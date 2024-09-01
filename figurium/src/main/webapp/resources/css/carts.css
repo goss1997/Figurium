@@ -1,10 +1,61 @@
-@font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+.total-container {
+    width: 700px;
+    height: 100px;
+    margin: auto;
+    padding: 10px 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-* {
-    font-family: 'Pretendard-Regular';
+/* 무지개 만들기 치트키 */
+@keyframes shine {
+    0% { color: red; }
+    14% { color: orange; }
+    28% { color: yellow; }
+    42% { color: green; }
+    57% { color: blue; }
+    71% { color: indigo; }
+    85% { color: violet; }
+    100% { color: red; }
+}
+
+.shine {
+    animation: shine 2s linear infinite;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.item:last-child {
+    margin-right: 0;
+}
+
+.label {
+    margin-right: 5px;
+    color: #999;
+}
+
+.amount {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.total {
+    font-weight: bold;
+}
+
+.highlight {
+    color: orange;
+    font-size: 20px;
+}
+
+.extra {
+    font-size: 14px;
+    color: orange;
+    margin-left: 5px;
 }

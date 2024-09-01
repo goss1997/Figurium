@@ -14,24 +14,46 @@ pageEncoding="UTF-8" %>
 </head>
 <jsp:include page="../common/header.jsp"/>
 <script>
-	document.addEventListener("DOMContentLoaded", function() {
-		const productContainer = document.querySelector('tbody'); // <tbody>를 선택
 
-		productContainer.addEventListener('click', function(event) {
-			const target = event.target.closest('.btn-num-product-down, .btn-num-product-up');
+	document.addEventListener('DOMContentLoaded', () => {
+		const items = document.querySelectorAll('.table_row'); // 모든 상품 행 선택
 
-			if (target) {
-				const quantityInput = target.closest('.wrap-num-product').querySelector('input[name="num-product1"]');
-				let currentValue = parseInt(quantityInput.value);
+		items.forEach(item => {
+			const priceElement = item.querySelector('#productPrice');
+			const quantityInput = item.querySelector('.num-product');
+			const totalPriceElement = item.querySelector('#totalPrice');
 
-				if (target.classList.contains('btn-num-product-down')) {
-					if (currentValue > 0) {
-						quantityInput.value = currentValue - 1;
-					}
-				} else if (target.classList.contains('btn-num-product-up')) {
-					quantityInput.value = currentValue + 1;
+			function updateTotalPrice() {
+				const price = parseInt(priceElement.textContent.replace(/원/g, '').replace(/,/g, ''));
+				const quantity = parseInt(quantityInput.value);
+
+				if (!isNaN(price) && !isNaN(quantity)) {
+					totalPriceElement.textContent = (price * quantity).toLocaleString() + '원';
+					totalPriceElement.classList.add('shine');
+
+					setTimeout(() => {
+						totalPriceElement.classList.remove('shine');
+					}, 2000);
 				}
 			}
+
+			// 수량 증가 버튼
+			item.querySelector('.btn-num-product-up').addEventListener('click', () => {
+				quantityInput.value = parseInt(quantityInput.value) + 1;
+				updateTotalPrice(); // 총 가격 업데이트
+			});
+
+			// 수량 감소 버튼
+			item.querySelector('.btn-num-product-down').addEventListener('click', () => {
+				const currentQuantity = parseInt(quantityInput.value);
+				if (currentQuantity > 1) {
+					quantityInput.value = currentQuantity - 1;
+				}
+				updateTotalPrice(); // 총 가격 업데이트
+			});
+
+			// 초기 총 가격 계산
+			updateTotalPrice();
 		});
 	});
 
@@ -170,6 +192,11 @@ pageEncoding="UTF-8" %>
 										<script>
 											// x 누른 image 카트에서 삭제되게 하기
 											function itemCartDelete(element){
+
+												if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
+													return;
+												}
+
 												let deleteImg = element.querySelector('img');
 												let productId = deleteImg.alt;
 												let loginUser = '${ loginUser.id }';
@@ -197,7 +224,7 @@ pageEncoding="UTF-8" %>
 									</td>
 									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
 									<td class="column-3" style="padding-bottom: 0px;">
-										<span id="productPrice">${ cart.price }</span>
+										<span id="productPrice">${ cart.price }원</span>
 									</td>
 									<td class="column-4" style="text-align: center; padding-bottom: 0px">
 										<div class="wrap-num-product flex-w m-auto">
@@ -223,6 +250,32 @@ pageEncoding="UTF-8" %>
 					</div>
 				</div>
 			</div>
+
+			<hr>
+
+			<div class="total-container">
+				<div class="item">
+					<span class="label">총상품금액</span>
+					<span class="amount" id="totalAmount">62,000원</span>
+				</div>
+				<div class="item">
+					<span class="label">+</span>
+				</div>
+				<div class="item">
+					<span class="label">총배송비</span>
+					<span class="amount">3,000원</span>
+				</div>
+				<div class="item">
+					<span class="label">=</span>
+				</div>
+				<div class="item total">
+					<span class="label">TOTAL</span>
+					<span class="amount highlight">65,000원</span>
+					<span class="extra">FIGU</span>
+				</div>
+			</div>
+
+			<hr>
 
 			<!-- 장바구니 리스트의 결제 -->
 

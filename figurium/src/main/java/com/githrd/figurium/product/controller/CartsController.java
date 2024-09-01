@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public class CartsController {
         this.productsMapper = productsMapper;
     }
 
-
+    // 장바구니 추가 버튼 눌렀을 시에 실행
     @GetMapping("/shopingCart.do")
         public String shopingCart(Model model, int productId, int quantity) {
 
@@ -65,20 +67,39 @@ public class CartsController {
 
 
         List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
-        List<ProductsVo> products = new ArrayList<>();
-
-        for (CartsVo vo : cartsVo) {
-            ProductsVo product = productsMapper.selectOneGetName(vo.getProductId());
-            products.add(product);
-            System.out.println(product);
-        }
+//        List<ProductsVo> products = new ArrayList<>();
+//
+//        for (CartsVo vo : cartsVo) {
+//            ProductsVo product = productsMapper.selectOneGetName(vo.getProductId());
+//            products.add(product);
+//            System.out.println(product);
+//        }
 
 
         model.addAttribute("cartsVo", cartsVo);
-        model.addAttribute("products", products);
+//        model.addAttribute("products", products);
 
 
         return "products/shopingCart";
+        }
+
+        // 장바구니에 담긴 상품 삭제
+        @RequestMapping(value = "/CartDelete.do")
+        @ResponseBody
+        public String CartDelete(int productId, int loginUser) {
+
+            int res = cartsMapper.deleteCartProduct(productId, loginUser);
+
+            return "success";
+        }
+
+        // 내 장바구니 리스트 호출
+        @RequestMapping(value = "/CartList.do")
+        public String CartList(int loginUser, Model model) {
+            List<CartsVo> cartsVo = cartsMapper.selectList(loginUser);
+
+            model.addAttribute("cartsVo", cartsVo);
+            return "products/shopingCart";
         }
 
 

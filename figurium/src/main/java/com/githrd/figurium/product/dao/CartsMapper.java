@@ -12,4 +12,5 @@ public interface CartsMapper {
     int insertCarts(Map<String, Object> map);
     List<CartsVo> selectList(int loginUserId);
     CartsVo selectCartsById(int productId);
+    int deleteCartProduct(int productId, int loginUserId);
 }

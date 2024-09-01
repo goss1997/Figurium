@@ -190,7 +190,7 @@
 
 
                         <li <%--class="label1" data-label1="hot"--%>>
-                            <a href="shopingCart.do">장바구니</a>
+                            <a href="CartList.do?loginUser=${ loginUser.id }">장바구니</a>
                         </li>
 
                         <li>

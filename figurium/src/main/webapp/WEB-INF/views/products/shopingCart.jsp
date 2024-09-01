@@ -139,10 +139,33 @@ pageEncoding="UTF-8" %>
 										<input type="checkbox" style="margin-left: 20px;">
 									</td>
 									<td class="column-1" style="padding-bottom: 0px";>
-										<div class="how-itemcart1">
+										<div class="how-itemcart1" onclick="itemCartDelete(this)">
 											<img src="${pageContext.request.contextPath}${ cart.imageUrl }"
-												 alt="IMG">
+												 alt="${ cart.id }">
 										</div>
+										<script>
+											// x 누른 image 카트에서 삭제되게 하기
+											function itemCartDelete(element){
+												let deleteImg = element.querySelector('img');
+												let productId = deleteImg.alt;
+												let loginUser = '${ loginUser.id }';
+
+												$.ajax({
+													url 	: "CartDelete.do",
+													type	: "POST",
+													data	: { productId : productId,
+																loginUser : loginUser
+													},
+													success	: function (res_data) {
+														alert("장바구니에서 상품이 삭제되었습니다.");
+														location.href="CartList.do?loginUser=" + loginUser;
+													},
+													error	: function (err) {
+														alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");
+													}
+												});
+											}
+										</script>
 									</td>
 									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
 									<td class="column-3" style="padding-bottom: 0px;">${ cart.price }</td>

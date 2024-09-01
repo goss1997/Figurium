@@ -23,6 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from carts where product_id = #{ productId }
     </select>
 
+    <delete id="deleteCartProduct" parameterType="int">
+        delete from carts where product_id = #{ productId } and
+                                user_id = #{ loginUserId }
+    </delete>
+
 
 </mapper>
 

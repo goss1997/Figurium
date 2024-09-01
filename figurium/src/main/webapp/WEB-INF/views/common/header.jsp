@@ -170,6 +170,15 @@
             border-radius: 50%;
         }
 
+        .usercard-grade {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+
+            margin-right: -15px;
+            margin-bottom: 5px;
+        }
+
     </style>
 
 </head>
@@ -220,6 +229,7 @@
                             <div>
                                 <div style="display: inline-block">
                                     <img id="profileImg" src="${loginUser.profileImgUrl}" width="40px;">
+                                    <img class="usercard-grade" src="${pageContext.request.contextPath}/resources/images/star6.gif">
                                 </div>
                                 <div style="display: inline-block">
                                     <ul class="main-menu">

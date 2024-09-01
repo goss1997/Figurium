@@ -90,11 +90,14 @@ public class ReviewsController {
                 return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
             }
 
-
         } else {
             // 이미지는 선택 사항 이므로 만약에 이미지를 넣고 싶지 않으면 null이거나 공백을 빈 문자열로 처리하는 로직
             reviewVo.setImageUrl("");
         }
+
+        // 공백 전환
+        String content = reviewVo.getContent().replaceAll("\n","<br>");
+        reviewVo.setContent(content);
 
         // 성공시 숫자 1을 반환
         int success = reviewService.insertReview(reviewVo);

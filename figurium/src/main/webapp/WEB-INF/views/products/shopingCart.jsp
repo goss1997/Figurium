@@ -34,6 +34,8 @@ pageEncoding="UTF-8" %>
 			}
 		});
 	});
+
+
 </script>
 
 <body class="animsition">
@@ -114,7 +116,7 @@ pageEncoding="UTF-8" %>
 
 
 <!-- 장바구니 리스트 -->
-<form class="bg0 p-t-75 p-b-85">
+<div class="bg0 p-t-75 p-b-85">
 
 	<div class="cart_list" style="margin: 20px;">
 		<!-- breadcrumb -->
@@ -186,11 +188,17 @@ pageEncoding="UTF-8" %>
 														alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");
 													}
 												});
+
 											}
+
+
+
 										</script>
 									</td>
 									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
-									<td class="column-3" style="padding-bottom: 0px;">${ cart.price }</td>
+									<td class="column-3" style="padding-bottom: 0px;">
+										<span id="productPrice">${ cart.price }</span>
+									</td>
 									<td class="column-4" style="text-align: center; padding-bottom: 0px">
 										<div class="wrap-num-product flex-w m-auto">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -221,14 +229,15 @@ pageEncoding="UTF-8" %>
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do'">
+							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do?loginUserId=' + ${ loginUser.id }">
 						선택상품 결제
 					</button>
 				</div>
 
 				<div style="display: inline-block; margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do'">
+							style="width: 400px; padding: 10px; height: 50px"
+							onclick="location.href='order/orderForm.do?loginUserId=' + ${ loginUser.id }">
 						전체상품 결제
 					</button>
 				</div>
@@ -236,7 +245,7 @@ pageEncoding="UTF-8" %>
 
 		</div>
 	</div>
-</form>
+</div>
 
 
 <!-- Footer -->

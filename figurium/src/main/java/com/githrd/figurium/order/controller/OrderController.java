@@ -7,8 +7,10 @@ import com.githrd.figurium.order.dao.ShippingAddressesMapper;
 import com.githrd.figurium.order.vo.Customers;
 import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
+import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
+import com.githrd.figurium.product.vo.CartsVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +29,7 @@ import java.util.Map;
 @Controller
 public class OrderController {
 
-    private final ProductRepository productRepository;
+    private CartsMapper cartsMapper;
     private OrderMapper orderMapper;
     private CustomersMapper customersMapper;
     private ShippingAddressesMapper shippingAddressesMapper;
@@ -35,10 +37,10 @@ public class OrderController {
     private HttpSession session;
 
     @Autowired
-    public OrderController(ProductRepository productRepository, OrderMapper orderMapper,
+    public OrderController(CartsMapper cartsMapper, OrderMapper orderMapper,
                            CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
                            OrderItemsMapper orderItemsMapper, HttpSession session) {
-        this.productRepository = productRepository;
+        this.cartsMapper = cartsMapper;
         this.orderMapper = orderMapper;
         this.customersMapper = customersMapper;
         this.shippingAddressesMapper = shippingAddressesMapper;
@@ -47,17 +49,19 @@ public class OrderController {
     }
 
 
-    @GetMapping("order/orderForm.do")
-    public String orderForm(Model model) {
+    @RequestMapping("order/orderForm.do")
+    public String orderForm(Model model, int loginUserId) {
 
         // 지훈이형 Product DB 아무거나 던져보기
-        Pageable pageable = PageRequest.of(0, 2);
-        List<Products> cartsList = productRepository.findBuyProductsTwo(pageable);
+        // Pageable pageable = PageRequest.of(0, 2);
+
+        List<CartsVo> cartsList = cartsMapper.selectList(loginUserId);
+
 
         // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
         int totalPrice = 0;
 
-        for(Products products:cartsList) {
+        for(CartsVo products:cartsList) {
             totalPrice += products.getPrice() * products.getQuantity();
         }
 

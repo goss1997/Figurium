@@ -35,7 +35,6 @@ public class S3ImageServiceImpl implements S3ImageService{
 
     @Autowired
     public S3ImageServiceImpl(AmazonS3 amazonS3) {
-        System.out.println("-- S3ImageService --");
         this.amazonS3 = amazonS3;
     }
 

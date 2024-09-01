@@ -13,6 +13,28 @@ pageEncoding="UTF-8" %>
 	<link rel="stylesheet" type="text/css" href="../../../resources/css/carts.css">
 </head>
 <jsp:include page="../common/header.jsp"/>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		const productContainer = document.querySelector('tbody'); // <tbody>를 선택
+
+		productContainer.addEventListener('click', function(event) {
+			const target = event.target.closest('.btn-num-product-down, .btn-num-product-up');
+
+			if (target) {
+				const quantityInput = target.closest('.wrap-num-product').querySelector('input[name="num-product1"]');
+				let currentValue = parseInt(quantityInput.value);
+
+				if (target.classList.contains('btn-num-product-down')) {
+					if (currentValue > 0) {
+						quantityInput.value = currentValue - 1;
+					}
+				} else if (target.classList.contains('btn-num-product-up')) {
+					quantityInput.value = currentValue + 1;
+				}
+			}
+		});
+	});
+</script>
 
 <body class="animsition">
 
@@ -183,7 +205,9 @@ pageEncoding="UTF-8" %>
 											</div>
 										</div>
 									</td>
-									<td class="column-5" style="padding-bottom: 0px";>${ cart.price }</td>
+									<td class="column-5" style="padding-bottom: 0px";>
+										<span id="totalPrice">${ cart.price * cart.quantity }</span>
+									</td>
 								</tr>
 								</c:forEach>
 							</table>

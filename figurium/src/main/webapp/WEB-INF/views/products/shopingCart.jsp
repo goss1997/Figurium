@@ -15,8 +15,25 @@ pageEncoding="UTF-8" %>
 <jsp:include page="../common/header.jsp"/>
 <script>
 
+
 	document.addEventListener('DOMContentLoaded', () => {
-		const items = document.querySelectorAll('.table_row'); // 모든 상품 행 선택
+		const items = document.querySelectorAll('.table_row');
+		const totalAmountElement = document.getElementById('totalAmount');
+		let grandTotal = 0;
+
+		function updateGrandTotal() {
+			grandTotal = 0;
+			items.forEach(item => {
+				const totalPriceElement = item.querySelector('#totalPrice');
+				const totalPrice = parseInt(totalPriceElement.textContent.replace(/원/g, '').replace(/,/g, ''));
+				grandTotal += totalPrice;
+			});
+			totalAmountElement.textContent = grandTotal.toLocaleString() + '원';
+
+			const shippingCost = 3000;
+			const finalTotalElement = document.querySelector('.total .amount.highlight');
+			finalTotalElement.textContent = (grandTotal + shippingCost).toLocaleString() + '원';
+		}
 
 		items.forEach(item => {
 			const priceElement = item.querySelector('#productPrice');
@@ -28,19 +45,22 @@ pageEncoding="UTF-8" %>
 				const quantity = parseInt(quantityInput.value);
 
 				if (!isNaN(price) && !isNaN(quantity)) {
-					totalPriceElement.textContent = (price * quantity).toLocaleString() + '원';
+					const totalPrice = price * quantity;
+					totalPriceElement.textContent = totalPrice.toLocaleString() + '원';
 					totalPriceElement.classList.add('shine');
 
 					setTimeout(() => {
 						totalPriceElement.classList.remove('shine');
 					}, 2000);
+
+					updateGrandTotal();
 				}
 			}
 
 			// 수량 증가 버튼
 			item.querySelector('.btn-num-product-up').addEventListener('click', () => {
 				quantityInput.value = parseInt(quantityInput.value) + 1;
-				updateTotalPrice(); // 총 가격 업데이트
+				updateTotalPrice();
 			});
 
 			// 수량 감소 버튼
@@ -49,12 +69,15 @@ pageEncoding="UTF-8" %>
 				if (currentQuantity > 1) {
 					quantityInput.value = currentQuantity - 1;
 				}
-				updateTotalPrice(); // 총 가격 업데이트
+				updateTotalPrice();
 			});
 
 			// 초기 총 가격 계산
 			updateTotalPrice();
 		});
+
+		// Initial grand total calculation
+		updateGrandTotal();
 	});
 
 
@@ -157,6 +180,7 @@ pageEncoding="UTF-8" %>
 	</div>
 
 	<div>
+		<h1>장바구니</h1>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
@@ -170,7 +194,7 @@ pageEncoding="UTF-8" %>
 										<input type="checkbox" style="margin-left: 20px;">
 									</th>
 									<th class="column-1">상품</th>
-									<th class="column-2">이름</th>
+									<th class="column-2" style="width: 35%;">이름</th>
 									<th class="column-3">가격</th>
 									<th class="column-4" style="text-align: center;">수량</th>
 									<th class="column-5">총 가격</th>

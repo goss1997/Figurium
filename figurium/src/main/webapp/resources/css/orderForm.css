@@ -164,8 +164,16 @@ td > img {
     padding-left: 10px;
 }
 
+.container {
+    margin-top: 30px;
+}
+
 .container > input {
     font-size: 12px;
+}
+
+#productPrice, #totalPrice {
+    text-align: center;
 }
 
 #a_search {

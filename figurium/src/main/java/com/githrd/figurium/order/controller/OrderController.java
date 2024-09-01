@@ -95,7 +95,7 @@ public class OrderController {
 
     @RequestMapping(value = "order/insertInformation.do")
     @ResponseBody
-    public String insertInformation(String name, String phone, String email,
+    public String insertInformation(int loginUserId, String name, String phone, String email,
                                     String address, String recipientName,
                                     String shippingPhone, String deliveryRequest,
                                     @RequestParam(value="productIds[]") List<Integer> productIds,
@@ -125,6 +125,9 @@ public class OrderController {
             orderItems.setProductId(productId);
             orderItems.setItemPrice(itemPrice);
             orderItems.setItemQuantity(itemQuantity);
+
+            // 장바구니에 입력되어 있는 정보 중 구매한 상품 전부 삭제
+            cartsMapper.deleteCartProduct(productId, loginUserId);
 
             orderItemsMapper.insertOrderItems(orderItems);
 

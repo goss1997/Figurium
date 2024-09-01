@@ -114,6 +114,7 @@
       // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
 
+      let loginUserId = document.getElementById("order_id").value;         // 보낸 사람 이름
       let name = document.getElementById("order_name").value;         // 보낸 사람 이름
       let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
       let email = document.getElementById("order_email").value;       // 이메일
@@ -142,6 +143,7 @@
         type : "POST",
         url : "insertInformation.do",
         data : {
+          loginUserId : loginUserId,
           name : name,
           phone : phone,
           email : email,
@@ -270,7 +272,7 @@
 
 
 <div class="order_box_both">
-
+  <input type="hidden" value="${ sessionScope.loginUser.id }" id="order_id">
 
 <%-- 주문 테이블 customers --%>
 <div class="order_box_l mt-3">

@@ -96,18 +96,18 @@
                         <h5 class="card-title">개인 정보 수정</h5>
                     </div>
                     <div style="width: 80%; margin: auto;">
-                        <form>
+                        <form method="post" action="update.do">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" value="${user.name}" required>
+                                <input type="text" class="form-control" id="name" name="name" value="${user.name}" minlength="3" required>
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" value="${user.phone}" required>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="${user.phone}" maxlength="15" required>
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" value="${user.address}" required>
+                                <input type="text" class="form-control" id="address" name="address" value="${user.address}" required>
                             </div>
                             <button type="submit" class="btn btn-secondary">Save Changes</button>
                         </form>

@@ -24,7 +24,8 @@ public class UserController {
 
     /**
      * 로그인
-     * @param email : 이메일
+     *
+     * @param email    : 이메일
      * @param password : 비밀번호
      * @return : ResponseEntity
      */
@@ -52,6 +53,7 @@ public class UserController {
 
     /**
      * 로그아웃
+     *
      * @return : 메인 페이지
      */
     @GetMapping("logout.do")
@@ -61,7 +63,7 @@ public class UserController {
         session.removeAttribute("loginUser");
 
         String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
-        return "redirect:"+ referer; // 이전 페이지로 리다이렉트
+        return "redirect:" + referer; // 이전 페이지로 리다이렉트
     }
 
 
@@ -76,19 +78,20 @@ public class UserController {
 
     /**
      * 이메일 확인
+     *
      * @param email : 가입 이메일
      * @return : json
      */
-    @RequestMapping(value = "check_email.do", produces="application/json; charset=utf-8;")
+    @RequestMapping(value = "check_email.do", produces = "application/json; charset=utf-8;")
     @ResponseBody
     public String checkEmail(String email) {
 
-        
+
         // null이 아니면 사용중인 이메일 > isUsed = true
         boolean isUsed = (userService.findByEmail(email) != null);
 
         System.out.println("isUsed = " + isUsed);
-        
+
         JSONObject json = new JSONObject();
         json.put("isUsed", isUsed);
 
@@ -102,11 +105,11 @@ public class UserController {
     @PostMapping("sign-up.do")
     public String signup(User user, @RequestParam MultipartFile profileImage) {
 
-        User save = userService.save(user,profileImage);
+        User save = userService.signup(user, profileImage);
 
         if (save == null) {
             return "redirect:/user/login.do";
-        }else {
+        } else {
             return "redirect:/";
         }
     }
@@ -117,17 +120,16 @@ public class UserController {
     @GetMapping("my-page.do")
     public String myPage(Model model) {
 
-        User loginUser = (User)session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
 
-        if( loginUser != null ) {
+        if (loginUser != null) {
 
             User user = userService.findUserById(loginUser.getId());
 
             model.addAttribute("user", user);
 
             return "user/myPage";
-        }
-        else {
+        } else {
             return "redirect:/";
         }
 
@@ -140,16 +142,26 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<?> updateProfileImage(@RequestParam MultipartFile file) {
         User user = (User) session.getAttribute("loginUser");
-        if(user == null) {
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인한 사용자만 요청 가능합니다.");
         }
 
         User updateUser = userService.updateProfileImage(user, file);
-        if(updateUser == null ) {
+        if (updateUser == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 이미지를 수정할 수 없습니다.");
-        }else {
+        } else {
             return ResponseEntity.ok("update profile image successful");
         }
     }
+
+    @PostMapping("update.do")
+    public String updateUser(String name, String phone, String address) {
+
+        User updatedUser = userService.updateUser(name, phone, address);
+        session.setAttribute("loginUser", updatedUser);
+
+        return "redirect:/user/my-page.do";
+    }
+
 
 }

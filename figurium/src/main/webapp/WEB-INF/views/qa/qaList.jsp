@@ -6,17 +6,18 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-    <%--
-      Created by IntelliJ IDEA.
-      User: mac
-      Date: 8/26/24
-      Time: 5:03 PM
-      To change this template use File | Settings | File Templates.
-    --%>
+<%--
+  Created by IntelliJ IDEA.
+  User: mac
+  Date: 8/26/24
+  Time: 5:03 PM
+  To change this template use File | Settings | File Templates.
+--%>
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <!DOCTYPE html>
     <html lang="ko">
@@ -72,8 +73,7 @@
                     <td><a href="${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
                     <td>${qa.reply != null ? '답변완료' : '미답변'}</td>
                     <td>${qa.userId}</td>
-                    <td><jsp:useBean id="vo" scope="request" type="com.githrd.figurium.qa.vo.QaVo"/>
-                    <c:out value="${vo.updated}" default="${vo.created}" /></td>
+                    <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
                 </tr>
             </c:forEach>
             </tbody>

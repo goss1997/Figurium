@@ -481,7 +481,7 @@
                                 상품 가격 : \${product.price}￦
                             </span>
                             <span class="stext-105 cl3">
-                                상품 등록일 : \${product.createdAt}
+                                상품 등록일 : \${product.createdAt.substring(0, 10)} \${product.createdAt.substring(11, 16)}
                             </span>
                         </div>
                     </div>

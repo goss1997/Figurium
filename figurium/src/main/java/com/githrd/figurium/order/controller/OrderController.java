@@ -103,9 +103,6 @@ public class OrderController {
 
             int itemQuantityCheck = productsVo.getQuantity();
 
-            System.out.println(productId);
-            System.out.println("내가 주문한 재고" + itemQuantity);
-
             if(itemQuantityCheck <= itemQuantity) {
                 return "error";
             }

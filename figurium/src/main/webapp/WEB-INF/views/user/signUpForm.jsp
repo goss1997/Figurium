@@ -18,7 +18,11 @@
         #box{
             width: 800px;
             margin: 50px auto auto;
+        }
 
+        #mail-form{
+            width: 800px;
+            margin: 50px auto auto;
         }
 
         th{
@@ -46,7 +50,7 @@
     </style>
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -70,23 +74,21 @@
 
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
-    <form class="form-inline" enctype="multipart/form-data">
+    <div id="mail-form"></div>
+    <form class="form-inline">
         <div id="box">
             <div class="panel panel-primary">
                 <div class="panel-heading" style="text-align: center; margin-bottom: 20px;"><h2>회원가입</h2></div>
-                    <div style="margin-bottom: 10px;">
-                        <span style="text-align: left; font-weight: bold; font-size: 13px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span> <br>
-                        <span style="text-align: left; font-size: 13px; color: #b4b2b2; margin-left: 10px;">휴대폰 번호와 주소를 입력하시면 주문을 원활하게 진행하실 수 있습니다.</span>
-                    </div>
+                <div style="margin-bottom: 10px;">
+                    <span style="text-align: left; font-weight: bold; font-size: 13px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span> <br>
+                    <span style="text-align: left; font-size: 13px; color: #b4b2b2; margin-left: 10px;">휴대폰 번호와 주소를 입력하시면 주문을 원활하게 진행하실 수 있습니다.</span>
+                </div>
                 <div class="card" style="width: 50%;">
                     <div class="card-body">
                         <h4 class="card-title text-center">프로필 이미지 업로드</h4>
                         <img id="preview" class="preview-img" src="#" alt="이미지 미리보기" style="display:none;">
                     </div>
-                        <label for="image" style="width: 30%;" class="btn btn-primary btn-block">
-                            이미지 선택
-                            <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(this)" style="display:none;" required>
-                        </label>
+                    <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(this)" >
                     <script>
                         document.getElementById('image').addEventListener('change', function() {
                             document.getElementById('preview').style.display = 'block';
@@ -100,7 +102,7 @@
                             <th>이메일*</th>
                             <td>
                                 <input style="width:50%;"  class="form-control" type="text" name="email"  id="signup-email">
-                                <input class="btn  btn-secondary"  type="button"  value="중복 확인" onclick="check_email();">
+                                <input class="btn btn-secondary"  type="button"  value="중복 확인" onclick="check_email();">
                                 <span style="font-size: 13px;"  id="check_email_msg"></span>
                             </td>
                         </tr>
@@ -263,11 +265,82 @@
 
         }
 
-        f.action = "sign-up.do";
-        f.method = 'post'
-        f.submit(); //전송
+        // 이메일에 인증 번호 발송.
+        sendEmail(email);
+
+        // 인증 번호 입력 폼 만들기.
+        $("#mail-form").append('<br><br><br><h4>'+f.email.value+' 을 확인해 인증번호를 입력해주세요.</h4><br>')
+            .append('인증번호 : <input style="width:300px;" class="form-control" id="mailCode" />')
+            .append(' <button class="btn btn-secondary" id="codeCheckBtn">확인</button>');
+        // 스크롤 맨 위로 보내기
+        $('html, body').scrollTop(0);
+
+        // 확인 버튼 클릭시 인증 코드 확인용 ajax
+        $("#codeCheckBtn").click(function() {
+            let code = $("#mailCode").val();
+            $.ajax({
+                url: '/api/verification/verify',
+                type: 'POST',
+                data: { code: code },
+                success: function(response) {
+                    console.log(response);
+                    alert('인증되었습니다!');
+                    f.action = "sign-up.do";
+                    f.method = 'POST';
+                    f.enctype = 'multipart/form-data';
+                    f.submit();
+                },
+                error: function(xhr, status, error) {
+                    alert('인증번호가 일치하지 않습니다.');
+                    return;
+                }
+            });
+        })
+
 
     }//end:send()
+
+    // 해당 이메일에 인증 코드 보내는 함수
+    function sendEmail(email) {
+        // 화면 비우기.
+        $("#box").css('opacity','0');
+
+        // 입력한 이메일로 인증 번호 보내기.
+        $.ajax({
+            url: '/api/verification/send',
+            type: 'POST',
+            data: { email: email },
+            success: function(response) {
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX 요청 중 오류 발생:", status, error);
+                alert("인증번호 전송 실패");
+            }
+        });
+    }
+
+    // 이메일 인증 번호 확인하는 함수.
+    function checkEmailCode() {
+        let isCorrect;
+        let code = $("#mailCode").val();
+        $.ajax({
+            url: '/api/verification/verify',
+            type: 'POST',
+            data: { code: code },
+            success: function(response) {
+                console.log(response);
+                alert('인증되었습니다!');
+                isCorrect = true;
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX 요청 중 오류 발생:", status, error);
+                isCorrect = false;
+            }
+        });
+        console.log('인증번호가 맞니? : '+ isCorrect);
+        return isCorrect;
+    }
+
 
 </script>
 
@@ -276,3 +349,4 @@
 <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
+

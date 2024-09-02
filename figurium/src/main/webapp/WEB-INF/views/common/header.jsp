@@ -228,7 +228,7 @@
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img id="profileImg" src="${loginUser.profileImgUrl}" width="40px;">
+                                    <img id="profileImg" src="${loginUser.profileImgUrl == null ? '/resources/images/default-user-image.png' : loginUser.profileImgUrl }" width="40px;">
                                     <img class="usercard-grade" src="${pageContext.request.contextPath}/resources/images/star6.gif">
                                 </div>
                                 <div style="display: inline-block">
@@ -444,6 +444,7 @@
                 method : 'post',
                 data : { email : email, password : password },
                 success : function (result) {
+                    console.log(result);
                     location.reload();
                 },
                 error: function(error) {

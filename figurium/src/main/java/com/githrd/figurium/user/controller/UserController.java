@@ -4,6 +4,7 @@ import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
+import com.githrd.figurium.user.vo.UserVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -93,11 +94,8 @@ public class UserController {
     @ResponseBody
     public String checkEmail(String email) {
 
-
         // null이 아니면 사용중인 이메일 > isUsed = true
         boolean isUsed = (userService.findByEmail(email) != null);
-
-        System.out.println("isUsed = " + isUsed);
 
         JSONObject json = new JSONObject();
         json.put("isUsed", isUsed);
@@ -110,18 +108,21 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("sign-up.do")
-    public String signup(User user, @RequestParam MultipartFile profileImage) {
+    public String signup(UserVo user,
+                         @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
+
+        System.out.println("회원가입 컨트롤러 실행");
 
         // 비밀번호 암호화
         String encPwd = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encPwd);
 
-        User save = userService.signup(user, profileImage);
+        int result = userService.signup(user, profileImage);
 
-        if (save == null) {
-            return "redirect:/user/login.do";
-        } else {
+        if (result > 0) {
             return "redirect:/";
+        } else {
+            return "redirect:/user/login.do";
         }
     }
 

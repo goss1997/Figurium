@@ -1,11 +1,12 @@
 package com.githrd.figurium.user.service;
 
+import com.githrd.figurium.user.dao.UserMapper;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.repository.UserRepository;
+import com.githrd.figurium.user.vo.UserVo;
 import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final S3ImageService s3ImageService;
     private final HttpSession session;
 
@@ -24,7 +26,7 @@ public class UserService {
     }
 
     @Transactional
-    public User signup(User user, MultipartFile profileImage) {
+    public int signup(UserVo user, MultipartFile profileImage) {
 
         // s3에 해당 이미지 업로드 후 user에 set하고 db에 저장하기.
         if(!profileImage.isEmpty()) {
@@ -32,7 +34,7 @@ public class UserService {
             user.setProfileImgUrl(profileImgUrl);
         }
 
-        return userRepository.save(user);
+        return userMapper.insert(user);
     }
 
     // 업로드된 프로필 이미지 수정

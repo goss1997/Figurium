@@ -161,6 +161,7 @@ CREATE TABLE qa
     title      VARCHAR(100) COMMENT '질문제목',
     content    VARCHAR(400) COMMENT '질문내용',
     reply      VARCHAR(400) COMMENT '질문 답글',
+    replyStatus  ENUM('답변완료', '답변준비중') DEFAULT '답변준비중' COMMENT '답변여부',
     created    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
     updated    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
     FOREIGN KEY (product_id) REFERENCES products (id),

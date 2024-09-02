@@ -1,5 +1,6 @@
 package com.githrd.figurium.order.dao;
 
+import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.order.vo.Orders;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +14,7 @@ public interface OrderMapper {
     Orders selectOneLast();
 
     // 사용자 주문 내역 조회
-    List<Orders> selectListByUserId(int userId);
+    List<MyOrderVo> selectListByUserId(int userId);
 
 
 }

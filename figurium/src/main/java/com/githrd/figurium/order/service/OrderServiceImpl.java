@@ -4,6 +4,7 @@ import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.dao.ShippingAddressesMapper;
+import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.order.vo.Orders;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
@@ -83,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public List<Orders> selectListByUserId(int userId) {
+    public List<MyOrderVo> selectListByUserId(int userId) {
         return orderMapper.selectListByUserId(userId);
     }
 

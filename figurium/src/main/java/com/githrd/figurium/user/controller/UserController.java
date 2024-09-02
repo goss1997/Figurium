@@ -1,7 +1,7 @@
 package com.githrd.figurium.user.controller;
 
 import com.githrd.figurium.order.service.OrderService;
-import com.githrd.figurium.order.vo.Orders;
+import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -188,7 +187,7 @@ public class UserController {
 
         int userId = loginUser.getId();
 
-        List<Orders> myOrdersList = orderService.selectListByUserId(userId);
+        List<MyOrderVo> myOrdersList = orderService.selectListByUserId(userId);
 
         model.addAttribute("myOrdersList", myOrdersList);
 

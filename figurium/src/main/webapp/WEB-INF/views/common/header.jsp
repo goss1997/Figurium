@@ -206,7 +206,7 @@
 
 
                         <li <%--class="label1" data-label1="hot"--%>>
-                            <a href="CartList.do?loginUser=${ loginUser.id }">장바구니</a>
+                            <a href="${pageContext.request.contextPath}/CartList.do?loginUser=${ loginUser.id }">장바구니</a>
                         </li>
 
                         <li>
@@ -237,7 +237,7 @@
                                             <a href="#">${loginUser.name}</a>
                                             <ul style="margin-top: 15px;" class="sub-menu">
                                                 <li><a href="${pageContext.request.contextPath}/user/my-page.do">마이페이지</a></li>
-                                                <li><a href="#">주문 내역</a></li>
+                                                <li><a href="${pageContext.request.contextPath}/user/order-list.do">주문 내역</a></li>
                                                 <li><a href="#">반품 내역</a></li>
                                                 <li><a href="#">위시리스트</a></li>
                                                 <hr>

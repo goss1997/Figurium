@@ -80,7 +80,7 @@
     <div class="container mt-4">
         <div class="row">
             <!-- Sidebar -->
-            <div style="margin-left: -200px;" class="col-md-3">
+            <div style="margin-left: -150px;" class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">My Page</h5>
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Main Content -->
-            <div style="float: left; width: 80%; margin-left: 80px;">
+            <div style="float: left; width: 80%; margin-left: 50px;">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">개인 정보 수정</h5>

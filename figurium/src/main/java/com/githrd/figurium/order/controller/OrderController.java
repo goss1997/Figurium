@@ -90,23 +90,23 @@ public class OrderController {
     @RequestMapping("order/checkProduct.do")
     @ResponseBody
     public String checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
-                               @RequestParam(value="itemQuantities[]") List<Integer> itemQuantites) {
+                               @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
 
         for(int i = 0; i < productIds.toArray().length; i++) {
 
             int productId = productIds.get(i); // 재고 상품 정보
-            int itemQuantity = itemQuantites.get(i); // 재고 상품 갯수
+            int itemQuantity = itemQuantities.get(i); // 재고 상품 갯수
+
+
+            // ProductsVo에 담아서 재고 있는지 체크
+            ProductsVo productsVo = productsMapper.selectOneCheckProduct(productId, itemQuantity);
+
+            int itemQuantityCheck = productsVo.getQuantity();
 
             System.out.println(productId);
-            System.out.println(itemQuantity);
+            System.out.println("내가 주문한 재고" + itemQuantity);
 
-            ProductsVo productsVo = new ProductsVo();
-            // ProductsVo에 담아서 재고 있는지 체크
-            productsMapper.selectOneCheckProduct(productId, itemQuantity);
-
-            Integer productsCheckId = productsVo.getId();
-
-            if(productsCheckId == null) {
+            if(itemQuantityCheck <= itemQuantity) {
                 return "error";
             }
         }

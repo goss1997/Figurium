@@ -44,20 +44,50 @@
         return;
       }
 
+      console.log(productIds);
+      console.log(itemQuantities);
+
       $.ajax({
         type : "POST",
         url : "checkProduct.do",
         data : {
           productIds : productIds,
           itemQuantities : itemQuantities
-          /*          shipping_address : shipping_address,
-                    paymentType : paymentType,
-                    itemNames : itemNames,
-                    itemPrices : itemPrices,
-                    itemQuantities : itemQuantities*/
         },
         success: function(res_data){
           alert("재고가 남아있습니다.");
+
+          IMP.request_pay({
+            pg : 'kcp', // PG사 코드표에서 선택
+            pay_method : 'card', // 결제 방식
+            merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
+            name: '피규리움 결제창',   // 상품명
+            amount : price, // 가격
+            buyer_email : 'cktjsdlf4636@naver.com',
+            buyer_name : '피규리움 기술지원팀',
+            buyer_tel : '010-1234-5678',
+            buyer_addr : '서울특별시 강남구 삼성동',
+            buyer_postcode : '123-456'
+          }, function (rsp) { // callback
+            console.log(rsp);
+            // 결제검증
+            $.ajax({
+              type : "POST",
+              url  : "/verifyIamport/" + rsp.imp_uid
+            }).done(function(data){
+              console.log(data);
+
+              // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
+              // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
+              if(rsp.paid_amount == data.response.amount) {
+                alert("결제 및 결제 검증완료");  // 결제검증이 성공적으로 이뤄지면 실행되는 로직
+                sil(price);
+
+              } else {
+                alert("결제 실패")  // 결제검증이 실패하면 이뤄지는 실패 로직
+              }
+            });
+          });
         },
         error: function(err){
           alert("해당 상품의 재고가 충분하지 않습니다. 해당 상품의 재고를 문의해주세요.");
@@ -66,37 +96,6 @@
       });
 
 
-      IMP.request_pay({
-        pg : 'kcp', // PG사 코드표에서 선택
-        pay_method : 'card', // 결제 방식
-        merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
-        name: '피규리움 결제창',   // 상품명
-        amount : price, // 가격
-        buyer_email : 'cktjsdlf4636@naver.com',
-        buyer_name : '피규리움 기술지원팀',
-        buyer_tel : '010-1234-5678',
-        buyer_addr : '서울특별시 강남구 삼성동',
-        buyer_postcode : '123-456'
-      }, function (rsp) { // callback
-          console.log(rsp);
-          // 결제검증
-          $.ajax({
-            type : "POST",
-            url  : "/verifyIamport/" + rsp.imp_uid
-          }).done(function(data){
-            console.log(data);
-
-            // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
-            // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
-            if(rsp.paid_amount == data.response.amount) {
-              alert("결제 및 결제 검증완료");  // 결제검증이 성공적으로 이뤄지면 실행되는 로직
-              sil(price);
-
-            } else {
-              alert("결제 실패")  // 결제검증이 실패하면 이뤄지는 실패 로직
-            }
-          });
-      });
     }
 
     let paymentType = document.querySelector('input[name="payment"]:checked');
@@ -493,7 +492,7 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="sil(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(100);">주문하기</button>
 
   </div>
 

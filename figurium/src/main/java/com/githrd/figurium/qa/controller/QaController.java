@@ -66,4 +66,18 @@ public class QaController {
         model.addAttribute("qa", qaVo);
         return "qa/qaSelect";
     }
+
+    // 게시글 삭제 메서드 추가
+    @GetMapping("/qaDelete.do")
+    public String delete(@RequestParam("id") int id) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+
+        // 게시글 삭제
+        qaService.deleteQa(id);
+
+        return "redirect:/qa/qaList.do";
+    }
 }

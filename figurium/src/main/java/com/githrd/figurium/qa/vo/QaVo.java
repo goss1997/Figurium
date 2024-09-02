@@ -10,7 +10,10 @@ public class QaVo {
     private String reply;
     private LocalDateTime created;
     private LocalDateTime updated;
-    private String category; // 추가된 필드
+    private String category;
+    private String replyStatus;
+
+
 
     // Getter and Setter methods
     public Integer getId() {
@@ -75,5 +78,13 @@ public class QaVo {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getReplyStatus() {
+        return replyStatus;
+    }
+
+    public void setReplyStatus(String replyStatus) {
+        this.replyStatus = replyStatus;
     }
 }

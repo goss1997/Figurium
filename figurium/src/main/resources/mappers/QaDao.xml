@@ -6,6 +6,7 @@
 <mapper namespace="com.githrd.figurium.qa.dao.QaDao">
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT * FROM qa
+        ORDER BY created DESC
     </select>
 
     <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
@@ -13,8 +14,8 @@
     </select>
 
     <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
-        INSERT INTO qa (product_id, user_id, title, content, reply, created, updated)
-        VALUES (#{productId}, #{userId}, #{title}, #{content}, #{reply}, #{created}, #{updated})
+        INSERT INTO qa (user_id, title, content, reply)
+        VALUES (#{userId}, #{title}, #{content}, #{reply})
     </insert>
 
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
@@ -22,7 +23,8 @@
         SET title = #{title},
             content = #{content},
             reply = #{reply},
-            updated = #{updated}
+            updated = #{updated},
+            reply_status = #{replyStatus}
         WHERE id = #{id}
     </update>
 

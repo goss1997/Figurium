@@ -6,7 +6,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -71,7 +70,7 @@
                 <tr>
                     <td>${qa.id}</td>
                     <td><a href="${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
-                    <td>${qa.reply != null ? '답변완료' : '미답변'}</td>
+                    <td>${qa.replyStatus}</td>
                     <td>${qa.userId}</td>
                     <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
                 </tr>

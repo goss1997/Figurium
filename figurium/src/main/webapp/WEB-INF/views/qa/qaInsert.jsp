@@ -26,13 +26,13 @@
         <hr>
         <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+                <input type="text" class="form-control" name="user" placeholder="사용자명을 입력하세요" autocomplete="username">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="author" name="author" placeholder="비밀번호를 입력하세요">
+                <input type="password" class="form-control" id="author" name="author" placeholder="비밀번호를 입력하세요" autocomplete="new-password">
             </div>
-            <form>
-                <select name="category" class="custom-select">
+            <div class="form-group">
+                <select name="category" class="custom-select" autocomplete="off">
                     <option selected>:::분류 선택:::</option>
                     <option value="배송문의">배송문의</option>
                     <option value="취소문의">취소문의</option>
@@ -41,16 +41,15 @@
                     <option value="배송지변경문의">배송지변경문의</option>
                     <option value="기타문의">기타문의</option>
                 </select>
-            </form>
-            <br>
-            <div class="form-group">
-                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
             </div>
             <div class="form-group">
-                <textarea class="form-control" style="resize: none; height: 180px;" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
             </div>
-            <button type="submit" class="btn btn-dark" style="margin-bottom: 10px;" >등록</button>
-            <button type="button" class="btn btn-light" role="button" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'" style="margin-bottom: 10px;">취소</button>
+            <div class="form-group">
+                <textarea class="form-control" style="resize: none; height: 180px;" id="content" name="content" placeholder="내용을 입력하세요" autocomplete="off"></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark" style="margin-bottom: 10px;">등록</button>
+            <a href="${pageContext.request.contextPath}/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px;">취소</a>
         </form>
     </div>
 

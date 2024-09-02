@@ -9,6 +9,24 @@
     <meta charset="UTF-8">
     <title>상품상세</title>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
+    <style>
+        .product_insert > input{
+            background-color:transparent;
+        }
+        .product_insert:hover > input{
+            background-color:transparent;
+            color: white;
+        }
+
+        .product_insert > button{
+            background-color:transparent;
+        }
+        .product_insert:hover > button{
+            background-color:transparent;
+            color: white;
+        }
+
+    </style>
 
 </head>
 <jsp:include page="../common/header.jsp"/>
@@ -27,6 +45,18 @@
             <span class="stext-109 cl4">
                 상품상세
             </span>
+            <br>
+            <c:if test="${loginUser.role == '1'}">
+
+                <div style="margin-left : 60%">
+                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
+                        <input type="button" value="상품수정" onclick="if(confirm('정말 수정하시겠습니까?')) location.href='#'">
+                    </div>
+                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
+                        <button class="delete-button" data-product-id="${product.id}">상품삭제</button>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div>
 
@@ -378,6 +408,34 @@
 
 </script>
 
+<script >
+
+    $(document).ready(function () {
+        $('.delete-button').on('click', function () {
+            var productId = $(this).data('product-id');
+
+            if (confirm('정말 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '/productDelete.do/' + productId,
+                    type: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    success: function (response) {
+                        // 삭제 성공 후 페이지 새로 고침
+                        window.location.href="/";
+                    },
+                    error: function (xhr, status, error) {
+                        alert('상품 삭제에 실패했습니다.');
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+    });
+
+
+</script>
 
 </body>
 

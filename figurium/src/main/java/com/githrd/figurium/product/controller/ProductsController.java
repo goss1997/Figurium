@@ -4,19 +4,18 @@ import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
+import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,20 +27,22 @@ public class ProductsController {
     private final ReviewService reviewService;
     private final CategoriesRepository categoriesRepository;
     private final HttpSession session;
+    private final ProductRepository productRepository;
     private ProductsMapper productsMapper;
-
+    private S3ImageService s3ImageService;
 
 
     @Autowired
     public ProductsController(ProductsService productsService,
                               ReviewService reviewService,
                               CategoriesRepository categoriesRepository,
-                              HttpSession session, ProductsMapper productsMapper) {
+                              HttpSession session, ProductsMapper productsMapper, ProductRepository productRepository) {
         this.productsService = productsService;
         this.reviewService = reviewService;
         this.categoriesRepository = categoriesRepository;
         this.session = session;
         this.productsMapper = productsMapper;
+        this.productRepository = productRepository;
     }
 
 
@@ -85,6 +86,21 @@ public class ProductsController {
             System.out.println("등록성공");
             return "redirect:/"; // 저장 성공 시 리다이렉션
         }
+    }
+
+    @DeleteMapping("/productDelete.do/{id}")
+    public String productDelete(@PathVariable int id){
+
+        Products selectOne = productsService.getProductById(id);
+        String imageUrl = selectOne.getImageUrl();
+        System.out.println(imageUrl);
+
+        s3ImageService.deleteImageFromS3(imageUrl);
+
+
+        productRepository.deleteById(id);
+
+        return "redirect:/";
     }
 
 

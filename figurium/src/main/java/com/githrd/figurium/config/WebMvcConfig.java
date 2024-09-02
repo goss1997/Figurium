@@ -47,6 +47,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/resources/**",
                         "/",
+                        "/load-more-products",
                         "/user/logout.do",
                         "/user/login.do",
                         "/user/signup-form.do",
@@ -54,7 +55,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/user/sign-up.do",
                         "/productInfo.do",
                         "/qa/qaList.do",
-                        "/qa/qaSelect.do"
+                        "/qa/qaSelect.do",
+                        "/productInfo.do"
                 );
     }
 

@@ -9,4 +9,5 @@ public interface ProductsMapper {
     ProductsVo selectOneGetName(int productId);
     ProductsVo selectOneCheckProduct(int productId, int itemQuantity);
     int updateProductQuantity(int productId, int itemQuantity);
+    int productInsert(ProductsVo vo);
 }

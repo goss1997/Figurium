@@ -73,7 +73,7 @@ public class HomeController {
         Pageable pageable = PageRequest.of(0, pageSize);
 
         // lastId 이후의 상품을 가져오기
-        Page<Products> productsPage = productRepository.findByIdGreaterThanOrderByIdAsc(lastId, pageable);
+        Page<Products> productsPage = productRepository.findByIdGreaterThanOrderByCreatedAtDesc(lastId, pageable);
 
         // 반환할 데이터 구조
         Map<String, Object> response = new HashMap<>();

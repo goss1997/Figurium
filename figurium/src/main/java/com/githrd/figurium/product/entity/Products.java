@@ -2,12 +2,14 @@ package com.githrd.figurium.product.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "products")  // 실제 테이블 이름을 명시적으로 지정합니다.
+@ToString
 public class Products {
 
     @Id

@@ -21,6 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
+
+    <insert id="productInsert" parameterType="products">
+        INSERT INTO products (category_name, name, price, quantity, image_url)
+        VALUES (#{categoryName}, #{name}, #{price}, #{quantity}, #{imageUrl})
+    </insert>
+
+
+
 </mapper>
 
 

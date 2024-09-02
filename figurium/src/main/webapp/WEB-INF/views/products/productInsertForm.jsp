@@ -50,17 +50,17 @@
                     </tr>
                     <tr>
                         <th>상품명 :</th>
-                        <td><input class="form-control form-control" name="product_name"></td>
+                        <td><input class="form-control form-control" name="name"></td>
                     </tr>
                     <tr>
                         <th>가격 :</th>
-                        <td><input class="form-control form-control" name="product_price"></td>
+                        <td><input class="form-control form-control" name="price"></td>
                     </tr>
                     <hr>
                     <tr>
                         <th>제조사 :</th>
                         <td>
-                            <select class="form-control form-control" id="sel1" name="category"
+                            <select class="form-control form-control" id="sel1" name="categoryName"
                                     style="margin: 0px;">
                                 <option>선택하세요.</option>
                                 <c:forEach var="categori" items="${categoriesList}">
@@ -74,7 +74,7 @@
                     <tr>
                         <th>재고</th>
                         <td>
-                            <input type="text" class="form-control form-control" name="product_quantity" PLACEHOLDER="재고 수량 입력">
+                            <input type="text" class="form-control form-control" name="quantity" PLACEHOLDER="재고 수량 입력">
                         </td>
                     </tr>
                 </table>
@@ -111,10 +111,10 @@
     function send(f){
 
 
-        let name                = f.product_name.value.trim();
-        let price 	            = f.product_price.value.trim();
-        let category_name    	= f.category.value.trim();
-        let quantity  	        = f.product_quantity.value.trim();
+        let name                = f.name.value.trim();
+        let price 	            = f.price.value.trim();
+        let category    	    = f.categoryName.value.trim();
+        let quantity  	        = f.quantity.value.trim();
 
         if(name==''){
             alert("상품명을 입력하세요");
@@ -128,10 +128,10 @@
             f.price.focus();
             return;
         }
-        if(category_name=='선택하세요.'){
+        if(category=='선택하세요.'){
             alert("제조사를 선택하세요");
-            f.category_name.value="";
-            f.category_name.focus();
+            f.categoryName.value="";
+            f.categoryName.focus();
             return;
         }
         if(quantity==''){
@@ -145,11 +145,11 @@
         console.log(name);
         console.log(price);
         console.log(quantity);
-        console.log(category_name);
+        console.log(category);
 
 
-
-        f.action = "../product/productInsert.do";
+        f.enctype = 'multipart/form-data'
+        f.action = "productInsert.do";
         f.method = 'post'
         f.submit(); //전송
 

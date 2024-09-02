@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -393,7 +394,8 @@
                         상품 가격 : ${products.price}￦
                     </span>
                                 <span class="stext-105 cl3">
-                        상품 등록일 : ${fun:substring(products.createdAt,0,10)} ${fun:substring(products.createdAt,11,16)}
+                                    <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>
+                        상품 등록일 : <fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
                     </span>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
@@ -459,9 +461,15 @@
                         $('#load-more-btn').hide(); // 더 이상 데이터가 없으면 버튼 숨김
                     } else {
                         let html = '';
-                        console.log(products);
                         products.forEach(function (product) {
-                            console.log(product.id);
+
+                            // JavaScript에서 날짜 문자열을 Date 객체로 변환
+                            var createdAt = new Date(product.createdAt);
+
+                            // 날짜를 원하는 형식으로 포맷
+                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
+
                             html += `
             <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.category.name}' >
                 <div class="block2">
@@ -481,7 +489,7 @@
                                 상품 가격 : \${product.price}￦
                             </span>
                             <span class="stext-105 cl3">
-                                상품 등록일 : \${product.createdAt.substring(0, 10)} \${product.createdAt.substring(11, 16)}
+                        상품 등록일 : \${formattedDate}
                             </span>
                         </div>
                     </div>

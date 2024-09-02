@@ -6,6 +6,7 @@ import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.util.S3ImageService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,14 @@ public class ProductsService {
         this.productsMapper = productsMapper;
     }
 
+
+
     public Products getProductById(int id) {
         return productRepository.findById(id);
     }
 
+
+    @Transactional
     public String ImageSave(ProductsVo products, MultipartFile productImage) {
 
         // s3에 해당 이미지 업로드 후  set하고 db에 저장하기.

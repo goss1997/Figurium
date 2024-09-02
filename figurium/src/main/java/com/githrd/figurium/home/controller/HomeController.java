@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,53 +36,42 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Products> productsList = productRepository.findProductsWithPagination(PageRequest.of(0, 40));
+        // 페이지 초기 로딩 시, 첫 페이지 로드
+        Pageable pageable = PageRequest.of(0, 40, Sort.by(Sort.Order.desc("createdAt"), Sort.Order.asc("id")));
+        Page<Products> productsPage = productRepository.findProductsWithPagination(pageable);
         List<Category> categoriesList = categoriesRepository.findAll();
-        model.addAttribute("productsList", productsList);
+        model.addAttribute("productsList", productsPage.getContent());
         model.addAttribute("categoriesList", categoriesList);
+
 
         return "home";
     }
 
-//    @GetMapping("/load-more-products")
-//    @ResponseBody
-//    public ResponseEntity<List<Products>> loadMoreProducts(@RequestParam int page, @RequestParam int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        List<Products> products = productRepository.findProductsWithPagination(pageable);
-//        return ResponseEntity.ok(products);
-//    }
-
-
-//    @GetMapping("/load-more-products")
-//    public ResponseEntity<?> loadMoreProducts(@RequestParam(value = "lastId", defaultValue = "0") int lastId) {
-//        int pageSize = 20;
-//        Pageable pageable = PageRequest.of(0, pageSize); // 페이지 번호는 0으로 설정
-//
-//        // lastId 이후의 상품을 가져오기
-//        List<Products> products = productRepository.findByIdGreaterThanOrderByIdAsc(lastId, pageable);
-//
-//        // 반환할 데이터 구조
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("products", products);
-//
-//        return ResponseEntity.ok(response);
-//    }
-
-
     @GetMapping("/load-more-products")
-    public ResponseEntity<?> loadMoreProducts(@RequestParam(value = "lastId", defaultValue = "0") int lastId) {
+    public ResponseEntity<?> loadMoreProducts(
+            @RequestParam(value = "lastCreatedAt", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastCreatedAt,
+            @RequestParam(value = "lastId", required = false) Integer lastId) {
+
         int pageSize = 20;
-        Pageable pageable = PageRequest.of(0, pageSize);
+        Pageable pageable;
+        if (lastCreatedAt != null) {
+            // `lastCreatedAt` 및 `lastId`을 기준으로 페이지 요청
+            pageable = PageRequest.of(0, pageSize, Sort.by(Sort.Order.desc("createdAt"), Sort.Order.asc("id")));
+            // lastCreatedAt 이전의 상품을 가져오기
+            Page<Products> productsPage = productRepository.findByCreatedAtBeforeAndIdLessThan(lastCreatedAt, lastId, pageable);
+            return buildResponse(productsPage);
+        } else {
+            // 첫 페이지 로딩 시
+            pageable = PageRequest.of(1, pageSize, Sort.by(Sort.Order.desc("createdAt"), Sort.Order.asc("id")));
+            Page<Products> productsPage = productRepository.findProductsWithPagination(pageable);
+            return buildResponse(productsPage);
+        }
+    }
 
-        // lastId 이후의 상품을 가져오기
-        Page<Products> productsPage = productRepository.findByIdGreaterThanOrderByCreatedAtDesc(lastId, pageable);
-
-        // 반환할 데이터 구조
+    private ResponseEntity<?> buildResponse(Page<Products> productsPage) {
         Map<String, Object> response = new HashMap<>();
         response.put("products", productsPage.getContent()); // 현재 페이지의 상품 목록
         response.put("hasNext", productsPage.hasNext()); // 다음 페이지가 있는지 여부
-
         return ResponseEntity.ok(response);
     }
-
 }

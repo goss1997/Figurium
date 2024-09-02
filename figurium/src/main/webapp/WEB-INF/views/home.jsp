@@ -8,7 +8,18 @@
 <head>
     <title>Figurium</title>
     <meta charset="UTF-8">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+
+        .product_insert > a{
+            text-decoration:none;
+            color: #888;
+        }
+        .product_insert:hover > a{
+            text-decoration:none;
+            color: white;
+        }
+    </style>
 </head>
 <jsp:include page="./common/header.jsp"/>
 <body class="animsition">
@@ -160,12 +171,14 @@
                     </button>
                 </c:forEach>
             </div>
+            <c:if test="${loginUser.role == '1'}">
 
             <div>
-                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
                     <a href="productInsertForm.do">상품등록</a>
                 </div>
             </div>
+            </c:if>
 
             <!-- Filter button -->
             <div class="flex-w flex-c-m m-tb-10">

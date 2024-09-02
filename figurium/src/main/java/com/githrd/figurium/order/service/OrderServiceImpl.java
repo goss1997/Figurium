@@ -4,12 +4,14 @@ import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.dao.ShippingAddressesMapper;
+import com.githrd.figurium.order.vo.Orders;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -76,6 +78,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    /**
+     * 사용자 주문 내역 조회
+     */
+    @Override
+    @Transactional
+    public List<Orders> selectListByUserId(int userId) {
+        return orderMapper.selectListByUserId(userId);
+    }
 
 
 }

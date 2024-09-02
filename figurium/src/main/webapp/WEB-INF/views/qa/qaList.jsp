@@ -36,8 +36,7 @@
             function qaInsert() {
                 if (isUserLoggedIn === 'false') {
                     alert("글쓰기는 로그인 후 가능합니다.");
-                    // 홈 페이지로 이동
-                    location.href = "${pageContext.request.contextPath}/";
+                    return;
                 } else {
                     // 게시글 작성 폼으로 이동
                     location.href = "${pageContext.request.contextPath}/qa/qaInsert.do";

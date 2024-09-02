@@ -21,6 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from orders order by id desc limit 1;
     </select>
 
+    <select id="selectListByUserId" resultType="orders" parameterType="int">
+        select *
+          from orders
+         where user_id = #{userId}
+        order by created_at desc
+    </select>
 
 </mapper>
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 14A
@@ -85,8 +86,8 @@
                     <div class="card-body">
                         <h5 class="card-title">My Page</h5>
                         <ul class="list-group">
-                            <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="${pageContext.request.contextPath}/user/my-page.do">개인 정보 수정</a></li>
-                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
+                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/user/my-page.do">개인 정보 수정</a></li>
+                            <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
                             <li class="list-group-item"><a href="#">1대1 문의</a></li>
                             <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
@@ -99,24 +100,21 @@
             <div style="float: left; width: 80%; margin-left: 80px;">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">개인 정보 수정</h5>
+                        <h5 class="card-title">주문 내역 조회</h5>
                     </div>
                     <div style="width: 80%; margin: auto;">
-                        <form method="post" action="update.do">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" value="${user.name}" minlength="3" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" value="${user.phone}" maxlength="15" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" value="${user.address}" required>
-                            </div>
-                            <button type="submit" class="btn btn-secondary">Save Changes</button>
-                        </form>
+                        <c:if test="${ empty myOrdersList}">주문 내역이 없습니다.</c:if>
+                        <c:if test="${ not empty myOrdersList}">
+                            <c:forEach var="myOrder" items="${myOrdersList}">
+                                <div>결제 방식 : ${myOrder.paymentType}</div>
+                                <div>가격 : ${myOrder.price}</div>
+                                <div>주문 상태 : ${myOrder.status}</div>
+                                <div></div>
+                            </c:forEach>
+
+
+                        </c:if>
+
                         <br>
                     </div>
                 </div>

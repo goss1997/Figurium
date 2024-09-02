@@ -1,5 +1,7 @@
 package com.githrd.figurium.user.controller;
 
+import com.githrd.figurium.order.service.OrderService;
+import com.githrd.figurium.order.vo.Orders;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +10,14 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OrderService orderService;
 
     /**
      * 로그인
@@ -160,6 +166,9 @@ public class UserController {
         }
     }
 
+    /**
+     * 사용자 정보 수정
+     */
     @PostMapping("update.do")
     public String updateUser(String name, String phone, String address) {
 
@@ -169,5 +178,21 @@ public class UserController {
         return "redirect:/user/my-page.do";
     }
 
+
+    /**
+     * 내 주문 내역 조회
+     */
+    @GetMapping("order-list.do")
+    public String myOrderList(Model model) {
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        int userId = loginUser.getId();
+
+        List<Orders> myOrdersList = orderService.selectListByUserId(userId);
+
+        model.addAttribute("myOrdersList", myOrdersList);
+
+        return "user/myOrderList";
+    }
 
 }

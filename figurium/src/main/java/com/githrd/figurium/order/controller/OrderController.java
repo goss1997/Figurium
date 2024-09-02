@@ -8,7 +8,9 @@ import com.githrd.figurium.order.vo.Customers;
 import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.dao.CartsMapper;
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
+import com.githrd.figurium.product.vo.ProductsVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import java.util.Map;
 @Controller
 public class OrderController {
 
+    private final ProductsMapper productsMapper;
     private CartsMapper cartsMapper;
     private OrderMapper orderMapper;
     private CustomersMapper customersMapper;
@@ -34,13 +37,14 @@ public class OrderController {
     @Autowired
     public OrderController(CartsMapper cartsMapper, OrderMapper orderMapper,
                            CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
-                           OrderItemsMapper orderItemsMapper, HttpSession session) {
+                           OrderItemsMapper orderItemsMapper, HttpSession session, ProductsMapper productsMapper) {
         this.cartsMapper = cartsMapper;
         this.orderMapper = orderMapper;
         this.customersMapper = customersMapper;
         this.shippingAddressesMapper = shippingAddressesMapper;
         this.orderItemsMapper = orderItemsMapper;
         this.session = session;
+        this.productsMapper = productsMapper;
     }
 
 
@@ -48,12 +52,7 @@ public class OrderController {
     public String orderForm(Model model, int loginUserId,
                             @RequestParam(required = false) List<Integer> quantities) {
 
-        for (Integer quantity : quantities) {
-            System.out.println(quantity);
-        }
-
-        // 지훈이형 Product DB 아무거나 던져보기
-        // Pageable pageable = PageRequest.of(0, 2);
+        // 카드에 담겨있는 상품 가져오기
         List<CartsVo> cartsList = cartsMapper.selectList(loginUserId);
 
 
@@ -72,10 +71,6 @@ public class OrderController {
         }
 
 
-
-
-
-
         // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
         int totalPrice = 0;
 
@@ -89,6 +84,35 @@ public class OrderController {
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
         return "order/orderForm";
+    }
+
+    // 재고 처리 확인
+    @RequestMapping("order/checkProduct.do")
+    @ResponseBody
+    public String checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
+                               @RequestParam(value="itemQuantities[]") List<Integer> itemQuantites) {
+
+        for(int i = 0; i < productIds.toArray().length; i++) {
+
+            int productId = productIds.get(i); // 재고 상품 정보
+            int itemQuantity = itemQuantites.get(i); // 재고 상품 갯수
+
+            System.out.println(productId);
+            System.out.println(itemQuantity);
+
+            ProductsVo productsVo = new ProductsVo();
+            // ProductsVo에 담아서 재고 있는지 체크
+            productsMapper.selectOneCheckProduct(productId, itemQuantity);
+
+            Integer productsCheckId = productsVo.getId();
+
+            if(productsCheckId == null) {
+                return "error";
+            }
+        }
+
+        return "success";
+
     }
 
     // inicis 결제 요청 처리하기 (PaymentRequest => DTO로 사용)
@@ -146,6 +170,10 @@ public class OrderController {
             cartsMapper.deleteCartProduct(productId, loginUserId);
 
             orderItemsMapper.insertOrderItems(orderItems);
+            
+            // 상품 정보에 재고 업데이트
+            int res = productsMapper.updateProductQuantity(productId, itemQuantity);
+            
 
         }
 

@@ -44,6 +44,27 @@
         return;
       }
 
+      $.ajax({
+        type : "POST",
+        url : "checkProduct.do",
+        data : {
+          productIds : productIds,
+          itemQuantities : itemQuantities
+          /*          shipping_address : shipping_address,
+                    paymentType : paymentType,
+                    itemNames : itemNames,
+                    itemPrices : itemPrices,
+                    itemQuantities : itemQuantities*/
+        },
+        success: function(res_data){
+          alert("재고가 남아있습니다.");
+        },
+        error: function(err){
+          alert("해당 상품의 재고가 충분하지 않습니다. 해당 상품의 재고를 문의해주세요.");
+          return;
+        }
+      });
+
 
       IMP.request_pay({
         pg : 'kcp', // PG사 코드표에서 선택

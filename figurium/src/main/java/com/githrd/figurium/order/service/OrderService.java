@@ -1,4 +1,4 @@
 package com.githrd.figurium.order.service;
 
-public class OrderService {
+public interface OrderService {
 }

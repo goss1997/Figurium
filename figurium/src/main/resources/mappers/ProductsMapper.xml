@@ -8,6 +8,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from products where id = #{ productId }
     </select>
 
+    <select id="selectOneCheckProduct" resultType="products" parameterType="int">
+        select * from products where id = #{ productId } and
+                                     quantity >= #{ itemQuantity }
+    </select>
+
+    <update id="updateProductQuantity" parameterType="int">
+        update products
+        set quantity = quantity - #{ itemQuantity }
+            where id = #{ productId }
+    </update>
+
 
 
 </mapper>

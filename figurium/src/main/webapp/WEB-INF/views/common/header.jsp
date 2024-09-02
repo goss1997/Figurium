@@ -123,7 +123,7 @@
 
         .login-button img {
             width: 10%;
-            height: 100%;
+            aspect-ratio: 1 / 1;
         }
 
         .login-button img:hover {

@@ -5,6 +5,11 @@
   Time: 오후 4:45
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,12 +34,16 @@
 <div id="content-wrap-area">
   <!-- TODO : 컨텐츠 영역(당신이 사용할 공간) -->
     <div class="container mt-5">
-        <h2>${qa.title}</h2>
-        <hr>
+        <h1 style="text-align: center;">Q&A게시판</h1>
         <div class="row">
-            <div class="col-sm-2">작성일자</div>
-            <div class="col-sm-10">${fn:formatDate(qa.created, 'yyyy-MM-dd HH:mm:ss')}</div>
+            <div class="col-sm-1">제목</div>
+            <div class="col-sm-3">${qa.title}</div>
         </div>
+        <div class="row">
+            <div class="col-sm-4">작성일자</div>
+            <div class="col-sm-8">${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-sm-2">작성자</div>
             <div class="col-sm-10">${qa.userId}</div>

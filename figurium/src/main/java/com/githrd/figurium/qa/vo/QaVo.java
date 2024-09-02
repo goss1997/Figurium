@@ -8,8 +8,8 @@ public class QaVo {
     private String title;
     private String content;
     private String reply;
-    private java.util.Date created;
-    private java.util.Date updated;
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private String category; // 추가된 필드
 
     // Getter and Setter methods
@@ -53,19 +53,19 @@ public class QaVo {
         this.reply = reply;
     }
 
-    public java.util.Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(java.util.Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public java.util.Date getUpdated() {
+    public LocalDateTime getUpdated() {
         return updated;
     }
 
-    public void setUpdated(java.util.Date updated) {
+    public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
     }
 

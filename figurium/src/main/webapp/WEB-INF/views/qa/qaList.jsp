@@ -58,7 +58,7 @@
         <h1>Q&A 게시판</h1>
         <table class="table table-hover">
             <thead class="thead-light">
-            <tr>
+            <tr onclick="location.href='qaSelect.do'">
                 <th>번호</th>
                 <th>제목</th>
                 <th>답변여부</th>

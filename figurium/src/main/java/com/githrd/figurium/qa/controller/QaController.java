@@ -64,6 +64,6 @@ public class QaController {
     public String select(@RequestParam("id") int id, Model model) {
         QaVo qaVo = qaService.getQaById(id);
         model.addAttribute("qa", qaVo);
-        return "qaSelect";
+        return "qa/qaSelect";
     }
 }

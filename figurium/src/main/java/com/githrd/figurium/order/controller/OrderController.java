@@ -8,16 +8,11 @@ import com.githrd.figurium.order.vo.Customers;
 import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.dao.CartsMapper;
-import com.githrd.figurium.product.entity.Products;
-import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.vo.CartsVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,12 +45,35 @@ public class OrderController {
 
 
     @RequestMapping("order/orderForm.do")
-    public String orderForm(Model model, int loginUserId) {
+    public String orderForm(Model model, int loginUserId,
+                            @RequestParam(required = false) List<Integer> quantities) {
+
+        for (Integer quantity : quantities) {
+            System.out.println(quantity);
+        }
 
         // 지훈이형 Product DB 아무거나 던져보기
         // Pageable pageable = PageRequest.of(0, 2);
-
         List<CartsVo> cartsList = cartsMapper.selectList(loginUserId);
+
+
+        // 기존 수량 체크
+        for (int i = 0; i < cartsList.size(); i++) {
+
+            CartsVo cartsVo = cartsList.get(i);
+            int existingQuantity = cartsVo.getQuantity();
+            int newQuantity = quantities.get(i);
+
+            if(existingQuantity != newQuantity) {
+                cartsVo.setQuantity(newQuantity); // 새로운 수량으로 업데이트
+                // 수량을 가져와서 수량이 변경되었다면, 변경된 수량 반영
+                int res = cartsMapper.updateCartQuantity(cartsVo);
+            }
+        }
+
+
+
+
 
 
         // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리

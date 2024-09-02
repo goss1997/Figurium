@@ -303,10 +303,28 @@ pageEncoding="UTF-8" %>
 
 			<!-- 장바구니 리스트의 결제 -->
 
+			<script>
+				function processOrder() {
+					// quantity 값을 넣어줄 배열 생성
+					var quantities = [];
+					//
+					var inputs = document.getElementsByName('num-product1');
+					for (var i = 0; i < inputs.length; i++) {
+						quantities.push(inputs[i].value);
+					}
+
+					var queryString = quantities.map(function(qty, index) {
+						return 'quantities=' + encodeURIComponent(qty);
+					}).join('&');
+
+					window.location.href = 'order/orderForm.do?' + queryString + '&loginUserId=' + ${ loginUser.id };
+				}
+			</script>
+
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-							style="width: 400px; padding: 10px; height: 50px" onclick="location.href='order/orderForm.do?loginUserId=' + ${ loginUser.id }">
+							style="width: 400px; padding: 10px; height: 50px" onclick="processOrder()">
 						선택상품 결제
 					</button>
 				</div>
@@ -314,7 +332,7 @@ pageEncoding="UTF-8" %>
 				<div style="display: inline-block; margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
 							style="width: 400px; padding: 10px; height: 50px"
-							onclick="location.href='order/orderForm.do?loginUserId=' + ${ loginUser.id }">
+							onclick="processOrder()">
 						전체상품 결제
 					</button>
 				</div>

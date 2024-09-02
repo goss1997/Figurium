@@ -28,6 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                 user_id = #{ loginUserId }
     </delete>
 
+    <update id="updateCartQuantity" parameterType="carts">
+        update carts
+            set quantity = #{ quantity }
+            where product_id = #{ productId }
+            and user_id = #{ userId }
+    </update>
+
 
 </mapper>
 

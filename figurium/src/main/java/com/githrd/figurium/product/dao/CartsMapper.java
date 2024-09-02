@@ -13,4 +13,5 @@ public interface CartsMapper {
     List<CartsVo> selectList(int loginUserId);
     CartsVo selectCartsById(int productId);
     int deleteCartProduct(int productId, int loginUserId);
+    int updateCartQuantity(CartsVo cartsVo);
 }

@@ -1,4 +1,4 @@
-package com.githrd.figurium.util.mail;
+package com.githrd.figurium.util.mail.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

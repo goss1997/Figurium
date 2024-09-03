@@ -484,7 +484,7 @@
             type: 'POST',
             data: { url: currentUrl },  // URL을 데이터로 전송
             success: function() {
-                alert('URL이 서버 세션에 저장되었습니다.');
+                console.log('URL이 서버 세션에 저장되었습니다.');
             },
             error: function(xhr, status, error) {
                 console.error('URL 저장 실패:', error);

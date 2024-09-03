@@ -6,7 +6,7 @@ import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.repository.UserRepository;
 import com.githrd.figurium.user.vo.SocialAccountVo;
 import com.githrd.figurium.user.vo.UserVo;
-import com.githrd.figurium.util.S3ImageService;
+import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

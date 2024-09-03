@@ -1,5 +1,6 @@
-package com.githrd.figurium.util.mail;
+package com.githrd.figurium.util.mail.controller;
 
+import com.githrd.figurium.util.mail.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

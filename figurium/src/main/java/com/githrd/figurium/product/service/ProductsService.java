@@ -4,7 +4,7 @@ import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.vo.ProductsVo;
-import com.githrd.figurium.util.S3ImageService;
+import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

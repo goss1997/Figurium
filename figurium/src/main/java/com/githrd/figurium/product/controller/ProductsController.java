@@ -10,7 +10,7 @@ import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.S3ImageService;
+import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

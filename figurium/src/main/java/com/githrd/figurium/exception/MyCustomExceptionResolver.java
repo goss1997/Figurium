@@ -22,7 +22,7 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         // 예외 처리 후 별도의 뷰 반환 (기본 에러 페이지)
-        return new ModelAndView("error");
+        return new ModelAndView("errorPage/error");
     }
 
     // 예외 유형에 따라 ErrorType을 결정하는 메서드

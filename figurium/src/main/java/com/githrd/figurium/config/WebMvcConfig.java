@@ -1,8 +1,10 @@
 package com.githrd.figurium.config;
 
 import com.githrd.figurium.exception.MyCustomExceptionResolver;
+import com.githrd.figurium.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -34,32 +36,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        return resolver;
 //    }
 //
-//    /**
-//     * 사용자의 로그인 검증을 위한 Interceptor 추가.
-//     */
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        //인증 체크
-//        registry.addInterceptor(new LoginInterceptor())
-//                // 인증이 필요한 url
-//
-//                // 인증을 제외할 url
-//                .excludePathPatterns(
-//                        "/resources/**",
-//                        "/",
-//                        "/load-more-products",
-//                        "/user/logout.do",
-//                        "/user/login.do",
-//                        "/user/signup-form.do",
-//                        "/user/check_email.do",
-//                        "/user/sign-up.do",
-//                        "/productInfo.do",
-//                        "/qa/qaList.do",
-//                        "/qa/qaSelect.do",
-//                        "/productInfo.do",
-//                        "/api/verification/**"
-//                );
-//    }
+    /**
+     * 사용자의 로그인 검증을 위한 Interceptor 추가.
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //인증 체크
+        registry.addInterceptor(new LoginInterceptor())
+                // 인증이 필요한 url
+                .addPathPatterns("/CartList.do")
+                // 인증을 제외할 url
+                .excludePathPatterns(
+                        "/resources/**"
+                );
+    }
 
 
 }

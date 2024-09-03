@@ -77,7 +77,14 @@
         <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
         <div class="product_info">
             <h3>${product.name}</h3>
-            <h5>${product.price}￦</h5>
+                <div class="stars">
+                    <c:forEach var="i" begin="1" end="${ratingAvg}">
+                        <span class="star">&#9733;</span> <!-- 채워진 별 -->
+                    </c:forEach>
+                    <c:forEach var="i" begin="${ratingAvg + 1}" end="5">
+                        <span class="star">&#9734;</span> <!-- 빈 별 -->
+                    </c:forEach>
+                </div>
             <div class="block2-txt-child2">
                 <a href="#" id="product_like" class="btn-addwish-b2">
                     <img id="heart-icon" class="icon-heart"
@@ -85,6 +92,8 @@
                          alt="Empty Heart Icon">
                 </a>
             </div>
+            <h5>${product.price}￦</h5>
+
             <hr>
             <table class="info_table">
                 <tr>
@@ -183,7 +192,7 @@
                     <td class="review_name">${review.userName}</td>
                     <td class="review_regdate">${fun:substring(review.createdAt,0,10)} ${fun:substring(review.createdAt,11,16)}</td>
                     <td class="review_star">
-                        <!-- 별점 예시: review.rating 값에 따라 별 표시 -->
+                        <!-- review.rating 값에 따라 별 표시 -->
                         <c:forEach var="i" begin="1" end="${review.rating}">
                             <span class="star">&#9733;</span>
                         </c:forEach>
@@ -503,7 +512,20 @@
 
 </script>
 
+<script>
+        // 리뷰 삭제시 Ajax 처리를 하지 않았기에 redirect전 스크롤을 기억 후 redirect 후 스크롤로 이동
+        addEventListener('beforeunload', function () {
+        localStorage.setItem('scrollPosition', scrollY);
+    });
 
+        addEventListener('DOMContentLoaded', function () {
+        let scrollPosition = localStorage.getItem('scrollPosition');
+        if (scrollPosition) {
+        scrollTo(0, parseInt(scrollPosition));
+        localStorage.removeItem('scrollPosition'); // 스크롤 위치가 한번만 저장되도록 삭제
+    }
+    });
+</script>
 </body>
 
 </html>

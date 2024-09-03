@@ -20,4 +20,6 @@ public interface ReviewService {
     int updateReview(ReviewVo reviewVo);
 
     int deleteReview(ReviewVo reviewVo);
+
+    int reviewRatingAvg(int productId);
 }

@@ -52,6 +52,10 @@ public class ProductsController {
         int reviewCount = reviewService.reviewCountByProductId(id);
         model.addAttribute("reviewCount", reviewCount);
 
+        // 해당 상품의 평균 별점 가져오기
+        int ratingAvg = reviewService.reviewRatingAvg(id);
+        model.addAttribute("ratingAvg", ratingAvg);
+
         return "products/productInfo";
     }
 

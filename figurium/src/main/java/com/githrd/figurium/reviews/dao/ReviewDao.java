@@ -30,6 +30,7 @@ public interface ReviewDao {
     // 해당 리뷰 삭제
     int deleteReview(ReviewVo reviewVo);
 
-
+    // 상품에 대한 리뷰 별점의 평균
+    Integer reviewRatingAvg(int productId);
 
 }

@@ -55,17 +55,20 @@
 }
 
 .product_info h5{
-    display: inline-block;
     margin: 10px;
     padding-top: 10px;
     font-weight: bold;
 }
 
+.stars{
+    display: inline-block;
+}
+
 /* 좋아요 버튼 */
 
 .block2-txt-child2{
-    display: inline-block !important;
-    margin-left: 260px;
+    display: inline-block;
+    margin-left: 240px;
 }
 .icon-heart {
     width: 24px;
@@ -79,7 +82,7 @@
 }
 
 .btn-addwish-b2 {
-    display: inline-block;
+    display: block;
 }
 
 /* 상품 수량을 정하는 버튼 요소 */

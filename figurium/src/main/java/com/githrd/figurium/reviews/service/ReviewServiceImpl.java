@@ -51,4 +51,15 @@ public class ReviewServiceImpl implements ReviewService {
     public int deleteReview(ReviewVo reviewVo) {
         return reviewDao.deleteReview(reviewVo);
     }
+
+    @Override
+    public int reviewRatingAvg(int productId) {
+        Integer ratingAvg = reviewDao.reviewRatingAvg(productId); // Integer로 변경
+        if (ratingAvg != null) {
+            // 소수점 이하 버림 (필요 없는 경우, 아래 주석 처리)
+            return ratingAvg;
+        }
+        return 0; // 기본값
+    }
+
 }

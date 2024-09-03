@@ -9,6 +9,14 @@
                  default, default, default, default)
     </insert>
 
+    <insert id="insertSocialUser" parameterType="UserVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (email, name, profile_img_url)
+        VALUES (#{email}, #{name}, #{profileImgUrl})
+    </insert>
+
+    <select id="selectByEmail" parameterType="String" resultType="UserVo">
+        select * from users where email = #{email}
+    </select>
 
 </mapper>
 

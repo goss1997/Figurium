@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.user.dao.SocialAccountMapper">
+
+    <insert id="insertSocialAccount" parameterType="SocialAccountVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO social_accounts
+        VALUES (null, #{userId}, #{provider}, '101010', default)
+    </insert>
+
+    <select id="selectSocialAccountOne" parameterType="Map" resultType="SocialAccountVo">
+        select * from social_accounts
+        where user_id = #{userId}
+        and provider = #{provider}
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

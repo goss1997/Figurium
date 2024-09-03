@@ -34,7 +34,7 @@ public class SecurityConfig {
                .logout(AbstractHttpConfigurer::disable)     // 로그아웃 사용을 안 할 것이다.
                .formLogin(login -> login.disable())  // 폼 로그인 사용을 안 할 것이다.
                .oauth2Login(oauth2 -> oauth2                  // OAuth2를 통한 로그인을 사용할 것이다.
-                       .defaultSuccessUrl("/", false)  // 로그인 성공시 리다이렉트
+                       .defaultSuccessUrl("/oauth/loginInfo", false)  // 로그인 성공시 리다이렉트
                        .userInfoEndpoint(userInfo -> userInfo   // 사용자가 로그인에 성공하였을 경우
                        .userService(oAuth2Service))             // 해당 서비스 로직을 타도록 설정할 것이다.
                         )

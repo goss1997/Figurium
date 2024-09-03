@@ -11,9 +11,9 @@ public enum OAuthAttributes {
 
     GOOGLE("google", (attribute) -> {
         UserProfile userProfile = new UserProfile();
-        userProfile.setUserName((String) attribute.get("name"));
+        userProfile.setName((String) attribute.get("name"));
         userProfile.setEmail((String) attribute.get("email"));
-        userProfile.setProfileImage((String) attribute.get("picture"));
+        userProfile.setProfileImageUrl((String) attribute.get("picture"));
 
 
         return userProfile;
@@ -24,9 +24,9 @@ public enum OAuthAttributes {
 
         Map<String, String> responseValue = (Map) attribute.get("response");
 
-        userProfile.setUserName(responseValue.get("name"));
+        userProfile.setName(responseValue.get("name"));
         userProfile.setEmail(responseValue.get("email"));
-        userProfile.setProfileImage(responseValue.get("profile_image"));
+        userProfile.setProfileImageUrl(responseValue.get("profile_image"));
 
         return userProfile;
     }),
@@ -37,9 +37,9 @@ public enum OAuthAttributes {
         Map<String, String> profile = (Map) account.get("profile");
 
         UserProfile userProfile = new UserProfile();
-        userProfile.setUserName(profile.get("nickname"));
+        userProfile.setName(profile.get("nickname"));
         userProfile.setEmail((String) account.get("email"));
-        userProfile.setProfileImage(profile.get("thumbnail_image_url"));
+        userProfile.setProfileImageUrl(profile.get("thumbnail_image_url"));
 
         return userProfile;
     });

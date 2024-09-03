@@ -8,4 +8,8 @@ public interface UserMapper {
 
     int insert(UserVo user);
 
+    int insertSocialUser(UserVo insertUserVo);
+
+    UserVo selectByEmail(String email);
+
 }

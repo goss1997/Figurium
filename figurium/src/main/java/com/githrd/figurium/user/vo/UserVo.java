@@ -20,4 +20,10 @@ public class UserVo {
     private int deleted;
     private String createdAt;
     private String updatedAt;
+
+    public UserVo(String email, String name, String profileImgUrl) {
+        this.name = name;
+        this.email = email;
+        this.profileImgUrl = profileImgUrl;
+    }
 }

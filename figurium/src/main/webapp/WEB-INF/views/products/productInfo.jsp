@@ -189,6 +189,11 @@
                     <td colspan="5">
                         <div id="spinner-${review.id}" class="spinner" style="display:none;">로딩 중...</div>
                         <div id="reviewText-${review.id}" class="review-text"></div>
+
+                        <div class="review_buttons" id="reviewButtons-${review.id}" style="display:none;">
+                            <input type="button" class="edit_button" data-id="${review.id}" value="수정" onclick="update_review()">
+                            <input type="button" class="delete_button" data-id="${review.id}" value="삭제" onclick="delete_review()">
+                        </div>
                     </td>
                 </tr>
             </c:forEach>
@@ -269,7 +274,6 @@
 
         </table>
     </div>
-</div>
 
 
 <jsp:include page="../common/footer.jsp"/>
@@ -333,7 +337,7 @@
 </script>
 
 <script>
-    // 리뷰작성 버튼 클릭 함수
+    // 리뷰작성 버튼 클릭 시 로그인 검증
     function reviewInsertForm(f) {
 
         let productId = f.productId.value;
@@ -356,6 +360,7 @@
 
 
 <script>
+    // 리뷰 제목 클릭시 발생 할 이벤트와 Ajax
     $(document).ready(function() {
         $('.review-title').on('click', function(e) {
             e.preventDefault();
@@ -364,6 +369,7 @@
             var contentRow = $('#reviewContent-' + reviewId);
             var spinner = $('#spinner-' + reviewId);
             var reviewText = $('#reviewText-' + reviewId);
+            var reviewButtons = $('#reviewButtons-' + reviewId);
 
             if (contentRow.is(':visible')) {
                 contentRow.hide();
@@ -377,21 +383,34 @@
                 url: 'getReviewContent',
                 type: 'GET',
                 data: { id: reviewId },
-                success: function(response) {
-                    var contentHtml = '<div class="review-text-left">' + response.content + '</div>';
+                success: function(data) {
+                    var contentHtml = '<div class="review-text-left">' + data.content + '</div>';
 
-                    if (response.imageUrl) { // imageUrl이 있으면 이미지를 표시
-                        contentHtml += '<img src="' + response.imageUrl + '" alt="Review Image">';
+                    if (data.imageUrl) {
+                        contentHtml += '<img src="' + data.imageUrl + '" alt="Review Image">';
                     }
 
                     reviewText.html(contentHtml);
+
+                    console.log("리뷰 작성자 id = " + data.reviewUserId)
+                    console.log("현재 로그인한 유저 id = " + "${sessionScope.loginUser.id}")
+
+                    // 문자열을 반환 하기 때문에 parseInt를 해주어야 한다.
+                    var loginUserId = parseInt("${sessionScope.loginUser.id}")
+
+                    // 작성자가 로그인한 사용자와 일치하면 버튼을 표시
+                    if (data.reviewUserId === loginUserId) {
+                        reviewButtons.show();
+                    } else {
+                        reviewButtons.hide(); // 버튼 숨기기
+                    }
+
                     contentRow.show();
                     spinner.hide();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     var errorMessage = '리뷰 내용을 불러오는 데 실패했습니다.';
 
-                    // 에러 상태 코드와 메시지를 포함
                     if (jqXHR.status) {
                         errorMessage += ' 상태 코드: ' + jqXHR.status;
                     }
@@ -408,7 +427,17 @@
 
 </script>
 
-<script >
+<script>
+    // 리뷰 수정 버튼 클릭
+    function update_review(){
+
+    }
+
+
+</script>
+
+
+<script>
 
     $(document).ready(function () {
         $('.product-delete-button').on('click', function () {

@@ -9,6 +9,7 @@ import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,10 +45,6 @@ public class ReviewsController {
     }
 
 
-
-
-
-
     // 리뷰 작성 폼 이동
     @RequestMapping("/reviewInsertForm.do")
     public String reviewInsert(RedirectAttributes ra,
@@ -58,9 +55,6 @@ public class ReviewsController {
 
         return "reviews/reviewInsertForm";
     }
-
-
-
 
     /*
     * 리뷰 작성 로직
@@ -78,6 +72,9 @@ public class ReviewsController {
             ra.addAttribute("reason", "not_session");
             return "redirect:/";
         }
+
+        // 현재 세션에 있는 유저의 id 값을 저장함
+        reviewVo.setUserId(user.getId());
 
         // 이미지 업로드 처리 로직
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -99,6 +96,7 @@ public class ReviewsController {
         String content = reviewVo.getContent().replaceAll("\n", "<br>");
         reviewVo.setContent(content);
 
+        System.out.println(reviewVo.getUserId());
         // 리뷰 저장
         int success = reviewService.insertReview(reviewVo);
 
@@ -111,21 +109,28 @@ public class ReviewsController {
     }
 
 
-
-
-
-
-
     // 리뷰 1건에 해당하는 리뷰를 조회
     @RequestMapping("/getReviewContent")
     @ResponseBody
-    public Map<String, Object> getReviewContent(@RequestParam("id") int id) {
-        ReviewVo review = reviewService.getReviewById(id);
+    public Map<String, Object> getReviewContent(@RequestParam("id") int id, HttpSession session) {
+
+        User user = (User) session.getAttribute("loginUser"); // 세션에서 현재 로그인한 사용자 가져오기
+
+        ReviewVo review = reviewService.getReviewById(id); // 리뷰 ID로 리뷰 조회
         Map<String, Object> result = new HashMap<>();
-        result.put("content", review.getContent());
-        result.put("imageUrl", review.getImageUrl());
+        result.put("content", review.getContent()); // 리뷰 내용
+        result.put("imageUrl", review.getImageUrl()); // 리뷰 이미지 URL
+        result.put("reviewUserId", review.getUserId()); // 리뷰 작성자의 ID
         return result;
     }
+
+
+    @RequestMapping("/reviewUpdateForm.do")
+    public String reviewUpdateForm(Model model) {
+
+        return "reviews/reviewUpdateForm";
+    }
+
 
 
 }

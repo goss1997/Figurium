@@ -65,6 +65,7 @@
             text-align: center;
             margin: auto;
         }
+
         .order-table td {
             text-align: center;
             vertical-align: middle;
@@ -109,7 +110,6 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a
                                     href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a href="#">1대1 문의</a></li>
                             <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
                         </ul>
                     </div>
@@ -124,17 +124,22 @@
                         <br>
                         <table class="table table-hover order-table">
                             <thead style="background-color: #e8e6e6">
-                                <th style="width: 12%">주문일자</th>
-                                <th>상품명</th>
-                                <th style="width: 14%">결제금액</th>
-                                <th style="width: 18%">주문상태</th>
+                            <th style="width: 12%">주문일자</th>
+                            <th>상품명</th>
+                            <th style="width: 14%">결제금액</th>
+                            <th style="width: 18%">주문상태</th>
                             </thead>
                             <tbody>
-                            <c:if test="${ empty myOrdersList}"><tr><td colspan="4">주문 내역이 없습니다.</td></tr></c:if>
+                            <c:if test="${ empty myOrdersList}">
+                                <tr>
+                                    <td colspan="4">주문 내역이 없습니다.</td>
+                                </tr>
+                            </c:if>
                             <c:if test="${ not empty myOrdersList}">
                                 <c:forEach var="myOrder" items="${myOrdersList}">
                                     <tr onclick="alert('상세조회(${myOrder.orderId})')">
-                                        <fmt:parseDate var="parsedDate" value="${myOrder.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                        <fmt:parseDate var="parsedDate" value="${myOrder.createdAt}"
+                                                       pattern="yyyy-MM-dd HH:mm:ss"/>
                                         <td><fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/></td>
                                         <td>
                                             <img src="${myOrder.imageUrl}" width="15%;"/>
@@ -154,6 +159,16 @@
             </div>
         </div>
     </div>
+
+<script>
+    $(function () {
+        if(${empty loginUser}) {
+            alert('로그인 후 이용 가능합니다.');
+            location.href = "/";
+        }
+    });
+</script>
+
     <script>
         function updateProfileImage(input) {
             const file = input.files[0];

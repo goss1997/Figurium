@@ -192,7 +192,7 @@ VALUES ('admin1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT
 create or replace view order_history_view
 as
 select
-    o.id as '주문번호',o.payment_type as '결제방식',o.user_id as '주문회원',
+    o.id as '주문번호',o.payment_type as '결제방식',o.user_id as '주문회원', o.created_at as '주문시간',
     oi.price,oi.quantity,c.name,c.phone as '보낸사람 전화번호',
     c.email,s.recipient_name,s.phone as '받는사람 전화번호',s.address,s.delivery_request
 from orders o inner join order_items oi on o.id = oi.order_id

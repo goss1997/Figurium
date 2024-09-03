@@ -13,7 +13,6 @@
     <h2 class="review-title">상품 리뷰 작성</h2>
 
     <form id="reviewForm" class="review-form" enctype="multipart/form-data">
-        <input type="hidden" name="userId" value="${sessionScope.loginUser.id}">
         <input type="hidden" name="productId" value="${productId}">
         <div class="form-group">
             <label for="reviewTitle">리뷰 제목</label>
@@ -93,7 +92,6 @@
 <script>
     // 리뷰 작성 버튼 클릭 시 검증
     function sendReview(f) {
-        let userId = f.userId.value;
         let title = f.title.value.trim();
         let imageFile = f.imageFile.files[0]; // 파일 객체
         let content = f.content.value.trim();

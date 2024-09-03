@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 해당 리뷰 ID 1건에 해당하는 리뷰조회 -->
     <select id="getReviewById" parameterType="int" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
         SELECT
+        user_id,
         content,
         image_url
         FROM

@@ -347,6 +347,8 @@
 }
 
 
+/* 리뷰 상세 보기 CSS 요소 */
+
 /* 리뷰 내용 왼쪽 정렬 */
 .review-text-left {
     text-align: left; /* 내용 왼쪽 정렬 */
@@ -374,7 +376,43 @@
     color: #6c6c6c;
 }
 
+/* 리뷰의 수정 삭제 버튼 */
 
+.review_buttons {
+    margin-bottom: 30px;
+    text-align: -webkit-center;
+}
+
+.review_buttons .edit_button,
+.review_buttons .delete_button {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.review_buttons .edit_button {
+    width: 60px;
+    border-radius: 25px;
+    background-color: #489aff;
+    color: white;
+}
+
+.review_buttons .delete_button {
+    width: 60px;
+    border-radius: 25px;
+    background-color: #f44336;
+    color: white;
+}
+
+
+.review_buttons .edit_button:hover {
+    background-color: #3636ff;
+}
+
+.review_buttons .delete_button:hover {
+    background-color: #ff0000;
+}
 
 
 /* 리뷰 테이블의 요소 */

@@ -28,7 +28,7 @@ public interface ReviewDao {
     int updateReview(ReviewVo reviewVo);
 
     // 해당 리뷰 삭제
-    int deleteReviewById(int id);
+    int deleteReview(ReviewVo reviewVo);
 
 
 

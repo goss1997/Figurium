@@ -10,24 +10,25 @@
     <title>상품상세</title>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
     <style>
-        .product_insert > input{
-            background-color:transparent;
+        .product_insert > input {
+            background-color: transparent;
         }
-        .product_insert:hover > input{
-            background-color:transparent;
+
+        .product_insert:hover > input {
+            background-color: transparent;
             color: white;
         }
 
-        .product_insert > button{
-            background-color:transparent;
+        .product_insert > button {
+            background-color: transparent;
         }
-        .product_insert:hover > button{
-            background-color:transparent;
+
+        .product_insert:hover > button {
+            background-color: transparent;
             color: white;
         }
 
     </style>
-
 
 
 </head>
@@ -52,7 +53,8 @@
 
                 <div style="margin-left : 60%">
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                        <input type="button" value="상품수정" onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do?id=${product.id}'">
+                        <input type="button" value="상품수정"
+                               onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do?id=${product.id}'">
                     </div>
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
                         <button class="product-delete-button" data-product-id="${product.id}">상품삭제</button>
@@ -62,82 +64,82 @@
         </div>
     </div>
 
-        <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
-        <input type="hidden" value="${product.id}">
-        <div class="product_title">
-            <div class="product_img_box">
-                <!-- 상품의 이미지가 들어 갈 곳 -->
-                <div class="product_img">
-                    <img src="${product.imageUrl}">
-                </div>
+    <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
+    <input type="hidden" value="${product.id}">
+    <div class="product_title">
+        <div class="product_img_box">
+            <!-- 상품의 이미지가 들어 갈 곳 -->
+            <div class="product_img">
+                <img src="${product.imageUrl}">
             </div>
-
-            <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
-            <div class="product_info">
-                <h3>${product.name}</h3>
-                <h5>${product.price}￦</h5>
-                <div class="block2-txt-child2">
-                    <a href="#" id="product_like" class="btn-addwish-b2">
-                        <img id="heart-icon" class="icon-heart"
-                             src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
-                             alt="Empty Heart Icon">
-                    </a>
-                </div>
-                <hr>
-                <table class="info_table">
-                    <tr>
-                        <th>제조사</th>
-                        <td>${product.category.name}</td>
-                    </tr>
-
-                    <tr>
-                        <th>남은재고</th>
-                        <td>${product.quantity}</td>
-                    </tr>
-
-                    <tr>
-                        <th>출고 날짜</th>
-                        <td>${fun:substring(product.createdAt,0,10)}</td>
-                    </tr>
-
-                    <tr>
-                        <th>수량</th>
-                        <td>
-                            <div class="quantity-box">
-                                <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
-                                </button>
-                                <input type="text" id="quantity" value="1" readonly>
-                                <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-                <div class="total_price_box">
-                    <span class="total_price">총 결제금액</span>
-                    <p id="total_price">${product.price}</p>원
-                </div>
-
-                <div class="price_bye">
-                    <input class="price_bye_btn" type="button" value="바로구매"
-                           onclick="location.href='shopingCart2.do'">
-                </div>
-
-                <div class="price_cart">
-                    <input class="price_cart_btn" type="button" value="장바구니"
-                           onclick="addToCart(${product.id})">
-                </div>
-                <script>
-                    function addToCart(productId) {
-                        let quantity = $("#quantity").val();
-                        location.href = "shopingCart.do?productId=" + productId + "&quantity=" + quantity;
-                    }
-                </script>
-            </div>
-
         </div>
+
+        <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
+        <div class="product_info">
+            <h3>${product.name}</h3>
+            <h5>${product.price}￦</h5>
+            <div class="block2-txt-child2">
+                <a href="#" id="product_like" class="btn-addwish-b2">
+                    <img id="heart-icon" class="icon-heart"
+                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
+                         alt="Empty Heart Icon">
+                </a>
+            </div>
+            <hr>
+            <table class="info_table">
+                <tr>
+                    <th>제조사</th>
+                    <td>${product.category.name}</td>
+                </tr>
+
+                <tr>
+                    <th>남은재고</th>
+                    <td>${product.quantity}</td>
+                </tr>
+
+                <tr>
+                    <th>출고 날짜</th>
+                    <td>${fun:substring(product.createdAt,0,10)}</td>
+                </tr>
+
+                <tr>
+                    <th>수량</th>
+                    <td>
+                        <div class="quantity-box">
+                            <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
+                            </button>
+                            <input type="text" id="quantity" value="1" readonly>
+                            <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <hr>
+            <div class="total_price_box">
+                <span class="total_price">총 결제금액</span>
+                <p id="total_price">${product.price}</p>원
+            </div>
+
+            <div class="price_bye">
+                <input class="price_bye_btn" type="button" value="바로구매"
+                       onclick="location.href='shopingCart2.do'">
+            </div>
+
+            <div class="price_cart">
+                <input class="price_cart_btn" type="button" value="장바구니"
+                       onclick="addToCart(${product.id})">
+            </div>
+            <script>
+                function addToCart(productId) {
+                    let quantity = $("#quantity").val();
+                    location.href = "shopingCart.do?productId=" + productId + "&quantity=" + quantity;
+                }
+            </script>
+        </div>
+
+    </div>
     <!-- 리뷰,Q&A Tap-->
 
     <div class="tap_box">
@@ -157,6 +159,10 @@
                 </span>
         </form>
 
+        <c:if test="${empty reviewList}">
+            <h3 style="text-align: center; color: #ff5959">현재 작성된 리뷰가 없습니다.</h3>
+        </c:if>
+        <c:if test="${!empty reviewList}">
         <table class="review_table">
             <thead>
             <tr>
@@ -197,94 +203,96 @@
                                 <input type="hidden" name="userId" value="${review.userId}">
                                 <input type="hidden" name="id" value="${review.id}">
                                 <input type="hidden" name="productId" value="${review.productId}">
-                                <input type="button" class="edit_button" data-id="${review.id}" value="수정" onclick="update_review(this.form)">
-                                <input type="button" class="delete_button" data-id="${review.id}" value="삭제" onclick="delete_review()">
+                                <input type="button" class="edit_button" data-id="${review.id}" value="수정"
+                                       onclick="update_review(this.form)">
+                                <input type="button" class="delete_button" data-id="${review.id}" value="삭제"
+                                       onclick="delete_review(this.form)">
                             </form>
                         </div>
                     </td>
                 </tr>
             </c:forEach>
+            </c:if>
             </tbody>
         </table>
 
 
     </div>
-    </div>
+</div>
 
 
-    <!-- Q&A Tap -->
+<!-- Q&A Tap -->
 
-    <div class="tap_box">
-        <ul class="tap_detail">
-            <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
-            <li class="tap_qa"><a href="#">Q&A(0)</a></li>
-        </ul>
+<div class="tap_box">
+    <ul class="tap_detail">
+        <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
+        <li class="tap_qa"><a href="#">Q&A(0)</a></li>
+    </ul>
 
-    </div>
-    <!-- Q&A 영역 -->
+</div>
+<!-- Q&A 영역 -->
 
-    <div class="reviews_box">
+<div class="reviews_box">
 
         <span class="reviewInsert_btn_box">
             <input class="reviewInsert_btn" type="button" value="리뷰작성">
         </span>
 
-        <table class="review_table">
-            <tr>
-                <th class="review_number">번호</th>
-                <th class="review_title">제목</th>
-                <th class="review_name">작성자</th>
-                <th class="review_regdate">작성일</th>
-                <th class="review_star">상태</th>
-            </tr>
+    <table class="review_table">
+        <tr>
+            <th class="review_number">번호</th>
+            <th class="review_title">제목</th>
+            <th class="review_name">작성자</th>
+            <th class="review_regdate">작성일</th>
+            <th class="review_star">상태</th>
+        </tr>
 
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">[기타문의]입고 문의</td>
-                <td>홍길동</td>
-                <td>2024-08-28</td>
-                <td>답변완료</td>
-            </tr>
+        <tr>
+            <td>1</td>
+            <td class="review_td_title">[기타문의]입고 문의</td>
+            <td>홍길동</td>
+            <td>2024-08-28</td>
+            <td>답변완료</td>
+        </tr>
 
-            <!-- 테이블의 더미 데이터 -->
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">[기타문의]입고 문의</td>
-                <td>홍길동</td>
-                <td>2024-08-28</td>
-                <td>미답변</td>
-            </tr>
+        <!-- 테이블의 더미 데이터 -->
+        <tr>
+            <td>1</td>
+            <td class="review_td_title">[기타문의]입고 문의</td>
+            <td>홍길동</td>
+            <td>2024-08-28</td>
+            <td>미답변</td>
+        </tr>
 
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">[기타문의]입고 문의</td>
-                <td>홍길동</td>
-                <td>2024-08-28</td>
-                <td>미답변</td>
-            </tr>
+        <tr>
+            <td>1</td>
+            <td class="review_td_title">[기타문의]입고 문의</td>
+            <td>홍길동</td>
+            <td>2024-08-28</td>
+            <td>미답변</td>
+        </tr>
 
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">[기타문의]입고 문의</td>
-                <td>홍길동</td>
-                <td>2024-08-28</td>
-                <td>답변완료</td>
-            </tr>
+        <tr>
+            <td>1</td>
+            <td class="review_td_title">[기타문의]입고 문의</td>
+            <td>홍길동</td>
+            <td>2024-08-28</td>
+            <td>답변완료</td>
+        </tr>
 
-            <tr>
-                <td>1</td>
-                <td class="review_td_title">[기타문의]입고 문의</td>
-                <td>홍길동</td>
-                <td>2024-08-28</td>
-                <td>답변완료</td>
-            </tr>
+        <tr>
+            <td>1</td>
+            <td class="review_td_title">[기타문의]입고 문의</td>
+            <td>홍길동</td>
+            <td>2024-08-28</td>
+            <td>답변완료</td>
+        </tr>
 
-        </table>
-    </div>
+    </table>
+</div>
 
 
 <jsp:include page="../common/footer.jsp"/>
-
 
 
 <script>
@@ -365,12 +373,11 @@
 </script>
 
 
-
 <script>
     // 리뷰 제목 클릭시 발생 할 이벤트와 Ajax
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-        $('.review-title').on('click', function(e) {
+        $('.review-title').on('click', function (e) {
             e.preventDefault();
 
             var reviewId = $(this).data('id');
@@ -390,8 +397,8 @@
             $.ajax({
                 url: 'getReviewContent',
                 type: 'GET',
-                data: { id: reviewId },
-                success: function(data) {
+                data: {id: reviewId},
+                success: function (data) {
                     var contentHtml = '<div class="review-text-left">' + data.content + '</div>';
 
                     if (data.imageUrl) {
@@ -416,7 +423,7 @@
                     contentRow.show();
                     spinner.hide();
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     var errorMessage = '리뷰 내용을 불러오는 데 실패했습니다.';
 
                     if (jqXHR.status) {
@@ -437,18 +444,32 @@
 
 <script>
     // 리뷰 수정 버튼 클릭
-    function update_review(f){
+    function update_review(f) {
 
         let userId = f.userId.value;
         let productId = f.productId.value;
         let reviewId = f.id.value;
 
-        f.action = "reviewUpdateForm.do"
+        f.action = "reviewUpdateForm.do";
         f.method = "POST";
         f.submit();
-
     }
 
+    // 리뷰 삭제 버튼 클릭
+    function delete_review(f) {
+
+        let userId = f.userId.value;
+        let productId = f.productId.value;
+        let reviewId = f.id.value;
+
+        if (confirm("정말 삭제 하시겠습니까?") == false) {
+            return;
+        }
+
+        f.action = "reviewDelete.do";
+        f.method = "POST";
+        f.submit();
+    }
 
 </script>
 
@@ -461,14 +482,14 @@
 
             if (confirm('정말 삭제하시겠습니까?')) {
                 $.ajax({
-                    url:  "/product/" + productId,
+                    url: "/product/" + productId,
                     type: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     success: function (response) {
                         // 삭제 성공 후 페이지 새로 고침
-                        window.location.href="/";
+                        window.location.href = "/";
                     },
                     error: function (error) {
                         alert('상품 삭제에 실패했습니다.');
@@ -482,11 +503,6 @@
 
 </script>
 
-
-
-
-
-</script>
 
 </body>
 

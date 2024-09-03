@@ -98,6 +98,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
 
+    <!-- 리뷰 삭제 -->
+    <delete id="deleteReview" parameterType="com.githrd.figurium.reviews.vo.ReviewVo">
+        DELETE FROM reviews WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
 </mapper>
 
 

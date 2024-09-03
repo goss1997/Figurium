@@ -213,13 +213,48 @@ public class ReviewsController {
     }
 
 
+    // 리뷰 삭제
     @RequestMapping("/reviewDelete.do")
-    public String reviewDelete(@RequestParam(value = "id") int id,
+    public String reviewDelete(ReviewVo reviewVo,
                                RedirectAttributes ra) {
 
-        return "redirect:/productInfo.do?id=" + id;
+        // 로그인한 사용자 확인
+        User user = (User) session.getAttribute("loginUser");
+        if (user == null) {
+            return "redirect:/"; // 로그인되지 않은 경우 메인 페이지로 리다이렉트
+        }
+
+
+        // 해당 리뷰의 이미지가 존재하는지 확인
+        String imageUrl = reviewService.selectImageUrl(reviewVo.getId());
+        // 존재하면 해당 이미지 삭제
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            try {
+                s3ImageService.deleteImageFromS3(imageUrl);
+            } catch (Exception e) {
+                ra.addAttribute("reason", "image_delete_failed");
+                System.out.println("Image deletion failed: " + e.getMessage());
+                return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+            }
+        }
+
+        // 리뷰 삭제 로직
+        try {
+            int success = reviewService.deleteReview(reviewVo);
+            if (success > 0) {
+                return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+            } else {
+                ra.addAttribute("reason", "review_delete_failed");
+                return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+            }
+        } catch (Exception e) {
+            ra.addAttribute("reason", "review_delete_failed");
+            System.out.println("Review deletion failed: " + e.getMessage());
+            return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+        }
     }
 
 
-    }
+
+}
 

@@ -10,6 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<link rel="stylesheet" type="text/css" href="../../../resources/css/carts.css">
 <head>
     <title>MyPage</title>
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
@@ -118,41 +119,104 @@
 
             <!-- Main Content -->
             <div style="float: left; width: 80%; margin-left: 50px;">
-                <div class="card">
-                    <div style="width: 100%; min-height: 500px;" class="card-body">
-                        <h5 class="card-title">주문 내역 조회</h5>
-                        <br>
-                        <table class="table table-hover order-table">
-                            <thead style="background-color: #e8e6e6">
-                            <th style="width: 12%">주문일자</th>
-                            <th>상품명</th>
-                            <th style="width: 14%">결제금액</th>
-                            <th style="width: 18%">주문상태</th>
-                            </thead>
-                            <tbody>
-                            <c:if test="${ empty myOrdersList}">
-                                <tr>
-                                    <td colspan="4">주문 내역이 없습니다.</td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${ not empty myOrdersList}">
-                                <c:forEach var="myOrder" items="${myOrdersList}">
-                                    <tr onclick="alert('상세조회(${myOrder.orderId})')">
-                                        <fmt:parseDate var="parsedDate" value="${myOrder.createdAt}"
-                                                       pattern="yyyy-MM-dd HH:mm:ss"/>
-                                        <td><fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/></td>
-                                        <td>
-                                            <img src="${myOrder.imageUrl}" width="15%;"/>
-                                            <span style="margin-left: 10px;">${myOrder.productName} 외 ${myOrder.remainCount}</span>
-                                        </td>
-                                        <td>${myOrder.price}</td>
-                                        <td>${myOrder.status}</td>
-                                    </tr>
-                                </c:forEach>
+                <!-- 주문내역 리스트 -->
+                <div class="bg0 p-t-75 p-b-85">
 
-                            </c:if>
-                            </tbody>
-                        </table>
+                    <div class="cart_list" style="margin: 20px;">
+                        <!-- breadcrumb -->
+                        <div class="container">
+                            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+                                <a href="../" class="stext-109 cl8 hov-cl1 trans-04">
+                                    Home
+                                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                                </a>
+
+                                <span class="stext-109 cl4">
+					주문내역
+				</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h1>주문내역</h1>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
+                                    <div class="m-l-25 m-r--38 m-lr-0-xl">
+                                        <div class="wrap-table-shopping-cart">
+                                            <table class="table-shopping-cart">
+
+                                                <!-- th -->
+                                                <tr class="table_head">
+                                                    <th class="column-1">상품</th>
+                                                    <th class="column-2" style="width: 35%;">상품명</th>
+                                                    <th class="column-3">결제금액</th>
+                                                    <th class="column-4" style="text-align: center;">결제타입</th>
+                                                    <th class="column-5" style="text-align: center;">결제일자</th>
+                                                </tr>
+
+
+                                                <!-- td -->
+                                                <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
+
+                                                    <tr class="table_row" style="height: 100px;">
+                                                        <td class="column-1" style="padding-bottom: 0px";>
+                                                            <div class="how-itemcart1" onclick="itemCartDelete(this)">
+                                                                <img src="${pageContext.request.contextPath}${ myOrder.imageUrl }"
+                                                                     alt="${ myOrder.id }">
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="column-2" style="padding-bottom: 0px;">${ myOrder.productName }</td>
+                                                        <td class="column-3" style="padding-bottom: 0px;">
+                                                            <span id="productPrice">${ myOrder.price+3000 }원</span>
+                                                        </td>
+                                                        <td class="column-4" style="text-align: center; padding-bottom: 0px">
+                                                            <div class="wrap-num-product flex-w m-auto">
+                                                                <span class="mtext-104 cl3 txt-center num-product" type="text"
+                                                                       name="num-product1" value="${ myOrder.paymentType }">
+                                                            </div>
+                                                        </td>
+                                                        <td class="column-5" style="text-align: center; padding-bottom: 0px">
+                                                            <span id="productPrice">${ myOrder.createdAt }</span>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="total-container">
+                                <div class="item">
+                                    <span class="label">총상품금액</span>
+                                    <span class="amount" id="totalAmount">0원</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">+</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">총배송비</span>
+                                    <span class="amount">3,000원</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">=</span>
+                                </div>
+                                <div class="item total">
+                                    <span class="label">TOTAL</span>
+                                    <span class="amount highlight">3,000원</span>
+                                    <span class="extra">FIGU</span>
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+                        </div>
                     </div>
                 </div>
 
@@ -160,14 +224,6 @@
         </div>
     </div>
 
-<script>
-    $(function () {
-        if(${empty loginUser}) {
-            alert('로그인 후 이용 가능합니다.');
-            location.href = "/";
-        }
-    });
-</script>
 
     <script>
         function updateProfileImage(input) {

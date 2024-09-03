@@ -12,11 +12,14 @@ import com.githrd.figurium.user.vo.SocialAccountVo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -28,6 +31,15 @@ public class AuthController {
     private final UserService userService;
     private final HttpSession session;
     private final SocialAccountMapper socialAccountMapper;
+
+    @PostMapping("/save-url")
+    @ResponseBody
+    public ResponseEntity<?> saveUrlToSession(@RequestParam String url) {
+        // 세션에 URL 저장
+        session.setAttribute("redirectUrl", url);
+
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/link-account")
     public String linkAccount() {

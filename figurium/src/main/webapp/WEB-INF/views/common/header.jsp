@@ -472,6 +472,28 @@
         }
     }
 
+    /**
+     * 소셜 로그인 버튼 클릭 시 현재 url을 session에 저장
+     */
+    $('.login-button').click(function() {
+
+        const currentUrl = window.location.href;
+        // 서버로 AJAX 요청 보내기
+        $.ajax({
+            url: '/save-url',  // 서버의 URL (예: 서블릿 매핑)
+            type: 'POST',
+            data: { url: currentUrl },  // URL을 데이터로 전송
+            success: function() {
+                alert('URL이 서버 세션에 저장되었습니다.');
+            },
+            error: function(xhr, status, error) {
+                console.error('URL 저장 실패:', error);
+            }
+        });
+
+    });
+
+
 </script>
 </body>
 </html>

@@ -28,6 +28,8 @@
 
     </style>
 
+
+
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
@@ -191,8 +193,13 @@
                         <div id="reviewText-${review.id}" class="review-text"></div>
 
                         <div class="review_buttons" id="reviewButtons-${review.id}" style="display:none;">
-                            <input type="button" class="edit_button" data-id="${review.id}" value="수정" onclick="update_review()">
-                            <input type="button" class="delete_button" data-id="${review.id}" value="삭제" onclick="delete_review()">
+                            <form>
+                                <input type="hidden" name="userId" value="${review.userId}">
+                                <input type="hidden" name="id" value="${review.id}">
+                                <input type="hidden" name="productId" value="${review.productId}">
+                                <input type="button" class="edit_button" data-id="${review.id}" value="수정" onclick="update_review(this.form)">
+                                <input type="button" class="delete_button" data-id="${review.id}" value="삭제" onclick="delete_review()">
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -362,6 +369,7 @@
 <script>
     // 리뷰 제목 클릭시 발생 할 이벤트와 Ajax
     $(document).ready(function() {
+
         $('.review-title').on('click', function(e) {
             e.preventDefault();
 
@@ -429,7 +437,15 @@
 
 <script>
     // 리뷰 수정 버튼 클릭
-    function update_review(){
+    function update_review(f){
+
+        let userId = f.userId.value;
+        let productId = f.productId.value;
+        let reviewId = f.id.value;
+
+        f.action = "reviewUpdateForm.do"
+        f.method = "POST";
+        f.submit();
 
     }
 

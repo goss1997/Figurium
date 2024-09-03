@@ -14,4 +14,9 @@ public interface ReviewService {
     int insertReview(ReviewVo reviewVo);
 
     ReviewVo getReviewById(Integer id);
+
+    String selectImageUrl(int id);
+
+    int updateReview(ReviewVo reviewVo);
+
 }

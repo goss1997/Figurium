@@ -36,4 +36,14 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewVo getReviewById(Integer id) {
         return reviewDao.getReviewById(id);
     }
+
+    @Override
+    public String selectImageUrl(int id) {
+        return reviewDao.selectImageUrl(id);
+    }
+
+    @Override
+    public int updateReview(ReviewVo reviewVo) {
+        return reviewDao.updateReview(reviewVo);
+    }
 }

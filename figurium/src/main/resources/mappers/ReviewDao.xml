@@ -10,6 +10,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
         @rownum := @rownum + 1 AS number,  <!-- 번호 매기기 -->
         r.id,
+        r.user_id,
+        r.product_id,
+        r.updated_at,
         r.title,
         r.content,
         r.image_url AS imageUrl,  <!-- 이미지 URL 가져오기 -->
@@ -38,22 +41,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 해당 상품에 대한 리뷰 작성 -->
     <insert id="insertReview" parameterType="com.githrd.figurium.reviews.vo.ReviewVo">
-        INSERT INTO reviews(user_id, product_id,rating,title,content,image_url,created_at,updated_at)
-        VALUES (#{userId},#{productId},#{rating},#{title},#{content},#{imageUrl},DEFAULT,DEFAULT)
+        INSERT INTO reviews(user_id,
+                            product_id,
+                            rating,
+                            title,
+                            content,
+                            image_url,
+                            created_at,
+                            updated_at)
+                    VALUES
+                            (#{userId},
+                             #{productId},
+                             #{rating},
+                             #{title},
+                             #{content},
+                             #{imageUrl},
+                             DEFAULT,
+                             DEFAULT)
     </insert>
 
 
     <!-- 해당 리뷰 ID 1건에 해당하는 리뷰조회 -->
     <select id="getReviewById" parameterType="int" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
         SELECT
+        id,
+        product_id,
         user_id,
+        title,
         content,
-        image_url
+        image_url,
+        rating
         FROM
         reviews
         WHERE
         id = #{id}
     </select>
+
+    
+    <!-- 리뷰의 이미지 조회 -->
+    <select id="selectImageUrl" parameterType="int" resultType="String">
+        SELECT image_url FROM reviews WHERE id = #{id}
+    </select>
+
+
+    <!-- 리뷰수정 -->
+    <update id="updateReview" parameterType="com.githrd.figurium.reviews.vo.ReviewVo">
+        UPDATE reviews
+        SET
+            title = #{title},
+            content = #{content},
+            image_url = #{imageUrl},
+            rating = #{rating},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            id = #{id} AND user_id = #{userId}
+    </update>
 
 
 </mapper>

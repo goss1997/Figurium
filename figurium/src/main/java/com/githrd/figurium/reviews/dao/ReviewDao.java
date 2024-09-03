@@ -21,4 +21,15 @@ public interface ReviewDao {
     // 리뷰 1건에 해당하는 Id를 이용해 해당 리뷰 조회
     ReviewVo getReviewById(Integer id);
 
+    // S3 삭제를 위한 리뷰에 대한 이미지 조회
+    String selectImageUrl(int id);
+
+    // 해당 리뷰 수정
+    int updateReview(ReviewVo reviewVo);
+
+    // 해당 리뷰 삭제
+    int deleteReviewById(int id);
+
+
+
 }

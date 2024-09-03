@@ -51,6 +51,13 @@ public class ReviewsController {
                                @RequestParam(value = "productId") Integer productId,
                                Model model) {
 
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return "redirect:/";
+        }
+
+
         model.addAttribute("productId", productId);
 
         return "reviews/reviewInsertForm";
@@ -125,12 +132,94 @@ public class ReviewsController {
     }
 
 
+    // 리뷰 수정 폼 이동
     @RequestMapping("/reviewUpdateForm.do")
-    public String reviewUpdateForm(Model model) {
+    public String reviewUpdateForm(@RequestParam(value = "id") int id,
+                                   Model model) {
+
+        // 로그인 유저 검증
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return "redirect:/";
+        }
+
+        ReviewVo review = reviewService.getReviewById(id);
+        model.addAttribute("review", review);
+
+        System.out.println("Rating from database: " + review.getRating());
 
         return "reviews/reviewUpdateForm";
     }
 
 
+    // 리뷰수정
+    @RequestMapping("/reviewUpdate.do")
+    public String reviewUpdate(ReviewVo reviewVo,
+                               @RequestParam("imageFile") MultipartFile imageFile,
+                               @RequestParam(value = "userId") int userId,
+                               HttpSession session,
+                               RedirectAttributes ra) {
 
-}
+        User user = (User) session.getAttribute("loginUser");
+        if (user == null) {
+            ra.addAttribute("reason", "not_session");
+            return "redirect:/";
+        }
+
+        // 해당 리뷰의 이미지가 존재하는지 확인
+        String imageUrl = reviewService.selectImageUrl(reviewVo.getId());
+        // 존재하면 해당 이미지 삭제
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            s3ImageService.deleteImageFromS3(imageUrl);
+        }
+
+        // 업로드 시 이미지를 넣었을 경우 실행
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                reviewVo.setImageUrl(s3ImgUrl);
+            } catch (Exception e) {
+                ra.addAttribute("reason", "image_upload_failed");
+                // 이미지 업로드 실패 시 기존 이미지 유지
+                reviewVo.setImageUrl(imageUrl);
+                System.out.println(e.getMessage());
+            }
+        }else { // 이미지를 넣지 않았을 경우 유지 할 지 공백으로 할지 생각중
+            reviewVo.setImageUrl("");
+        }
+
+        // 공백 전환
+        String content = reviewVo.getContent().replaceAll("\n", "<br>");
+        reviewVo.setContent(content);
+
+        System.out.println("productId = " + reviewVo.getProductId());
+        System.out.println("userId = " + reviewVo.getUserId());
+
+        try {
+            int success = reviewService.updateReview(reviewVo);
+            // 성공 시
+            if (success > 0) {
+                return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+            } else {
+                ra.addAttribute("reason", "review_update_failed");
+                return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+            }
+        } catch (Exception e) {
+            ra.addAttribute("reason", "review_update_failed");
+            System.out.println("Review update failed: " + e.getMessage());
+            return "redirect:/productInfo.do?id=" + reviewVo.getProductId();
+        }
+    }
+
+
+    @RequestMapping("/reviewDelete.do")
+    public String reviewDelete(@RequestParam(value = "id") int id,
+                               RedirectAttributes ra) {
+
+        return "redirect:/productInfo.do?id=" + id;
+    }
+
+
+    }
+

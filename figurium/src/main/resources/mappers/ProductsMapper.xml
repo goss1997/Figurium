@@ -27,6 +27,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         VALUES (#{categoryName}, #{name}, #{price}, #{quantity}, #{imageUrl})
     </insert>
 
+    <update id="productUpdate" parameterType="products">
+        UPDATE products
+        SET category_name = #{categoryName},
+            name = #{name},
+            price = #{price},
+            quantity = #{quantity},
+            image_url = #{imageUrl}
+        WHERE id = #{id}
+    </update>
+
 
 
 </mapper>

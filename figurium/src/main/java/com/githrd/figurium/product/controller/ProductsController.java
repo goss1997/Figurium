@@ -12,6 +12,7 @@ import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,10 +65,24 @@ public class ProductsController {
 
     @RequestMapping("/productInsert.do")
     public String productInsert(ProductsVo products, @RequestParam MultipartFile productImage) {
-        System.out.println(products);
+        String save;
+        if(productImage.isEmpty()){
 
-        String save = productsService.ImageSave(products, productImage);
+            products.setImageUrl("/resources/images/noImage1.png");
 
+            int res = productsService.productSave(products);
+
+            if (res > 0) {
+                System.out.println("저장실패");
+                return "redirect:/"; // 저장 실패 시 리다이렉션
+            } else {
+                System.out.println("등록성공");
+                return "redirect:/"; // 저장 성공 시 리다이렉션
+            }
+
+        }
+
+        save = productsService.ImageSave(products, productImage);
         if (save == null) {
             System.out.println("저장실패");
             return "redirect:/"; // 저장 실패 시 리다이렉션
@@ -76,6 +91,45 @@ public class ProductsController {
             return "redirect:/"; // 저장 성공 시 리다이렉션
         }
     }
+
+
+
+    @RequestMapping("/productModifyForm.do")
+    public String productModifyForm(@RequestParam(value = "id" , required = false) Integer id,
+                       Model model) {
+
+        // 해상 상품에 해당하는 ID를 받아옴
+        Products selectOne = productsService.getProductById(id);
+        List<Category> categoriesList = categoriesRepository.findAll();
+        model.addAttribute("product", selectOne);
+        model.addAttribute("categoriesList", categoriesList);
+
+        return "products/productModifyForm";
+    }
+
+    @RequestMapping("/productModify.do")
+    public String productModify(ProductsVo products, @RequestParam MultipartFile productImage) {
+
+
+        Products productById = productsService.getProductById(products.getId());
+        String oldImageUrl = productById.getImageUrl();
+        products.setImageUrl(oldImageUrl);
+
+
+
+        int save = productsService.updateProductsImage(products, productImage);
+
+        if (save == 0) {
+            System.out.println("저장실패");
+            return "redirect:/"; // 저장 실패 시 리다이렉션
+        } else {
+            System.out.println("등록성공");
+            return "redirect:/productInfo.do?id=" + products.getId(); // 저장 성공 시 리다이렉션
+        }
+
+
+    }
+
 
     @DeleteMapping("/product/{id}")
     public ResponseEntity<Void> productDeleteById(@PathVariable int id){

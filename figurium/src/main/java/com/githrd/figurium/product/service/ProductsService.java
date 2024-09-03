@@ -42,7 +42,7 @@ public class ProductsService {
             products.setImageUrl(profileImgUrl);
             int result = productsMapper.productInsert(products);
 
-            if(result>0){
+            if(result > 0){
                 return "/";
             }
         }
@@ -50,20 +50,18 @@ public class ProductsService {
 
         return "";
     }
-/*
+
     // 업로드된 프로필 이미지 수정
-    public Products updateProfileImage(Products Products, MultipartFile ProductImage) {
+    public int updateProductsImage(ProductsVo products, MultipartFile productImage) {
 
-        // s3에서 사용자의 프로필 이미지 제거.
-        s3ImageService.deleteImageFromS3(Products.getImageUrl());
+        // s3에서 상품의 이미지 제거.
+        s3ImageService.deleteImageFromS3(products.getImageUrl());
 
-        // s3에 수정할 이미지 업로드 후 유저에 set하기.
-        Products.setImageUrl(s3ImageService.uploadS3(ProductImage));
+        // s3에 수정할 이미지 업로드 후 상품에 이미지 기재하기.
+        products.setImageUrl(s3ImageService.uploadS3(productImage));
 
-        return productRepository.save(Products);
+        return productsMapper.productUpdate(products);
     }
-    */
-
 
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {
@@ -73,4 +71,8 @@ public class ProductsService {
         }
     }
 
+
+    public int productSave(ProductsVo products) {
+        return productsMapper.productInsert(products);
+    }
 }

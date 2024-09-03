@@ -6,7 +6,7 @@
 
     <insert id="insertSocialAccount" parameterType="SocialAccountVo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO social_accounts
-        VALUES (null, #{userId}, #{provider}, '101010', default)
+        VALUES (null, #{userId}, #{provider}, #{providerUserId}, default)
     </insert>
 
     <select id="selectSocialAccountOne" parameterType="Map" resultType="SocialAccountVo">

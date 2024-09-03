@@ -1,5 +1,7 @@
 package com.githrd.figurium.auth.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githrd.figurium.auth.dto.UserProfile;
 import com.githrd.figurium.exception.customException.AccountLinkException;
 import com.githrd.figurium.exception.customException.RedirectErrorException;
@@ -57,7 +59,7 @@ public class AuthController {
                 throw new UserNotFoundException("User not found with email: " + userProfile.getEmail());
             }
 
-            SocialAccountVo socialAccountVo = new SocialAccountVo(loginUser.getId(), userProfile.getProvider());
+            SocialAccountVo socialAccountVo = new SocialAccountVo(loginUser.getId(), userProfile.getProvider(), userProfile.getProviderUserId());
             socialAccountMapper.insertSocialAccount(socialAccountVo);
 
             session.removeAttribute("userProfile");
@@ -76,10 +78,12 @@ public class AuthController {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             Map<String, Object> attributes = oAuth2User.getAttributes();
 
-            String email = String.valueOf(attributes.get("email"));
-            String name = String.valueOf(attributes.get("name"));
-            String profileImageUrl = String.valueOf(attributes.get("profileImageUrl"));
-            String provider = String.valueOf(attributes.get("provider"));
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            // attributes를 UserProfile 객체로 역직렬화하기.
+            UserProfile userProfile = objectMapper.convertValue(attributes, UserProfile.class);
+
+            String email = userProfile.getEmail();
 
             if (userService.existsByEmail(email)) {
                 User user = userService.findByEmail(email);
@@ -88,10 +92,10 @@ public class AuthController {
                     throw new UserNotFoundException("User not found with email: " + email);
                 }
 
-                SocialAccountVo socialAccount = userService.selectSocialAccountOne(user.getId(), provider);
+                SocialAccountVo socialAccount = userService.selectSocialAccountOne(user.getId(), userProfile.getProvider());
                 if (socialAccount == null) {
                     log.info("연동을 위해 연동 페이지 포워딩");
-                    session.setAttribute("userProfile", new UserProfile(name, provider, email, profileImageUrl));
+                    session.setAttribute("userProfile", userProfile);
                     return "user/link-account";
                 } else {
                     log.info("이미 연동한 사용자");
@@ -101,7 +105,8 @@ public class AuthController {
             }
 
             log.info("소셜 정보 db에 저장 후 로그인.");
-            User loginUser = userService.createSocialAccount(attributes);
+
+            User loginUser = userService.createSocialAccount(userProfile);
             session.setAttribute("loginUser", loginUser);
             return redirectToPreviousPage();
 
@@ -111,10 +116,11 @@ public class AuthController {
         }
     }
 
+
     private String redirectToPreviousPage() {
         try {
             String redirectUrl = (String) session.getAttribute("redirectUrl");
-            log.info( "리다이렉트 Url : "+redirectUrl);
+            log.info("리다이렉트 Url : " + redirectUrl);
             if (redirectUrl == null || redirectUrl.isEmpty()) {
                 redirectUrl = "/";
             }

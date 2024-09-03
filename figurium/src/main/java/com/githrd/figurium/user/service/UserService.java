@@ -1,5 +1,6 @@
 package com.githrd.figurium.user.service;
 
+import com.githrd.figurium.auth.dto.UserProfile;
 import com.githrd.figurium.user.dao.SocialAccountMapper;
 import com.githrd.figurium.user.dao.UserMapper;
 import com.githrd.figurium.user.entity.User;
@@ -12,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -72,25 +71,19 @@ public class UserService {
     }
 
     @Transactional
-    public User createSocialAccount(Map<String, Object> attributes) {
+    public User createSocialAccount(UserProfile userProfile) {
 
-        String email = String.valueOf(attributes.get("email"));
-        String name = String.valueOf(attributes.get("name"));
-        String profileImageUrl = String.valueOf(attributes.get("profileImageUrl"));
-        String provider = String.valueOf(attributes.get("provider"));
-
-        UserVo userVo = userMapper.selectByEmail(email);
+        UserVo userVo = userMapper.selectByEmail(userProfile.getEmail());
 
         //  가입 안 한 소셜 이메일인 경우
         if (userVo == null) {
-            UserVo insertUserVo = new UserVo(email, name, profileImageUrl);
 
-            int userInsertResult = userMapper.insertSocialUser(insertUserVo);
+            int userInsertResult = userMapper.insertSocialUser(userProfile);
 
             // 자동 증가된 id
-            int userId = insertUserVo.getId();
+            int userId = userProfile.getId();
 
-            int socialAccountInsertResult = socialAccountMapper.insertSocialAccount(new SocialAccountVo(userId, provider));
+            socialAccountMapper.insertSocialAccount(new SocialAccountVo(userId, userProfile.getProvider(), userProfile.getProviderUserId()));
 
             return userRepository.findUserById(userId);
         }
@@ -107,7 +100,6 @@ public class UserService {
     public SocialAccountVo selectSocialAccountOne(int userId, String provider) {
         return socialAccountMapper.selectSocialAccountOne(userId, provider);
     }
-
 
 
 }

@@ -9,9 +9,9 @@
                  default, default, default, default)
     </insert>
 
-    <insert id="insertSocialUser" parameterType="UserVo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSocialUser" parameterType="UserProfile" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (email, name, profile_img_url)
-        VALUES (#{email}, #{name}, #{profileImgUrl})
+        VALUES (#{email}, #{name}, #{profileImageUrl})
     </insert>
 
     <select id="selectByEmail" parameterType="String" resultType="UserVo">

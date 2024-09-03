@@ -3,13 +3,6 @@ package com.githrd.figurium.auth.service;
 
 import com.githrd.figurium.auth.dto.UserProfile;
 import com.githrd.figurium.auth.type.OAuthAttributes;
-import com.githrd.figurium.user.entity.SocialAccount;
-import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.user.repository.SocialAccountRepository;
-import com.githrd.figurium.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,7 +13,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,6 +60,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         customAttribute.put("name", userProfile.getName());
         customAttribute.put("email", userProfile.getEmail());
         customAttribute.put("profileImageUrl", userProfile.getProfileImageUrl());
+        customAttribute.put("providerUserId",userProfile.getProviderUserId());
 
         return customAttribute;
     }

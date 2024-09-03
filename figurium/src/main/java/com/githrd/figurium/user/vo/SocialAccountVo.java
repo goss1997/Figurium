@@ -15,8 +15,9 @@ public class SocialAccountVo {
     private String providerUserId;
     private String createdAt;
 
-    public SocialAccountVo(int userId, String provider) {
+    public SocialAccountVo(int userId, String provider,String providerUserId) {
         this.userId = userId;
         this.provider = provider;
+        this.providerUserId = providerUserId;
     }
 }

@@ -18,7 +18,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute(LOGIN_USER);
 
-        if(loginUser == null){
+        if(loginUser == null) {
+
             log.warn("LoginInterceptor : 비회원 접근 불가!");
             response.sendRedirect(request.getContextPath());
             return false;

@@ -50,7 +50,7 @@
 
                 <div style="margin-left : 60%">
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                        <input type="button" value="상품수정" onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do'">
+                        <input type="button" value="상품수정" onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do?id=${product.id}'">
                     </div>
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
                         <button class="product-delete-button" data-product-id="${product.id}">상품삭제</button>
@@ -462,6 +462,12 @@
             }
         });
     });
+
+
+</script>
+
+
+
 
 
 </script>

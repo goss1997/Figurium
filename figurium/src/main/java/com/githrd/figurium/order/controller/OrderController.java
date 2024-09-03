@@ -55,8 +55,6 @@ public class OrderController {
 
 
 
-        System.out.println(secretKey);
-        System.out.println(apiKey);
     }
 
 

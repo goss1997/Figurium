@@ -9,10 +9,10 @@ import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
-import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class ProductsController {
 
     private final ProductsService productsService;
@@ -32,18 +33,6 @@ public class ProductsController {
     private S3ImageService s3ImageService;
 
 
-    @Autowired
-    public ProductsController(ProductsService productsService,
-                              ReviewService reviewService,
-                              CategoriesRepository categoriesRepository,
-                              HttpSession session, ProductsMapper productsMapper, ProductRepository productRepository) {
-        this.productsService = productsService;
-        this.reviewService = reviewService;
-        this.categoriesRepository = categoriesRepository;
-        this.session = session;
-        this.productsMapper = productsMapper;
-        this.productRepository = productRepository;
-    }
 
 
     @RequestMapping("/productInfo.do")
@@ -88,19 +77,19 @@ public class ProductsController {
         }
     }
 
-    @DeleteMapping("/productDelete.do/{id}")
-    public String productDelete(@PathVariable int id){
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<Void> productDeleteById(@PathVariable int id){
 
         Products selectOne = productsService.getProductById(id);
         String imageUrl = selectOne.getImageUrl();
-        System.out.println(imageUrl);
 
         s3ImageService.deleteImageFromS3(imageUrl);
 
 
-        productRepository.deleteById(id);
+        productsService.deleteById(id);
 
-        return "redirect:/";
+        return ResponseEntity.noContent().build();
+
     }
 
 

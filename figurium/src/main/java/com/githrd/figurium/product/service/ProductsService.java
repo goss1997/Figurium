@@ -1,14 +1,12 @@
 package com.githrd.figurium.product.service;
 
-import com.githrd.figurium.product.controller.ProductsController;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.util.S3ImageService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,5 +63,14 @@ public class ProductsService {
         return productRepository.save(Products);
     }
     */
+
+
+    public void deleteById(int id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Entity with id " + id + " not found");
+        }
+    }
 
 }

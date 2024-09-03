@@ -53,7 +53,7 @@
                         <input type="button" value="상품수정" onclick="if(confirm('정말 수정하시겠습니까?')) location.href='#'">
                     </div>
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                        <button class="delete-button" data-product-id="${product.id}">상품삭제</button>
+                        <button class="product-delete-button" data-product-id="${product.id}">상품삭제</button>
                     </div>
                 </div>
             </c:if>
@@ -411,12 +411,12 @@
 <script >
 
     $(document).ready(function () {
-        $('.delete-button').on('click', function () {
+        $('.product-delete-button').on('click', function () {
             var productId = $(this).data('product-id');
 
             if (confirm('정말 삭제하시겠습니까?')) {
                 $.ajax({
-                    url: '/productDelete.do/' + productId,
+                    url:  "/product/" + productId,
                     type: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -425,7 +425,7 @@
                         // 삭제 성공 후 페이지 새로 고침
                         window.location.href="/";
                     },
-                    error: function (xhr, status, error) {
+                    error: function (error) {
                         alert('상품 삭제에 실패했습니다.');
                         console.error('Error:', error);
                     }

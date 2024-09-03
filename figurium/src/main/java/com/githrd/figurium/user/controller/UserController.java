@@ -111,8 +111,6 @@ public class UserController {
     public String signup(UserVo user,
                          @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
 
-        System.out.println("회원가입 컨트롤러 실행");
-
         // 비밀번호 암호화
         String encPwd = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encPwd);
@@ -172,6 +170,12 @@ public class UserController {
     @PostMapping("update.do")
     public String updateUser(String name, String phone, String address) {
 
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return "redirect:/";
+        }
+
         User updatedUser = userService.updateUser(name, phone, address);
         session.setAttribute("loginUser", updatedUser);
 
@@ -185,6 +189,10 @@ public class UserController {
     @GetMapping("order-list.do")
     public String myOrderList(Model model) {
         User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser == null) {
+            return "redirect:/";
+        }
 
         int userId = loginUser.getId();
 

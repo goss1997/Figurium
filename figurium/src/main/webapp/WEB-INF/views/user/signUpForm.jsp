@@ -153,7 +153,7 @@
 
 <script>
     $(function () {
-        if(${not empty user}) {
+        if(${not empty loginUser}) {
             alert('메인페이지로 이동합니다.');
             location.href = "/";
         }

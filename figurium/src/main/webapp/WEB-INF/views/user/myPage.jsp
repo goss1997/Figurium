@@ -88,7 +88,6 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="${pageContext.request.contextPath}/user/my-page.do">개인 정보 수정</a></li>
                             <li class="list-group-item"><a href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a href="#">1대1 문의</a></li>
                             <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
                         </ul>
                     </div>
@@ -124,6 +123,15 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function () {
+            if(${empty loginUser}) {
+                alert('로그인 후 이용 가능합니다.');
+                location.href = "/";
+            }
+        });
+    </script>
+
 <script>
     function updateProfileImage(input) {
         const file = input.files[0];
@@ -151,8 +159,6 @@
         }
     }
 </script>
-
-
 
 </div>
 <!-- NOTE : 푸터바 -->

@@ -123,7 +123,15 @@
 
 <jsp:include page="../common/footer.jsp"/>
 </body>
-
+<script>
+    $(function () {
+        if(${loginUser.role ne "1"}) {
+            console.log(${loginUser.role});
+            alert('관리자만 등록이 가능합니다.');
+            location.href = "/";
+        }
+    });
+</script>
 
 <script>
     function previewImage(input) {

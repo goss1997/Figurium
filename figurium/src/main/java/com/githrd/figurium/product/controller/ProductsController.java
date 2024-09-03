@@ -9,10 +9,10 @@ import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
+import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.util.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +30,8 @@ public class ProductsController {
     private final CategoriesRepository categoriesRepository;
     private final HttpSession session;
     private final ProductRepository productRepository;
-    private ProductsMapper productsMapper;
-    private S3ImageService s3ImageService;
+    private final ProductsMapper productsMapper;
+    private final S3ImageService s3ImageService;
 
 
 
@@ -56,11 +56,19 @@ public class ProductsController {
         int ratingAvg = reviewService.reviewRatingAvg(id);
         model.addAttribute("ratingAvg", ratingAvg);
 
+
         return "products/productInfo";
     }
 
     @GetMapping("/productInsertForm.do")
     public String productInsertForm(Model model){
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser.getRole() != 1) {
+            return "redirect:/";
+        }
+
         List<Category> categoriesList = categoriesRepository.findAll();
         model.addAttribute("categoriesList", categoriesList);
 
@@ -69,6 +77,13 @@ public class ProductsController {
 
     @RequestMapping("/productInsert.do")
     public String productInsert(ProductsVo products, @RequestParam MultipartFile productImage) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser.getRole() != 1) {
+            return "redirect:/";
+        }
+
         String save;
         if(productImage.isEmpty()){
 
@@ -100,7 +115,13 @@ public class ProductsController {
 
     @RequestMapping("/productModifyForm.do")
     public String productModifyForm(@RequestParam(value = "id" , required = false) Integer id,
-                       Model model) {
+                                    Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser.getRole() != 1) {
+            return "redirect:/";
+        }
 
         // 해상 상품에 해당하는 ID를 받아옴
         Products selectOne = productsService.getProductById(id);
@@ -113,6 +134,12 @@ public class ProductsController {
 
     @RequestMapping("/productModify.do")
     public String productModify(ProductsVo products, @RequestParam MultipartFile productImage) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser.getRole() != 1) {
+            return "redirect:/";
+        }
 
 
         Products productById = productsService.getProductById(products.getId());
@@ -136,7 +163,13 @@ public class ProductsController {
 
 
     @DeleteMapping("/product/{id}")
-    public ResponseEntity<Void> productDeleteById(@PathVariable int id){
+    public Object productDeleteById(@PathVariable int id){
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if(loginUser.getRole() != 1) {
+            return "/";
+        }
 
         Products selectOne = productsService.getProductById(id);
         String imageUrl = selectOne.getImageUrl();

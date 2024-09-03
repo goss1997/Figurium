@@ -4,7 +4,11 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +19,25 @@ import java.io.IOException;
 import java.util.Locale;
 
 @Controller
+@Slf4j  // 로깅을 위한 log 객체를 자동으로 생성
+@RequiredArgsConstructor    // 알아서 private로 지정되어있는 필드 생성자로 생성
 public class PaymentController {
 
     // iamport를 사용하기 위해서 api를 불러온다.
     private IamportClient api;
+    private HttpSession session;
+
+    // application.properties에 암호를 저장하여 Controller에 기록이 안되게 암호화 시킴
+    @Value("${imp.api.key}")
+    private String apiKey;
+
+    @Value("${imp.api.secretkey}")
+    private String secretKey;
 
     // api를 사용하기 위해서는 apiKey와 apiSecret키를 넣어준다.
-    public PaymentController() {
-        this.api = new IamportClient("1108573077381870",
-                "p7w48z3iVEeq6QO8vBA5sOPevweFp7LmcApW5ZFePYX3vJSt7dyyIZdsYs3KfEjztvMy9FlqhPmY0zgn");
+    @PostConstruct
+    public void init() {
+        this.api = new IamportClient(apiKey, secretKey);
     }
 
     @ResponseBody   // JSON 형태로 반환

@@ -182,14 +182,16 @@
                                                         </td>
                                                         <c:if test="${ myOrder.productCount <= 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="">${ myOrder.productName }</a>
+                                                                <a href="orderDetail.do">${ myOrder.productName }</a>
                                                             </td>
 
                                                         </c:if>
 
                                                         <c:if test="${ myOrder.productCount > 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
+                                                                <a href="orderDetail.do">
                                                                     ${ myOrder.productName } 외 ${ myOrder.productCount }개
+                                                                </a>
                                                             </td>
 
                                                         </c:if>

@@ -5,7 +5,6 @@ import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.dao.ShippingAddressesMapper;
 import com.githrd.figurium.order.vo.MyOrderVo;
-import com.githrd.figurium.order.vo.Orders;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
@@ -77,7 +76,6 @@ public class OrderServiceImpl implements OrderService {
 
         return totalPrice;
     }
-
 
     /**
      * 사용자 주문 내역 조회

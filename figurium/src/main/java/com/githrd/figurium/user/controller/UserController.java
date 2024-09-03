@@ -203,4 +203,13 @@ public class UserController {
         return "user/myOrderList";
     }
 
+    /**
+     * 내 주문 상세 조회
+     */
+    @GetMapping("orderDetail.do")
+    public String myOrderDetail() {
+
+        return "user/myOrderDetail";
+    }
+
 }

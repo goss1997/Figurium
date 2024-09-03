@@ -43,11 +43,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--    </select>-->
 
     <select id="selectListByUserId" resultType="myOrders" parameterType="int">
-        select id, max(payment_type) as payment_type, max(name) as name,sum(price) as price,
-               max(created_at) as created_at, max(product_name),
-               count(product_name)-1 as product_count, max(image_url) as image_url
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
         from order_history_view
-        where id = #{ id }
+        where user_id = #{ user_id }
         group by id;
     </select>
 

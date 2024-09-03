@@ -86,7 +86,7 @@ pageEncoding="UTF-8" %>
 <body class="animsition">
 
 
-<!-- 장바구니 -->
+<!--  -->
 <div class="wrap-header-cart js-panel-cart">
 	<div class="s-full js-hide-cart"></div>
 

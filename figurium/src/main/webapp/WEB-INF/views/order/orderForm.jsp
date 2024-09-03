@@ -84,7 +84,7 @@
                 sil(price);
 
               } else {
-                alert("결제 실패")  // 결제검증이 실패하면 이뤄지는 실패 로직
+                alert("결제에 실패했습니다. 관리자에게 문의해주세요.")  // 결제검증이 실패하면 이뤄지는 실패 로직
               }
             });
           });
@@ -492,7 +492,7 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(100);">주문하기</button>
+    <button class="order-button" onclick="sil(100);">주문하기</button>
 
   </div>
 

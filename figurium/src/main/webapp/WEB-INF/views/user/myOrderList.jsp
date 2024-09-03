@@ -57,6 +57,10 @@
             background-color: #6d6e6f;
         }
 
+        .backbtn {
+            margin-top: -75px;
+        }
+
         .list-group-item a {
             color: black;
         }
@@ -73,9 +77,16 @@
             height: 100px;
         }
 
-    </style>
+        #list-hr1 {
+            margin-top: -30px;
+        }
+
+        #list-hr2 {
+            margin-bottom: 70px;
+        }
 
     </style>
+
 </head>
 
 <body>
@@ -122,24 +133,25 @@
                 <!-- 주문내역 리스트 -->
                 <div class="bg0 p-t-75 p-b-85">
 
-                    <div class="cart_list" style="margin: 20px;">
+                    <div class="cart_list" style="margin-left: -50px;">
                         <!-- breadcrumb -->
                         <div class="container">
-                            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+                            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg backbtn">
                                 <a href="../" class="stext-109 cl8 hov-cl1 trans-04">
                                     Home
                                     <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
                                 </a>
 
                                 <span class="stext-109 cl4">
-					주문내역
-				</span>
+                                    주문내역
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <div>
+                    <div style="width: 1300px; margin-left: -160px">
                         <h1>주문내역</h1>
+                        <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
@@ -149,52 +161,64 @@
 
                                                 <!-- th -->
                                                 <tr class="table_head">
-                                                    <th class="column-1">상품</th>
-                                                    <th class="column-2" style="width: 35%;">상품명</th>
+                                                    <th class="column-1" style="text-align: center; width: 5%;">상품</th>
+                                                    <th class="column-2" style="width: 40%;">상품명</th>
                                                     <th class="column-3">결제금액</th>
                                                     <th class="column-4" style="text-align: center;">결제타입</th>
                                                     <th class="column-5" style="text-align: center;">결제일자</th>
                                                 </tr>
 
 
+
                                                 <!-- td -->
-                                                <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
 
                                                     <tr class="table_row" style="height: 100px;">
-                                                        <td class="column-1" style="padding-bottom: 0px";>
+                                                        <td class="column-1" style="padding-bottom: 0px;" >
                                                             <div class="how-itemcart1" onclick="itemCartDelete(this)">
                                                                 <img src="${pageContext.request.contextPath}${ myOrder.imageUrl }"
-                                                                     alt="${ myOrder.id }">
+                                                                     alt="${ myOrder.id }" style="text-align: left">
                                                             </div>
 
                                                         </td>
-                                                        <td class="column-2" style="padding-bottom: 0px;">${ myOrder.productName }</td>
+                                                        <c:if test="${ myOrder.productCount <= 0 }">
+                                                            <td class="column-2" style="padding-bottom: 0px;">
+                                                                <a href="">${ myOrder.productName }</a>
+                                                            </td>
+
+                                                        </c:if>
+
+                                                        <c:if test="${ myOrder.productCount > 0 }">
+                                                            <td class="column-2" style="padding-bottom: 0px;">
+                                                                    ${ myOrder.productName } 외 ${ myOrder.productCount }개
+                                                            </td>
+
+                                                        </c:if>
+
                                                         <td class="column-3" style="padding-bottom: 0px;">
-                                                            <span id="productPrice">${ myOrder.price+3000 }원</span>
+                                                            <span id="productPrice">${ myOrder.totalValue+3000 }원</span>
                                                         </td>
                                                         <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                            <div class="wrap-num-product flex-w m-auto">
-                                                                <span class="mtext-104 cl3 txt-center num-product" type="text"
-                                                                       name="num-product1" value="${ myOrder.paymentType }">
-                                                            </div>
+                                                            <span id="productPrice">${ myOrder.paymentType }</span>
                                                         </td>
                                                         <td class="column-5" style="text-align: center; padding-bottom: 0px">
                                                             <span id="productPrice">${ myOrder.createdAt }</span>
                                                         </td>
                                                     </tr>
-                                                </c:forEach>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <hr>
+
+                            <hr id="list-hr1">
 
                             <div class="total-container">
                                 <div class="item">
                                     <span class="label">총상품금액</span>
-                                    <span class="amount" id="totalAmount">0원</span>
+                                    <span class="amount" id="totalAmount">
+                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue }" currencySymbol=""/>원
+                                    </span>
                                 </div>
                                 <div class="item">
                                     <span class="label">+</span>
@@ -208,12 +232,15 @@
                                 </div>
                                 <div class="item total">
                                     <span class="label">TOTAL</span>
-                                    <span class="amount highlight">3,000원</span>
+                                    <span class="amount highlight">
+                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue+3000 }" currencySymbol=""/>원
+                                    </span>
                                     <span class="extra">FIGU</span>
                                 </div>
                             </div>
 
-                            <hr>
+                            <hr id="list-hr2">
+                            </c:forEach>
 
 
                         </div>

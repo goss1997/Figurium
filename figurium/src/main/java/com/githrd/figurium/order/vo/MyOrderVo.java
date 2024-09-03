@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +14,7 @@ public class MyOrderVo {
     private int id;
     private String paymentType;
     private int userId;
-    private Date createdAt;
+    private String createdAt;
 
     private int price;
     private int quantity;
@@ -33,6 +31,8 @@ public class MyOrderVo {
     private String productName;
     private String imageUrl;
     private int productCount;
+
+    private int totalValue;
 
 
 }

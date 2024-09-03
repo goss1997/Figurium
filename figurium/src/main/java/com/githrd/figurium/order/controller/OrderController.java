@@ -13,6 +13,7 @@ import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.product.vo.ProductsVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,12 @@ public class OrderController {
     private OrderItemsMapper orderItemsMapper;
     private HttpSession session;
 
+    @Value("${imp.api.key}")
+    private String apiKey;
+
+    @Value("${imp.api.secretkey}")
+    private String secretKey;
+
     @Autowired
     public OrderController(CartsMapper cartsMapper, OrderMapper orderMapper,
                            CustomersMapper customersMapper, ShippingAddressesMapper shippingAddressesMapper,
@@ -45,6 +52,11 @@ public class OrderController {
         this.orderItemsMapper = orderItemsMapper;
         this.session = session;
         this.productsMapper = productsMapper;
+
+
+
+        System.out.println(secretKey);
+        System.out.println(apiKey);
     }
 
 

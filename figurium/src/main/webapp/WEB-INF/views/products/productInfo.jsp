@@ -358,6 +358,32 @@
     });
 </script>
 
+
+<script>
+    // 주문 할 상품의 수량 선택
+    var maxQuantity = "${product.quantity}"; // 재고 수량
+
+    function increaseQuantity() {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity < maxQuantity) {
+            quantityInput.value = currentQuantity + 1;
+        } else {
+            alert('재고 수량을 초과할 수 없습니다.');
+        }
+    }
+
+    function decreaseQuantity() {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+        }
+    }
+</script>
+
+
+
 <script>
     // 리뷰작성 버튼 클릭 시 로그인 검증
     function reviewInsertForm(f) {

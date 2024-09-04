@@ -21,15 +21,14 @@ public class ProductLikeServiceImpl implements ProductLikeService {
 
     @Override
     public int toggleProductLike(ProductLikeVo productLikeVo) {
-        boolean isLiked = productLikeDao.isProductLiked(productLikeVo);
-        if (isLiked){    // 추천 true/false
-            productLikeDao.decrementLikeCount(productLikeVo); // 추천 수 감소
-            productLikeDao.removeLike(productLikeVo);         // 해당 추천에 대한 유저 정보 제거
-            return 0;
-        }else {
-            productLikeDao.incrementLikeCount(productLikeVo); // 추천 수 증가
-            productLikeDao.addLike(productLikeVo);            // 해당 추천에 대한 유저 정보 추가
-        return 1;
+        if (productLikeDao.isProductLiked(productLikeVo)) {
+            productLikeDao.decrementLikeCount(productLikeVo);
+            productLikeDao.removeLike(productLikeVo);
+            return 0; // 좋아요 취소
+        } else {
+            productLikeDao.addLike(productLikeVo);
+            productLikeDao.incrementLikeCount(productLikeVo);
+            return 1; // 좋아요 추가
         }
     }
 

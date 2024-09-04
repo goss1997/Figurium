@@ -61,14 +61,14 @@ public class ProductsController {
         model.addAttribute("ratingAvg", ratingAvg);
 
         // 세션에서 사용자 정보 가져오기
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("loginUser");
         if (user != null) {
             boolean isLiked = productLikeService.isProductLikedByUser(id, user.getId());
             model.addAttribute("isLiked", isLiked);
         } else {
             model.addAttribute("isLiked", false);
         }
-
+        System.out.println("user = " + user);
         return "products/productInfo";
     }
 

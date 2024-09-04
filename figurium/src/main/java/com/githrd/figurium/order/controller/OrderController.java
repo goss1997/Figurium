@@ -57,7 +57,9 @@ public class OrderController {
     }
 
 
-
+    /*
+     *   주문/결제창
+     */
     @RequestMapping("orderForm.do")
     public String orderForm(Model model, Integer loginUserId,
                             @RequestParam(required = false) List<Integer> quantities) {

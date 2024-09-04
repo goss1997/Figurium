@@ -182,7 +182,9 @@
                                                         </td>
                                                         <c:if test="${ myOrder.productCount <= 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do?myOrderid=${ myOrder.id }&myUserId=${ myOrder.userId }"></a>
+                                                                <a href="orderDetail.do?myOrderid=${ myOrder.id }&myUserId=${ myOrder.userId }">
+                                                                    ${ myOrder.productName }
+                                                                </a>
                                                             </td>
 
                                                         </c:if>

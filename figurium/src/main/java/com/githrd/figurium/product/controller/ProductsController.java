@@ -77,7 +77,8 @@ public class ProductsController {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser.getRole() != 1) {
+        if(loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 

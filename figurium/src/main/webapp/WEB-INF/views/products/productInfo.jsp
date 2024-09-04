@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품상세</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/productInfo.css">
+    <link rel="stylesheet" type="text/css" href="/css/productInfo.css">
     <style>
         .product_insert > input {
             background-color: transparent;
@@ -87,7 +87,7 @@
             <div class="block2-txt-child2">
                 <a href="#" id="product_like" class="btn-addwish-b2">
                     <img id="heart-icon" class="icon-heart"
-                         src="${pageContext.request.contextPath}${isLiked ? '/resources/images/icons/icon-heart-02.png' : '/resources/images/icons/icon-heart-01.png'}"
+                         src="${isLiked ? '/images/icons/icon-heart-02.png' : '/images/icons/icon-heart-01.png'}"
                          alt="Heart Icon">
                 </a>
             </div>
@@ -312,13 +312,13 @@
         var isLiked = "${isLiked}" === 'true';  // JSP에서 'true' 또는 'false'로 전달됨
         var userId = "${sessionScope.loginUser.id}" // 현재 로그인 유저 ID
         var productId = "${product.id}";  // 현재 보고 있는 상품 ID
-        var contextPath = "${pageContext.request.contextPath}";
+        var contextPath = "";
 
         // 하트 아이콘 상태 초기화
         if (isLiked) {
-            $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-02.png');  // 좋아요 상태일 때 하트 채움
+            $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-02.png');  // 좋아요 상태일 때 하트 채움
         } else {
-            $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-01.png');  // 기본값 또는 하트 빈 상태
+            $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-01.png');  // 기본값 또는 하트 빈 상태
         }
 
         $('#heart-icon').click(function (e) {
@@ -342,10 +342,10 @@
                 }),
                 success: function (result) {
                     if (result === 1) {
-                        $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-02.png');
+                        $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-02.png');
                         alert("해당 상품을 추천 했습니다.");
                     } else if (result === 0) {
-                        $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-01.png');
+                        $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-01.png');
                         alert("해당 상품의 추천을 취소 했습니다.");
                     }
                     isLiked = !isLiked;  // 상태 토글

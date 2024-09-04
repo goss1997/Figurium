@@ -40,7 +40,7 @@
                     return;
                 } else {
                     // 게시글 작성 폼으로 이동
-                    location.href = "${pageContext.request.contextPath}/qa/qaInsert.do";
+                    location.href = "/qa/qaInsert.do";
                 }
             }
         </script>
@@ -69,7 +69,7 @@
             <c:forEach var="qa" items="${qaList}">
                 <tr>
                     <td>${qa.id}</td>
-                    <td><span style="font-size: 18px;" class="material-symbols-outlined">lock</span><a href="${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
+                    <td><span style="font-size: 18px;" class="material-symbols-outlined">lock</span><a href="/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
                     <td>${qa.replyStatus}</td>
                     <td>${qa.userId}</td>
                     <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>

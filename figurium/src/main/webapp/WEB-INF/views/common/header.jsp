@@ -14,45 +14,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css">
+          href="/vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+          href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/fonts/iconic/css/material-design-iconic-font.min.css">
+          href="/fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/fonts/linearicons-v1.0.0/icon-font.min.css">
+          href="/fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/animate/animate.css">
+          href="/vendor/animate/animate.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/css-hamburgers/hamburgers.min.css">
+          href="/vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/animsition/css/animsition.min.css">
+          href="/vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/select2/select2.min.css">
+          href="/vendor/select2/select2.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/daterangepicker/daterangepicker.css">
+          href="/vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/vendor/slick/slick.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/vendor/perfect-scrollbar/perfect-scrollbar.css">
+          href="/vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/util.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/main.css">
+    <link rel="stylesheet" type="text/css"
+          href="/vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -65,6 +65,7 @@
         #content-wrap-area {
             min-height: 1000px;
         }
+
         .categori {
             cursor: pointer;
         }
@@ -181,7 +182,15 @@
 
     </style>
 
+
 </head>
+<c:if test="${not empty alertMsg}">
+
+    <script>
+        alert('${alertMsg}');
+    </script>
+    <c:remove var="alertMsg"/>
+</c:if>
 <body>
 <!-- Header -->
 <header>
@@ -193,7 +202,7 @@
 
                 <!-- Logo desktop -->
                 <a href="/" class="logo">
-                    <img src="${pageContext.request.contextPath}/resources/images/FiguiumLOGO3.png" alt="LOGO">
+                    <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
 
                 <!-- Menu desktop -->
@@ -201,16 +210,16 @@
                     <ul class="main-menu">
 
                         <li>
-                            <a href="${pageContext.request.contextPath}/">Home</a>
+                            <a href="/">Home</a>
                         </li>
 
 
                         <li <%--class="label1" data-label1="hot"--%>>
-                            <a href="${pageContext.request.contextPath}/CartList.do?loginUser=${ loginUser.id }">장바구니</a>
+                            <a href="/CartList.do">장바구니</a>
                         </li>
 
                         <li>
-                            <a href="${pageContext.request.contextPath}/qa/qaList.do">Q&A</a>
+                            <a href="/qa/qaList.do">Q&A</a>
                         </li>
                     </ul>
                 </div>
@@ -228,20 +237,22 @@
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img id="profileImg" src="${loginUser.profileImgUrl == null ? '/resources/images/default-user-image.png' : loginUser.profileImgUrl }" width="40px;">
-                                    <img class="usercard-grade" src="${pageContext.request.contextPath}/resources/images/star6.gif">
+                                    <img id="profileImg"
+                                         src="${loginUser.profileImgUrl == null ? '/images/default-user-image.png' : loginUser.profileImgUrl }"
+                                         width="40px;">
+                                    <img class="usercard-grade" src="/images/star6.gif">
                                 </div>
                                 <div style="display: inline-block">
                                     <ul class="main-menu">
                                         <li style="padding : 0;">
                                             <a href="#">${loginUser.name}</a>
                                             <ul style="margin-top: 15px;" class="sub-menu">
-                                                <li><a href="${pageContext.request.contextPath}/user/my-page.do">마이페이지</a></li>
-                                                <li><a href="${pageContext.request.contextPath}/user/order-list.do">주문 내역</a></li>
+                                                <li><a href="/user/my-page.do">마이페이지</a></li>
+                                                <li><a href="/user/order-list.do">주문 내역</a></li>
                                                 <li><a href="#">반품 내역</a></li>
                                                 <li><a href="#">위시리스트</a></li>
                                                 <hr>
-                                                <li style="font-weight: bold;"><a href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a></li>
+                                                <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -274,13 +285,16 @@
                         <br>
                         <!-- 개인 회원 로그인 폼 -->
                         <div class="login-form">
-                                <div class="login-input-area">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                </div>
-                                <br>
-                                <input type="button" class="btn btn-secondary" value="로그인" onclick="login();" />
-                                <input type="button" class="btn btn-secondary" value="회원가입" onclick="location.href='${pageContext.request.contextPath}/user/signup-form.do';" />
+                            <div class="login-input-area">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                       required>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Password" required>
+                            </div>
+                            <br>
+                            <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
+                            <input type="button" class="btn btn-secondary" value="회원가입"
+                                   onclick="location.href='/user/signup-form.do';"/>
                         </div>
 
                         <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>
@@ -288,17 +302,17 @@
                         <div>
                             <!-- Google Login Button -->
                             <a href="/oauth2/authorization/google" class="login-button">
-                                <img src="${pageContext.request.contextPath}/resources/images/social/google_login_btn.png" alt="Google Logo">
+                                <img src="/images/social/google_login_btn.png" alt="Google Logo">
                             </a>
 
                             <!-- Naver Login Button -->
                             <a href="/oauth2/authorization/naver" class="login-button">
-                                <img src="${pageContext.request.contextPath}/resources/images/social/naver_login_btn.png" alt="Naver Logo">
+                                <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
                             </a>
 
                             <!-- Kakao Login Button -->
                             <a href="/oauth2/authorization/kakao" class="login-button">
-                                <img src="${pageContext.request.contextPath}/resources/images/social/kakao_login_btn.png" alt="Kakao Logo">
+                                <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
                             </a>
                         </div>
                         <br>
@@ -313,7 +327,7 @@
         <!-- Logo moblie -->
         <div class="logo-mobile">
             <a href="#" class="logo">
-                <img src="${pageContext.request.contextPath}/resources/images/FiguiumLOGO3.png" alt="LOGO">
+                <img src="/images/FiguiumLOGO3.png" alt="LOGO">
             </a>
         </div>
 
@@ -360,7 +374,7 @@
             </li>
 
             <li>
-                <a href="${pageContext.request.contextPath}/qa/qaList.do">Q&A</a>
+                <a href="/qa/qaList.do">Q&A</a>
             </li>
         </ul>
     </div>
@@ -369,7 +383,7 @@
     <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
         <div class="container-search-header">
             <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="${pageContext.request.contextPath}/resources/images/icons/icon-close2.png" alt="CLOSE">
+                <img src="/images/icons/icon-close2.png" alt="CLOSE">
             </button>
 
             <form class="wrap-search-header flex-w p-l-15">
@@ -393,7 +407,7 @@
         const span = document.getElementsByClassName('login-modal-close')[0];
 
         // Open the modal
-        if(btn) {
+        if (btn) {
             btn.onclick = function () {
                 modal.style.display = 'block';
             }
@@ -417,7 +431,7 @@
      * Enter 키 press 시 로그인 함수 실행.
      */
     $('#password').on('keydown', function (e) {
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             login();
         }
     })
@@ -430,24 +444,24 @@
         let email = $("#email").val();
         let password = $("#password").val();
 
-        if( !(email && password) ) {
+        if (!(email && password)) {
             alert("이메일 혹은 비밀번호를 입력해주세요!");
             return;
         }
 
         // 이메일 유효성 체크
-        if(emailCheck(email)) {
+        if (emailCheck(email)) {
             // 유효한 이메일일 경우
             // 로그인 요청
             $.ajax({
-                url : '/user/login.do',
-                method : 'post',
-                data : { email : email, password : password },
-                success : function (result) {
+                url: '/user/login.do',
+                method: 'post',
+                data: {email: email, password: password},
+                success: function (result) {
                     console.log(result);
                     location.reload();
                 },
-                error: function(error) {
+                error: function (error) {
                     // 에러가 발생하면 서버로부터 응답 메시지를 받아 alert 창 띄우기
                     alert(error.responseText);  // 서버에서 전송한 에러 메시지를 alert로 출력
                 }
@@ -455,7 +469,7 @@
 
 
         } else {
-           alert("유효하지 않은 이메일 주소입니다.");
+            alert("유효하지 않은 이메일 주소입니다.");
         }
 
     }
@@ -463,11 +477,11 @@
     /**
      * 이메일 유효성 체크 함수
      */
-    function emailCheck(email){
+    function emailCheck(email) {
         let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-        if(!email_regex.test(email)){
+        if (!email_regex.test(email)) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -475,18 +489,18 @@
     /**
      * 소셜 로그인 버튼 클릭 시 현재 url을 session에 저장
      */
-    $('.login-button').click(function() {
+    $('.login-button').click(function () {
 
         const currentUrl = window.location.href;
         // 서버로 AJAX 요청 보내기
         $.ajax({
             url: '/save-url',  // 서버의 URL (예: 서블릿 매핑)
             type: 'POST',
-            data: { url: currentUrl },  // URL을 데이터로 전송
-            success: function() {
+            data: {url: currentUrl},  // URL을 데이터로 전송
+            success: function () {
                 console.log('URL이 서버 세션에 저장되었습니다.');
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('URL 저장 실패:', error);
             }
         });

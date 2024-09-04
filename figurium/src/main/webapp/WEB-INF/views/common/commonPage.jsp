@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Title</title>
-  <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+  <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
   <!-- TODO : 제목 과 스타일 영역 -->
   <style>
 

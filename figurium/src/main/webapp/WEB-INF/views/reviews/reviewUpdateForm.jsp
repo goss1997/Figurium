@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>리뷰작성</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/reviewInsertForm.css">
+    <link rel="stylesheet" type="text/css" href="/css/reviewInsertForm.css">
 
 </head>
 <jsp:include page="../common/header.jsp"/><body>

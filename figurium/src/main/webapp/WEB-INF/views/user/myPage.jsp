@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>MyPage</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <style>
         body {
             background-color: #f8f9fa;
@@ -85,8 +85,8 @@
                     <div class="card-body">
                         <h5 class="card-title">My Page</h5>
                         <ul class="list-group">
-                            <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="${pageContext.request.contextPath}/user/my-page.do">개인 정보 수정</a></li>
-                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
+                            <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="/user/my-page.do">개인 정보 수정</a></li>
+                            <li class="list-group-item"><a href="/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
                             <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
                         </ul>

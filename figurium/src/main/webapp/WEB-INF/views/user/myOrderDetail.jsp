@@ -10,12 +10,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<link rel="stylesheet" type="text/css" href="../../../resources/css/carts.css">
+<link rel="stylesheet" type="text/css" href="/css/carts.css">
 <head>
     <title>MyPage</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
-    <script src="${pageContext.request.contextPath}/resources/js/orderForm.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orderForm.css">
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
+    <script src="/js/orderForm.js"></script>
+    <link rel="stylesheet" href="/css/orderForm.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -123,10 +123,10 @@
                     <div class="card-body">
                         <h5 class="card-title">My Page</h5>
                         <ul class="list-group">
-                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/user/my-page.do">개인
+                            <li class="list-group-item"><a href="/user/my-page.do">개인
                                 정보 수정</a></li>
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a
-                                    href="${pageContext.request.contextPath}/user/order-list.do">내 주문 내역</a></li>
+                                    href="/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
                             <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
                         </ul>
@@ -181,7 +181,7 @@
                                                 <tr class="table_row" style="height: 100px;">
                                                     <td class="column-1" style="padding-bottom: 0px;" >
                                                         <div class="how-itemcart1" onclick="itemCartDelete(this)">
-                                                            <img src="${pageContext.request.contextPath}${ myOrder.imageUrl }"
+                                                            <img src="${ myOrder.imageUrl }"
                                                                  alt="${ myOrder.id }" style="text-align: left">
                                                         </div>
 

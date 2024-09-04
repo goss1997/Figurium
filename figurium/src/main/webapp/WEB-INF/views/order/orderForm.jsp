@@ -9,12 +9,12 @@
 <html lang="en">
 <head>
     <title>주문/결제</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orderForm.css">
+  <link rel="stylesheet" href="/css/orderForm.css">
   <%-- 자바스크립트 경로 --%>
-  <script src="${pageContext.request.contextPath}/resources/js/orderForm.js"></script>
+  <script src="/js/orderForm.js"></script>
 
   <%-- 결제 API --%>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -260,7 +260,7 @@
       </thead>
       <tbody>
       <tr class="table_content">
-        <td class="table_content_img"><img src="${pageContext.request.contextPath}/resources/images/example.jpg" alt="IMG">
+        <td class="table_content_img"><img src="/images/example.jpg" alt="IMG">
         [25년2월입고] 최애의 아이 2기 반프레스토 아쿠아 토우키ver
         </td>
         <td>10,000원</td>
@@ -304,7 +304,7 @@
         <tbody>
         <c:forEach var="item" items="${ requestScope.cartsList }">
           <tr class="table_content">
-            <td class="table_content_img"><img src="${pageContext.request.contextPath}${ item.imageUrl }" alt="IMG">
+            <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>
             </td>
             <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol=""/>원</td>
@@ -354,7 +354,7 @@
 
   <div id="table_under_box">
     <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-    <input type="button" class="form-control" href="${pageContext.request.contextPath}/user/my-page.do"
+    <input type="button" class="form-control" href="/user/my-page.do"
            id="user_change_btn" value="회원정보수정">
   </div>
 

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>오류 발생</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <style>
         .error-body {
             font-family: Arial, sans-serif;
@@ -16,8 +16,9 @@
             padding: 50px;
         }
 
-        .container {
-            max-width: 600px;
+        .error-container {
+            max-width: 1000px;
+            min-height: 300px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -44,7 +45,8 @@
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
     <div class="error-body">
-        <div class="container">
+        <div class="error-container">
+            <br><br>
             <h1>문제가 발생했습니다</h1>
             <p>죄송합니다. 예상치 못한 오류가 발생했습니다.</p>
             <p>잠시 후 다시 시도해 주시거나, 아래의 링크를 통해 다른 페이지로 이동해 주세요.</p>

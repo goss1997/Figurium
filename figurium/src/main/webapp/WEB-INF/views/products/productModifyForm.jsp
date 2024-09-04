@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품수정</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/productInsert.css">
+    <link rel="stylesheet" type="text/css" href="/css/productInsert.css">
     <style>
         .product_imgChange_btn{
             border: 1px #0b0b0b solid;

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <!-- 주소검색 API  -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>회원가입</title>
@@ -344,7 +344,7 @@
 
 </script>
 
-<script src="${pageContext.request.contextPath}/resources/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="/vendor/sweetalert/sweetalert.min.js"></script>
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>
 </body>

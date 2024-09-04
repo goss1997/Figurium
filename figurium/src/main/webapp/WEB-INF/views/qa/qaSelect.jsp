@@ -51,9 +51,9 @@ To change this template use File | Settings | File Templates.
     </div>
     <hr>
     <div class="text-right">
-        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'">목록</button>
+        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
         <c:if test="${loginUser.role == '1'}">
-            <input type="button" style="margin-bottom: 30px;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/qa/qaDelete.do?id=${qa.id}'">
+            <input type="button" style="margin-bottom: 30px;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.id}'">
         </c:if>
     </div>
 
@@ -69,7 +69,7 @@ To change this template use File | Settings | File Templates.
 
     <c:if test="${loginUser.role == '1'}">
 
-        <form action="${pageContext.request.contextPath}/qa/qaReplySave.do" method="post">
+        <form action="/qa/qaReplySave.do" method="post">
             <input type="hidden" name="id" value="${qa.id}">
             <div class="form-group">
                 <label for="content">답변 내용:</label>
@@ -77,9 +77,9 @@ To change this template use File | Settings | File Templates.
             </div>
             <button type="submit" style="margin-bottom: 30px;" class="btn btn-dark">등록</button>
 
-            <button type="button" style="margin-bottom: 30px; float: right;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'">목록</button>
+            <button type="button" style="margin-bottom: 30px; float: right;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
             <c:if test="${loginUser.role == '1'}">
-                <input type="button" style="margin-bottom: 30px; float: right;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/qa/qaDelete.do?id=${qa.id}'">
+                <input type="button" style="margin-bottom: 30px; float: right;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.id}'">
             </c:if>
 
         </form>

@@ -83,8 +83,11 @@ public class CartsController {
 
         // 내 장바구니 리스트 호출
         @RequestMapping(value = "/CartList.do")
-        public String CartList(int loginUser, Model model) {
-            List<CartsVo> cartsVo = cartsMapper.selectList(loginUser);
+        public String CartList( Model model) {
+
+            User loginUser = (User) session.getAttribute("loginUser");
+
+            List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 
             model.addAttribute("cartsVo", cartsVo);
             return "products/shopingCart";

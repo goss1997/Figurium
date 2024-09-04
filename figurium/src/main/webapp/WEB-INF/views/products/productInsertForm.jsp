@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품등록</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/productInsert.css">
+    <link rel="stylesheet" type="text/css" href="/css/productInsert.css">
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
@@ -33,7 +33,7 @@
             <div class="product_img_box">
                 <!-- 상품의 이미지가 들어 갈 곳 -->
                 <div class="product_img">
-                    <img id="preview" src="${pageContext.request.contextPath}/resources/images/noImage1.png">
+                    <img id="preview" src="/images/noImage1.png">
                 </div>
 
             </div>
@@ -93,16 +93,6 @@
 </div>
 
 <jsp:include page="../common/footer.jsp"/>
-</body>
-<script>
-    $(function () {
-        if(${loginUser.role ne "1"}) {
-            console.log(${loginUser.role});
-            alert('관리자만 등록이 가능합니다.');
-            location.href = "/";
-        }
-    });
-</script>
 
 <script>
     function previewImage(input) {
@@ -128,14 +118,14 @@
 
 
         if (regExp.test(price) == false) {
-            alert("가격에는 숫자만 기재해주세요.")
+            alert("가격에는 숫자만 기재해주세요.");
             f.price.value="";
             f.price.focus();
             return;
         }
 
         if (regExp.test(quantity) == false) {
-            alert("재고수량은 숫자만 입력가능합니다.")
+            alert("재고수량은 숫자만 입력가능합니다.");
             f.quantity.value="";
             f.quantity.focus();
             return;
@@ -168,20 +158,13 @@
             return;
         }
 
-
-        console.log(name);
-        console.log(price);
-        console.log(quantity);
-        console.log(category);
-
-
-        f.enctype = 'multipart/form-data'
+        f.enctype = 'multipart/form-data';
         f.action = "productInsert.do";
-        f.method = 'post'
+        f.method = 'post';
         f.submit(); //전송
 
 
     }//end:send()
 </script>
-
+</body>
 </html>

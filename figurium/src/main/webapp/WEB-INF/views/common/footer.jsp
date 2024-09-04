@@ -50,6 +50,7 @@
         <p class="copyright">Copyright © 2024 주식회사 피규리움. All Rights Reserved. designed &amp; managed by saehim.</p>
     </div>
 </div>
+
 <!-- Back to top -->
 <div class="btn-back-to-top" id="myBtn">
 		<span class="symbol-btn-back-to-top">
@@ -57,14 +58,14 @@
 		</span>
 </div>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/animsition/js/animsition.min.js"></script>
+<script src="/vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/popper.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/vendor/bootstrap/js/popper.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/select2/select2.min.js"></script>
+<script src="/vendor/select2/select2.min.js"></script>
 <script>
     $(".js-select2").each(function () {
         $(this).select2({
@@ -76,18 +77,18 @@
 
 
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/daterangepicker/moment.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="/vendor/daterangepicker/moment.min.js"></script>
+<script src="/vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/slick/slick.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/slick-custom.js"></script>
+<script src="/vendor/slick/slick.min.js"></script>
+<script src="/js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/parallax100/parallax100.js"></script>
+<script src="/vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
     $('.gallery-lb').each(function () { // the containers for all your galleries
         $(this).magnificPopup({
@@ -102,9 +103,9 @@
 </script>
 
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/isotope/isotope.pkgd.min.js"></script>
+<script src="/vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="/vendor/sweetalert/sweetalert.min.js"></script>
 <script>
     $('.js-addwish-b2').on('click', function (e) {
         e.preventDefault();
@@ -142,7 +143,7 @@
 
 </script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
     $('.js-pscroll').each(function () {
         $(this).css('position', 'relative');
@@ -159,7 +160,7 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+<script src="/js/main.js"></script>
 
 
 

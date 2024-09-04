@@ -24,7 +24,7 @@
     <div class="container pt-5">
         <h1>게시글 작성</h1>
         <hr>
-        <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
+        <form action="/qa/qaSave.do" method="post">
             <div class="form-group">
                 <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
             </div>
@@ -44,7 +44,7 @@
                 <textarea class="form-control" style="resize: none; height: 180px;" id="content" name="content" placeholder="내용을 입력하세요" autocomplete="off"></textarea>
             </div>
             <button type="submit" class="btn btn-dark" style="margin-bottom: 10px;">등록</button>
-            <a href="${pageContext.request.contextPath}/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px;">취소</a>
+            <a href="/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px;">취소</a>
         </form>
     </div>
 

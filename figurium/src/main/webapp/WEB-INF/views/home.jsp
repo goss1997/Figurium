@@ -118,7 +118,7 @@
     <div class="wrap-slick1">
         <div class="slick1">
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/Slider1.jpg);">
+                 style="background-image: url(/images/Slider1.jpg);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -128,7 +128,7 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/Slider2.jpg);">
+                 style="background-image: url(/images/Slider2.jpg);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -137,7 +137,7 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(${pageContext.request.contextPath}/resources/images/Slider3.jpg);">
+                 style="background-image: url(/images/Slider3.jpg);">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -415,10 +415,10 @@
                             <div class="block2-txt-child2 flex-r p-t-3">
                                 <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
                                     <img class="icon-heart1 dis-block trans-04"
-                                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
+                                         src="/images/icons/icon-heart-01.png"
                                          alt="ICON">
                                     <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-02.png"
+                                         src="/images/icons/icon-heart-02.png"
                                          alt="ICON">
                                 </a>
                             </div>
@@ -438,12 +438,7 @@
 </section>
 
 
-<!-- Back to top -->
-<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-</div>
+
 
 
 <!-- Footer -->

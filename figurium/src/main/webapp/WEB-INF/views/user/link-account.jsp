@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Account Linking</title>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
+    <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <!-- TODO : 제목 과 스타일 영역 -->
     <style>
 
@@ -26,7 +26,7 @@
         <p>안녕하세요, <span style="font-weight: bold">${userProfile.name}</span>님!</p>
         <p>이미 <span style="font-weight: bold">${userProfile.email}</span>로 가입된 계정이 있습니다. 소셜 계정(<span style="font-weight: bold">${userProfile.provider}</span>)과 연동하시겠습니까?</p>
 
-        <form action="${pageContext.request.contextPath}/link-account" method="POST">
+        <form action="/link-account" method="POST">
             <button class="btn btn-secondary" type="submit">계정 연동</button>
             <button class="btn btn-warning" type="button" onclick="cancelLink();">취소</button>
         </form>

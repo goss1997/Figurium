@@ -50,7 +50,6 @@
             </span>
             <br>
             <c:if test="${loginUser.role == '1'}">
-
                 <div style="margin-left : 60%">
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
                         <input type="button" value="상품수정"
@@ -88,8 +87,8 @@
             <div class="block2-txt-child2">
                 <a href="#" id="product_like" class="btn-addwish-b2">
                     <img id="heart-icon" class="icon-heart"
-                         src="${pageContext.request.contextPath}/resources/images/icons/icon-heart-01.png"
-                         alt="Empty Heart Icon">
+                         src="${pageContext.request.contextPath}${isLiked ? '/resources/images/icons/icon-heart-02.png' : '/resources/images/icons/icon-heart-01.png'}"
+                         alt="Heart Icon">
                 </a>
             </div>
             <h5>${product.price}￦</h5>
@@ -304,60 +303,59 @@
 <jsp:include page="../common/footer.jsp"/>
 
 
-<script>
-    //상품의 좋아요 하트 채우기
-    document.addEventListener('DOMContentLoaded', function () {
-        var heartIcon = document.getElementById('heart-icon');
-        var isLiked = false;  // 하트가 클릭 되었는지 확인
 
-        heartIcon.addEventListener('click', function (e) {
+
+
+<script>
+    $(document).ready(function () {
+        // 서버에서 전달된 하트 상태를 기반으로 초기화
+        var isLiked = "${isLiked}" === 'true';  // JSP에서 'true' 또는 'false'로 전달됨
+        var userId = "${sessionScope.loginUser.id}" // 현재 로그인 유저 ID
+        var productId = "${product.id}";  // 현재 보고 있는 상품 ID
+        var contextPath = "${pageContext.request.contextPath}";
+
+        // 하트 아이콘 상태 초기화
+        if (isLiked) {
+            $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-02.png');  // 좋아요 상태일 때 하트 채움
+        } else {
+            $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-01.png');  // 기본값 또는 하트 빈 상태
+        }
+
+        $('#heart-icon').click(function (e) {
             e.preventDefault();
 
-            if (isLiked) {
-                heartIcon.src = '/resources/images/icons/icon-heart-01.png'; // 빈 하트 이미지
-            } else {
-                heartIcon.src = '/resources/images/icons/icon-heart-02.png'; // 채워진 하트 이미지
+            let user = "${sessionScope.loginUser}";
+
+            if (user === "null" || user === "") {
+                alert("로그인이 필요한 서비스 입니다.");
+                return;
             }
 
-            isLiked = !isLiked;  // 클릭 시 마다 하트가 채워지고 사라지고 반복 가능
+            // Ajax를 이용해 서버에 하트 클릭 상태를 전송
+            $.ajax({
+                url: contextPath + '/productLike/toggle',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    userId: userId,
+                    productId: productId
+                }),
+                success: function (result) {
+                    if (result === 1) {
+                        $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-02.png');
+                        alert("해당 상품을 추천 했습니다.");
+                    } else if (result === 0) {
+                        $('#heart-icon').attr('src', contextPath + '/resources/images/icons/icon-heart-01.png');
+                        alert("해당 상품의 추천을 취소 했습니다.");
+                    }
+                    isLiked = !isLiked;  // 상태 토글
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         });
     });
-
-</script>
-
-
-<script>
-    // 상품의 수량 선택 버튼이 동작 될 때마다 가격 변동 설정
-    const pricePerUnit = ${product.price}; // 상품의 가격
-    const maxQuantity = ${product.quantity}; // 최대 재고량
-
-    function decreaseQuantity() {
-        var quantityInput = document.getElementById('quantity');
-        var currentQuantity = parseInt(quantityInput.value);
-
-        if (currentQuantity > 1) {
-            quantityInput.value = currentQuantity - 1;
-            updateTotalPrice();
-        }
-    }
-
-    function increaseQuantity() {
-        var quantityInput = document.getElementById('quantity');
-        var currentQuantity = parseInt(quantityInput.value);
-        var maxQuantity = ${product.quantity}; // 상품의 재고량까지
-
-        if (currentQuantity < maxQuantity) {
-            quantityInput.value = currentQuantity + 1;
-            updateTotalPrice();
-        }
-    }
-
-    function updateTotalPrice() {
-        var quantity = parseInt(document.getElementById('quantity').value);
-        var pricePerUnit = ${product.price}; // 상품의 가격
-        var totalPrice = quantity * pricePerUnit; // 상품의 총 가격 = 현재 수량 * 상품의 가격
-        document.getElementById('total_price').innerHTML = totalPrice; // 해당 ID값에 뿌림
-    }
 </script>
 
 <script>

@@ -8,7 +8,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>장바구니</title>
+    <title>주문/결제</title>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/FiguriumHand.png"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orderForm.css">
@@ -20,33 +21,21 @@
   <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   <%-- 주소 API --%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
   <script>
 
-    // 로그인한 유저 session 체크 로직
-    function checkSession() {
-      // ajax를 사용해서 Server에서 Session 확인
-      $.get("/user/checkSession", function(data) {
-        if(data === "false") {
-          alert("세션이 만료되어, 재로그인 후 이용바랍니다.");
-          window.location.href = "/"; // 메인으로 리디렉션
-        }
-      });
+      $(function () {
+        if(${empty loginUser}) {
+        alert('로그인 후 이용 가능합니다.');
+        location.href = "/";
     }
-
-    // 10초마다 세션 상태 확인
-    setInterval(checkSession, 10000);
-
-    // 페이지 로드시에 session 체크
-    $(document).ready(function (){
-      checkSession();
     });
 
 
-
-    // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
-    // 관리자 계정 정보 (결제 api 사용에 필요함)
-    var IMP = window.IMP;
-    IMP.init("imp25608413");
+  // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
+  // 관리자 계정 정보 (결제 api 사용에 필요함)
+  var IMP = window.IMP;
+  IMP.init("imp25608413");
 
     function buyItems(price) {
 
@@ -541,52 +530,6 @@
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>
 
-
-<!-- Back to top -->
-<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-</div>
-
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/popper.js"></script>
-<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/select2/select2.min.js"></script>
-<script>
-  $(".js-select2").each(function(){
-    $(this).select2({
-      minimumResultsForSearch: 20,
-      dropdownParent: $(this).next('.dropDownSelect2')
-    });
-  })
-</script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script>
-  $('.js-pscroll').each(function(){
-    $(this).css('position','relative');
-    $(this).css('overflow','hidden');
-    var ps = new PerfectScrollbar(this, {
-      wheelSpeed: 1,
-      scrollingThreshold: 1000,
-      wheelPropagation: false,
-    });
-
-    $(window).on('resize', function(){
-      ps.update();
-    })
-  });
-</script>
-<!--===============================================================================================-->
-<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
 </body>
 </html>

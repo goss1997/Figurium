@@ -10,6 +10,7 @@
 <%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
+
 <%--
   Created by IntelliJ IDEA.
   User: mac

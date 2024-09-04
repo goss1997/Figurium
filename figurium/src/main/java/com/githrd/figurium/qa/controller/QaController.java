@@ -41,11 +41,17 @@ public class QaController {
     @PostMapping("/qaSave.do")
     public String save(@RequestParam("title") String title,
                        @RequestParam("content") String content,
+                       @RequestParam("category") String category,
                        @RequestParam(value = "reply", required = false) String reply) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인
         if (loginUser == null) {
             return "redirect:/";
+        }
+
+        // 카테고리와 제목을 처리하기 위한 코드 추가
+        if (title != null && !title.startsWith("[" + category + "]")) {
+            title = "[" + category + "] " + title;
         }
 
         QaVo qaVo = new QaVo();
@@ -69,6 +75,8 @@ public class QaController {
         model.addAttribute("qa", qaVo);
         return "qa/qaSelect";
     }
+
+
 
     @PostMapping("/qaReplySave.do")
     public String saveReply(@RequestParam("id") int id,

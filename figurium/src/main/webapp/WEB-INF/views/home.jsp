@@ -114,11 +114,12 @@
 
 
 <!-- Slider -->
-<section class="section-slide">
+<section class="section-slide" style="height: 663px !important; width: 1920px !important; margin: auto !important;">
     <div class="wrap-slick1">
-        <div class="slick1">
+        <div class="slick1" style="background-origin: content-box; margin-top: -130px !important;" >
             <div class="item-slick1"
-                 style="background-image: url(/images/Slider1.jpg);">
+                 style="background-image: url(/images/Slider11.jpg); background-repeat: no-repeat !important;
+  background-origin: content-box !important; background-size: contain !important;">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -128,7 +129,8 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(/images/Slider2.jpg);">
+                 style="background-image: url(/images/Slider22.jpg); background-repeat: no-repeat !important;
+  background-origin: content-box !important; background-size: contain !important;">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -137,7 +139,8 @@
             </div>
 
             <div class="item-slick1"
-                 style="background-image: url(/images/Slider3.jpg);">
+                 style="background-image: url(/images/Slider33.jpg); background-repeat: no-repeat !important;
+  background-origin: content-box !important; background-size: contain !important;">
                 <div class="container h-full">
                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 
@@ -150,7 +153,7 @@
 
 
 <!-- Product -->
-<section class="bg0 p-t-23 p-b-140">
+<section class="bg0 p-t-23 p-b-140" style="padding-top: 260px !important;">
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">

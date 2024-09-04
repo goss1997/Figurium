@@ -16,6 +16,18 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript">
+            function updateTitle() {
+                var category = document.getElementById('category').value;
+                var titleField = document.getElementById('title');
+                var titleValue = titleField.value;
+
+                if (category && !titleValue.startsWith(`[${category}]`)) {
+                    titleField.value = `[${category}] ${titleValue}`;
+                }
+            }
+        </script>
     </head>
     <jsp:include page="../common/header.jsp"/>
     <div style="height: 90px"></div>
@@ -31,7 +43,7 @@
             <div class="form-group">
 
             <div class="form-group">
-                <select name="category" class="custom-select" autocomplete="off">
+                <select id="category" name="category" class="custom-select" onchange="updateTitle()">
                     <option selected>:::분류 선택:::</option>
                     <option value="배송문의">배송문의</option>
                     <option value="취소문의">취소문의</option>

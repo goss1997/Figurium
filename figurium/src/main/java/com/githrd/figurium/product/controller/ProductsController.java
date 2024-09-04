@@ -7,6 +7,7 @@ import com.githrd.figurium.product.repository.CategoriesRepository;
 import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
+import com.githrd.figurium.productLike.service.ProductLikeService;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -31,6 +33,7 @@ public class ProductsController {
     private final HttpSession session;
     private final ProductRepository productRepository;
     private final ProductsMapper productsMapper;
+    private final ProductLikeService productLikeService;
     private final S3ImageService s3ImageService;
 
 
@@ -38,6 +41,7 @@ public class ProductsController {
 
     @RequestMapping("/productInfo.do")
     public String list(@RequestParam(value = "id" , required = false) Integer id,
+                       HttpSession session,
                        Model model) {
 
         // 해상 상품에 해당하는 ID를 받아옴
@@ -56,6 +60,14 @@ public class ProductsController {
         int ratingAvg = reviewService.reviewRatingAvg(id);
         model.addAttribute("ratingAvg", ratingAvg);
 
+        // 세션에서 사용자 정보 가져오기
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            boolean isLiked = productLikeService.isProductLikedByUser(id, user.getId());
+            model.addAttribute("isLiked", isLiked);
+        } else {
+            model.addAttribute("isLiked", false);
+        }
 
         return "products/productInfo";
     }

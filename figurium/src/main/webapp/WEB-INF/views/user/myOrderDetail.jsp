@@ -55,6 +55,10 @@
             border-radius: 5px;
         }
 
+        .order_box_both {
+            margin-top: 0px;
+        }
+
         .custom-file-upload:hover {
             background-color: #6d6e6f;
         }
@@ -90,6 +94,44 @@
         .bread-crumb {
             margin-left: -20px;
         }
+
+        .table_content_img {
+            width: 400px !important;
+            text-align: left !important;
+            font-weight: 100 !important;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .table_content_img > img {
+            width: 90px !important;
+        }
+
+        .table-shopping-cart .column-1 {
+            width: 133px;
+            padding-left: 0px !important;
+        }
+
+        .column-5 {
+            padding-right: 0px !important;
+        }
+
+        .td_content {
+            vertical-align: middle !important
+        }
+
+        #order_box_detail {
+            width: 500px;
+            min-height: 800px; /* 최소 높이 설정 */
+            background: #f8f8f8;
+            border-radius: 5px;
+
+            margin-top: 50px;
+            margin-bottom: 150px;
+            padding: 30px; /* 내부 여백 */
+        }
+
 
     </style>
 
@@ -137,7 +179,7 @@
             <!-- Main Content -->
             <div style="float: left; width: 80%; margin-left: 50px;">
                 <!-- 주문내역 리스트 -->
-                <div class="bg0 p-t-75 p-b-85">
+                <div class="bg0 p-t-75 p-b-85" style="padding-bottom: 0px">
 
                     <div class="cart_list" style="margin-left: -50px;">
                         <!-- breadcrumb -->
@@ -157,7 +199,7 @@
 
                     <div style="width: 1300px; margin-left: -160px">
                         <h1>주문내역</h1>
-                        <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
+                        <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
@@ -167,11 +209,12 @@
 
                                                 <!-- th -->
                                                 <tr class="table_head">
-                                                    <th class="column-1" style="text-align: center; width: 5%;">상품</th>
-                                                    <th class="column-2" style="width: 40%;">상품명</th>
-                                                    <th class="column-3">결제금액</th>
-                                                    <th class="column-4" style="text-align: center;">결제타입</th>
-                                                    <th class="column-5" style="text-align: center;">결제일자</th>
+                                                    <th class="column-1" style="text-align: center; width: 40%;">상품</th>
+                                                    <th class="column-2" style="width: 7%;">수량</th>
+                                                    <th class="column-3" style="width: 10%;">가격</th>
+                                                    <th class="column-4" style="text-align: center;">총금액</th>
+                                                    <th class="column-5" style="text-align: center; width: 8%;">결제방식</th>
+                                                    <th class="column-6" style="text-align: center; ">결제일자</th>
                                                 </tr>
 
 
@@ -180,36 +223,29 @@
 
                                                 <tr class="table_row" style="height: 100px;">
                                                     <td class="column-1" style="padding-bottom: 0px;" >
-                                                        <div class="how-itemcart1" onclick="itemCartDelete(this)">
+                                                        <div class="how-itemcart1 table_content_img">
                                                             <img src="${ myOrder.imageUrl }"
                                                                  alt="${ myOrder.id }" style="text-align: left">
+                                                            <span>${ myOrder.productName }</span>
                                                         </div>
 
                                                     </td>
-                                                    <c:if test="${ myOrder.productCount <= 0 }">
                                                         <td class="column-2" style="padding-bottom: 0px;">
-                                                            <a href="orderDetail.do">${ myOrder.productName }</a>
+                                                            ${ myOrder.quantity }
                                                         </td>
 
-                                                    </c:if>
-
-                                                    <c:if test="${ myOrder.productCount > 0 }">
-                                                        <td class="column-2" style="padding-bottom: 0px;">
-                                                            <a href="orderDetail.do">
-                                                                    ${ myOrder.productName } 외 ${ myOrder.productCount }개
-                                                            </a>
-                                                        </td>
-
-                                                    </c:if>
 
                                                     <td class="column-3" style="padding-bottom: 0px;">
-                                                        <span id="productPrice">${ myOrder.totalValue+3000 }원</span>
+                                                        <span class="productPrice">${ myOrder.price }원</span>
                                                     </td>
                                                     <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                        <span id="productPrice">${ myOrder.paymentType }</span>
+                                                        <span class="productPrice">${ myOrder.price * myOrder.quantity }원</span>
                                                     </td>
                                                     <td class="column-5" style="text-align: center; padding-bottom: 0px">
-                                                        <span id="productPrice">${ myOrder.createdAt }</span>
+                                                        <span class="productPrice">${ myOrder.paymentType }</span>
+                                                    </td>
+                                                    <td class="column-6" style="text-align: center; padding-bottom: 0px">
+                                                        <span class="productPrice">${ myOrder.createdAt }</span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -247,7 +283,7 @@
                                 </div>
                             </div>
 
-                            <hr id="list-hr2">
+                            <hr id="list-hr2" style="margin-bottom: 0px">
                             </c:forEach>
 
 
@@ -261,7 +297,7 @@
         </div>
 
         <div class="order_box_both">
-            <input type="hidden" value="${ sessionScope.loginUser.id }" id="order_id">
+            <input type="hidden" value="${ myOrderInfo.id }" id="order_id">
 
             <%-- 주문 테이블 customers --%>
             <div class="order_box_l mt-3">
@@ -275,15 +311,27 @@
                         <tbody>
                         <tr>
                             <td class="td_title">주문하시는 분</td>
-                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                ${ myOrderInfo.name }
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_title">전화번호</td>
-                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.customerPhone }
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_title">이메일</td>
-                            <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }" id="order_email" placeholder="이메일" name="order_email"></td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.email }
+                                </span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -304,42 +352,36 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="td_title">기존 배송지</td>
-                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
-                        </tr>
-                        <tr>
                             <td class="td_title">받으시는 분</td>
-                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.recipientName }
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_title">전화번호</td>
-                            <td><input type="email" class="form-control" value="${ sessionScope.loginUser.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.phone }
+                                </span>
+                            </td>
                         </tr>
-
-
                         <tr>
                             <td class="td_title">주소</td>
-                            <td>
-                                <div class="address-container">
-                                    <div class="address-inputs">
-                                        <input type="text" class="form-control" id="address" placeholder="우편번호" name="address">
-                                        <button id="a_search" type="button" onclick="find_addr();">우편번호 찾기</button>
-                                    </div>
-                                    <div class="zipcode-container">
-                                        <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
-                                        <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
-                                    </div>
-                                </div>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.address }
+                                </span>
                             </td>
                         </tr>
-
-
                         <tr>
-                            <td class="td_title">배송시요청사항</td>
-                            <td>
-                                <textarea class="form-control" rows="5" id="delivery_request" placeholder="배송시 요청사항" placeholer="배송시 요청사항을 적어주세요."></textarea>
+                            <td class="td_title">배송시 요청 사항</td>
+                            <td class="td_content">
+                                <span class="order_name">
+                                    ${ myOrderInfo.deliveryRequest }
+                                </span>
                             </td>
-                            <%--<td><textarea class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>--%>
                         </tr>
                         </tbody>
                     </table>
@@ -349,34 +391,14 @@
             </form>
             <%-- form end 지점 --%>
 
-            <div id="order_box">
+            <div id="order_box_detail">
 
                 <div class="payment-title">결제 정보</div>
 
                 <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
-                <c:if test="${ itemList == null }">
                     <div class="payment-info">
                         <span>상품 합계</span>
-                        <span class="payment-info-price">0원</span>
-                    </div>
-
-                    <div class="payment-info">
-                        <span>배송료</span>
-                        <span class="payment-info-price">(+)0원</span>
-                    </div>
-
-                    <div class="payment-info" id="payment-info-bottom">
-                        <span>총 결제 금액</span>
-                        <span class="payment-info-price-red">0원</span>
-                    </div>
-                </c:if>
-
-                <c:if test="${ cartsList != null }">
-                    <div class="payment-info">
-                        <span>상품 합계</span>
-                        <span class="payment-info-price">
-          <fmt:formatNumber type="currency" value="${ totalPrice }" currencySymbol=""/>원
-        </span>
+                        <span class="payment-info-price">${ myOrderInfo.totalValue }원</span>
                     </div>
 
                     <div class="payment-info">
@@ -386,60 +408,16 @@
 
                     <div class="payment-info" id="payment-info-bottom">
                         <span>총 결제 금액</span>
-
-                        <span class="payment-info-price-red">
-          <fmt:formatNumber type="currency" value="${ totalPrice + 3000 }" currencySymbol=""/>원
-        </span>
+                        <span class="payment-info-price-red">${ myOrderInfo.totalValue + 3000 }원</span>
                     </div>
-                </c:if>
+
 
                 <hr id="hr1">
 
-                <%--  결제 수단 정렬  --%>
-                <div class="payment-method">
-                    <div class="payment-method-title">결제 수단</div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="paynow" name="payment" value="paynow">
-                        <label for="paynow">Paynow</label>
-                    </div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="credit_card" name="payment" value="credit_card">
-                        <label for="credit_card">신용카드</label>
-                    </div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="bank_transfer" name="payment" value="bank_transfer">
-                        <label for="bank_transfer">실시간 계좌이체</label>
-                    </div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="virtual_account" name="payment" value="bank_transfer">
-                        <label for="bank_transfer">에스크로 가상계좌</label>
-                    </div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="depositor" name="payment" value="bank_transfer">
-                        <label for="bank_transfer">무통장 입금</label>
-                    </div>
-
-                    <div class="payment-option">
-                        <input type="radio" id="phone_transfer" name="payment" value="bank_transfer">
-                        <label for="bank_transfer">휴대폰 결제</label>
-                    </div>
-
-                </div>
-
-                <hr id="hr2">
-
-                <div class="agreement">
-                    <input type="checkbox" id="agreement">
-                    <p>결제 정보를 확인하였으며,<br>구매 진행에 동의합니다.</p>
-                </div>
-
-                <%--  결제버튼  --%>
-                <button class="order-button" onclick="sil(100);">주문하기</button>
+                <button class="order-button" onclick="">주문문의</button>
+                <button class="order-button" onclick="">주문변경</button>
+                <button class="order-button" onclick="">취소/환불신청</button>
+                <button class="order-button" onclick="">반품신청</button>
 
             </div>
 

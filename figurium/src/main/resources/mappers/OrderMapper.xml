@@ -59,8 +59,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectListByDetailOrder" resultType="myOrders" parameterType="int">
-        select * from order_history_view
-            where id = #{ myOrderId } and user_id = #{ userId }
+        select
+            oh.*,
+            (select sum(price * quantity)
+             from order_history_view
+             where id = #{ myOrderId } and user_id = #{ userId }) as total_value
+        from order_history_view oh
+        where id = #{ myOrderId } and user_id = #{ userId }
+    </select>
+
+    <select id="selectOneOrderInfo" resultType="myOrders" parameterType="int">
+        select
+            oh.*,
+            (select sum(price * quantity)
+             from order_history_view
+             where id = #{ myOrderId } and user_id = #{ userId }) as total_value
+        from order_history_view oh
+        where id = #{ myOrderId } and user_id = #{ userId } limit 1
     </select>
 
 </mapper>

@@ -182,7 +182,7 @@
                                                         </td>
                                                         <c:if test="${ myOrder.productCount <= 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do?myOrderid=${ myOrder.id }&myUserId=${ myOrder.userId }">
+                                                                <a href="orderDetail.do?myOrderId=${ myOrder.id }">
                                                                     ${ myOrder.productName }
                                                                 </a>
                                                             </td>
@@ -191,8 +191,8 @@
 
                                                         <c:if test="${ myOrder.productCount > 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do">
-                                                                    ${ myOrder.productName } 외 ${ myOrder.productCount }개
+                                                                <a href="orderDetail.do?myOrderId=${ myOrder.id }">
+                                                                        ${ myOrder.productName } 외 ${ myOrder.productCount }개
                                                                 </a>
                                                             </td>
 

@@ -209,11 +209,17 @@ public class UserController {
      * 내 주문 상세 조회
      */
     @GetMapping("orderDetail.do")
-    public String myOrderDetail(Model model, Integer myOrderId, Integer userId) {
+    public String myOrderDetail(Model model, Integer myOrderId) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        int userId = loginUser.getId();
 
         List<MyOrderVo> myOrderDetailList = orderMapper.selectListByDetailOrder(myOrderId, userId);
+        MyOrderVo myOrderInfo = orderMapper.selectOneOrderInfo(myOrderId, userId);
 
         model.addAttribute("myOrderDetailList", myOrderDetailList);
+        model.addAttribute("myOrderInfo", myOrderInfo);
         return "user/myOrderDetail";
     }
 

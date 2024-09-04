@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
 
     private final ProductsMapper productsMapper;
@@ -56,7 +57,8 @@ public class OrderController {
     }
 
 
-    @RequestMapping("order/orderForm.do")
+
+    @RequestMapping("orderForm.do")
     public String orderForm(Model model, Integer loginUserId,
                             @RequestParam(required = false) List<Integer> quantities) {
 
@@ -94,8 +96,11 @@ public class OrderController {
         return "order/orderForm";
     }
 
-    // 재고 처리 확인
-    @RequestMapping("order/checkProduct.do")
+
+    /*
+     *   재고 처리 확인
+     */
+    @RequestMapping("checkProduct.do")
     @ResponseBody
     public String checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
                                @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
@@ -119,9 +124,12 @@ public class OrderController {
         return "success";
 
     }
-
-    // inicis 결제 요청 처리하기 (PaymentRequest => DTO로 사용)
-    @RequestMapping(value = "order/inicisPay.do")
+    
+    
+    /*
+     *   inicis 결제 요청 처리하기 (PaymentRequest => DTO로 사용)
+     */
+    @RequestMapping(value = "inicisPay.do")
     @ResponseBody
     public String inicisPay(int price, String paymentType, Integer userId) {
 
@@ -139,7 +147,11 @@ public class OrderController {
         return "map";
     }
 
-    @RequestMapping(value = "order/insertInformation.do")
+
+    /*
+     *   결제 성공시 주문 데이터 저장
+     */
+    @RequestMapping(value = "insertInformation.do")
     @ResponseBody
     public String insertInformation(int loginUserId, String name, String phone, String email,
                                     String address, String recipientName,

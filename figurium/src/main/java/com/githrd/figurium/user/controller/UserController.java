@@ -217,4 +217,21 @@ public class UserController {
         return "user/myOrderDetail";
     }
 
+    /**
+     * 주문창 유저 session 체크 로직
+     */
+    @GetMapping("checkSession.do")
+    @ResponseBody
+    public String checkSession() {
+        Object userId = session.getAttribute("loginUser");
+        if(userId != null) {
+            return  "true"; // 세션 확보
+        } else {
+            return "false"; // 세션 미확보
+        }
+    }
+
+
+
+
 }

@@ -22,6 +22,26 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
 
+    // 로그인한 유저 session 체크 로직
+    function checkSession() {
+      // ajax를 사용해서 Server에서 Session 확인
+      $.get("/user/checkSession", function(data) {
+        if(data === "false") {
+          alert("세션이 만료되어, 재로그인 후 이용바랍니다.");
+          window.location.href = "/"; // 메인으로 리디렉션
+        }
+      });
+    }
+
+    // 10초마다 세션 상태 확인
+    setInterval(checkSession, 10000);
+
+    // 페이지 로드시에 session 체크
+    $(document).ready(function (){
+      checkSession();
+    });
+
+
 
     // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
     // 관리자 계정 정보 (결제 api 사용에 필요함)

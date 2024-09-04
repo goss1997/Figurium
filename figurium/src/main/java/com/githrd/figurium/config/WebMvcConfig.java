@@ -45,8 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 // 인증이 필요한 url
                 .addPathPatterns(
-                        "/CartList.do",
-                        "/user/my-page.do"
+                        "/CartList.do"
                 )
                 // 인증을 제외할 url
                 .excludePathPatterns(

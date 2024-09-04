@@ -3,6 +3,7 @@ package com.githrd.figurium.product.dao;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.vo.ProductsVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 @Mapper
 public interface ProductsMapper {
@@ -12,4 +13,5 @@ public interface ProductsMapper {
     int updateProductQuantity(int productId, int itemQuantity);
     int productInsert(ProductsVo vo);
     int productUpdate(ProductsVo vo);
+
 }

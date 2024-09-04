@@ -36,6 +36,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
 
+    <!-- 특정 사용자의 장바구니에서 주어진 상품에 대한 항목을 조회 -->
+    <select id="getCartItem" resultType="carts">
+        SELECT * FROM carts
+        WHERE user_id = #{userId} AND product_id = #{productId}
+    </select>
+
+    <!-- 사용자의 장바구니에 새로운 상품을 추가 -->
+    <insert id="insertCartItem">
+        INSERT INTO carts (user_id, product_id, quantity, added_time)
+        VALUES (#{userId}, #{productId}, #{quantity}, NOW())
+    </insert>
+
+    <!-- 장바구니의 특정 항목의 수량을 업데이트 -->
+    <update id="updateCartItemQuantity">
+        UPDATE carts
+        SET quantity = #{quantity}
+        WHERE id = #{cartId}
+    </update>
+
+    <!-- 특정 사용자의 장바구니에 담긴 모든 항목을 조회 -->
+    <select id="getCartItems" resultType="carts">
+        SELECT c.*, p.name, p.price, p.image_url
+        FROM carts c
+                 JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = #{userId}
+    </select>
+
+
 </mapper>
 
 

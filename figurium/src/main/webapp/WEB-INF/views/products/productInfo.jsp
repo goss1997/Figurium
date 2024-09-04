@@ -113,6 +113,7 @@
                 <tr>
                     <th>수량</th>
                     <td>
+                    <form>
                         <div class="quantity-box">
                             <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
                             </button>
@@ -120,6 +121,7 @@
                             <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
                             </button>
                         </div>
+                    </form>
                     </td>
                 </tr>
             </table>
@@ -139,12 +141,6 @@
                 <input class="price_cart_btn" type="button" value="장바구니"
                        onclick="addToCart(${product.id})">
             </div>
-            <script>
-                function addToCart(productId) {
-                    let quantity = $("#quantity").val();
-                    location.href = "shopingCart.do?productId=" + productId + "&quantity=" + quantity;
-                }
-            </script>
         </div>
 
     </div>
@@ -362,12 +358,12 @@
 <script>
     // 주문 할 상품의 수량 선택
     var maxQuantity = "${product.quantity}"; // 재고 수량
-
     function increaseQuantity() {
         var quantityInput = document.getElementById('quantity');
         var currentQuantity = parseInt(quantityInput.value);
         if (currentQuantity < maxQuantity) {
             quantityInput.value = currentQuantity + 1;
+
         } else {
             alert('재고 수량을 초과할 수 없습니다.');
         }
@@ -380,6 +376,21 @@
             quantityInput.value = currentQuantity - 1;
         }
     }
+
+    // 장바구니에 상품 추가 함수
+    function addToCart(productId) {
+        let quantity = $("#quantity").val();  // 수량 가져오기
+        quantity = parseInt(quantity, 10);  // 수량을 숫자로 변환 (10진법)
+
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("올바른 수량을 입력해주세요.");
+            return;
+        }
+
+        // 장바구니 페이지로 리다이렉트
+        location.href = "shopingCart.do?productId=" + encodeURIComponent(productId) + "&quantity=" + encodeURIComponent(quantity);
+    }
+
 </script>
 
 

@@ -58,11 +58,6 @@ public class CartsController {
 
         }
 
-
-
-
-
-
         List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 
         model.addAttribute("cartsVo", cartsVo);

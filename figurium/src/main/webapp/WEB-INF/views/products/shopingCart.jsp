@@ -16,69 +16,76 @@ pageEncoding="UTF-8" %>
 <script>
 
 
-	document.addEventListener('DOMContentLoaded', () => {
-		const items = document.querySelectorAll('.table_row');
-		const totalAmountElement = document.getElementById('totalAmount');
-		let grandTotal = 0;
+	$(document).ready(function() {
+		const shippingCost = 3000;
 
-		function updateGrandTotal() {
-			grandTotal = 0;
-			items.forEach(item => {
-				const totalPriceElement = item.querySelector('#totalPrice');
-				const totalPrice = parseInt(totalPriceElement.textContent.replace(/원/g, '').replace(/,/g, ''));
-				grandTotal += totalPrice;
-			});
-			totalAmountElement.textContent = grandTotal.toLocaleString() + '원';
+		function updateTotalPrice(item) {
+			const priceElement = item.find('#productPrice');
+			const quantityInput = item.find('.num-product');
+			const totalPriceElement = item.find('#totalPrice');
 
-			const shippingCost = 3000;
-			const finalTotalElement = document.querySelector('.total .amount.highlight');
-			finalTotalElement.textContent = (grandTotal + shippingCost).toLocaleString() + '원';
+			const price = parseInt(priceElement.text().replace(/원/g, '').replace(/,/g, ''));
+			const quantity = parseInt(quantityInput.val());
+
+			if (!isNaN(price) && !isNaN(quantity)) {
+				const totalPrice = price * quantity;
+				totalPriceElement.text(totalPrice.toLocaleString() + '원');
+				totalPriceElement.addClass('shine');
+
+				setTimeout(() => {
+					totalPriceElement.removeClass('shine');
+				}, 2000);
+			}
 		}
 
-		items.forEach(item => {
-			const priceElement = item.querySelector('#productPrice');
-			const quantityInput = item.querySelector('.num-product');
-			const totalPriceElement = item.querySelector('#totalPrice');
+		function updateGrandTotal() {
+			let grandTotal = 0;
 
-			function updateTotalPrice() {
-				const price = parseInt(priceElement.textContent.replace(/원/g, '').replace(/,/g, ''));
-				const quantity = parseInt(quantityInput.value);
-
-				if (!isNaN(price) && !isNaN(quantity)) {
-					const totalPrice = price * quantity;
-					totalPriceElement.textContent = totalPrice.toLocaleString() + '원';
-					totalPriceElement.classList.add('shine');
-
-					setTimeout(() => {
-						totalPriceElement.classList.remove('shine');
-					}, 2000);
-
-					updateGrandTotal();
-				}
-			}
-
-			// 수량 증가 버튼
-			item.querySelector('.btn-num-product-up').addEventListener('click', () => {
-				quantityInput.value = parseInt(quantityInput.value) + 1;
-				updateTotalPrice();
+			$('.itemCheckbox:checked').each(function() {
+				const item = $(this).closest('.table_row');
+				const totalPrice = parseInt(item.find('#totalPrice').text().replace(/원/g, '').replace(/,/g, ''));
+				grandTotal += totalPrice;
 			});
 
-			// 수량 감소 버튼
-			item.querySelector('.btn-num-product-down').addEventListener('click', () => {
-				const currentQuantity = parseInt(quantityInput.value);
-				if (currentQuantity > 1) {
-					quantityInput.value = currentQuantity - 1;
-				}
-				updateTotalPrice();
-			});
+			$('#totalAmount').text(grandTotal.toLocaleString() + '원');
+			const finalTotal = grandTotal + shippingCost;
+			$('.total .amount.highlight').text(finalTotal.toLocaleString() + '원');
+		}
 
-			// 초기 총 가격 계산
-			updateTotalPrice();
+		$('.btn-num-product-up').on('click', function() {
+			const item = $(this).closest('.table_row');
+			const quantityInput = item.find('.num-product');
+			quantityInput.val(parseInt(quantityInput.val()) + 1);
+			updateTotalPrice(item);
+			updateGrandTotal();
 		});
 
-		// Initial grand total calculation
+		$('.btn-num-product-down').on('click', function() {
+			const item = $(this).closest('.table_row');
+			const quantityInput = item.find('.num-product');
+			const currentQuantity = parseInt(quantityInput.val());
+			if (currentQuantity > 1) {
+				quantityInput.val(currentQuantity - 1);
+			}
+			updateTotalPrice(item);
+			updateGrandTotal();
+		});
+
+		$('.itemCheckbox').on('change', updateGrandTotal);
+
+		$('#selectAll').on('change', function() {
+			const isChecked = $(this).is(':checked');
+			$('.itemCheckbox').prop('checked', isChecked);
+			updateGrandTotal();
+		});
+
+		// 초기 총 가격 계산
+		$('.table_row').each(function() {
+			updateTotalPrice($(this));
+		});
 		updateGrandTotal();
 	});
+
 
 
 </script>
@@ -191,7 +198,7 @@ pageEncoding="UTF-8" %>
 								<!-- th -->
 								<tr class="table_head">
 									<th style="padding: 0px; margin: 0px; width: 1%;">
-										<input type="checkbox" style="margin-left: 20px;">
+										<input id="selectAll" type="checkbox" style="margin-left: 20px;">
 									</th>
 									<th class="column-1">상품</th>
 									<th class="column-2" style="width: 35%;">이름</th>
@@ -202,49 +209,17 @@ pageEncoding="UTF-8" %>
 
 
 								<!-- td -->
-								<c:forEach var="cart" items="${ requestScope.cartsVo }">
+								<c:forEach var="cart" items="${ cartsVo }">
 
-								<tr class="table_row" style="height: 100px;">
+								<tr class="table_row" data-product-id="${ cart.id }" style="height: 100px;">
 									<td style="padding: 0px; margin: 0px; width: 1%;">
-										<input type="checkbox" style="margin-left: 20px;">
+										<input class="itemCheckbox" type="checkbox" style="margin-left: 20px;">
 									</td>
-									<td class="column-1" style="padding-bottom: 0px";>
+									<td class="column-1"  style="padding-bottom: 0px";>
 										<div class="how-itemcart1" onclick="itemCartDelete(this)">
 											<img src="${ cart.imageUrl }"
 												 alt="${ cart.id }">
 										</div>
-										<script>
-											// x 누른 image 카트에서 삭제되게 하기
-											function itemCartDelete(element){
-
-												if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
-													return;
-												}
-
-												let deleteImg = element.querySelector('img');
-												let productId = deleteImg.alt;
-												let loginUser = '${ loginUser.id }';
-
-												$.ajax({
-													url 	: "CartDelete.do",
-													type	: "POST",
-													data	: { productId : productId,
-																loginUser : loginUser
-													},
-													success	: function (res_data) {
-														alert("장바구니에서 상품이 삭제되었습니다.");
-														location.href="CartList.do?loginUser=" + loginUser;
-													},
-													error	: function (err) {
-														alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");
-													}
-												});
-
-											}
-
-
-
-										</script>
 									</td>
 									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
 									<td class="column-3" style="padding-bottom: 0px;">
@@ -279,14 +254,14 @@ pageEncoding="UTF-8" %>
 
 			<div class="total-container">
 				<div class="item">
-					<span class="label">총상품금액</span>
+					<span class="label">선택 상품금액</span>
 					<span class="amount" id="totalAmount">0원</span>
 				</div>
 				<div class="item">
 					<span class="label">+</span>
 				</div>
 				<div class="item">
-					<span class="label">총배송비</span>
+					<span class="label">배송비</span>
 					<span class="amount">3,000원</span>
 				</div>
 				<div class="item">
@@ -304,27 +279,45 @@ pageEncoding="UTF-8" %>
 			<!-- 장바구니 리스트의 결제 -->
 
 			<script>
-				function processOrder() {
-					// quantity 값을 넣어줄 배열 생성
+				function checkProductOrder() {
 					var quantities = [];
-					//
-					var inputs = document.getElementsByName('num-product1');
-					for (var i = 0; i < inputs.length; i++) {
-						quantities.push(inputs[i].value);
+					var ids = [];
+
+					$('.itemCheckbox:checked').each(function() {
+						var row = $(this).closest('.table_row');
+						var quantity = row.find('.num-product').val();
+						var id = row.data('product-id'); // 각 행의 data-product-id 속성 값을 가져옵니다.
+
+						// ID와 수량이 모두 유효한지 확인
+						if (id && !isNaN(quantity) && parseInt(quantity) > 0) {
+							quantities.push(quantity);
+							ids.push(id);
+						}
+					});
+
+					// 빈 배열이 아닌 경우에만 쿼리 문자열 생성
+					if (ids.length > 0 && quantities.length > 0) {
+						// JSON 문자열을 쿼리 파라미터로 인코딩
+						var queryString = 'productIds=' + encodeURIComponent(JSON.stringify(ids)) +
+								'&quantities=' + encodeURIComponent(JSON.stringify(quantities)) +
+								'&loginUserId=' + encodeURIComponent(${loginUser.id});
+
+						// 결제 폼으로 이동
+						window.location.href = 'order/orderForm.do?' + queryString;
+					} else {
+						alert("선택된 상품이 없습니다.");
 					}
-
-					var queryString = quantities.map(function(qty, index) {
-						return 'quantities=' + encodeURIComponent(qty);
-					}).join('&');
-
-					window.location.href = 'order/orderForm.do?' + queryString + '&loginUserId=' + ${ loginUser.id };
 				}
 			</script>
+
+
+
+
 
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-							style="width: 400px; padding: 10px; height: 50px" onclick="processOrder()">
+							style="width: 400px; padding: 10px; height: 50px" onclick="checkProductOrder()">
 						선택상품 결제
 					</button>
 				</div>
@@ -342,6 +335,25 @@ pageEncoding="UTF-8" %>
 	</div>
 </div>
 
+<script>
+	function processOrder() {
+		// quantity 값을 넣어줄 배열 생성
+		var quantities = [];
+		//
+		var inputs = document.getElementsByName('num-product1');
+		for (var i = 0; i < inputs.length; i++) {
+			quantities.push(inputs[i].value);
+		}
+
+		var queryString = quantities.map(function(qty, index) {
+			return 'quantities=' + encodeURIComponent(qty);
+		}).join('&');
+
+		window.location.href = 'order/orderForm.do?' + queryString + '&loginUserId=' + ${ loginUser.id };
+	}
+</script>
+
+
 
 <!-- Footer -->
 <jsp:include page="../common/footer.jsp"/>
@@ -353,6 +365,53 @@ pageEncoding="UTF-8" %>
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 </div>
+
+
+<script>
+	// 상단 체크박스 클릭 시 전체 체크박스 선택 로직
+	$(document).ready(function() {
+		// 상단 체크박스와 개별 체크박스들 선택
+		$('#selectAll').on('change', function() {
+			// 상단 체크박스의 체크 상태를 가져와서
+			var isChecked = $(this).is(':checked');
+			// 모든 개별 체크박스에 체크 상태를 적용
+			$('.itemCheckbox').prop('checked', isChecked);
+		});
+	});
+</script>
+
+
+<script>
+	// x 누른 image 카트에서 삭제되게 하기
+	function itemCartDelete(element){
+
+		if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
+			return;
+		}
+
+		let deleteImg = element.querySelector('img');
+		let productId = deleteImg.alt;
+		let loginUser = '${ loginUser.id }';
+
+		$.ajax({
+			url 	: "CartDelete.do",
+			type	: "POST",
+			data	: { productId : productId,
+				loginUser : loginUser
+			},
+			success	: function (res_data) {
+				alert("장바구니에서 상품이 삭제되었습니다.");
+				location.href="CartList.do?loginUser=" + loginUser;
+			},
+			error	: function (err) {
+				alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");
+			}
+		});
+
+	}
+</script>
+
+
 
 <!--===============================================================================================-->
 <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>

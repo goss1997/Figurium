@@ -85,6 +85,10 @@
             margin-bottom: 70px;
         }
 
+        .how-itemcart1:hover:after {
+            opacity: 0 !important;
+        }
+
     </style>
 
 </head>

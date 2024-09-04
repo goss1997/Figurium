@@ -132,6 +132,10 @@
             padding: 30px; /* 내부 여백 */
         }
 
+        .how-itemcart1:hover:after {
+            opacity: 0 !important;
+        }
+
 
     </style>
 

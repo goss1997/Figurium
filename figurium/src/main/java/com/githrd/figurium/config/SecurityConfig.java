@@ -30,7 +30,7 @@ public class SecurityConfig {
         // spring boot 3.xx 이후 람다식으로 전달하도록 바뀜.
        return http
                .csrf(AbstractHttpConfigurer::disable)       // csrf 보안 설정 사용을 안 할 것이다.
-               .httpBasic(AbstractHttpConfigurer::disable)     // http basic 미사용.
+               .httpBasic(httpb->httpb.disable())     // http basic 미사용.
                .logout(AbstractHttpConfigurer::disable)     // 로그아웃 사용을 안 할 것이다.
                .formLogin(AbstractHttpConfigurer::disable)  // 폼 로그인 사용을 안 할 것이다.
                .oauth2Login(oauth2 -> oauth2                  // OAuth2를 통한 로그인을 사용할 것이다.

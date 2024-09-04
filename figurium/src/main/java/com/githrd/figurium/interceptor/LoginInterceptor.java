@@ -21,7 +21,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(loginUser == null) {
 
             log.warn("LoginInterceptor : 비회원 접근 불가!");
-            response.sendRedirect(request.getContextPath());
+            session.setAttribute("alertMsg","로그인 후 이용가능합니다.");
+            response.sendRedirect(request.getHeader("Referer"));
             return false;
         }
 

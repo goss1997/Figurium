@@ -187,7 +187,10 @@
 <c:if test="${not empty alertMsg}">
 
     <script>
-        alert('${alertMsg}');
+        // 0.1초 (100 밀리초) 후에 alert을 실행
+        setTimeout(function () {
+            alert('${alertMsg}');
+        }, 100);
     </script>
     <c:remove var="alertMsg"/>
 </c:if>

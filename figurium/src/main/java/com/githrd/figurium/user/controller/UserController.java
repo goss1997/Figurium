@@ -120,6 +120,7 @@ public class UserController {
         int result = userService.signup(user, profileImage);
 
         if (result > 0) {
+            session.setAttribute("alertMsg","회원가입 완료!");
             return "redirect:/";
         } else {
             return "redirect:/user/login.do";
@@ -142,6 +143,7 @@ public class UserController {
 
             return "user/myPage";
         } else {
+            session.setAttribute("alertMsg","로그인 후 이용 가능합니다.");
             return "redirect:/";
         }
 
@@ -181,6 +183,7 @@ public class UserController {
         User updatedUser = userService.updateUser(name, phone, address);
         session.setAttribute("loginUser", updatedUser);
 
+        session.setAttribute("alertMsg","수정 완료!");
         return "redirect:/user/my-page.do";
     }
 

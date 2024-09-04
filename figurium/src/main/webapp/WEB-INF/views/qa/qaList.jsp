@@ -28,6 +28,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
         <script type="text/javascript">
             // JSP에서 로그인 상태를 JavaScript 변수로 전달
@@ -56,7 +57,7 @@
         <h1>Q&A 게시판</h1>
         <table class="table table-hover">
             <thead class="thead-light">
-            <tr onclick="location.href='qaSelect.do'">
+            <tr>
                 <th>번호</th>
                 <th>제목</th>
                 <th>답변여부</th>
@@ -68,7 +69,7 @@
             <c:forEach var="qa" items="${qaList}">
                 <tr>
                     <td>${qa.id}</td>
-                    <td><a href="${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
+                    <td><span style="font-size: 18px;" class="material-symbols-outlined">lock</span><a href="${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}">${qa.title}</a></td>
                     <td>${qa.replyStatus}</td>
                     <td>${qa.userId}</td>
                     <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>

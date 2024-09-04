@@ -37,4 +37,6 @@ public class QaServiceImpl implements QaService {
     public void deleteQa(int id) {
         qaDao.delete(id);
     }
+
+
 }

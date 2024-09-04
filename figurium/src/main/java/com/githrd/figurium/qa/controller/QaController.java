@@ -67,6 +67,23 @@ public class QaController {
         return "qa/qaSelect";
     }
 
+    @PostMapping("/qaReplySave.do")
+    public String saveReply(@RequestParam("id") int id,
+                            @RequestParam("content") String content) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+
+        QaVo qaVo = qaService.getQaById(id);
+        qaVo.setReply(content); // 답변 설정
+        qaVo.setReplyStatus("답변완료"); // 상태 업데이트
+        qaService.updateQa(qaVo);
+
+        return "redirect:/qa/qaSelect.do?id=" + id;
+    }
+
+
     // 게시글 삭제 메서드 추가
     @GetMapping("/qaDelete.do")
     public String delete(@RequestParam("id") int id) {

@@ -6,7 +6,8 @@
 <mapper namespace="com.githrd.figurium.qa.dao.QaDao">
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT * FROM qa
-        ORDER BY created DESC
+        ORDER BY id DESC
+        SELECT@rownum := @rownum + 1 AS no, qa.*FROM qa, (SELECT @rownum := 0) AS r ORDER BY id;
     </select>
 
     <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
@@ -24,11 +25,14 @@
             content = #{content},
             reply = #{reply},
             updated = #{updated},
-            reply_status = #{replyStatus}
+            replyStatus = #{replyStatus}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="int">
         DELETE FROM qa WHERE id = #{id}
     </delete>
+
+
+
 </mapper>

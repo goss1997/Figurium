@@ -26,11 +26,10 @@
         <hr>
         <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="user" placeholder="사용자명을 입력하세요" autocomplete="username">
+                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="author" name="author" placeholder="비밀번호를 입력하세요" autocomplete="new-password">
-            </div>
+
             <div class="form-group">
                 <select name="category" class="custom-select" autocomplete="off">
                     <option selected>:::분류 선택:::</option>
@@ -42,10 +41,6 @@
                     <option value="기타문의">기타문의</option>
                 </select>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
-            </div>
-            <div class="form-group">
                 <textarea class="form-control" style="resize: none; height: 180px;" id="content" name="content" placeholder="내용을 입력하세요" autocomplete="off"></textarea>
             </div>
             <button type="submit" class="btn btn-dark" style="margin-bottom: 10px;">등록</button>

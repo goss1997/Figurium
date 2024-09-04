@@ -11,4 +11,5 @@ public interface QaService {
     void saveQa(QaVo qaVo); // 게시글 저장
     void updateQa(QaVo qaVo); // 게시글 수정
     void deleteQa(int id); // 게시글 삭제
+
 }

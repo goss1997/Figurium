@@ -39,4 +39,6 @@ public class QaDaoImpl implements QaDao {
     public void delete(int id) {
         sqlSession.delete(NAMESPACE + ".delete", id);
     }
+
+
 }

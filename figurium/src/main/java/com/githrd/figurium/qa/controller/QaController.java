@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/qa")
 public class QaController {
 
-    @Autowired
-    private QaService qaService;
+    private final QaService qaService;
+    private final HttpSession session;
 
     @Autowired
-    private HttpSession session;
+    public QaController(QaService qaService, HttpSession session) {
+        this.qaService = qaService;
+        this.session = session;
+    }
 
     @GetMapping("/qaList.do")
     public String list(Model model) {

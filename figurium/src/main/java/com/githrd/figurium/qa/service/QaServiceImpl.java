@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class QaServiceImpl implements QaService {
 
+    private final QaDao qaDao;
+
     @Autowired
-    private QaDao qaDao;
+    public QaServiceImpl(QaDao qaDao) {
+        this.qaDao = qaDao;
+    }
 
     @Override
     public List<QaVo> getAllQa() {

@@ -16,5 +16,7 @@ public interface OrderMapper {
     // 사용자 주문 내역 조회
     List<MyOrderVo> selectListByUserId(int userId);
 
+    // 사용자 주문 상세 내역 조회
+    List<MyOrderVo> selectListByDetailOrder(int myOrderId, int userId);
 
 }

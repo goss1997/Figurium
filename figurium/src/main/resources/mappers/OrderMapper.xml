@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into orders(id, user_id, payment_type, price, status, created_at, valid)
         values(
                 null,
-                1,
+                #{ userId },
                 #{ paymentType },
                 #{ price },
                 '준비중',
@@ -56,6 +56,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from order_history_view
         where user_id = #{ user_id }
         group by id;
+    </select>
+
+    <select id="selectListByDetailOrder" resultType="myOrders" parameterType="int">
+        select * from order_history_view
+            where id = #{ myOrderId } and user_id = #{ userId }
     </select>
 
 </mapper>

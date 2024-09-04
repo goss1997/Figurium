@@ -1,5 +1,6 @@
 package com.githrd.figurium.user.controller;
 
+import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.user.entity.User;
@@ -28,6 +29,7 @@ public class UserController {
     private final HttpSession session;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
     /**
      * 로그인
@@ -207,8 +209,11 @@ public class UserController {
      * 내 주문 상세 조회
      */
     @GetMapping("orderDetail.do")
-    public String myOrderDetail() {
+    public String myOrderDetail(Model model, Integer myOrderId, Integer userId) {
 
+        List<MyOrderVo> myOrderDetailList = orderMapper.selectListByDetailOrder(myOrderId, userId);
+
+        model.addAttribute("myOrderDetailList", myOrderDetailList);
         return "user/myOrderDetail";
     }
 

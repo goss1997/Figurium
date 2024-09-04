@@ -29,7 +29,7 @@ h1 {
     vertical-align: middle !important;
 }
 
-#item_list_table_name {
+.item_list_table_name {
     width: 600px;
 }
 
@@ -61,7 +61,7 @@ h1 {
     font-weight: 800;
 }
 
-#table_content_img {
+.table_content_img {
     width: 600px !important;
     text-align: left !important;
     font-weight: 100 !important;
@@ -69,11 +69,11 @@ h1 {
     align-items: center;
 }
 
-#table_content_img img {
+.table_content_img img {
     margin-right: 15px;
 }
 
-#table_content_img_text {
+.table_content_img_text {
     width: calc(100% - 40px);
     overflow: hidden;
     text-overflow: ellipsis;    /* 범위 넘어가는 text ..으로 처리 */
@@ -175,14 +175,14 @@ td > img {
 }
 
 .container {
-    margin-top: 30px;
+    margin-top: 0px;
 }
 
 .container > input {
     font-size: 12px;
 }
 
-#productPrice, #totalPrice {
+.productPrice, #totalPrice {
     text-align: center !important;
     font-weight: 600 !important;
 }

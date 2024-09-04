@@ -28,7 +28,6 @@
     var IMP = window.IMP;
     IMP.init("imp25608413");
 
-
     function buyItems(price) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
@@ -52,7 +51,7 @@
         url : "checkProduct.do",
         data : {
           productIds : productIds,
-          itemQuantities : itemQuantities
+          itemQuantities : itemQuantities,
         },
         success: function(res_data){
           alert("재고가 남아있습니다.");
@@ -98,11 +97,12 @@
 
     }
 
-    let paymentType = document.querySelector('input[name="payment"]:checked');
 
     function sil(price) {
 
       alert("sil 실행");
+      let paymentType = document.querySelector('input[name="payment"]:checked');
+      let userId = document.getElementById("order_id").value;    // 보낸 사람 id
 
       //결제 완료된 주문 데이터 저장
       $.ajax({
@@ -110,7 +110,8 @@
         url  : "/order/inicisPay.do",
         data : {
           price : price,
-          paymentType : "카드"
+          paymentType : "카드",
+          userId : userId
         },
 
         success: function(res_data){
@@ -133,11 +134,11 @@
       // var itemPrices = [ 아이템 가격 배열 저장 ];
       // var itemQuantities = [ 아이템 갯수 배열 저장 ];
 
-
-      let loginUserId = document.getElementById("order_id").value;         // 보낸 사람 이름
+      let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
       let name = document.getElementById("order_name").value;         // 보낸 사람 이름
       let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
       let email = document.getElementById("order_email").value;       // 이메일
+
 
       // 받는 사람 주소
       let memZipcode0 = document.getElementById('address').value;
@@ -242,7 +243,7 @@
     <table class="table item_list_table table-hover">
       <thead id="thead">
       <tr class="table-light">
-        <th id="item_list_table_name">상품명</th>
+        <th class="item_list_table_name">상품명</th>
         <th>가격</th>
         <th>수량</th>
         <th>총 금액</th>
@@ -250,7 +251,7 @@
       </thead>
       <tbody>
       <tr class="table_content">
-        <td id="table_content_img"><img src="${pageContext.request.contextPath}/resources/images/example.jpg" alt="IMG">
+        <td class="table_content_img"><img src="${pageContext.request.contextPath}/resources/images/example.jpg" alt="IMG">
         [25년2월입고] 최애의 아이 2기 반프레스토 아쿠아 토우키ver
         </td>
         <td>10,000원</td>
@@ -284,7 +285,7 @@
       <table class="table item_list_table">
           <thead>
           <tr class="table-light">
-            <th id="item_list_table_name">상품명</th>
+            <th class="item_list_table_name">상품명</th>
             <th>가격</th>
             <th>수량</th>
             <th>총 금액</th>
@@ -294,8 +295,8 @@
         <tbody>
         <c:forEach var="item" items="${ requestScope.cartsList }">
           <tr class="table_content">
-            <td id="table_content_img"><img src="${pageContext.request.contextPath}${ item.imageUrl }" alt="IMG">
-              <span id="table_content_img_text">${ item.name }</span>
+            <td class="table_content_img"><img src="${pageContext.request.contextPath}${ item.imageUrl }" alt="IMG">
+              <span class="table_content_img_text">${ item.name }</span>
             </td>
             <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol=""/>원</td>
             <td>${ item.quantity }</td>

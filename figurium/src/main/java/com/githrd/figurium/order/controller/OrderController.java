@@ -53,13 +53,11 @@ public class OrderController {
         this.session = session;
         this.productsMapper = productsMapper;
 
-
-
     }
 
 
     @RequestMapping("order/orderForm.do")
-    public String orderForm(Model model, int loginUserId,
+    public String orderForm(Model model, Integer loginUserId,
                             @RequestParam(required = false) List<Integer> quantities) {
 
         // 카드에 담겨있는 상품 가져오기
@@ -125,12 +123,13 @@ public class OrderController {
     // inicis 결제 요청 처리하기 (PaymentRequest => DTO로 사용)
     @RequestMapping(value = "order/inicisPay.do")
     @ResponseBody
-    public String inicisPay(int price, String paymentType) {
+    public String inicisPay(int price, String paymentType, Integer userId) {
 
         // 주문자 정보 insert
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("price",price);
         map.put("paymentType",paymentType);
+        map.put("userId", userId);
 
         int res = orderMapper.insertOrders(map);
         System.out.println("결제성공");

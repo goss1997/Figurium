@@ -182,7 +182,7 @@
                                                         </td>
                                                         <c:if test="${ myOrder.productCount <= 0 }">
                                                             <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do">${ myOrder.productName }</a>
+                                                                <a href="orderDetail.do?myOrderid=${ myOrder.id }&myUserId=${ myOrder.userId }"></a>
                                                             </td>
 
                                                         </c:if>
@@ -197,13 +197,13 @@
                                                         </c:if>
 
                                                         <td class="column-3" style="padding-bottom: 0px;">
-                                                            <span id="productPrice">${ myOrder.totalValue+3000 }원</span>
+                                                            <span class="productPrice">${ myOrder.totalValue+3000 }원</span>
                                                         </td>
                                                         <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                            <span id="productPrice">${ myOrder.paymentType }</span>
+                                                            <span class="productPrice">${ myOrder.paymentType }</span>
                                                         </td>
                                                         <td class="column-5" style="text-align: center; padding-bottom: 0px">
-                                                            <span id="productPrice">${ myOrder.createdAt }</span>
+                                                            <span class="productPrice">${ myOrder.createdAt }</span>
                                                         </td>
                                                     </tr>
                                             </table>

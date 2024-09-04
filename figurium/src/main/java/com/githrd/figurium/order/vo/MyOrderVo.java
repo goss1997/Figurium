@@ -14,6 +14,7 @@ public class MyOrderVo {
     private int id;
     private String paymentType;
     private int userId;
+    private String status;
     private String createdAt;
 
     private int price;

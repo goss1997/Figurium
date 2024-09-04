@@ -87,6 +87,10 @@
             margin-bottom: 70px;
         }
 
+        .bread-crumb {
+            margin-left: -20px;
+        }
+
     </style>
 
 </head>
@@ -255,192 +259,194 @@
 
             </div>
         </div>
-    </div>
 
-    <div class="order_box_both">
-        <input type="hidden" value="${ sessionScope.loginUser.id }" id="order_id">
+        <div class="order_box_both">
+            <input type="hidden" value="${ sessionScope.loginUser.id }" id="order_id">
 
-        <%-- 주문 테이블 customers --%>
-        <div class="order_box_l mt-3">
-            <div class="form_container">
-                <table class="table">
-                    <thead>
-                    <th>
-                        <h2>주문자 입력</h2>
-                    </th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="td_title">주문하시는 분</td>
-                        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
-                    </tr>
-                    <tr>
-                        <td class="td_title">전화번호</td>
-                        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
-                    </tr>
-                    <tr>
-                        <td class="td_title">이메일</td>
-                        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }" id="order_email" placeholder="이메일" name="order_email"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%-- 주문 테이블 customers --%>
+            <div class="order_box_l mt-3">
+                <div class="form_container">
+                    <table class="table">
+                        <thead>
+                        <th>
+                            <h2>주문자 입력</h2>
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td_title">주문하시는 분</td>
+                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_title">전화번호</td>
+                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_title">이메일</td>
+                            <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }" id="order_email" placeholder="이메일" name="order_email"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div id="table_under_box">
-                <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-                <input type="button" class="form-control" id="user_change_btn" value="회원정보수정">
-            </div>
+                <div id="table_under_box">
+                    <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
+                    <input type="button" class="form-control" id="user_change_btn" value="회원정보수정">
+                </div>
 
-            <%-- 주문 테이블 shipping_address --%>
-            <div class="form_container">
-                <table class="table">
-                    <thead>
-                    <th>
-                        <h2>배송지 정보</h2>
-                    </th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="td_title">기존 배송지</td>
-                        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
-                    </tr>
-                    <tr>
-                        <td class="td_title">받으시는 분</td>
-                        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
-                    </tr>
-                    <tr>
-                        <td class="td_title">전화번호</td>
-                        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
-                    </tr>
+                <%-- 주문 테이블 shipping_address --%>
+                <div class="form_container">
+                    <table class="table">
+                        <thead>
+                        <th>
+                            <h2>배송지 정보</h2>
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td_title">기존 배송지</td>
+                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_title">받으시는 분</td>
+                            <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_title">전화번호</td>
+                            <td><input type="email" class="form-control" value="${ sessionScope.loginUser.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
+                        </tr>
 
 
-                    <tr>
-                        <td class="td_title">주소</td>
-                        <td>
-                            <div class="address-container">
-                                <div class="address-inputs">
-                                    <input type="text" class="form-control" id="address" placeholder="우편번호" name="address">
-                                    <button id="a_search" type="button" onclick="find_addr();">우편번호 찾기</button>
+                        <tr>
+                            <td class="td_title">주소</td>
+                            <td>
+                                <div class="address-container">
+                                    <div class="address-inputs">
+                                        <input type="text" class="form-control" id="address" placeholder="우편번호" name="address">
+                                        <button id="a_search" type="button" onclick="find_addr();">우편번호 찾기</button>
+                                    </div>
+                                    <div class="zipcode-container">
+                                        <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
+                                        <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
+                                    </div>
                                 </div>
-                                <div class="zipcode-container">
-                                    <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
-                                    <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 
 
-                    <tr>
-                        <td class="td_title">배송시요청사항</td>
-                        <td>
-                            <textarea class="form-control" rows="5" id="delivery_request" placeholder="배송시 요청사항" placeholer="배송시 요청사항을 적어주세요."></textarea>
-                        </td>
-                        <%--<td><textarea class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>--%>
-                    </tr>
-                    </tbody>
-                </table>
+                        <tr>
+                            <td class="td_title">배송시요청사항</td>
+                            <td>
+                                <textarea class="form-control" rows="5" id="delivery_request" placeholder="배송시 요청사항" placeholer="배송시 요청사항을 적어주세요."></textarea>
+                            </td>
+                            <%--<td><textarea class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>--%>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        </form>
-        <%-- form end 지점 --%>
+            </form>
+            <%-- form end 지점 --%>
 
-        <div id="order_box">
+            <div id="order_box">
 
-            <div class="payment-title">결제 정보</div>
+                <div class="payment-title">결제 정보</div>
 
-            <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
-            <c:if test="${ itemList == null }">
-                <div class="payment-info">
-                    <span>상품 합계</span>
-                    <span class="payment-info-price">0원</span>
-                </div>
+                <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
+                <c:if test="${ itemList == null }">
+                    <div class="payment-info">
+                        <span>상품 합계</span>
+                        <span class="payment-info-price">0원</span>
+                    </div>
 
-                <div class="payment-info">
-                    <span>배송료</span>
-                    <span class="payment-info-price">(+)0원</span>
-                </div>
+                    <div class="payment-info">
+                        <span>배송료</span>
+                        <span class="payment-info-price">(+)0원</span>
+                    </div>
 
-                <div class="payment-info" id="payment-info-bottom">
-                    <span>총 결제 금액</span>
-                    <span class="payment-info-price-red">0원</span>
-                </div>
-            </c:if>
+                    <div class="payment-info" id="payment-info-bottom">
+                        <span>총 결제 금액</span>
+                        <span class="payment-info-price-red">0원</span>
+                    </div>
+                </c:if>
 
-            <c:if test="${ cartsList != null }">
-                <div class="payment-info">
-                    <span>상품 합계</span>
-                    <span class="payment-info-price">
+                <c:if test="${ cartsList != null }">
+                    <div class="payment-info">
+                        <span>상품 합계</span>
+                        <span class="payment-info-price">
           <fmt:formatNumber type="currency" value="${ totalPrice }" currencySymbol=""/>원
         </span>
-                </div>
+                    </div>
 
-                <div class="payment-info">
-                    <span>배송료</span>
-                    <span class="payment-info-price">(+)3,000원</span>
-                </div>
+                    <div class="payment-info">
+                        <span>배송료</span>
+                        <span class="payment-info-price">(+)3,000원</span>
+                    </div>
 
-                <div class="payment-info" id="payment-info-bottom">
-                    <span>총 결제 금액</span>
+                    <div class="payment-info" id="payment-info-bottom">
+                        <span>총 결제 금액</span>
 
-                    <span class="payment-info-price-red">
+                        <span class="payment-info-price-red">
           <fmt:formatNumber type="currency" value="${ totalPrice + 3000 }" currencySymbol=""/>원
         </span>
+                    </div>
+                </c:if>
+
+                <hr id="hr1">
+
+                <%--  결제 수단 정렬  --%>
+                <div class="payment-method">
+                    <div class="payment-method-title">결제 수단</div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="paynow" name="payment" value="paynow">
+                        <label for="paynow">Paynow</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="credit_card" name="payment" value="credit_card">
+                        <label for="credit_card">신용카드</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="bank_transfer" name="payment" value="bank_transfer">
+                        <label for="bank_transfer">실시간 계좌이체</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="virtual_account" name="payment" value="bank_transfer">
+                        <label for="bank_transfer">에스크로 가상계좌</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="depositor" name="payment" value="bank_transfer">
+                        <label for="bank_transfer">무통장 입금</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="phone_transfer" name="payment" value="bank_transfer">
+                        <label for="bank_transfer">휴대폰 결제</label>
+                    </div>
+
                 </div>
-            </c:if>
 
-            <hr id="hr1">
+                <hr id="hr2">
 
-            <%--  결제 수단 정렬  --%>
-            <div class="payment-method">
-                <div class="payment-method-title">결제 수단</div>
-
-                <div class="payment-option">
-                    <input type="radio" id="paynow" name="payment" value="paynow">
-                    <label for="paynow">Paynow</label>
+                <div class="agreement">
+                    <input type="checkbox" id="agreement">
+                    <p>결제 정보를 확인하였으며,<br>구매 진행에 동의합니다.</p>
                 </div>
 
-                <div class="payment-option">
-                    <input type="radio" id="credit_card" name="payment" value="credit_card">
-                    <label for="credit_card">신용카드</label>
-                </div>
-
-                <div class="payment-option">
-                    <input type="radio" id="bank_transfer" name="payment" value="bank_transfer">
-                    <label for="bank_transfer">실시간 계좌이체</label>
-                </div>
-
-                <div class="payment-option">
-                    <input type="radio" id="virtual_account" name="payment" value="bank_transfer">
-                    <label for="bank_transfer">에스크로 가상계좌</label>
-                </div>
-
-                <div class="payment-option">
-                    <input type="radio" id="depositor" name="payment" value="bank_transfer">
-                    <label for="bank_transfer">무통장 입금</label>
-                </div>
-
-                <div class="payment-option">
-                    <input type="radio" id="phone_transfer" name="payment" value="bank_transfer">
-                    <label for="bank_transfer">휴대폰 결제</label>
-                </div>
+                <%--  결제버튼  --%>
+                <button class="order-button" onclick="sil(100);">주문하기</button>
 
             </div>
-
-            <hr id="hr2">
-
-            <div class="agreement">
-                <input type="checkbox" id="agreement">
-                <p>결제 정보를 확인하였으며,<br>구매 진행에 동의합니다.</p>
-            </div>
-
-            <%--  결제버튼  --%>
-            <button class="order-button" onclick="sil(100);">주문하기</button>
 
         </div>
-
     </div>
+
+
 
 
 

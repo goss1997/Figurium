@@ -50,7 +50,12 @@
         <p class="copyright">Copyright © 2024 주식회사 피규리움. All Rights Reserved. designed &amp; managed by saehim.</p>
     </div>
 </div>
-
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
 <!--===============================================================================================-->
 <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

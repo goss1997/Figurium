@@ -91,11 +91,7 @@ public class ProductsController {
     @RequestMapping("/productInsert.do")
     public String productInsert(ProductsVo products, @RequestParam MultipartFile productImage) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser.getRole() != 1) {
-            return "redirect:/";
-        }
 
         String save;
         if(productImage.isEmpty()){
@@ -132,7 +128,8 @@ public class ProductsController {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser.getRole() != 1) {
+        if(loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -148,11 +145,7 @@ public class ProductsController {
     @RequestMapping("/productModify.do")
     public String productModify(ProductsVo products, @RequestParam MultipartFile productImage) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser.getRole() != 1) {
-            return "redirect:/";
-        }
 
 
         Products productById = productsService.getProductById(products.getId());
@@ -180,8 +173,9 @@ public class ProductsController {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser.getRole() != 1) {
-            return "/";
+        if(loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
+            return "redirect:/";
         }
 
         Products selectOne = productsService.getProductById(id);

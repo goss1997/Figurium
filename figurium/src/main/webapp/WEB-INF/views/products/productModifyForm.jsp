@@ -157,14 +157,14 @@
 
 
         if (regExp.test(price) == false) {
-            alert("가격에는 숫자만 기재해주세요.")
+            alert("가격에는 숫자만 기재해주세요.");
             f.price.value="";
             f.price.focus();
             return;
         }
 
         if (regExp.test(quantity) == false) {
-            alert("재고수량은 숫자만 입력가능합니다.")
+            alert("재고수량은 숫자만 입력가능합니다.");
             f.quantity.value="";
             f.quantity.focus();
             return;
@@ -202,9 +202,9 @@
         console.log(category);
 
 
-        f.enctype = 'multipart/form-data'
+        f.enctype = 'multipart/form-data';
         f.action = "productModify.do?id=" + id;
-        f.method = 'post'
+        f.method = 'post';
         f.submit(); //전송
 
 

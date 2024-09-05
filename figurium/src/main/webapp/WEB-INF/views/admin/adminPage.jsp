@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 14A
@@ -61,13 +62,18 @@
     </thead>
 
     <tbody>
+    <c:forEach var="orderList" items="${orderList}">
       <tr>
-        <td>순번</td>
-        <td>럭키비키~</td>
-        <td>신용카드</td>
-        <td>30000원</td>
-        <td>결제대기</td>
-        <td><a>준비중</a>&nbsp;&nbsp;<input type="button" id="deliveryButton" class="deliveryButton" value="상태변경" onclick="toggleButtons();"
+
+        <td>${orderList.id}<br>${orderList.createdAt}</td>
+        <td>${orderList.productName}</td>
+        <td>${orderList.paymentType}</td>
+        <td>${orderList.price}</td>
+        <td>
+            <c:if test="${orderList.valid}">
+            ${orderList.valid}</td>
+        </c:if>
+        <td><a>${orderList.status}</a>&nbsp;&nbsp;<input type="button" id="deliveryButton" class="deliveryButton" value="상태변경" onclick="toggleButtons();"
         style="display: inline-block;">
           <select style="margin: 0px; display: none;" id="deliveryCondition" class="delivery" >
           <option>준비중</option>
@@ -79,7 +85,9 @@
                  style="display: none;">
         </td>
       </tr>
+      </c:forEach>
     </tbody>
+
   </table>
 
 

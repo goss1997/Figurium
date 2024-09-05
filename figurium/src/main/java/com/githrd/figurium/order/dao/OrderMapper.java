@@ -22,4 +22,6 @@ public interface OrderMapper {
     // 사용자 주문 상세 내역 정보 조회
     MyOrderVo selectOneOrderInfo(int myOrderId, int userId);
 
+    // 관리자용 고객무관 전체조회
+    List<MyOrderVo> viewAllList();
 }

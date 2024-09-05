@@ -1,5 +1,9 @@
 package com.githrd.figurium.admin.controller;
 
+import com.githrd.figurium.order.dao.OrderMapper;
+import com.githrd.figurium.order.service.OrderService;
+import com.githrd.figurium.order.service.OrderServiceImpl;
+import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -31,7 +35,9 @@ public class adminController {
     private final ProductRepository productRepository;
     private final CategoriesRepository categoriesRepository;
     private final HttpSession session;
-
+    private final OrderServiceImpl orderServiceImpl;
+    private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
 
     @GetMapping("/admin")
@@ -44,10 +50,9 @@ public class adminController {
             return "redirect:/";
         }
 
-
-
-
-
+        List<MyOrderVo> orderList = orderMapper.viewAllList();
+        model.addAttribute("orderList" , orderList);
+        System.out.println(orderList);
 
 
         return "admin/adminPage";

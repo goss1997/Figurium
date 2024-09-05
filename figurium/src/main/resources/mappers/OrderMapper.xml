@@ -77,6 +77,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from order_history_view oh
         where id = #{ myOrderId } and user_id = #{ userId } limit 1
     </select>
+    
+    <select id="viewAllList" resultType="myOrders" >
+
+#         select * from order_history_view
+select
+    id,
+    max(payment_type) as payment_type,
+    max(name) as name,
+    max(valid) as valid,
+    sum(price) as price,
+    date_format(max(created_at), '%Y/%m/%d') as created_at,
+    max(product_name) as product_name,
+    count(distinct product_name) - 1 as product_count,
+    min(image_url) as image_url,
+    sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+from order_history_view
+group by id;
+
+
+    </select>
+    
 
 </mapper>
 

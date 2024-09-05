@@ -365,7 +365,8 @@ gradle-app.setting
 *.iml
 **/classes/
 .vscode/**
-**/resources/s3.properties
+**/resources/application.properties
+**/resources/application.yml
 
 
 ### End of ignore ###

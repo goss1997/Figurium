@@ -1210,7 +1210,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .item-slick1 {
-  height: calc(100vh - 40px);
+  height: calc(100vh - 50px);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -1240,8 +1240,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   align-items: center;
   width: auto;
   height: auto;
-  font-size: 80px;
-  color: rgba(0,0,0,0.3);
+  font-size: 100px;
+  color: rgba(0, 0, 0, 0.62);
   position: absolute;
   opacity: 0;
   
@@ -1264,7 +1264,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .arrow-slick1:hover {
-  color: #7280e0;
+  color: #5f6fe1;
+  font-size: 120px;
 }
 
 .next-slick1 {
@@ -1289,7 +1290,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*---------------------------------------------*/
 .rs2-slick1 .arrow-slick1 {
-  color: rgba(255,255,255,0.3);
+  color: rgba(18, 18, 18, 0.85);
 }
 
 .rs2-slick1 .arrow-slick1:hover {

@@ -11,19 +11,26 @@
 
     <style>
 
-        .product_insert > a{
-            text-decoration:none;
+        .product_insert > a {
+            text-decoration: none;
             color: #888;
         }
-        .product_insert:hover > a{
-            text-decoration:none;
+
+        .product_insert:hover > a {
+            text-decoration: none;
             color: white;
+        }
+
+        .section-slide{
+        }
+        .item-slick1{
+            max-height: 500px;
         }
     </style>
 </head>
-<jsp:include page="./common/header.jsp"/>
 <body class="animsition">
-
+<jsp:include page="./common/header.jsp"/>
+<div style="height: 75px;"></div>
 
 <!-- 장바구니 모달 -->
 <div class="wrap-header-cart js-panel-cart">
@@ -114,46 +121,37 @@
 
 
 <!-- Slider -->
-<section class="section-slide" style="height: 663px !important; width: 1920px !important; margin: auto !important;">
-    <div class="wrap-slick1">
-        <div class="slick1" style="background-origin: content-box; margin-top: -130px !important;" >
-            <div class="item-slick1"
-                 style="background-image: url(/images/Slider11.jpg); background-repeat: no-repeat !important;
-  background-origin: content-box !important; background-size: contain !important;">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-
+<div class="container-fluid" style="padding: 0;width: 100%;">
+    <section class="section-slide">
+        <div class="wrap-slick1">
+            <div class="slick1">
+                <div class="item-slick1"
+                     style="background-image: url(/images/Slider1.jpg);">
+                    <div class="container">
 
                     </div>
                 </div>
-            </div>
 
-            <div class="item-slick1"
-                 style="background-image: url(/images/Slider22.jpg); background-repeat: no-repeat !important;
-  background-origin: content-box !important; background-size: contain !important;">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                <div class="item-slick1"
+                     style="background-image: url(/images/Slider2.jpg);">
+                    <div class="container">
 
                     </div>
                 </div>
-            </div>
 
-            <div class="item-slick1"
-                 style="background-image: url(/images/Slider33.jpg); background-repeat: no-repeat !important;
-  background-origin: content-box !important; background-size: contain !important;">
-                <div class="container h-full">
-                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                <div class="item-slick1"
+                     style="background-image: url(/images/Slider3.jpg);">
+                    <div class="container">
 
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-
+    </section>
+</div>
+<br>
 <!-- Product -->
-<section class="bg0 p-t-23 p-b-140" style="padding-top: 260px !important;">
+<section class="bg0 p-t-23 p-b-140">
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
@@ -176,11 +174,11 @@
             </div>
             <c:if test="${loginUser.role == '1'}">
 
-            <div>
-                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                    <a href="productInsertForm.do">상품등록</a>
+                <div>
+                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
+                        <a href="productInsertForm.do">상품등록</a>
+                    </div>
                 </div>
-            </div>
             </c:if>
 
             <!-- Filter button -->
@@ -404,7 +402,8 @@
                         </div>
                         <div class="block2-txt flex-w flex-t p-t-14">
                             <div class="block2-txt-child1 flex-col-l ">
-                                <a href="productInfo.do?id=${products.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                <a href="productInfo.do?id=${products.id}"
+                                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         ${products.name}
                                 </a>
                                 <span class="stext-105 cl3">
@@ -439,9 +438,6 @@
         </div>
     </div>
 </section>
-
-
-
 
 
 <!-- Footer -->
@@ -479,7 +475,7 @@
                             var createdAt = new Date(product.createdAt);
 
                             // 날짜를 원하는 형식으로 포맷
-                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            var options = {year: 'numeric', month: 'long', day: 'numeric'};
                             var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
                             console.log(formattedDate);
                             html += `

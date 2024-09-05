@@ -8,11 +8,10 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Controller
 @Slf4j  // 로깅을 위한 log 객체를 자동으로 생성
@@ -73,7 +73,7 @@ public class PaymentController {
 
     @GetMapping("/refund.do") // 민감한 결제처리(환불)이니 POST로 설정
     @ResponseBody
-    public ResponseEntity<String> requestRefund(Integer id) throws IOException {
+    public boolean requestRefund(Integer id, HttpServletResponse response) throws IOException {
 
         String accessToken = refundService.getToken(apiKey, secretKey);
         MyOrderVo myOrderVo = orderMapper.selectOneByMerchantUid(id);
@@ -83,11 +83,24 @@ public class PaymentController {
         try {
             refundService.refundRequest(accessToken, merchantUid, reason);
             log.info("환불 요청 성공: 주문번호 {}", merchantUid);
-            return ResponseEntity.ok("환불 요청 성공");
+            // 결제 valid n 처리
+            orderMapper.updateByRefund(id);
+
+            // response로 알림창 넘겨주기
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('환불이 성공적으로 처리되었습니다. 결제된 금액의 환불 정산에는 결제방식에 따라 최대 영업일 기준 1일 정도가 소모됩니다.'); location.href='/';</script>");
+            out.flush();
+            return true;
         } catch (IOException e) {
             log.error("환불 요청 실패: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("환불 요청 실패");
+
+            // response로 알림창 넘겨주기
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('환불에 실패했습니다. 관리자에게 문의바랍니다.'); location.href='/';</script>");
+            out.flush();
+            return false;
         }
 
     }

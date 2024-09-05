@@ -31,5 +31,8 @@ public interface OrderMapper {
     // 배송상태 변경시 사용되는 1건 선택
     List<MyOrderVo> selectOneById(int id);
 
+    // 환불처리 성공 후 주문 상태 n으로 변경
+    int updateByRefund(int id);
+
     void updateOrderStatus(int id, String status);
 }

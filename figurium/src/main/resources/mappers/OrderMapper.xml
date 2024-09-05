@@ -126,7 +126,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from orders where id = #{id}
     </select>
 
-
+    <update id="updateByRefund" parameterType="int">
+        update orders set valid = 'n'
+        where id = #{ id }
+    </update>
 
 </mapper>
 

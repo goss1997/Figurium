@@ -27,4 +27,9 @@ public interface OrderMapper {
 
     // 환불처리 주문번호 조회
     MyOrderVo selectOneByMerchantUid(int id);
+
+    // 배송상태 변경시 사용되는 1건 선택
+    List<MyOrderVo> selectOneById(int id);
+
+    void updateOrderStatus(int id, String status);
 }

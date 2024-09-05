@@ -86,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             id,
             max(payment_type) as payment_type,
             max(name) as name,
+            max(status) as status,
             max(valid) as valid,
             sum(price) as price,
             date_format(max(created_at), '%Y/%m/%d') as created_at,
@@ -114,6 +115,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{ id }
         group by id;
     </select>
+
+    <update id="updateOrderStatus" parameterType="myOrders">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectOneById" resultType="myOrders">
+        select * from orders where id = #{id}
+    </select>
+
 
 
 </mapper>

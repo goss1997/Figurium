@@ -226,6 +226,23 @@ public class UserController {
         return "user/myOrderDetail";
     }
 
+    /**
+     * 회원 탈퇴 페이지
+     */
+    @GetMapping("deleteForm.do")
+    public String deleteForm() {
+        return "user/userDeleteForm";
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+    @PostMapping("delete.do")
+    public String delete(String password) {
+
+        session.setAttribute("alertMsg","탈퇴 완료! 홈으로 이동합니다.");
+        return "redirect:/";
+    }
 
 
 

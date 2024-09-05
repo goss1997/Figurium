@@ -8,11 +8,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>MyPage</title>
+    <title>개인 정보 수정</title>
     <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
         body {
             background-color: #f8f9fa;
+            font-family: Pretendard-Regular !important;
         }
         .profile-header {
             background-color: #343a40;
@@ -88,7 +95,7 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="/user/my-page.do">개인 정보 수정</a></li>
                             <li class="list-group-item"><a href="/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
+                            <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
                         </ul>
                     </div>
                 </div>

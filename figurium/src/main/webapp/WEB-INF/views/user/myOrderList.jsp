@@ -126,7 +126,7 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a
                                     href="/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
+                            <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
                         </ul>
                     </div>
                 </div>

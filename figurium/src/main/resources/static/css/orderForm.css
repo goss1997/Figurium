@@ -71,6 +71,7 @@ h1 {
 
 .table_content_img img {
     margin-right: 15px;
+    margin-top: 5px;
 }
 
 .table_content_img_text {
@@ -81,7 +82,7 @@ h1 {
 }
 
 td > img {
-    width: 100px;
+    height: 100px;
 }
 
 .order_box_both {

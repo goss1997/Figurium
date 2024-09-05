@@ -37,6 +37,8 @@
   var IMP = window.IMP;
   IMP.init("imp25608413");
 
+  var merchantUid;
+
     function buyItems(price) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
@@ -85,6 +87,8 @@
             }).done(function(data){
               console.log(data);
 
+              merchantUid = data.merchant_uid;
+
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
               if(rsp.paid_amount == data.response.amount) {
@@ -120,7 +124,8 @@
         data : {
           price : price,
           paymentType : "카드",
-          userId : userId
+          userId : userId,
+          merchantUid : merchantUid
         },
 
         success: function(res_data){
@@ -354,7 +359,7 @@
 
   <div id="table_under_box">
     <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-    <input type="button" class="form-control" href="/user/my-page.do"
+    <input type="button" class="form-control" onclick="location.href='/user/my-page.do'"
            id="user_change_btn" value="회원정보수정">
   </div>
 
@@ -503,29 +508,11 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="sil(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(100);">주문하기</button>
 
   </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>

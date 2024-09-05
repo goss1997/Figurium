@@ -16,6 +16,7 @@ public class Orders {
     int price;
     String status;
     Date createdAt;
+    int merchantUid;    // 결제 정보가져오기
 
 
 

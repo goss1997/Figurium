@@ -22,4 +22,17 @@ public interface OrderMapper {
     // 사용자 주문 상세 내역 정보 조회
     MyOrderVo selectOneOrderInfo(int myOrderId, int userId);
 
+    // 관리자용 고객무관 전체조회
+    List<MyOrderVo> viewAllList();
+
+    // 환불처리 주문번호 조회
+    MyOrderVo selectOneByMerchantUid(int id);
+
+    // 배송상태 변경시 사용되는 1건 선택
+    List<MyOrderVo> selectOneById(int id);
+
+    // 환불처리 성공 후 주문 상태 n으로 변경
+    int updateByRefund(int id);
+
+    void updateOrderStatus(int id, String status);
 }

@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.order.dao.OrderMapper">
 
     <insert id="insertOrders" parameterType="Map">
-        insert into orders(id, user_id, payment_type, price, status, created_at, valid)
+        insert into orders(id, user_id, payment_type, price, status, created_at, valid, merchant_id)
         values(
                 null,
                 #{ userId },
@@ -13,7 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 #{ price },
                 '준비중',
                 CURRENT_TIMESTAMP,
-                'y'
+                'y',
+                #{ merchantUid }
                 )
     </insert>
 
@@ -52,6 +53,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             max(product_name) as product_name,
             count(distinct product_name) - 1 as product_count,
             min(image_url) as image_url,
+            max(status) as status,
+            max(valid) as valid,
             sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
         from order_history_view
         where user_id = #{ user_id }
@@ -77,6 +80,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from order_history_view oh
         where id = #{ myOrderId } and user_id = #{ userId } limit 1
     </select>
+    
+    <select id="viewAllList" resultType="myOrders" >
+        -- select * from order_history_view
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            max(status) as status,
+            max(valid) as valid,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_view
+        group by id;
+    </select>
+
+    <select id="selectOneByMerchantUid" resultType="myOrders" parameterType="int">
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            max(valid) as valid,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            max(merchant_id) as merchant_id,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_view
+        where id = #{ id }
+        group by id;
+    </select>
+
+    <update id="updateOrderStatus" parameterType="myOrders">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectOneById" resultType="myOrders">
+        select * from orders where id = #{id}
+    </select>
+
+    <update id="updateByRefund" parameterType="int">
+        update orders set valid = 'n'
+        where id = #{ id }
+    </update>
 
 </mapper>
 

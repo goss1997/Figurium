@@ -43,6 +43,8 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             return ErrorType.SOCIAL_LOGIN_ERROR;
         } else if (ex instanceof RedirectErrorException) {
             return ErrorType.REDIRECT_ERROR;
+        } else if (ex instanceof FailDeleteUserException) {
+            return ErrorType.FAIL_DELETE_USER_EXCEPTION;
         }
         // 기본적으로 일반 예외로 처리
         return ErrorType.GENERAL_EXCEPTION;

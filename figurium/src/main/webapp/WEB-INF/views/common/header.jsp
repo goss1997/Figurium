@@ -455,7 +455,8 @@
         // 이메일 유효성 체크
         if (emailCheck(email)) {
             // 유효한 이메일일 경우
-            // 로그인 요청
+
+            // 로그인 요청 ajax
             $.ajax({
                 url: '/user/login.do',
                 method: 'post',

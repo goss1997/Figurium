@@ -18,6 +18,19 @@
         select * from users where email = #{email}
     </select>
 
+    <update id="softDelete" parameterType="int">
+        update users
+        set deleted = 1
+        where id = #{userId}
+    </update>
+
+    <delete id="deleteByUserId" parameterType="int">
+        delete
+        from users
+        where id = #{userId};
+    </delete>
+
+
 </mapper>
 
 

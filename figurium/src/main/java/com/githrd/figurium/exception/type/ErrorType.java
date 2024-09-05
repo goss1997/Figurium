@@ -14,7 +14,9 @@ public enum ErrorType {
     ACCOUNT_LINK_ERROR("계정 연동에 실패했습니다."),
     SOCIAL_LOGIN_ERROR("소셜 로그인 오류가 발생했습니다."),
     REDIRECT_EXCEPTION("리다이렉트할 수 없습니다."),
-    GENERAL_EXCEPTION("서버 내부 오류가 발생했습니다.");
+    GENERAL_EXCEPTION("서버 내부 오류가 발생했습니다."),
+    FAIL_DELETE_USER_EXCEPTION("회원 탈퇴에 실패했습니다.")
+    ;
 
 
     private final String message;

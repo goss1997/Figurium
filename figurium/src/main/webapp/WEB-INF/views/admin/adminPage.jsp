@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 14A
@@ -61,25 +62,37 @@
     </thead>
 
     <tbody>
+    <c:forEach var="orderList" items="${orderList}">
       <tr>
-        <td>순번</td>
-        <td>럭키비키~</td>
-        <td>신용카드</td>
-        <td>30000원</td>
-        <td>결제대기</td>
-        <td><a>준비중</a>&nbsp;&nbsp;<input type="button" id="deliveryButton" class="deliveryButton" value="상태변경" onclick="toggleButtons();"
-        style="display: inline-block;">
-          <select style="margin: 0px; display: none;" id="deliveryCondition" class="delivery" >
-          <option>준비중</option>
-          <option>출고대기</option>
-          <option>배송중</option>
-          <option>배송완료</option>
+        <td>${orderList.id}<br>${orderList.createdAt}</td>
+        <td>${orderList.productName}</td>
+        <td>${orderList.paymentType}</td>
+        <td>${orderList.price}</td>
+        <td>
+          <c:if test="${orderList.valid == 'y'}">
+            결제완료
+          </c:if>
+          <c:if test="${orderList.valid == 'n'}">
+            환불완료
+          </c:if>
+        </td>
+        <td>
+          <a>${orderList.status}</a>&nbsp;&nbsp;
+          <input type="button" class="deliveryButton" value="상태변경" style="display: inline-block;" onclick="toggleButtons(this);">
+          <select style="margin: 0px; display: none;" class="deliveryCondition" name="deliveryCondition">
+            <option>준비중</option>
+            <option>출고대기</option>
+            <option>배송중</option>
+            <option>배송완료</option>
           </select>
-          <input type="button" id="delivery" class="delivery" value="적용" onclick="deliveryChange();"
-                 style="display: none;">
+          <input type="button" class="delivery" value="적용" style="display: none;" onclick="deliveryChange(this);">
+          <input type="hidden" name="ordersId" value="${orderList.id}">
         </td>
       </tr>
+    </c:forEach>
     </tbody>
+
+
   </table>
 
 
@@ -88,34 +101,62 @@
 <jsp:include page="../common/footer.jsp"/>
 </body>
 <script>
-  function toggleButtons(){
+  function toggleButtons(button) {
+    // 클릭한 버튼의 부모 tr을 찾습니다
+    const row = button.closest('tr');
 
-    const deliveryButton = document.getElementById('deliveryButton');
-    const deliveryCondition = document.getElementById('deliveryCondition');
-    const delivery = document.getElementById('delivery');
+    // 각 요소를 해당 tr 내에서 찾습니다
+    const deliveryButton = row.querySelector('.deliveryButton');
+    const deliveryCondition = row.querySelector('.deliveryCondition');
+    const delivery = row.querySelector('.delivery');
+    const ordersId = row.querySelector('input[name="ordersId"]').value;
 
-    // 첫 번째 버튼 숨기기
+    // 버튼의 표시 상태를 업데이트합니다
     deliveryButton.style.display = 'none';
-
-    // 두 번째 버튼 보이기
     deliveryCondition.style.display = 'inline-block';
     delivery.style.display = 'inline-block';
 
+    // 주문 ID를 저장
+    row.dataset.ordersId = ordersId;
   }
 
-  function deliveryChange(){
+  function deliveryChange(button) {
+    // 클릭한 버튼의 부모 tr을 찾습니다
+    const row = button.closest('tr');
 
-    const deliveryButton = document.getElementById('deliveryButton');
-    const deliveryCondition = document.getElementById('deliveryCondition');
-    const delivery = document.getElementById('delivery');
+    // 각 요소를 해당 tr 내에서 찾습니다
+    const deliveryButton = row.querySelector('.deliveryButton');
+    const deliveryCondition = row.querySelector('.deliveryCondition');
+    const delivery = row.querySelector('.delivery');
+    const ordersId = row.dataset.ordersId;
+    const deliveryConditionValue = deliveryCondition.value;
 
-    // 첫 번째 버튼 숨기기
+    // 버튼의 표시 상태를 업데이트합니다
     deliveryButton.style.display = 'inline-block';
-
-    // 두 번째 버튼 보이기
     deliveryCondition.style.display = 'none';
     delivery.style.display = 'none';
 
+    // AJAX 요청으로 컨트롤러에 값 전달 (jQuery 사용)
+    $.ajax({
+      type: 'POST',
+      url: '/statusChange.do',  // 컨트롤러의 URL
+      contentType: 'application/json',  // 요청의 타입
+      data: JSON.stringify({ id: ordersId, status: deliveryConditionValue }),  // JSON 형식으로 데이터 전송
+      success: function(response) {
+        console.log('Success:', response);
+        // 성공 시 처리할 내용
+        alert("배송상태 변경 성공");
+        location.reload();
+      },
+      error: function(xhr, status, error) {
+        console.log('Error:', error);
+        // 오류 시 처리할 내용
+        alert("변경이 실패했습니다.\n잠시후 다시시도 해주세요");
+      }
+    });
   }
+
+
+
 </script>
 </html>

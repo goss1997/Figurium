@@ -136,6 +136,51 @@
             opacity: 0 !important;
         }
 
+        .info-section {
+            display: flex;
+            align-items: center; /* 이미지와 텍스트 수직 정렬 */
+            margin-top: 20px; /* 상단 여백 */
+        }
+
+        .info-section img {
+            width: 100px !important;
+            height: auto !important;
+            margin-right: 20px;
+        }
+
+        .info-section h1 {
+            font-size: 30px !important;
+            margin-bottom: 20px !important;
+            font-weight: 800 !important;
+            text-align: left;
+        }
+
+        .info-section p {
+            margin-top: 5px;
+        }
+
+        .order-button {
+            font-size: 17px !important;
+            animation: pulse 2s infinite !important;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .table_row > td {
+            font-size: 14px !important;
+            font-family: 'Pretendard-Regular';
+        }
+
 
     </style>
 
@@ -174,7 +219,7 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a
                                     href="/user/order-list.do">내 주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a style="color: red;" href="#">회원 탈퇴</a></li>
+                            <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
                         </ul>
                     </div>
                 </div>
@@ -194,16 +239,20 @@
                                     <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
                                 </a>
 
-                                <span class="stext-109 cl4">
+                                <a href="order-list.do" class="stext-109 cl8 hov-cl1 trans-04">
                                     주문내역
+                                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                                </a>
+
+                                <span class="stext-109 cl4">
+                                    주문상세내역
                                 </span>
                             </div>
                         </div>
                     </div>
 
                     <div style="width: 1300px; margin-left: -160px">
-                        <h1>주문내역</h1>
-                        <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
+                        <h1>주문상세내역</h1>
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
@@ -224,7 +273,7 @@
 
 
                                                 <!-- td -->
-
+                                                <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
                                                 <tr class="table_row" style="height: 100px;">
                                                     <td class="column-1" style="padding-bottom: 0px;" >
                                                         <div class="how-itemcart1 table_content_img">
@@ -252,11 +301,13 @@
                                                         <span class="productPrice">${ myOrder.createdAt }</span>
                                                     </td>
                                                 </tr>
+                                                </c:forEach>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
 
 
                             <hr id="list-hr1">
@@ -265,7 +316,7 @@
                                 <div class="item">
                                     <span class="label">총상품금액</span>
                                     <span class="amount" id="totalAmount">
-                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue }" currencySymbol=""/>원
+                                        <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue }" currencySymbol=""/>원
                                     </span>
                                 </div>
                                 <div class="item">
@@ -281,14 +332,14 @@
                                 <div class="item total">
                                     <span class="label">TOTAL</span>
                                     <span class="amount highlight">
-                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue+3000 }" currencySymbol=""/>원
+                                        <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue+3000 }" currencySymbol=""/>원
                                     </span>
                                     <span class="extra">FIGU</span>
                                 </div>
                             </div>
 
                             <hr id="list-hr2" style="margin-bottom: 0px">
-                            </c:forEach>
+
 
 
                         </div>
@@ -343,7 +394,8 @@
 
                 <div id="table_under_box">
                     <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-                    <input type="button" class="form-control" id="user_change_btn" value="회원정보수정">
+                    <input type="button" class="form-control" onclick="location.href='/user/my-page.do'"
+                           id="user_change_btn" value="회원정보수정">
                 </div>
 
                 <%-- 주문 테이블 shipping_address --%>
@@ -418,10 +470,16 @@
 
                 <hr id="hr1">
 
-                <button class="order-button" onclick="">주문문의</button>
-                <button class="order-button" onclick="">주문변경</button>
-                <button class="order-button" onclick="">취소/환불신청</button>
-                <button class="order-button" onclick="">반품신청</button>
+                    <div class="info-section" style="display: flex; align-items: center;">
+                        <img src="/images/루피.png" alt="루피.png" style="width: 100px; height: auto; margin-right: 20px;">
+                        <div>
+                            <h1 style="font-size: 24px; margin: 0;">잠깐만요!</h1>
+                            <p>배송이나 결제, 주문 관련해서<br> 궁금한 사항이 있으신가요?</p>
+                            <p>제가 모두 도와드릴게요!</p>
+                        </div>
+                    </div>
+
+                <button class="order-button" onclick="location.href='/qa/qaInsert.do'">모든 문의는 여기로!</button>
 
             </div>
 

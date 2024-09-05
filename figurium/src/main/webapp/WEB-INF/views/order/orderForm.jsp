@@ -31,11 +31,113 @@
     }
     });
 
+      function check_name() {
+
+        let order_name = $("#order_name").val();
+
+        if(order_name.length==0) {
+          $("#id_msg").html("");
+          return;
+        }
+
+        if(order_name.length<2 || 5<order_name.length) {
+          $("#id_msg").html("주문자명이 올바른 형식이 아닙니다.").css("color","red");
+          return;
+        } else {
+          $("#id_msg").html("주문자명이 올바른 형식입니다.").css("color","blue");
+          return;
+        }
+
+      }
+
+      function check_phone() {
+
+        let order_phone = $("#order_phone").val();
+        let phone_pattern = /^01\d{9}$/;
+
+        if(order_phone.length==0) {
+          $("#phone_msg").html("");
+          return;
+        }
+
+        if(phone_pattern.test(order_phone)) {
+          $("#phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
+          return;
+        } else {
+          $("#phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          return;
+        }
+
+      }
+
+      function check_email() {
+
+        let order_email = $("#order_email").val();
+        let email_pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|net)$/;
+
+        if(order_email.length==0) {
+          $("#email_msg").html("");
+          return;
+        }
+
+        if(email_pattern.test(order_email)) {
+          $("#email_msg").html("이메일이 올바른 형식입니다.").css("color","blue");
+          return;
+        } else {
+          $("#email_msg").html("이메일 형식이 올바르지 않습니다.").css("color","red");
+          return;
+        }
+
+      }
+
+      function check_name2() {
+
+        let shipping_name = $("#shipping_name").val();
+
+        if(shipping_name.length==0) {
+          $("#shipping_name_msg").html("");
+          return;
+        }
+
+        if(shipping_name.length<2 || 5<shipping_name.length) {
+          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식이 아닙니다.").css("color","red");
+          return;
+        } else {
+          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식입니다.").css("color","blue");
+          return;
+        }
+
+      }
+
+      function check_phone2() {
+
+        let shipping_phone = $("#shipping_phone").val();
+        let phone_pattern = /^01\d{9}$/;
+
+        if(shipping_phone.length==0) {
+          $("#shipping_phone_msg").html("");
+          return;
+        }
+
+        if(phone_pattern.test(shipping_phone)) {
+          $("#shipping_phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
+          return;
+        } else {
+          $("#shipping_phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          return;
+        }
+
+      }
+
+
+
 
   // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
   // 관리자 계정 정보 (결제 api 사용에 필요함)
   var IMP = window.IMP;
   IMP.init("imp25608413");
+
+  var merchantUid;
 
     function buyItems(price) {
 
@@ -71,10 +173,10 @@
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
             amount : price, // 가격
-            buyer_email : 'cktjsdlf4636@naver.com',
+            buyer_email : $("#order_email").val(),
             buyer_name : '피규리움 기술지원팀',
-            buyer_tel : '010-1234-5678',
-            buyer_addr : '서울특별시 강남구 삼성동',
+            buyer_tel : $("#order_phone").val(),
+            buyer_addr : $("#address").val() + $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
             buyer_postcode : '123-456'
           }, function (rsp) { // callback
             console.log(rsp);
@@ -84,6 +186,8 @@
               url  : "/verifyIamport/" + rsp.imp_uid
             }).done(function(data){
               console.log(data);
+
+              merchantUid = rsp.merchant_uid;
 
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
@@ -120,7 +224,8 @@
         data : {
           price : price,
           paymentType : "카드",
-          userId : userId
+          userId : userId,
+          merchantUid : merchantUid
         },
 
         success: function(res_data){
@@ -338,15 +443,26 @@
       <tbody>
       <tr>
         <td class="td_title">주문하시는 분</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="order_name" placeholder="주문하시는 분" name="order_name"></td>
+        <td>
+          <input type="text" class="form-control" value="${ sessionScope.loginUser.name }"
+                   id="order_name" placeholder="주문하시는 분" name="order_name" onkeyup="check_name();">
+          <span id="id_msg"></span>
+        </td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }" id="order_phone" placeholder="전화번호" name="order_phone"></td>
+        <td>
+          <input type="text" class="form-control" value="${ sessionScope.loginUser.phone }"
+                   id="order_phone" placeholder="전화번호" name="order_phone" onkeyup="check_phone();">
+          <span id="phone_msg"></span>
+        </td>
       </tr>
       <tr>
         <td class="td_title">이메일</td>
-        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }" id="order_email" placeholder="이메일" name="order_email"></td>
+        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.email }"
+                   id="order_email" placeholder="이메일" name="order_email" onkeyup="check_email();">
+          <span id="email_msg"></span>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -354,7 +470,7 @@
 
   <div id="table_under_box">
     <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-    <input type="button" class="form-control" href="/user/my-page.do"
+    <input type="button" class="form-control" onclick="location.href='/user/my-page.do'"
            id="user_change_btn" value="회원정보수정">
   </div>
 
@@ -369,15 +485,23 @@
       <tbody>
       <tr>
         <td class="td_title">기존 배송지</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }" id="shipping_address" placeholder="기본 배송지" name="shipping_address"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }"
+                   id="shipping_address" placeholder="기본 배송지" name="shipping_address">
+        </td>
       </tr>
       <tr>
         <td class="td_title">받으시는 분</td>
-        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }" id="shipping_name" placeholder="받으시는 분" name="shipping_name"></td>
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.name }"
+                   id="shipping_name" placeholder="받으시는 분" name="shipping_name" onkeyup="check_name2();">
+          <span id="shipping_name_msg"></span>
+        </td>
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="email" class="form-control" value="${ sessionScope.loginUser.phone }" id="shipping_phone" placeholder="전화번호" name="shipping_phone"></td>
+        <td><input type="number" class="form-control" value="${ sessionScope.loginUser.phone }"
+                   id="shipping_phone" placeholder="전화번호" name="shipping_phone" onkeyup="check_phone2();">
+          <span id="shipping_phone_msg"></span>
+        </td>
       </tr>
 
 
@@ -503,29 +627,11 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="sil(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(100);">주문하기</button>
 
   </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>

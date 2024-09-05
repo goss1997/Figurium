@@ -119,8 +119,8 @@ public class UserService {
         return result;
     }
 
+    @Transactional
     public int deleteSocialAccount(int userId) {
-        int result = userMapper.deleteByUserId(userId);
-        return result;
+        return userMapper.deleteByUserId(userId);
     }
 }

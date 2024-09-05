@@ -264,7 +264,7 @@ public class UserController {
             // 커스텀 예외 처리
             throw new FailDeleteUserException();
         }
-
+        session.removeAttribute("loginUser");
         return ResponseEntity.ok("탈퇴 완료!! 홈으로 이동합니다!");
     }
 

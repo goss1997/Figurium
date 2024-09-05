@@ -92,6 +92,13 @@ public class AuthController {
                     throw new UserNotFoundException("User not found with email: " + email);
                 }
 
+                // 해당 이메일로 자체 가입한 회원 탈퇴한 이메일과 같을 경우
+                if (user.getDeleted()) {
+                    log.info("해당 이메일로 자체 가입한 회원 탈퇴한 이메일과 같을 경우");
+                    session.setAttribute("alertMsg","해당 이메일로 탈퇴한 이력이 있습니다. 다른 방법으로 로그인해주세요!");
+                    return redirectToPreviousPage();
+                }
+
                 SocialAccountVo socialAccount = userService.selectSocialAccountOne(user.getId(), userProfile.getProvider());
                 if (socialAccount == null) {
                     log.info("연동을 위해 연동 페이지 포워딩");

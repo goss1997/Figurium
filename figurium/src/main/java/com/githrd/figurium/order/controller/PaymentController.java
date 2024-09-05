@@ -1,6 +1,8 @@
 package com.githrd.figurium.order.controller;
 
+import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.RefundService;
+import com.githrd.figurium.order.vo.MyOrderVo;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -12,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor    // 알아서 private로 지정되어있는 필드 생성자로 생성
 public class PaymentController {
 
+    private final OrderMapper orderMapper;
     // iamport를 사용하기 위해서 api를 불러온다.
     private IamportClient api;
 
@@ -40,6 +43,7 @@ public class PaymentController {
     @PostConstruct
     public void init() {
         this.api = new IamportClient(apiKey, secretKey);
+        this.refundService = new RefundService();
 
         // 로깅
         log.info("API Key : {}", apiKey);
@@ -67,15 +71,18 @@ public class PaymentController {
         return api.paymentByImpUid(imp_uid);
     }
 
-    @PostMapping("/refund") // 민감한 결제처리(환불)이니 POST로 설정
+    @GetMapping("/refund.do") // 민감한 결제처리(환불)이니 POST로 설정
     @ResponseBody
-    public ResponseEntity<String> requestRefund(
-            String access_token,
-            String merchant_uid,
-            String reason) {
+    public ResponseEntity<String> requestRefund(Integer id) throws IOException {
+
+        String accessToken = refundService.getToken(apiKey, secretKey);
+        MyOrderVo myOrderVo = orderMapper.selectOneByMerchantUid(id);
+        String merchantUid = myOrderVo.getMerchantId();
+        String reason = "단순 변심";
+
         try {
-            refundService.refundRequest(access_token, merchant_uid, reason);
-            log.info("환불 요청 성공: 주문번호 {}", merchant_uid);
+            refundService.refundRequest(accessToken, merchantUid, reason);
+            log.info("환불 요청 성공: 주문번호 {}", merchantUid);
             return ResponseEntity.ok("환불 요청 성공");
         } catch (IOException e) {
             log.error("환불 요청 실패: {}", e.getMessage());

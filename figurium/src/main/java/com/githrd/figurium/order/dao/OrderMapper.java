@@ -24,4 +24,7 @@ public interface OrderMapper {
 
     // 관리자용 고객무관 전체조회
     List<MyOrderVo> viewAllList();
+
+    // 환불처리 주문번호 조회
+    MyOrderVo selectOneByMerchantUid(int id);
 }

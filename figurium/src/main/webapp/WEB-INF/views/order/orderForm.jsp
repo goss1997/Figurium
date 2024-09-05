@@ -87,7 +87,7 @@
             }).done(function(data){
               console.log(data);
 
-              merchantUid = data.merchant_uid;
+              merchantUid = rsp.merchant_uid;
 
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행

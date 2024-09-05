@@ -19,9 +19,9 @@ import java.util.Map;
 @Service
 public class RefundService {
 
-    public void refundRequest(String access_token, String merchant_uid, String reason) throws IOException {
+    public void refundRequest(String accessToken, String merchantUid, String reason) throws IOException {
 
-        URL url = new URL("https://api.iamport.kr/payment/cancel");
+        URL url = new URL("https://api.iamport.kr/payments/cancel");
         // 빨간줄 해결 단축키 (Ctrl + 1)
         // 파일명 찾기 단축키 (Shift + Shift)
         // 단어명 파일에서 찾기 단축키 (Ctrl + H)
@@ -33,14 +33,14 @@ public class RefundService {
         // 요청의 Content-Type, Accept, Authorization 헤더 설정
         conn.setRequestProperty("Content-type", "application/json");
         conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("Authorization", access_token);
+        conn.setRequestProperty("Authorization", accessToken);
 
         // 해당 연결을 출력 스트림(요청)으로 사용
         conn.setDoOutput(true);
 
         // JSON 객체에 해당 API가 필요로하는 데이터 추가
         JsonObject json = new JsonObject();
-        json.addProperty("merchant_uid", merchant_uid);
+        json.addProperty("merchant_uid", merchantUid);
         json.addProperty("reason", reason);
 
         // 출력 스트림으로 해당 conn에 요청
@@ -54,7 +54,7 @@ public class RefundService {
         br.close();
         conn.disconnect();
 
-        log.info("결제 취소 완료 :  주문 번호{}", merchant_uid);
+        log.info("결제 취소 완료 :  주문 번호{}", merchantUid);
 
     }
 

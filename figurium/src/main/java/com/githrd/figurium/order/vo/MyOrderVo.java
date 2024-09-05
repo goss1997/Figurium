@@ -17,6 +17,7 @@ public class MyOrderVo {
     private String status;      // 주문상태
     private String createdAt;   // 주문생성시간
     private String valid;       // 주문유효값  ( 결제  <==> 환불   상태 확인용 y = 결제완료   n = 환불
+    private String merchantId;  // 주문결제번호
 
     private int price;          // 주문상품가격
     private int quantity;       // 주문상품갯수

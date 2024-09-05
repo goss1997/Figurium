@@ -89,6 +89,18 @@
             opacity: 0 !important;
         }
 
+        .column-5 {
+            width: 100px !important;
+            padding-right: 0px !important;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .table_row > td {
+            font-size: 14px !important;
+            font-family: 'Pretendard-Regular';
+        }
+
     </style>
 
 </head>
@@ -168,8 +180,9 @@
                                                     <th class="column-1" style="text-align: center; width: 5%;">상품</th>
                                                     <th class="column-2" style="width: 40%;">상품명</th>
                                                     <th class="column-3">결제금액</th>
-                                                    <th class="column-4" style="text-align: center;">결제타입</th>
-                                                    <th class="column-5" style="text-align: center;">결제일자</th>
+                                                    <th class="column-4" style="text-align: center; width: 8%">결제타입</th>
+                                                    <th class="column-5" style="text-align: center; width: 15%">결제일자</th>
+                                                    <th class="column-6" style="text-align: center; width: 10%">배송상황</th>
                                                 </tr>
 
 
@@ -178,9 +191,9 @@
 
                                                     <tr class="table_row" style="height: 100px;">
                                                         <td class="column-1" style="padding-bottom: 0px;" >
-                                                            <div class="how-itemcart1" onclick="itemCartDelete(this)">
+                                                            <div class="how-itemcart1" onclick="location.href='../refund.do?id=${ myOrder.id }'">
                                                                 <img src="${ myOrder.imageUrl }"
-                                                                     alt="${ myOrder.id }" style="text-align: left">
+                                                                     alt="${ myOrder.id }" style="text-align: left;">
                                                             </div>
 
                                                         </td>
@@ -210,6 +223,9 @@
                                                         </td>
                                                         <td class="column-5" style="text-align: center; padding-bottom: 0px">
                                                             <span class="productPrice">${ myOrder.createdAt }</span>
+                                                        </td>
+                                                        <td class="column-6" style="text-align: center; padding-bottom: 0px">
+                                                            <span class="productPrice">${ myOrder.status }</span>
                                                         </td>
                                                     </tr>
                                             </table>

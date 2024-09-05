@@ -176,6 +176,11 @@
             }
         }
 
+        .table_row > td {
+            font-size: 14px !important;
+            font-family: 'Pretendard-Regular';
+        }
+
 
     </style>
 

@@ -133,7 +133,7 @@ public class OrderController {
      */
     @RequestMapping(value = "inicisPay.do")
     @ResponseBody
-    public String inicisPay(int price, String paymentType, Integer userId, Integer merchantUid) {
+    public String inicisPay(int price, String paymentType, Integer userId, String merchantUid) {
 
         // 주문자 정보 insert
         Map<String, Object> map = new HashMap<String, Object>();
@@ -159,7 +159,6 @@ public class OrderController {
     public String insertInformation(int loginUserId, String name, String phone, String email,
                                     String address, String recipientName,
                                     String shippingPhone, String deliveryRequest,
-                                    int merchantUid,
                                     @RequestParam(value="productIds[]") List<Integer> productIds,
                                     @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
                                     @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities

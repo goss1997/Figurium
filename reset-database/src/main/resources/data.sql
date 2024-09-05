@@ -98,6 +98,7 @@ CREATE TABLE orders
     status       VARCHAR(20) DEFAULT '준비중' CHECK (status IN ('준비중', '출고대기', '배송중', '배송완료')) COMMENT '주문 상태(준비중 / 출고대기 / 배송중 / 배송완료)',
     created_at   DATETIME    DEFAULT CURRENT_TIMESTAMP COMMENT '주문 시간',
     valid        CHAR(1)  DEFAULT 'y' CHECK (valid IN ('y', 'n')) COMMENT '유효한 주문',
+    merchant_id  VARCHAR(200) NOT NULL COMMENT '사용자 결제 번호',
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
@@ -192,7 +193,7 @@ VALUES ('admin1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT
 create or replace view order_history_view
 as
 select
-    o.id as id,o.payment_type,o.user_id,o.status,o.created_at,o.valid,
+    o.id as id,o.payment_type,o.user_id,o.status,o.created_at,o.valid,o.merchant_id,
     oi.price,oi.quantity,c.name,c.phone as customer_phone,
     c.email,s.recipient_name,s.phone,s.address,s.delivery_request,
     p.name as product_name, p.image_url

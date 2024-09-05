@@ -46,11 +46,13 @@
 <div id="content-wrap-area">
     <div class="error-body">
         <div class="error-container">
-            <br><br>
-            <h1>문제가 발생했습니다</h1>
-            <p>죄송합니다. 예상치 못한 오류가 발생했습니다.</p>
-            <p>잠시 후 다시 시도해 주시거나, 아래의 링크를 통해 다른 페이지로 이동해 주세요.</p>
-            <a href="<c:url value='/' />">홈으로 돌아가기</a>
+            <img src="/images/훈이.png" alt="훈이.png" style="width: 200px; height: auto; margin-right: 20px;">
+            <div>
+                <h1>문제가 발생했습니다</h1>
+                <p>죄송합니다. 예상치 못한 오류가 발생했습니다.</p>
+                <p>잠시 후 다시 시도해 주시거나, 아래의 링크를 통해 다른 페이지로 이동해 주세요.</p>
+                <a href="<c:url value='/' />">홈으로 돌아가기</a>
+            </div>
         </div>
     </div>
 </div>

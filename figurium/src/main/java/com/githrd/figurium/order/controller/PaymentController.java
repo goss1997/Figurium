@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,16 +51,6 @@ public class PaymentController {
         log.info("API Key : {}", apiKey);
         log.info("Secret Key: {}", secretKey);
     }
-
-//    @ResponseBody   // JSON 형태로 반환
-//    @RequestMapping(value="/verifyIamport/{imp_uid}")
-//    public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid)
-//            throws IamportResponseException, IOException {
-//        // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
-//        // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
-//
-//        return api.paymentByImpUid(imp_uid);
-//    }
 
 
     @ResponseBody   // JSON 형태로 반환

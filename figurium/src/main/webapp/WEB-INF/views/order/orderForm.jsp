@@ -29,6 +29,8 @@
   <script>
 
     $(function () {
+
+      console.log(productIds)
       // 로그인 사용자 확인
       if (${empty loginUser}) {
         Swal.fire({
@@ -164,7 +166,7 @@
     function buyItems(price) {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
-      let paymentType = document.querySelector('input[name="payment"]:checked');
+      let paymentType = $("input[name='payment']:checked").val();
       if (paymentType == null) {
         alert("결제방식을 선택하고 결제를 진행해주세요.");
         return;
@@ -189,7 +191,9 @@
         success: function(res_data){
           Toast.fire({
             icon: 'success',
-            title: '재고가 정상적으로 확인되었습니다.'
+            title: '' +
+                    '<img src="/images/흰둥이.png" alt="흰둥이" style="width: 200px; height: auto;">' +
+                    '<br>재고가 정상적으로 확인되었습니다.'
           })
 
           setTimeout(function () {
@@ -197,7 +201,7 @@
 
           IMP.request_pay({
             pg : 'kcp', // PG사 코드표에서 선택
-            pay_method : 'card', // 결제 방식
+            pay_method : paymentType, // 결제 방식
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
             amount : price, // 가격
@@ -223,11 +227,16 @@
                 sil(price);
 
               } else {
-                alert("결제에 실패했습니다. 관리자에게 문의해주세요.")  // 결제검증이 실패하면 이뤄지는 실패 로직
+                Swal.fire({
+                  icon: 'error',
+                  title: '결제 실패',
+                  text: '결제에 실패했습니다. 관리자에게 문의해주세요.',
+                  confirmButtonText: '확인'
+                }); // 결제검증이 실패하면 이뤄지는 실패 로직
               }
             });
           });
-        }, 2000);
+        }, 2500);
         },
         error: function(err){
           alert("해당 상품의 재고가 충분하지 않습니다. 해당 상품의 재고를 문의해주세요.");
@@ -241,8 +250,10 @@
 
     function sil(price) {
 
-      let paymentType = document.querySelector('input[name="payment"]:checked');
+      let paymentType = $("input[name='payment']:checked").val();
       let userId = document.getElementById("order_id").value;    // 보낸 사람 id
+
+      console.log(paymentType);
 
       //결제 완료된 주문 데이터 저장
       $.ajax({
@@ -250,7 +261,7 @@
         url  : "/order/inicisPay.do",
         data : {
           price : price,
-          paymentType : "카드",
+          paymentType : paymentType,
           userId : userId,
           merchantUid : merchantUid
         },
@@ -330,8 +341,8 @@
 
           // 2초 후에 페이지 이동
           setTimeout(function () {
-            location.href="/";
-          }, 2000);
+            location.href="../user/order-list.do";
+          }, 2500);
         },
         error: function(err){
           alert(err.responseText);
@@ -622,34 +633,15 @@
       <div class="payment-method-title">결제 수단</div>
 
       <div class="payment-option">
-        <input type="radio" id="paynow" name="payment" value="paynow">
-        <label for="paynow">Paynow</label>
+        <input type="radio" id="credit_card" name="payment" value="card">
+        <label for="credit_card">통합결제</label>
       </div>
 
       <div class="payment-option">
-        <input type="radio" id="credit_card" name="payment" value="credit_card">
-        <label for="credit_card">신용카드</label>
-      </div>
-
-      <div class="payment-option">
-        <input type="radio" id="bank_transfer" name="payment" value="bank_transfer">
-        <label for="bank_transfer">실시간 계좌이체</label>
-      </div>
-
-      <div class="payment-option">
-        <input type="radio" id="virtual_account" name="payment" value="bank_transfer">
-        <label for="bank_transfer">에스크로 가상계좌</label>
-      </div>
-
-      <div class="payment-option">
-        <input type="radio" id="depositor" name="payment" value="bank_transfer">
+        <input type="radio" id="bank_transfer" name="payment" value="trans">
         <label for="bank_transfer">무통장 입금</label>
       </div>
 
-      <div class="payment-option">
-        <input type="radio" id="phone_transfer" name="payment" value="bank_transfer">
-        <label for="bank_transfer">휴대폰 결제</label>
-      </div>
 
     </div>
 

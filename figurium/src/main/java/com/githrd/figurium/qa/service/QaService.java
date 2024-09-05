@@ -3,6 +3,7 @@ package com.githrd.figurium.qa.service;
 import com.githrd.figurium.qa.vo.QaVo;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface QaService {
@@ -12,4 +13,6 @@ public interface QaService {
     void updateQa(QaVo qaVo); // 게시글 수정
     void deleteQa(int id); // 게시글 삭제
 
+    List<QaVo> getQaWithPagination(int offset, int limit); // 페이징 처리된 게시글 조회
+    int selectRowTotal(Map<String, Object> map); // 총 게시물 수 조회
 }

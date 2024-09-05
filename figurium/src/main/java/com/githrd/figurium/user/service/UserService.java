@@ -101,5 +101,26 @@ public class UserService {
         return socialAccountMapper.selectSocialAccountOne(userId, provider);
     }
 
+    @Transactional
+    public int softDelete(int userId) {
+        int result = 0;
 
+        result = userMapper.softDelete(userId);
+
+        if (result > 0) {
+            // 사용자가 소셜 로그인 계정이 있을 경우
+            if (socialAccountMapper.existsByUserId(userId) > 0) {
+                // 연동된 소셜 계정 제거.
+                result = userMapper.deleteSocialAccountByUserId(userId);
+            }
+        }
+
+        // 모든 로직 성공 시 result = 1
+        return result;
+    }
+
+    public int deleteSocialAccount(int userId) {
+        int result = userMapper.deleteByUserId(userId);
+        return result;
+    }
 }

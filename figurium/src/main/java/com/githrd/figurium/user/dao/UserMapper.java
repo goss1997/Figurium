@@ -13,4 +13,9 @@ public interface UserMapper {
 
     UserVo selectByEmail(String email);
 
+    int softDelete(int userId);
+
+    int deleteSocialAccountByUserId(int userId);
+
+    int deleteByUserId(int userId);
 }

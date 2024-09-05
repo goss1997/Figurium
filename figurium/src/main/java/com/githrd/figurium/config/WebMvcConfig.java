@@ -46,8 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 인증이 필요한 url
                 .addPathPatterns(
                         "/CartList.do",
-                        "/user/order-list.do",
-                        "/user/my-page.do"
+                        "/user/order-list.do"
                 )
                 // 인증을 제외할 url
                 .excludePathPatterns(

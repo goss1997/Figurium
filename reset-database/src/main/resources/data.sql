@@ -192,10 +192,10 @@ VALUES ('admin1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT
 create or replace view order_history_view
 as
 select
-    o.id as id,o.payment_type,o.user_id,o.status,o.created_at,
+    o.id as id,o.payment_type,o.user_id,o.status,o.created_at,o.valid,
     oi.price,oi.quantity,c.name,c.phone as customer_phone,
     c.email,s.recipient_name,s.phone,s.address,s.delivery_request,
-    p.name as product_name,p.image_url
+    p.name as product_name, p.image_url
 from orders o inner join order_items oi on o.id = oi.order_id
               inner join customers c on o.id = c.order_id
               inner join shipping_addresses s on o.id = s.order_id

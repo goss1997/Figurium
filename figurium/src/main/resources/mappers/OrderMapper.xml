@@ -54,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             count(distinct product_name) - 1 as product_count,
             min(image_url) as image_url,
             max(status) as status,
+            max(valid) as valid,
             sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
         from order_history_view
         where user_id = #{ user_id }

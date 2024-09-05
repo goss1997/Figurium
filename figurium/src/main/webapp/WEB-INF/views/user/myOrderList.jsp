@@ -182,7 +182,16 @@
                                                     <th class="column-3">결제금액</th>
                                                     <th class="column-4" style="text-align: center; width: 8%">결제타입</th>
                                                     <th class="column-5" style="text-align: center; width: 15%">결제일자</th>
-                                                    <th class="column-6" style="text-align: center; width: 10%">배송상황</th>
+                                                    <th class="column-6" style="text-align: center; width: 10%">
+                                                        <c:if test="${ myOrder.valid == 'y' }">
+                                                            배송상황
+                                                        </c:if>
+                                                        <c:if test="${ myOrder.valid == 'n' }">
+                                                            주문상태
+                                                        </c:if>
+                                                        </th>
+
+
                                                 </tr>
 
 
@@ -225,7 +234,12 @@
                                                             <span class="productPrice">${ myOrder.createdAt }</span>
                                                         </td>
                                                         <td class="column-6" style="text-align: center; padding-bottom: 0px">
-                                                            <span class="productPrice">${ myOrder.status }</span>
+                                                            <c:if test="${ myOrder.valid == 'y' }">
+                                                                <span class="productPrice">${ myOrder.status }</span>
+                                                             </c:if>
+                                                            <c:if test="${ myOrder.valid == 'n' }">
+                                                                <span class="productPrice">환불완료</span>
+                                                             </c:if>
                                                         </td>
                                                     </tr>
                                             </table>

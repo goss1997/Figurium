@@ -9,8 +9,11 @@ import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
+import com.githrd.figurium.product.service.CartService;
+import com.githrd.figurium.product.service.CartServiceImpl;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.product.vo.ProductsVo;
+import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/order")
@@ -53,7 +58,6 @@ public class OrderController {
         this.orderItemsMapper = orderItemsMapper;
         this.session = session;
         this.productsMapper = productsMapper;
-
     }
 
 
@@ -61,19 +65,20 @@ public class OrderController {
      *   주문/결제창
      */
     @RequestMapping("orderForm.do")
-    public String orderForm(Model model, Integer loginUserId,
-                            @RequestParam(required = false) List<Integer> quantities) {
+    public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
+                            @RequestParam(required = false) List<Integer> productId,
+                            HttpSession session,
+                            Model model) {
 
-        // 카드에 담겨있는 상품 가져오기
-        List<CartsVo> cartsList = cartsMapper.selectList(loginUserId);
+        User user = (User) session.getAttribute("loginUser");
 
+        List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
 
         // 기존 수량 체크
         for (int i = 0; i < cartsList.size(); i++) {
-
             CartsVo cartsVo = cartsList.get(i);
             int existingQuantity = cartsVo.getQuantity();
-            int newQuantity = quantities.get(i);
+            int newQuantity = cartQuantities.get(i);
 
             if(existingQuantity != newQuantity) {
                 cartsVo.setQuantity(newQuantity); // 새로운 수량으로 업데이트
@@ -89,9 +94,6 @@ public class OrderController {
         for(CartsVo products:cartsList) {
             totalPrice += products.getPrice() * products.getQuantity();
         }
-
-        // session 가져오기
-        session.getAttribute("loginUser");
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);

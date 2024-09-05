@@ -31,8 +31,8 @@ public class CartsController {
         this.productsMapper = productsMapper;
     }
 
-    // 장바구니 추가 버튼 눌렀을 시에 실행
-    @GetMapping("/shopingCart.do")
+    // 장바구니에 담기
+    @RequestMapping("/shoppingCart.do")
         public String shopingCart(Model model, int productId, int quantity) {
 
         // 세션에서 로그인 사용자 정보 가져오기
@@ -85,6 +85,11 @@ public class CartsController {
             List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 
             model.addAttribute("cartsVo", cartsVo);
+
+            for(CartsVo carts : cartsVo){
+                System.out.println("carts = " + carts.getProductId());
+            }
+
             return "products/shopingCart";
         }
 

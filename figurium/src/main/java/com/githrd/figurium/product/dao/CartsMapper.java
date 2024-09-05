@@ -31,4 +31,8 @@ public interface CartsMapper {
     // 장바구니에 상품의 수량을 업데이트
     int updateCartItemQuantity(int cartId, int quantity);
 
+    // 장바구니 에서 선택된 상품만 전달
+    List<CartsVo> checksCartItemList(int userId, List<Integer> productId);
+
+
 }

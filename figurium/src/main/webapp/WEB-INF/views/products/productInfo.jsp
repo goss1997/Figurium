@@ -65,6 +65,7 @@
 
     <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
     <input type="hidden" value="${product.id}">
+    <form>
     <div class="product_title">
         <div class="product_img_box">
             <!-- 상품의 이미지가 들어 갈 곳 -->
@@ -113,15 +114,13 @@
                 <tr>
                     <th>수량</th>
                     <td>
-                    <form>
                         <div class="quantity-box">
                             <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
                             </button>
-                            <input type="text" id="quantity" value="1" readonly>
+                            <input type="text" id="quantity" name="quantity" value="1" readonly>
                             <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
                             </button>
                         </div>
-                    </form>
                     </td>
                 </tr>
             </table>
@@ -137,13 +136,16 @@
                        onclick="location.href='shopingCart2.do'">
             </div>
 
+
+            <input type="hidden" name="productId" value="${product.id}">
             <div class="price_cart">
                 <input class="price_cart_btn" type="button" value="장바구니"
-                       onclick="addToCart(${product.id})">
+                       onclick="addToCart(this.form)">
             </div>
         </div>
 
     </div>
+    </form>
     <!-- 리뷰,Q&A Tap-->
 
     <div class="tap_box">
@@ -378,17 +380,21 @@
     }
 
     // 장바구니에 상품 추가 함수
-    function addToCart(productId) {
-        let quantity = $("#quantity").val();  // 수량 가져오기
-        quantity = parseInt(quantity, 10);  // 수량을 숫자로 변환 (10진법)
+    function addToCart(f) {
+
+        let quantity = f.quantity.value;  // 해당 상품의 수량 가져오기
+
+        let productId = f.productId.value;
 
         if (isNaN(quantity) || quantity <= 0) {
-            alert("올바른 수량을 입력해주세요.");
+            alert("현재 재고가 없습니다.");
             return;
         }
 
-        // 장바구니 페이지로 리다이렉트
-        location.href = "shopingCart.do?productId=" + encodeURIComponent(productId) + "&quantity=" + encodeURIComponent(quantity);
+        // 장바구니 페이지에 이동
+        f.action = "shoppingCart.do";
+        f.method = "POST";
+        f.submit();
     }
 
 </script>

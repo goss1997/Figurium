@@ -5,6 +5,8 @@ import com.githrd.figurium.product.vo.CartsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -31,5 +33,10 @@ public class CartServiceImpl implements CartService {
             cartsMapper.insertCartItem(userId, productId, quantity);
         }
 
+    }
+
+    @Override
+    public List<CartsVo> checksCartItemList(int userId, List<Integer> productId) {
+        return cartsMapper.checksCartItemList(userId, productId);
     }
 }

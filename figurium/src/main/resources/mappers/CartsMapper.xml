@@ -5,18 +5,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.githrd.figurium.product.dao.CartsMapper">
 
     <insert id="insertCarts" parameterType="Map">
-        insert into carts(id, user_id, product_id, quantity, added_time)
+        insert into carts(user_id, product_id, quantity)
         values(
-                null,
                 #{ loginUserId },
                 #{ productId },
-                #{ quantity },
-                CURRENT_TIMESTAMP
+                #{ quantity }
                 )
     </insert>
 
+    <!-- 장바구니의 상품 리스트 조회 -->
     <select id="selectList" resultType="carts" parameterType="int">
-        select * from product_cart_view where user_id = #{ loginUserId }
+        SELECT
+            c.id,                   -- 장바구니 ID
+            c.user_id AS userId,    -- 사용자 ID
+            c.product_id AS productId, -- 상품 ID
+            c.quantity,             -- 장바구니에 담긴 수량
+            p.name AS name,         -- 상품 이름
+            p.price AS price,       -- 상품 가격
+            p.image_url AS imageUrl -- 상품 이미지 URL
+        FROM
+            carts c
+                JOIN
+            products p ON c.product_id = p.id
+        WHERE
+            c.user_id = #{loginUserId}
     </select>
 
     <select id="selectCartsById" resultType="carts" parameterType="int">
@@ -63,17 +75,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE c.user_id = #{userId}
     </select>
 
+    <!-- 장바구니 에서 체크된 항목을 결제 폼으로 넘김 -->
+    <select id="checksCartItemList" parameterType="map" resultType="carts">
+        SELECT c.id AS id, c.product_id AS productId, c.quantity AS quantity, p.name, p.price, p.image_url AS imageUrl
+        FROM carts c
+        JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = #{userId}
+        AND c.product_id IN
+        <foreach item="productId" collection="productId" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </select>
+
+
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-

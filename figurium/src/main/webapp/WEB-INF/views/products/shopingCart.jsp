@@ -92,81 +92,6 @@ pageEncoding="UTF-8" %>
 
 <body class="animsition">
 
-
-<!--  -->
-<div class="wrap-header-cart js-panel-cart">
-	<div class="s-full js-hide-cart"></div>
-
-	<div class="header-cart flex-col-l p-l-65 p-r-25">
-		<div class="header-cart-title flex-w flex-sb-m p-b-8">
-				<span class="mtext-103 cl2">
-					장바구니
-				</span>
-
-			<div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
-				<i class="zmdi zmdi-close"></i>
-			</div>
-		</div>
-
-		<!-- 장바구니 모달 -->
-		<div class="header-cart-content flex-w js-pscroll">
-			<ul class="header-cart-wrapitem w-full">
-				<li class="header-cart-item flex-w flex-t m-b-12">
-					<div class="header-cart-item-img">
-						<img src="/images/example.jpg" alt="IMG">
-					</div>
-
-					<div class="header-cart-item-txt p-t-8">
-						<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-							장바구니 모달1
-						</a>
-
-						<span class="header-cart-item-info">
-								1 x $19.00
-							</span>
-					</div>
-				</li>
-
-				<li class="header-cart-item flex-w flex-t m-b-12">
-					<div class="header-cart-item-img">
-						<img src="/images/example.jpg" alt="IMG">
-					</div>
-
-					<div class="header-cart-item-txt p-t-8">
-						<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-							장바구니 모달2
-						</a>
-
-						<span class="header-cart-item-info">
-								1 x $39.00
-							</span>
-					</div>
-				</li>
-
-
-			</ul>
-
-			<div class="w-full">
-				<div class="header-cart-total w-full p-tb-40">
-					총 가격: $75.00
-				</div>
-
-				<div class="header-cart-buttons flex-w w-full">
-					<a href="shopingCart.do"
-					   class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-						장바구니 이동
-					</a>
-
-					<a href="#" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-						즉시 결제
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
 <!-- 장바구니 리스트 -->
 <div class="bg0 p-t-75 p-b-85">
 
@@ -185,7 +110,7 @@ pageEncoding="UTF-8" %>
 			</div>
 		</div>
 	</div>
-
+<form>
 	<div>
 		<h1>장바구니</h1>
 		<div class="container">
@@ -210,8 +135,9 @@ pageEncoding="UTF-8" %>
 
 								<!-- td -->
 								<c:forEach var="cart" items="${ cartsVo }">
-
-								<tr class="table_row" data-product-id="${ cart.id }" style="height: 100px;">
+									<input type="hidden" name="userId" value="${cart.userId}">
+									<input type="hidden" name="productId[]" value="${cart.productId}">
+								<tr class="table_row" style="height: 100px;">
 									<td style="padding: 0px; margin: 0px; width: 1%;">
 										<input class="itemCheckbox" type="checkbox" style="margin-left: 20px;">
 									</td>
@@ -232,7 +158,7 @@ pageEncoding="UTF-8" %>
 											</div>
 
 											<input class="mtext-104 cl3 txt-center num-product" type="number"
-												   name="num-product1" value="${ cart.quantity }" readonly>
+												   name="quantity[]" value="${ cart.quantity }" readonly>
 
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
@@ -243,6 +169,7 @@ pageEncoding="UTF-8" %>
 										<span id="totalPrice">${ cart.price * cart.quantity }</span>
 									</td>
 								</tr>
+
 								</c:forEach>
 							</table>
 						</div>
@@ -276,48 +203,10 @@ pageEncoding="UTF-8" %>
 
 			<hr>
 
-			<!-- 장바구니 리스트의 결제 -->
-
-			<script>
-				function checkProductOrder() {
-					var quantities = [];
-					var ids = [];
-
-					$('.itemCheckbox:checked').each(function() {
-						var row = $(this).closest('.table_row');
-						var quantity = row.find('.num-product').val();
-						var id = row.data('product-id'); // 각 행의 data-product-id 속성 값을 가져옵니다.
-
-						// ID와 수량이 모두 유효한지 확인
-						if (id && !isNaN(quantity) && parseInt(quantity) > 0) {
-							quantities.push(quantity);
-							ids.push(id);
-						}
-					});
-
-					// 빈 배열이 아닌 경우에만 쿼리 문자열 생성
-					if (ids.length > 0 && quantities.length > 0) {
-						// JSON 문자열을 쿼리 파라미터로 인코딩
-						var queryString = 'productIds=' + encodeURIComponent(JSON.stringify(ids)) +
-								'&quantities=' + encodeURIComponent(JSON.stringify(quantities)) +
-								'&loginUserId=' + encodeURIComponent(${loginUser.id});
-
-						// 결제 폼으로 이동
-						window.location.href = 'order/orderForm.do?' + queryString;
-					} else {
-						alert("선택된 상품이 없습니다.");
-					}
-				}
-			</script>
-
-
-
-
-
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-							style="width: 400px; padding: 10px; height: 50px" onclick="checkProductOrder()">
+							style="width: 400px; padding: 10px; height: 50px" onclick="checkProductOrder(this.form)">
 						선택상품 결제
 					</button>
 				</div>
@@ -325,33 +214,16 @@ pageEncoding="UTF-8" %>
 				<div style="display: inline-block; margin: auto; padding: 10px">
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
 							style="width: 400px; padding: 10px; height: 50px"
-							onclick="processOrder()">
+							onclick="allProductsOrder(this.form)">
 						전체상품 결제
 					</button>
 				</div>
 			</div>
-
 		</div>
 	</div>
+</form>
 </div>
 
-<script>
-	function processOrder() {
-		// quantity 값을 넣어줄 배열 생성
-		var quantities = [];
-		//
-		var inputs = document.getElementsByName('num-product1');
-		for (var i = 0; i < inputs.length; i++) {
-			quantities.push(inputs[i].value);
-		}
-
-		var queryString = quantities.map(function(qty, index) {
-			return 'quantities=' + encodeURIComponent(qty);
-		}).join('&');
-
-		window.location.href = 'order/orderForm.do?' + queryString + '&loginUserId=' + ${ loginUser.id };
-	}
-</script>
 
 
 
@@ -411,63 +283,90 @@ pageEncoding="UTF-8" %>
 	}
 </script>
 
-
-
-<!--===============================================================================================-->
-<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="/vendor/bootstrap/js/popper.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="/vendor/select2/select2.min.js"></script>
 <script>
-	$(".js-select2").each(function () {
-		$(this).select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $(this).next('.dropDownSelect2')
-		});
-	})
-</script>
+	// 장바구니에 담긴 상품을 선택해 결제 폼으로 넘김
 
-<script>
+		function checkProductOrder(f) {
 
-	// 우편번호 API
-	function send_zipcode() {
+			// 선택된 체크박스 요소가 무엇이 있는지 확인한다.
+			let checkedItems = Array.from(f.querySelectorAll('input.itemCheckbox:checked'));
 
-		new daum.Postcode({
-			oncomplete: function (data) {
-				// input 태그에 넣는 것이니 value 값을 넣어야 한다.
-				$("#zipcode").val(data.zonecode);
-				$("#address").val(data.address);
+			// 리스트를 넘겨줄 input name 태그들의 값을 배열로 받아준다.
+			let productId = Array.from(f.querySelectorAll('input[name="productId[]"]')).map(input => input.value);
+			let cartQuantities = Array.from(f.querySelectorAll('input[name="quantity[]"]')).map(input => input.value);
+
+
+			// 체크된 항목이 없으면 경고 메시지
+			if (checkedItems.length === 0) {
+				alert("선택된 상품이 없습니다.");
+				return;
 			}
-		}).open();
-	}// end:send_zipcode()
 
+			// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
+			f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
+
+			// 체크된 요소들을 반복해서 돌림
+			checkedItems.forEach(item => {
+			// 체크박스 요소의 인덱스를 찾기 위해 전체 체크박스 요소들을 배열로 변환하며 체크된 항목의 배열 인덱스를 찾는다
+				let index = Array.from(f.querySelectorAll('input.itemCheckbox')).indexOf(item);
+
+				// 다시 체크된 요소들을 ID에 추가하고 input 태그를 생성
+				let inputProductId = document.createElement('input');
+				inputProductId.type = 'hidden';
+				inputProductId.name = 'productId';
+				inputProductId.value = productId[index];
+				f.appendChild(inputProductId);
+
+				let inputQuantity = document.createElement('input');
+				inputQuantity.type = 'hidden';
+				inputQuantity.name = 'cartQuantities';
+				inputQuantity.value = cartQuantities[index];
+				f.appendChild(inputQuantity);
+			});
+
+
+			if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
+
+			f.method = "POST";
+			f.action = "order/orderForm.do";
+			f.submit();
+		}
 </script>
 
-<!--===============================================================================================-->
-<script src="/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
-<!--===============================================================================================-->
-<script src="/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
-	$('.js-pscroll').each(function () {
-		$(this).css('position', 'relative');
-		$(this).css('overflow', 'hidden');
-		var ps = new PerfectScrollbar(this, {
-			wheelSpeed: 1,
-			scrollingThreshold: 1000,
-			wheelPropagation: false,
+	// 장바구니에 담긴 상품 전체를 결제 폼으로 넘김
+	function allProductsOrder(f){
+		// 리스트를 넘겨줄 값을 배열로 가져오기
+		let productIds = Array.from(f.querySelectorAll('input[name="productId[]"]')).map(input => input.value);
+		let cartQuantities = Array.from(f.querySelectorAll('input[name="quantity[]"]')).map(input => input.value);
+
+		console.log("productIds = " + productIds);
+		console.log("cartQuantities = " + cartQuantities);
+
+		if (!confirm("전체상품 결제를 위해 결제 페이지로 이동 하시겠습니까?")) return;
+
+		// productId와 quantity 필드를 폼에 추가 (이거 안하면 데이터 안넘어감)
+		productIds.forEach((productId, index) => {
+			let inputProductId = document.createElement('input');
+			inputProductId.type = 'hidden';
+			inputProductId.name = 'productId';
+			inputProductId.value = productId;
+			f.appendChild(inputProductId);
+
+			let inputQuantity = document.createElement('input');
+			inputQuantity.type = 'hidden';
+			inputQuantity.name = 'cartQuantities';
+			inputQuantity.value = cartQuantities[index] || 0; // 없는 경우 0으로 설정
+			f.appendChild(inputQuantity);
 		});
 
-		$(window).on('resize', function () {
-			ps.update();
-		})
-	});
+		f.method = "POST";
+		f.action = "order/orderForm.do";
+		f.submit();
+	}
 </script>
-<!--===============================================================================================-->
-<script src="/js/main.js"></script>
+
+
 
 </body>
 </html>

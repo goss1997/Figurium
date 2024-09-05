@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class QaDaoImpl implements QaDao {
@@ -41,13 +40,5 @@ public class QaDaoImpl implements QaDao {
         sqlSession.delete(NAMESPACE + ".delete", id);
     }
 
-    @Override
-    public List<QaVo> selectAllWithPagination(Map<String, Integer> offset) {
-        return sqlSession.selectList(NAMESPACE + ".selectAllWithPagination", offset);
-    }
 
-    @Override
-    public int selectRowTotal(Map<String, Object> map) {
-        return sqlSession.selectOne(NAMESPACE + ".selectRowTotal", map);
-    }
 }

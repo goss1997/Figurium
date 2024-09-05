@@ -3,16 +3,11 @@ package com.githrd.figurium.qa.controller;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.page.CommonPage;
-import com.githrd.figurium.util.page.Paging;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/qa")
@@ -28,48 +23,10 @@ public class QaController {
     }
 
     @GetMapping("/qaList.do")
-    public String list(@RequestParam(name="page", defaultValue = "1")int nowPage,
-                       Model model) {
+    public String list(Model model) {
         model.addAttribute("qaList", qaService.getAllQa());
-
-
-            //검색조건을 담을 맵
-            Map<String, Object> map = new HashMap<String, Object>();
-
-            //start/end
-            int start = (nowPage-1) * CommonPage.qaList.BLOCK_LIST + 1;
-            int end   = start+CommonPage.qaList.BLOCK_LIST - 1;
-
-
-            map.put("start", start);
-            map.put("end", end);
-
-            // 총게시물수
-            int rowTotal = qaService.selectRowTotal(map);
-
-            //pageMenu만들기
-            String pageMenu = Paging.getPaging("qaList.do",
-                    nowPage,
-                    rowTotal,
-                    CommonPage.qaList.BLOCK_LIST ,
-                    CommonPage.qaList.BLOCK_PAGE);
-
-
-//-------[ End :  Page Menu ]------------------------
-
-
-            // 결과적으로 request binding
-            model.addAttribute("pageMenu", pageMenu);
-
-
-
-
-
-
         return "qa/qaList";
     }
-
-
 
     @GetMapping("/qaInsert.do")
     public String insertForm(Model model) {
@@ -151,7 +108,4 @@ public class QaController {
 
         return "redirect:/qa/qaList.do";
     }
-
-
-
 }

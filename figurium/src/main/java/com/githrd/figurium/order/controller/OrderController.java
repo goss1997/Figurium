@@ -133,13 +133,14 @@ public class OrderController {
      */
     @RequestMapping(value = "inicisPay.do")
     @ResponseBody
-    public String inicisPay(int price, String paymentType, Integer userId) {
+    public String inicisPay(int price, String paymentType, Integer userId, Integer merchantUid) {
 
         // 주문자 정보 insert
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("price",price);
         map.put("paymentType",paymentType);
         map.put("userId", userId);
+        map.put("merchantUid", merchantUid);
 
         int res = orderMapper.insertOrders(map);
         System.out.println("결제성공");
@@ -158,6 +159,7 @@ public class OrderController {
     public String insertInformation(int loginUserId, String name, String phone, String email,
                                     String address, String recipientName,
                                     String shippingPhone, String deliveryRequest,
+                                    int merchantUid,
                                     @RequestParam(value="productIds[]") List<Integer> productIds,
                                     @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
                                     @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities

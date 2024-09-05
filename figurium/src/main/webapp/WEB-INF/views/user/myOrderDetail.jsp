@@ -389,7 +389,8 @@
 
                 <div id="table_under_box">
                     <span>회원정보가 변경되셨다면 다음 버튼을 누르고 수정해주세요.</span>
-                    <input type="button" class="form-control" id="user_change_btn" value="회원정보수정">
+                    <input type="button" class="form-control" onclick="location.href='/user/my-page.do'"
+                           id="user_change_btn" value="회원정보수정">
                 </div>
 
                 <%-- 주문 테이블 shipping_address --%>

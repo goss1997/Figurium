@@ -47,9 +47,6 @@ public class PaymentController {
         this.api = new IamportClient(apiKey, secretKey);
         this.refundService = new RefundService();
 
-        // 로깅
-        log.info("API Key : {}", apiKey);
-        log.info("Secret Key: {}", secretKey);
     }
 
 

@@ -8,7 +8,7 @@ import com.githrd.figureDataInsert.apidata.repository.CategoryRepository;
 import com.githrd.figureDataInsert.apidata.repository.ProductBulkRepository;
 import com.githrd.figureDataInsert.apidata.vo.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.HttpEntity;
@@ -32,9 +32,10 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class ApiLoader implements ApplicationRunner {
 
-
-    private static final String CLIENT_ID = "k3dOcVhGUB1aI43JnnPZ"; // 네이버 개발자 센터에서 발급받은 클라이언트 ID
-    private static final String CLIENT_SECRET = "H3EvTVFM8B"; // 네이버 개발자 센터에서 발급받은 클라이언트 시크릿
+    @Value("${naver.client.id}")
+    private String CLIENT_ID;  // 네이버 개발자 센터에서 발급받은 클라이언트 ID
+    @Value("${naver.client.secret}")
+    private String CLIENT_SECRET; // 네이버 개발자 센터에서 발급받은 클라이언트 시크릿
 
     private final ProductBulkRepository productBulkRepository;
     private final CategoryRepository categoryRepository;

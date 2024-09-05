@@ -16,6 +16,10 @@
   <%-- 자바스크립트 경로 --%>
   <script src="/js/orderForm.js"></script>
 
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
   <%-- 결제 API --%>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
@@ -24,11 +28,17 @@
 
   <script>
 
-      $(function () {
-        if(${empty loginUser}) {
-        alert('로그인 후 이용 가능합니다.');
-        location.href = "/";
-    }
+    $(function () {
+      // 로그인 사용자 확인
+      if (${empty loginUser}) {
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 필요',
+          text: '로그인 후 이용 가능합니다.',
+        }).then(() => {
+          location.href = "/";
+        });
+      }
     });
 
       function check_name() {
@@ -137,6 +147,18 @@
   var IMP = window.IMP;
   IMP.init("imp25608413");
 
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center-center',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+
   var merchantUid;
 
     function buyItems(price) {
@@ -165,7 +187,13 @@
           itemQuantities : itemQuantities,
         },
         success: function(res_data){
-          alert("재고가 남아있습니다.");
+          Toast.fire({
+            icon: 'success',
+            title: '재고가 정상적으로 확인되었습니다.'
+          })
+
+          setTimeout(function () {
+
 
           IMP.request_pay({
             pg : 'kcp', // PG사 코드표에서 선택
@@ -192,7 +220,6 @@
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
               if(rsp.paid_amount == data.response.amount) {
-                alert("결제 및 결제 검증완료");  // 결제검증이 성공적으로 이뤄지면 실행되는 로직
                 sil(price);
 
               } else {
@@ -200,6 +227,7 @@
               }
             });
           });
+        }, 2000);
         },
         error: function(err){
           alert("해당 상품의 재고가 충분하지 않습니다. 해당 상품의 재고를 문의해주세요.");
@@ -213,7 +241,6 @@
 
     function sil(price) {
 
-      alert("sil 실행");
       let paymentType = document.querySelector('input[name="payment"]:checked');
       let userId = document.getElementById("order_id").value;    // 보낸 사람 id
 
@@ -296,8 +323,15 @@
           itemQuantities : itemQuantities*/
         },
         success: function(res_data){
-          alert("축하드려요");
-          location.href="/";
+          Toast.fire({
+            icon: 'success',
+            title: '주문이 정상적으로 처리되었습니다.'
+          });
+
+          // 2초 후에 페이지 이동
+          setTimeout(function () {
+            location.href="/";
+          }, 2000);
         },
         error: function(err){
           alert(err.responseText);

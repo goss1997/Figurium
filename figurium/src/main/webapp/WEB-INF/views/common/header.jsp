@@ -180,6 +180,24 @@
             margin-bottom: 5px;
         }
 
+        .find-password {
+            text-align: right;
+            font-size: 12px;
+            margin-right: 15%;
+            height: 24px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .find-password a {
+            color: black;
+        }
+
+        .find-password a:hover {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
     </style>
 
 
@@ -294,13 +312,15 @@
                                 <input type="password" class="form-control" id="password" name="password"
                                        placeholder="Password" required>
                             </div>
-                            <br>
+                            <div class="find-password">
+                                <a href="/user/find-password-form.do">비밀번호 찾기</a>
+                            </div>
                             <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
                             <input type="button" class="btn btn-secondary" value="회원가입"
                                    onclick="location.href='/user/signup-form.do';"/>
                         </div>
 
-                        <div style="width: 100%">―――――― &nbsp; 간편 로그인 &nbsp; ――――――</div>
+                        <div style="width: 100%;">――――― 간편 로그인 ―――――</div>
                         <br>
                         <div>
                             <!-- Google Login Button -->
@@ -433,11 +453,15 @@
     /**
      * Enter 키 press 시 로그인 함수 실행.
      */
+    // 로그인 모달이 켜신 상태에서만 엔터키로 로그인하기.
     $('#password').on('keydown', function (e) {
         if (e.key === 'Enter') {
-            login();
+            if (!$("#loginModal").hidden) {
+                console.log('모달 숨었니? : '+$("#loginModal").hidden);
+                login();
+            }
         }
-    })
+    });
 
 
     /**

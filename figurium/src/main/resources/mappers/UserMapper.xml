@@ -30,6 +30,19 @@
         where id = #{userId};
     </delete>
 
+    <select id="findByEmailAndDeletedFalse" parameterType="String" resultType="int">
+        select count(*)
+        from users
+        where email = #{findEmail}
+          and password IS NOT NULL
+          and deleted = false
+    </select>
+
+    <update id="updateUserPassword">
+        update users
+        set password = #{encPwd}
+        where id = #{userId}
+    </update>
 
 </mapper>
 

@@ -7,6 +7,8 @@ import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import com.githrd.figurium.user.vo.UserVo;
+import com.githrd.figurium.util.mail.service.EmailService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class UserController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+    private final EmailService emailService;
 
     /**
      * 로그인
@@ -191,6 +194,74 @@ public class UserController {
 
         session.setAttribute("alertMsg", "수정 완료!");
         return "redirect:/user/my-page.do";
+    }
+
+    /**
+     * 비밀번호 찾기 페이지
+     */
+    @GetMapping("find-password-form.do")
+    public String findPasswordForm() {
+        return "user/findPassword";
+    }
+
+    /**
+     * 비밀번호 재설정을 위한 메일 보내기
+     */
+    @PostMapping("send-password-reset.do")
+    @ResponseBody
+    public ResponseEntity<?> sendPasswordResetUrl(String findEmail) throws MessagingException {
+
+        // 입력한 이메일이 존재하지 않을 경우
+        if (userService.findByEmailAndDeletedFalse(findEmail) == 0) {
+            return ResponseEntity.status(400).body("회원 가입하지 않거나 탈퇴한 이메일입니다.");
+        } else {
+            // 존재할 경우 메일 보내기
+            boolean isSended = emailService.sendPasswordResetUrl(findEmail);
+            if (isSended) {
+                // send 성공 시
+                return ResponseEntity.ok("인증되었습니다.");
+            } else {
+                // send 실패 시
+                return ResponseEntity.status(400).body("메일 전송에 실패하였습니다.");
+            }
+        }
+    }
+
+    /**
+     * 비밀번호 재설정 페이지
+     */
+    @PostMapping("reset-password-form.do")
+    public String resetPasswordForm(String updateEmail, Model model) {
+        model.addAttribute("updateEmail", updateEmail);
+        return "user/resetPassword";
+    }
+
+    /**
+     * 비밀번호 재설정
+     */
+    @PostMapping("reset-password.do")
+    public String resetPassword(String updateEmail, String newPassword, Model model) {
+
+        // 해당 이메일이 탈퇴했거나 없을 경우
+        if (userService.findByEmailAndDeletedFalse(updateEmail) == 0) {
+            session.setAttribute("alertMsg", "탈퇴했거나 없는 계정입니다.");
+            return "redirect:/";
+        }
+
+        User user = userService.findByEmail(updateEmail);
+        // 비밀번호 암호화
+        String encPwd = bCryptPasswordEncoder.encode(newPassword);
+
+        // 비밀번호 수정.
+        int result = userService.updateUserPassword(user.getId(), encPwd);
+
+        if (result > 0) {
+            session.setAttribute("alertMsg","비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
+            return "redirect:/";
+        }else{
+            session.setAttribute("alertMsg","비밀번호 재설정 실패!");
+            return "redirect:/";
+        }
     }
 
 

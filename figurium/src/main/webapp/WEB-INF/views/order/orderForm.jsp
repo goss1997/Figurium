@@ -208,7 +208,7 @@
             pay_method: paymentType, // 결제 방식
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
-            amount: 100, // 가격
+            amount: <c:out value="${totalPrice+3000}" />, // 가격
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
@@ -270,7 +270,7 @@
         type : "POST",
         url  : "/order/inicisPay.do",
         data : {
-          price: 100,
+          price: <c:out value="${totalPrice+3000}" />,
           paymentType: paymentType,
           userId: userId,
           merchantUid: merchantUid

@@ -32,6 +32,7 @@ public class MyOrderVo {
     private String address;         // 받는 사람 주소
     private String deliveryRequest; // 배송요청사항
 
+    private  int pId;               // 상품번호
     private String productName;     // 상품이름
     private String imageUrl;        // 상품이미지
     private int productCount;       // 상품총갯수 - 1(외 1개, 외 2개 별도로 포함시키려는 컬럼)

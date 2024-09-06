@@ -30,7 +30,6 @@
 
     $(function () {
 
-      console.log(productIds)
       // 로그인 사용자 확인
       if (${empty loginUser}) {
         Swal.fire({
@@ -174,7 +173,12 @@
       // 약관 동의 체크
       let agreementCheckbox = document.getElementById("agreement");
       if(!agreementCheckbox.checked) {
-        alert("약관에 동의해주세요.");
+        Swal.fire({
+          icon: 'info',
+          title: '알림',
+          text: '약관에 동의하여야 결제를 진행할 수 있습니다.',
+          confirmButtonText: '확인'
+        }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
       }
 
@@ -186,7 +190,7 @@
         url : "checkProduct.do",
         data : {
           productIds : productIds,
-          itemQuantities : itemQuantities,
+          itemQuantities : itemQuantities
         },
         success: function(res_data){
           Toast.fire({
@@ -212,10 +216,18 @@
             buyer_postcode : '123-456'
           }, function (rsp) { // callback
             console.log(rsp);
+
+
             // 결제검증
             $.ajax({
               type : "POST",
-              url  : "/verifyIamport/" + rsp.imp_uid
+              url  : "/verifyIamport/" + rsp.imp_uid,
+              data: {
+                productIds: productIds, // productId 추가
+                itemPrices: itemPrices, // productPrice 추가
+                itemQuantities: itemQuantities // productQuntity 추가
+              },
+              dataType: "json"
             }).done(function(data){
               console.log(data);
 
@@ -433,7 +445,7 @@
         let itemQuantities = [];
 
         <c:forEach var="item" items="${ requestScope.cartsList }">
-          productIds.push("${ item.id }");
+          productIds.push("${ item.productId }");
           itemPrices.push("${ item.price }");
           itemQuantities.push("${ item.quantity }");
         </c:forEach>
@@ -645,7 +657,7 @@
 
     </div>
 
-    <hr id="hr2">
+    <hr id="hr2" style="margin-top: 30px;">
 
     <div class="agreement">
       <input type="checkbox" id="agreement">
@@ -653,7 +665,16 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(100);">주문하기</button>
+    <button class="order-button" onclick="buyItems(${ totalPrice + 3000 });">주문하기</button>
+
+    <div class="info-section" style="display: flex; align-items: center; margin-top: 50px;">
+      <img src="/images/루피.png" alt="루피.png" style="width: 100px; height: auto; margin-right: 20px;">
+      <div>
+        <h1 style="font-size: 24px; margin: 0; text-align: left">잠깐만요!</h1>
+        <p style="padding-top: 10px;">피규리움에서는 10만원 이상 결제시, 택배비가 무료!</p>
+        <p>택배비는 저희가 책임질게요!</p>
+      </div>
+    </div>
 
   </div>
 

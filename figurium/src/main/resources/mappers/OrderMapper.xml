@@ -132,6 +132,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{ id }
     </update>
 
+    <select id="selectOneByProductsId" resultType="int" parameterType="List">
+        select id
+            from order_history_view
+            where p_id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+              #{ id }
+            </foreach>
+    </select>
+
 </mapper>
 
 

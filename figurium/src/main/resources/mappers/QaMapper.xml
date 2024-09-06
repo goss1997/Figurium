@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.githrd.figurium.qa.dao.QaDao">
+<mapper namespace="com.githrd.figurium.qa.dao.QaMapper">
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT * FROM qa
         ORDER BY created DESC
@@ -33,6 +33,26 @@
         DELETE FROM qa WHERE id = #{id}
     </delete>
 
+    <!-- 페이징 처리된 게시글 조회 -->
+    <select id="selectAllWithPagination" parameterType="map" resultType="QaVo">
+        select * from
+            (
+                select
+                    rank() over(order by id desc) as no,
+                i.*
+                from
+                    (select * from qa) i
+            ) q
+        where no between #{ start } and #{ end }
+    </select>
+
+
+
+        <!-- selectRowTotal 쿼리 정의 -->
+        <select id="selectRowTotal" resultType="int">
+            SELECT COUNT(*)
+            FROM qa
+        </select>
 
 
 </mapper>

@@ -1,46 +1,70 @@
-package com.githrd.figurium.qa.service;
+    package com.githrd.figurium.qa.service;
 
-import com.githrd.figurium.qa.dao.QaDao;
-import com.githrd.figurium.qa.vo.QaVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+    import com.githrd.figurium.qa.dao.QaMapper;
+    import com.githrd.figurium.qa.vo.QaVo;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
 
-import java.util.List;
+    import java.util.List;
+    import java.util.Map;
 
-@Service
-public class QaServiceImpl implements QaService {
+    @Service
+    public class QaServiceImpl implements QaService {
 
-    private final QaDao qaDao;
+        private final QaMapper qaMapper;
 
-    @Autowired
-    public QaServiceImpl(QaDao qaDao) {
-        this.qaDao = qaDao;
+        @Autowired
+        public QaServiceImpl(QaMapper qaMapper) {
+            this.qaMapper = qaMapper;
+        }
+
+        @Override
+        public List<QaVo> getAllQa() {
+            return qaMapper.selectAll();
+        }
+
+        @Override
+        public QaVo getQaById(int id) {
+            return qaMapper.selectById(id);
+        }
+
+        @Override
+        public void saveQa(QaVo qaVo) {
+            qaMapper.insert(qaVo);
+        }
+
+        @Override
+        public void updateQa(QaVo qaVo) {
+            qaMapper.update(qaVo);
+        }
+
+        @Override
+        public void deleteQa(int id) {
+            qaMapper.delete(id);
+        }
+
+
+
+
+        @Override
+        public int selectRowTotal(Map<String, Object> map) {
+            return qaMapper.selectRowTotal(map);
+        }
+
+        @Override
+        public  List<QaVo> selectAllWithPagination(Map<String, Object> map) {
+            return qaMapper.selectAllWithPagination(map);
+        }
+
+//        @Override
+//        public List<QaVo> getPageQa(Map<String, Object> map) {
+//            return qaDao.selectAllWithPagination(map);
+//        }
+
+        @Override
+        public List<QaVo> getQaWithPagination(int offset, int limit) {
+            return qaMapper.selectAllWithPagination(Map.of("offset", offset, "limit", limit));
+        }
+
+
     }
-
-    @Override
-    public List<QaVo> getAllQa() {
-        return qaDao.selectAll();
-    }
-
-    @Override
-    public QaVo getQaById(int id) {
-        return qaDao.selectById(id);
-    }
-
-    @Override
-    public void saveQa(QaVo qaVo) {
-        qaDao.insert(qaVo);
-    }
-
-    @Override
-    public void updateQa(QaVo qaVo) {
-        qaDao.update(qaVo);
-    }
-
-    @Override
-    public void deleteQa(int id) {
-        qaDao.delete(id);
-    }
-
-
-}

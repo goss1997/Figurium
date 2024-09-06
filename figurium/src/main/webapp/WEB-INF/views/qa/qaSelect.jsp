@@ -62,6 +62,7 @@ To change this template use File | Settings | File Templates.
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">${qa.userId}</h5>
+                <p class="card-update">${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</p>
                 <p class="card-text">${qa.reply}</p>
             </div>
         </div>

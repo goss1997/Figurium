@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <select id="category" name="category" class="custom-select" onchange="updateTitle()">
-                    <option selected>:::분류 선택:::</option>
+                    <option selected disabled>:::분류 선택:::</option>
                     <option value="배송문의">배송문의</option>
                     <option value="취소문의">취소문의</option>
                     <option value="교환">교환</option>

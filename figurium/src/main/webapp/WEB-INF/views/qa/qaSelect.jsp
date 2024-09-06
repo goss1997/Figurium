@@ -18,7 +18,9 @@ To change this template use File | Settings | File Templates.
 <!-- TODO : 제목 과 스타일 영역 -->
 <style>
 
+
 </style>
+
 </head>
 
 <body>
@@ -40,7 +42,7 @@ To change this template use File | Settings | File Templates.
     <hr>
     <div class="row">
         <div class="col-sm-1">작성자</div>
-        <div class="col-sm-7">${qa.userId}</div>
+        <div class="col-sm-7">${qa.name}</div>
         <div class="col-sm-2">답변여부</div>
         <div class="col-sm-2">${qa.replyStatus}</div>
     </div>
@@ -61,7 +63,7 @@ To change this template use File | Settings | File Templates.
     <c:forEach var="reply" items="${qa.reply}">
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">${qa.userId}</h5>
+<%--            <h5 class="card-title">${qa.name}</h5>--%>
                 <p class="card-update">${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</p>
                 <p class="card-text">${qa.reply}</p>
             </div>
@@ -80,7 +82,7 @@ To change this template use File | Settings | File Templates.
 
             <button type="button" style="margin-bottom: 30px; float: right;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
             <c:if test="${loginUser.role == '1'}">
-                <input type="button" style="margin-bottom: 30px; float: right;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.id}'">
+                <input type="button" style="margin-bottom: 30px; float: right;" class="btn btn-danger" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.name}'">
             </c:if>
 
         </form>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,17 +55,11 @@ public class QaController {
                     CommonPage.qaList.BLOCK_LIST ,
                     CommonPage.qaList.BLOCK_PAGE);
 
-
-//-------[ End :  Page Menu ]------------------------
-
+            //-------[ End :  Page Menu ]------------------------
 
             // 결과적으로 request binding
             model.addAttribute("pageMenu", pageMenu);
             model.addAttribute("qaList", qaService.selectAllWithPagination(map));
-
-
-
-
 
         return "qa/qaList";
     }
@@ -113,12 +108,38 @@ public class QaController {
     }
 
     @GetMapping("/qaSelect.do")
-    public String select(@RequestParam("id") int id, Model model) {
+    public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {
+        User loginUser = (User) session.getAttribute("loginUser");
         QaVo qaVo = qaService.getQaById(id);
+
+        if (qaVo == null) {
+            return "redirect:/qa/qaList.do"; // 게시글이 존재하지 않을 때
+        }
+
+        // 로그인하지 않은 상태에서 게시글을 클릭한 경우
+        if (loginUser == null) {
+            // 로그인 페이지로 리디렉션하며 메시지를 전달
+            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 사용해 주세요.");
+            return "redirect:/qa/qaList.do"; // 리스트페이지로 리다이렉트
+        }
+
+
+        // 관리자일 경우, 모든 게시글에 접근 가능
+        if (loginUser != null && (loginUser.getRole() == 1 || qaVo.getUserId().equals(loginUser.getId()))) {
+            model.addAttribute("qa", qaVo);
+            return "qa/qaSelect";
+        }
+
+        // 관리자도 아니고, 작성자와 다를 경우
+        if (loginUser != null && !qaVo.getUserId().equals(loginUser.getId())) {
+            redirectAttributes.addFlashAttribute("message", "다른 사용자의 게시글입니다.");
+            return "redirect:/qa/qaList.do"; // 경고 메시지와 함께 목록 페이지로 이동
+        }
+
+        // 로그인하지 않았거나, 작성자와 같을 경우
         model.addAttribute("qa", qaVo);
         return "qa/qaSelect";
     }
-
 
 
     @PostMapping("/qaReplySave.do")

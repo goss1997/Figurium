@@ -61,6 +61,16 @@
             }
         }
     </script>
+    <% if (request.getAttribute("message") != null) { %>
+    <script>alert("<%= request.getAttribute("message") %>");</script>
+    <% } %>
+
+    <% if (request.getAttribute("alertMessage") != null) { %>
+    <script>
+        alert("<%= request.getAttribute("alertMessage") %>");
+        location.href = "/qa/qaList.do"; // 알림 후 리스트 페이지로 리디렉트
+    </script>
+    <% } %>
 
 </head>
 
@@ -91,7 +101,7 @@
                         <a href="/qa/qaSelect.do?id=${qa.id}">${qa.title}</a>
                     </td>
                     <td>${qa.replyStatus}</td>
-                    <td>${qa.userId}</td>
+                    <td>${qa.name}</td>
                     <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
                 </tr>
             </c:forEach>

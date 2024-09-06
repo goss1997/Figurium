@@ -123,4 +123,14 @@ public class UserService {
     public int deleteSocialAccount(int userId) {
         return userMapper.deleteByUserId(userId);
     }
+
+
+    public int findByEmailAndDeletedFalse(String findEmail) {
+        return userMapper.findByEmailAndDeletedFalse(findEmail);
+    }
+
+    @Transactional
+    public int updateUserPassword(int userId, String encPwd) {
+        return userMapper.updateUserPassword(userId,encPwd);
+    }
 }

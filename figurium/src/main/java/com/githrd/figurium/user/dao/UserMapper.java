@@ -18,4 +18,8 @@ public interface UserMapper {
     int deleteSocialAccountByUserId(int userId);
 
     int deleteByUserId(int userId);
+
+    int findByEmailAndDeletedFalse(String findEmail);
+
+    int updateUserPassword(int userId, String encPwd);
 }

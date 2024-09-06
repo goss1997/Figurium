@@ -12,14 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 @Controller
 @Slf4j  // 로깅을 위한 log 객체를 자동으로 생성
@@ -48,60 +48,81 @@ public class PaymentController {
     }
 
 
-    @ResponseBody   // JSON 형태로 반환
-    @RequestMapping(value="/verifyIamport/{imp_uid}", method = RequestMethod.POST)
-    public IamportResponse<Payment> paymentByImpUid(
-            @PathVariable(value="imp_uid") String imp_uid,
-            @RequestParam(value="productIds[]") List<Integer> productIds,
-            @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
-            @RequestParam(value="itemQuantities[]")List<Integer> itemQuantities)
-            throws IamportResponseException, IOException {
+//    @ResponseBody   // JSON 형태로 반환
+//    @RequestMapping(value="/verifyIamport/{imp_uid}", method = RequestMethod.POST)
+//    public ResponseEntity<?> paymentByImpUid(
+//            @PathVariable(value="imp_uid") String imp_uid,
+//            HttpServletResponse response, HttpSession session)
+//        throws IamportResponseException, IOException {
+//
+//        IamportResponse<Payment> paymentResponse = api.paymentByImpUid(imp_uid);
+//        Payment payment = paymentResponse.getResponse();
+//        int paySeverAmount = payment.getAmount().intValue();
+//
+//
+//        session.getAttribute("totalPrice");
+//
+//        if(paySeverAmount != paidAmount.intValue()) {
+//            return ResponseEntity.badRequest().body("결제 금액이 일치하지 않아 결제가 취소되었습니다.");
+//        }
+//
+//        return ResponseEntity.ok("결제가 완료되었습니다.");
+//    }
 
-
-        // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
-        // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
-
-
-        // 데이터에 저장된 가격과 주문한 가격이 동일한지 체크
-        // 가져온 imp_uid로 아이엠포트 서버에 데이터 요청
-        IamportResponse<Payment> paymentResponse = api.paymentByImpUid(imp_uid);
-        // payment에 모든 데이터 저장
-        Payment payment = paymentResponse.getResponse();
-        int paySeverAmount = payment.getAmount().intValue();
-
-        int totalPrice = 3000;  // 기본 배송료 추가된 상태
-        for(int i = 0; i < itemPrices.size(); i++) {
-            int itemPrice = itemPrices.get(i);
-            int quantity = itemQuantities.get(i);
-
-            totalPrice += itemPrice * quantity;
-        }
-
-
-        // 데이터내의 가격과 요청 가격이 동일하지 않을시 바로 차단
-        if(totalPrice != paySeverAmount) {
-
-            int id = orderMapper.selectOneByProductsId(productIds);
-
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Boolean> response = restTemplate.postForEntity("/refund.do", id, Boolean.class);
-
-            throw new IllegalArgumentException("결제 금액이 일치하지 않으므로, 결제가 중단됩니다.");
-
-        }
-
-        return api.paymentByImpUid(imp_uid);
-    }
 
 //    @ResponseBody   // JSON 형태로 반환
-//    @RequestMapping(value="/verifyIamport/{imp_uid}")
-//    public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid)
+//    @RequestMapping(value="/verifyIamport/{imp_uid}", method = RequestMethod.POST)
+//    public ResponseEntity<?> paymentByImpUid(
+//            @PathVariable(value="imp_uid") String imp_uid,
+//            @RequestParam(value="productIds[]") List<Integer> productIds,
+//            @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
+//            @RequestParam(value="itemQuantities[]")List<Integer> itemQuantities)
 //            throws IamportResponseException, IOException {
+//
+//
 //        // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
 //        // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
 //
-//            return api.paymentByImpUid(imp_uid);
+//
+//        // 데이터에 저장된 가격과 주문한 가격이 동일한지 체크
+//        // 가져온 imp_uid로 아이엠포트 서버에 데이터 요청
+//        IamportResponse<Payment> paymentResponse = api.paymentByImpUid(imp_uid);
+//        // payment에 모든 데이터 저장
+//        Payment payment = paymentResponse.getResponse();
+//        int paySeverAmount = payment.getAmount().intValue();
+//
+//
+//        int totalPrice = 3000;  // 기본 배송료 추가된 상태
+//        for(int i = 0; i < productIds.size(); i++) {
+//
+//            totalPrice += itemPrices.get(i) * itemQuantities.get(i);
 //        }
+//
+//
+//        // 데이터내의 가격과 요청 가격이 동일하지 않을시 바로 차단
+//        if(totalPrice != paySeverAmount) {
+//
+//            int id = orderMapper.selectOneByProductsId(productIds);
+//
+//            RestTemplate restTemplate = new RestTemplate();
+//            ResponseEntity<Boolean> response = restTemplate.postForEntity("/refund.do", id, Boolean.class);
+//
+//            return ResponseEntity.badRequest().body("결제 금액이 일치하지 않아 결제가 취소되었습니다.");
+//
+//        }
+//
+//        return api.paymentByImpUid(imp_uid);
+//    }
+
+    @ResponseBody   // JSON 형태로 반환
+    @RequestMapping(value="/verifyIamport/{imp_uid}")
+    public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid)
+            throws IamportResponseException, IOException {
+        // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
+        // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
+
+            return api.paymentByImpUid(imp_uid);
+    }
 
 
     @GetMapping("/refund.do")

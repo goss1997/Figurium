@@ -162,7 +162,7 @@
 
   var merchantUid;
 
-    function buyItems(price) {
+    function buyItems() {
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       let paymentType = $("input[name='payment']:checked").val();
@@ -204,16 +204,16 @@
 
 
           IMP.request_pay({
-            pg : 'kcp', // PG사 코드표에서 선택
-            pay_method : paymentType, // 결제 방식
+            pg: 'kcp', // PG사 코드표에서 선택
+            pay_method: paymentType, // 결제 방식
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
-            amount : price, // 가격
-            buyer_email : $("#order_email").val(),
-            buyer_name : '피규리움 기술지원팀',
-            buyer_tel : $("#order_phone").val(),
-            buyer_addr : $("#address").val() + $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
-            buyer_postcode : '123-456'
+            amount: 100, // 가격
+            buyer_email: $("#order_email").val(),
+            buyer_name: '피규리움 기술지원팀',
+            buyer_tel: $("#order_phone").val(),
+            buyer_addr: $("#address").val() + $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
+            buyer_postcode: '123-456'
           }, function (rsp) { // callback
             console.log(rsp);
 
@@ -236,7 +236,7 @@
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
               if(rsp.paid_amount == data.response.amount) {
-                sil(price);
+                sil();
 
               } else {
                 Swal.fire({
@@ -260,7 +260,7 @@
     }
 
 
-    function sil(price) {
+    function sil() {
 
       let paymentType = $("input[name='payment']:checked").val();
       let userId = document.getElementById("order_id").value;    // 보낸 사람 id
@@ -272,13 +272,13 @@
         type : "POST",
         url  : "/order/inicisPay.do",
         data : {
-          price : price,
-          paymentType : paymentType,
-          userId : userId,
-          merchantUid : merchantUid
+          price: 100,
+          paymentType: paymentType,
+          userId: userId,
+          merchantUid: merchantUid
         },
 
-        success: function(res_data){
+        success: function (res_data){
           insertInformation();
         },
 
@@ -650,7 +650,7 @@
       </div>
 
       <div class="payment-option">
-        <input type="radio" id="bank_transfer" name="payment" value="trans">
+        <input type="radio" id="bank_transfer" name="payment" value="vbank">
         <label for="bank_transfer">무통장 입금</label>
       </div>
 
@@ -665,7 +665,7 @@
     </div>
 
     <%--  결제버튼  --%>
-    <button class="order-button" onclick="buyItems(${ totalPrice + 3000 });">주문하기</button>
+    <button class="order-button" onclick="buyItems();">주문하기</button>
 
     <div class="info-section" style="display: flex; align-items: center; margin-top: 50px;">
       <img src="/images/루피.png" alt="루피.png" style="width: 100px; height: auto; margin-right: 20px;">

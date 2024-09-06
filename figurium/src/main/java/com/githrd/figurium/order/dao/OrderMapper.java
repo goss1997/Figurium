@@ -37,5 +37,5 @@ public interface OrderMapper {
     void updateOrderStatus(int id, String status);
 
     // 가격 검증 로직 확인용 데이터
-    int selectOneByProductsId(List<Integer> itemPrices);
+    int selectOneByProductsId(int userId);
 }

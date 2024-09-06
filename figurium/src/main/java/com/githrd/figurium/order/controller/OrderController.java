@@ -9,8 +9,6 @@ import com.githrd.figurium.order.vo.OrderItems;
 import com.githrd.figurium.order.vo.ShippingAddresses;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
-import com.githrd.figurium.product.service.CartService;
-import com.githrd.figurium.product.service.CartServiceImpl;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.entity.User;
@@ -23,11 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/order")
@@ -97,6 +93,7 @@ public class OrderController {
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("totalPrice",totalPrice);
         return "order/orderForm";
     }
 

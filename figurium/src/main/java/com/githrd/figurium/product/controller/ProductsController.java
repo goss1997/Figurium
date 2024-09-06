@@ -36,6 +36,7 @@ public class ProductsController {
 
     @RequestMapping("/productInfo.do")
     public String list(@RequestParam(value = "id" , required = false) Integer id,
+                       @RequestParam(value = "page", defaultValue = "1") int page,
                        HttpSession session,
                        Model model) {
 
@@ -43,13 +44,25 @@ public class ProductsController {
         Products selectOne = productsService.getProductById(id);
         model.addAttribute("product", selectOne);
 
-        // 해당 상품에 대한 ID 값을 이용해 리뷰의 리스트를 가져옴
-        List<ReviewVo> reviewList = reviewService.reviewsByProductId(id);
+        // 페이지 설정
+        int pageSize = 5;
+        int offset = (page - 1) * pageSize;
+
+
+        // 리뷰 리스트 및 리뷰 개수 가져오기
+        List<ReviewVo> reviewList = reviewService.getReviewsWithPagination(id, offset, pageSize);
         model.addAttribute("reviewList", reviewList);
+
 
         // 해당 상품에 대한 ID 값을 이용해 리뷰의 갯수를 가져옴
         int reviewCount = reviewService.reviewCountByProductId(id);
         model.addAttribute("reviewCount", reviewCount);
+
+        // 페이지 관련 정보 설정
+        int totalPages = (int) Math.ceil((double) reviewCount / pageSize);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+
 
         // 해당 상품의 평균 별점 가져오기
         int ratingAvg = reviewService.reviewRatingAvg(id);
@@ -63,7 +76,6 @@ public class ProductsController {
         } else {
             model.addAttribute("isLiked", false);
         }
-        System.out.println("user = " + user);
         return "products/productInfo";
     }
 

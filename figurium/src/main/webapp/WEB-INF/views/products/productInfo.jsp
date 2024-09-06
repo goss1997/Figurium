@@ -66,17 +66,17 @@
     <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
     <input type="hidden" value="${product.id}">
     <form>
-    <div class="product_title">
-        <div class="product_img_box">
-            <!-- 상품의 이미지가 들어 갈 곳 -->
-            <div class="product_img">
-                <img src="${product.imageUrl}">
+        <div class="product_title">
+            <div class="product_img_box">
+                <!-- 상품의 이미지가 들어 갈 곳 -->
+                <div class="product_img">
+                    <img src="${product.imageUrl}">
+                </div>
             </div>
-        </div>
 
-        <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
-        <div class="product_info">
-            <h3>${product.name}</h3>
+            <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
+            <div class="product_info">
+                <h3>${product.name}</h3>
                 <div class="stars">
                     <c:forEach var="i" begin="1" end="${ratingAvg}">
                         <span class="star">&#9733;</span> <!-- 채워진 별 -->
@@ -85,66 +85,66 @@
                         <span class="star">&#9734;</span> <!-- 빈 별 -->
                     </c:forEach>
                 </div>
-            <div class="block2-txt-child2">
-                <a href="#" id="product_like" class="btn-addwish-b2">
-                    <img id="heart-icon" class="icon-heart"
-                         src="${isLiked ? '/images/icons/icon-heart-02.png' : '/images/icons/icon-heart-01.png'}"
-                         alt="Heart Icon">
-                </a>
+                <div class="block2-txt-child2">
+                    <a href="#" id="product_like" class="btn-addwish-b2">
+                        <img id="heart-icon" class="icon-heart"
+                             src="${isLiked ? '/images/icons/icon-heart-02.png' : '/images/icons/icon-heart-01.png'}"
+                             alt="Heart Icon">
+                    </a>
+                </div>
+                <h5>${product.price}￦</h5>
+
+                <hr>
+                <table class="info_table">
+                    <tr>
+                        <th>제조사</th>
+                        <td>${product.category.name}</td>
+                    </tr>
+
+                    <tr>
+                        <th>남은재고</th>
+                        <td>${product.quantity}</td>
+                    </tr>
+
+                    <tr>
+                        <th>출고 날짜</th>
+                        <td>${fun:substring(product.createdAt,0,10)}</td>
+                    </tr>
+
+                    <tr>
+                        <th>수량</th>
+                        <td>
+                            <div class="quantity-box">
+                                <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
+                                </button>
+                                <input type="text" id="quantity" name="quantity" value="1" readonly>
+                                <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr>
+                <div class="total_price_box">
+                    <span class="total_price">총 결제금액</span>
+                    <p id="total_price">${product.price}</p>원
+                </div>
+
+                <div class="price_bye">
+                    <input class="price_bye_btn" type="button" value="바로구매"
+                           onclick="location.href='shopingCart2.do'">
+                </div>
+
+
+                <input type="hidden" name="productId" value="${product.id}">
+                <div class="price_cart">
+                    <input class="price_cart_btn" type="button" value="장바구니"
+                           onclick="addToCart(this.form)">
+                </div>
             </div>
-            <h5>${product.price}￦</h5>
 
-            <hr>
-            <table class="info_table">
-                <tr>
-                    <th>제조사</th>
-                    <td>${product.category.name}</td>
-                </tr>
-
-                <tr>
-                    <th>남은재고</th>
-                    <td>${product.quantity}</td>
-                </tr>
-
-                <tr>
-                    <th>출고 날짜</th>
-                    <td>${fun:substring(product.createdAt,0,10)}</td>
-                </tr>
-
-                <tr>
-                    <th>수량</th>
-                    <td>
-                        <div class="quantity-box">
-                            <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
-                            </button>
-                            <input type="text" id="quantity" name="quantity" value="1" readonly>
-                            <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <hr>
-            <div class="total_price_box">
-                <span class="total_price">총 결제금액</span>
-                <p id="total_price">${product.price}</p>원
-            </div>
-
-            <div class="price_bye">
-                <input class="price_bye_btn" type="button" value="바로구매"
-                       onclick="location.href='shopingCart2.do'">
-            </div>
-
-
-            <input type="hidden" name="productId" value="${product.id}">
-            <div class="price_cart">
-                <input class="price_cart_btn" type="button" value="장바구니"
-                       onclick="addToCart(this.form)">
-            </div>
         </div>
-
-    </div>
     </form>
     <!-- 리뷰,Q&A Tap-->
 
@@ -221,6 +221,18 @@
             </c:if>
             </tbody>
         </table>
+        <!-- 페이징 버튼을 표시할 영역 -->
+        <div id="pagination" style="text-align: center; margin-top: 20px;">
+            <c:if test="${currentPage > 1}">
+                <a href="?id=${product.id}&page=${currentPage - 1}">이전</a>
+            </c:if>
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <a href="?id=${product.id}&page=${i}" class="${currentPage == i ? 'active' : ''}">${i}</a>
+            </c:forEach>
+            <c:if test="${currentPage < totalPages}">
+                <a href="?id=${product.id}&page=${currentPage + 1}">다음</a>
+            </c:if>
+        </div>
 
 
     </div>
@@ -469,6 +481,9 @@
 </script>
 
 
+
+
+
 <script>
 
     $(document).ready(function () {
@@ -499,17 +514,17 @@
 </script>
 
 <script>
-        // 리뷰 삭제시 Ajax 처리를 하지 않았기에 redirect전 스크롤을 기억 후 redirect 후 스크롤로 이동
-        addEventListener('beforeunload', function () {
+    // 리뷰 삭제시 Ajax 처리를 하지 않았기에 redirect전 스크롤을 기억 후 redirect 후 스크롤로 이동
+    addEventListener('beforeunload', function () {
         localStorage.setItem('scrollPosition', scrollY);
     });
 
-        addEventListener('DOMContentLoaded', function () {
+    addEventListener('DOMContentLoaded', function () {
         let scrollPosition = localStorage.getItem('scrollPosition');
         if (scrollPosition) {
-        scrollTo(0, parseInt(scrollPosition));
-        localStorage.removeItem('scrollPosition'); // 스크롤 위치가 한번만 저장되도록 삭제
-    }
+            scrollTo(0, parseInt(scrollPosition));
+            localStorage.removeItem('scrollPosition'); // 스크롤 위치가 한번만 저장되도록 삭제
+        }
     });
 </script>
 </body>

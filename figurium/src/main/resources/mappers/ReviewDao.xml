@@ -26,6 +26,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY number DESC  <!-- 번호를 기준으로 내림차순 정렬 -->
     </select>
 
+    <!-- 해당 상품에 대한 리뷰의 갯수 -->
+    <select id="reviewCountByProductId" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM reviews
+        WHERE product_id = #{productId}
+    </select>
+
+
     <!-- 리뷰 평균 별점 -->
     <select id="reviewRatingAvg" resultType="java.lang.Integer">
         SELECT AVG(rating)
@@ -34,14 +42,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
+    <!-- 페이징 처리된 리뷰 리스트 조회 -->
+    <select id="selectAllWithPagination" parameterType="map" resultType="com.githrd.figurium.reviews.vo.ReviewVo">
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY r.created_at DESC) AS number,
+            r.id,
+            r.user_id,
+            r.product_id,
+            r.updated_at,
+            r.title,
+            r.content,
+            r.image_url AS imageUrl,
+            r.created_at AS createdAt,
+            r.rating,
+            u.name AS userName
+        FROM reviews r
+                 JOIN users u ON r.user_id = u.id
+        WHERE r.product_id = #{productId}
+        ORDER BY r.created_at DESC
+        LIMIT #{size} OFFSET #{offset}
 
+    </select>
 
-    <!-- 해당 상품에 대한 리뷰의 갯수 -->
-    <select id="reviewCountByProductId" parameterType="int" resultType="int">
+    <!-- 리뷰 총 개수 조회 -->
+    <select id="selectRowTotal" parameterType="int" resultType="int">
         SELECT COUNT(*)
         FROM reviews
         WHERE product_id = #{productId}
     </select>
+
+
 
 
 

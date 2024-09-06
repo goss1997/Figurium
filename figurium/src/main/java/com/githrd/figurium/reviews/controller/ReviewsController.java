@@ -4,6 +4,9 @@ import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.util.page.CommonPage;
+import com.githrd.figurium.util.page.Paging;
+import com.githrd.figurium.util.page.reviewsCommonPage;
 import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -15,29 +18,24 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class ReviewsController {
 
     private final ReviewService reviewService;      // Service를 주입받음
-    private final HttpServletRequest request;
     private final HttpSession session;
     private final S3ImageService s3ImageService;    // S3를 구현한 인터페이스를 주입
-    private final ProductsService productsService;
 
     // Constructor Injection
     @Autowired
     ReviewsController(ReviewService reviewService,
-                      HttpServletRequest request,
                       HttpSession session,
-                      S3ImageService s3ImageService,
-                      ProductsService productsService) {
+                      S3ImageService s3ImageService) {
         this.reviewService = reviewService;
-        this.request = request;
         this.session = session;
         this.s3ImageService = s3ImageService;
-        this.productsService = productsService;
     }
 
 
@@ -111,6 +109,24 @@ public class ReviewsController {
         }
     }
 
+    // 리뷰 페이징 처리
+    @RequestMapping("/reviewsPaging")
+    @ResponseBody
+    public Map<String, Object> getReviews(@RequestParam("productId") int productId,
+                                          @RequestParam("page") int page,
+                                          @RequestParam("size") int size) {
+        int offset = (page - 1) * size;
+        List<ReviewVo> reviews = reviewService.getReviewsWithPagination(productId, offset, size);
+        int reviewCount = reviewService.reviewCountByProductId(productId);
+
+        Map<String, Object> res_data = new HashMap<>();
+        res_data.put("reviews", reviews);
+        res_data.put("total", reviewCount);
+        return res_data;
+    }
+
+
+
 
     // 리뷰 1건에 해당하는 리뷰를 조회
     @RequestMapping("/getReviewContent")
@@ -126,6 +142,10 @@ public class ReviewsController {
         result.put("reviewUserId", review.getUserId()); // 리뷰 작성자의 ID
         return result;
     }
+
+
+
+
 
 
     // 리뷰 수정 폼 이동

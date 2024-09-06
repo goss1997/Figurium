@@ -5,7 +5,9 @@ import com.githrd.figurium.reviews.vo.ReviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -61,5 +63,25 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return 0; // 기본값
     }
+
+    @Override
+    public int selectRowTotal(Map<String, Object> map) {
+        return reviewDao.selectRowTotal(map);
+    }
+
+    @Override
+    public List<ReviewVo> selectAllWithPagination(Map<String, Object> map) {
+        return reviewDao.selectAllWithPagination(map);
+    }
+
+    @Override
+    public List<ReviewVo> getReviewsWithPagination(int productId, int offset, int size) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        map.put("offset", offset);
+        map.put("size", size);
+        return reviewDao.selectAllWithPagination(map);
+    }
+
 
 }

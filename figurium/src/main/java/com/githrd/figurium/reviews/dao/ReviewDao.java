@@ -4,6 +4,7 @@ import com.githrd.figurium.reviews.vo.ReviewVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ReviewDao {
@@ -32,5 +33,13 @@ public interface ReviewDao {
 
     // 상품에 대한 리뷰 별점의 평균
     Integer reviewRatingAvg(int productId);
+
+    // 페이징 처리를 위한 리뷰의 갯수를 반환
+    int selectRowTotal(Map<String, Object> map);
+
+    // 페이징 처리를 한 후 리뷰의 리스트를 가져오기
+    List<ReviewVo> selectAllWithPagination(Map<String, Object> map);
+
+
 
 }

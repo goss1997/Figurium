@@ -45,21 +45,27 @@ public class CartsController {
         }
 
         // 이 상품이 추가가 되어있으면, 장바구니에 상품 추가를 거치지 않고 넘기기
-        CartsVo checkCart = cartsMapper.selectCartsById(productId);
+        CartsVo checkCart = cartsMapper.selectCartsById(productId,loginUser.getId());
+        System.out.println(checkCart);
         if (checkCart == null) {
-
             Map<String, Object> map = new HashMap<>();
             map.put("loginUserId", loginUser.getId());
             map.put("productId", productId);
             map.put("quantity", quantity);
 
-            // 정바구니에 해당 ID로 상품 추가
+            // 장바구니에 해당 ID로 상품 추가
             cartsMapper.insertCarts(map);
+            System.out.println("추가성공!!!!");
 
+        } else {
+            // 기존의 수량 업데이트
+            cartsMapper.updateCartItemQuantity(checkCart.getId(), checkCart.getQuantity() + quantity);
         }
 
-        List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 
+
+        // 장바구니 목록 다시 가져오기
+        List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
         model.addAttribute("cartsVo", cartsVo);
 
 

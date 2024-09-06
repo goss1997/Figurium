@@ -32,7 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectCartsById" resultType="carts" parameterType="int">
-        select * from carts where product_id = #{ productId }
+        select * from carts
+        where product_id = #{ productId }
+        and user_id = #{loginUserId}
     </select>
 
     <delete id="deleteCartProduct" parameterType="int">

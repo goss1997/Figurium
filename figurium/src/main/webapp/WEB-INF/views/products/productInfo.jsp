@@ -238,63 +238,8 @@
 </div>
 <!-- Q&A 영역 -->
 
-<div class="reviews_box">
+<div class="reviews_box" id="reviewAndQaContentArea">
 
-        <span class="reviewInsert_btn_box">
-            <input class="reviewInsert_btn" type="button" value="리뷰작성">
-        </span>
-
-    <table class="review_table">
-        <tr>
-            <th class="review_number">번호</th>
-            <th class="review_title">제목</th>
-            <th class="review_name">작성자</th>
-            <th class="review_regdate">작성일</th>
-            <th class="review_star">상태</th>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td class="review_td_title">[기타문의]입고 문의</td>
-            <td>홍길동</td>
-            <td>2024-08-28</td>
-            <td>답변완료</td>
-        </tr>
-
-        <!-- 테이블의 더미 데이터 -->
-        <tr>
-            <td>1</td>
-            <td class="review_td_title">[기타문의]입고 문의</td>
-            <td>홍길동</td>
-            <td>2024-08-28</td>
-            <td>미답변</td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td class="review_td_title">[기타문의]입고 문의</td>
-            <td>홍길동</td>
-            <td>2024-08-28</td>
-            <td>미답변</td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td class="review_td_title">[기타문의]입고 문의</td>
-            <td>홍길동</td>
-            <td>2024-08-28</td>
-            <td>답변완료</td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td class="review_td_title">[기타문의]입고 문의</td>
-            <td>홍길동</td>
-            <td>2024-08-28</td>
-            <td>답변완료</td>
-        </tr>
-
-    </table>
 </div>
 
 

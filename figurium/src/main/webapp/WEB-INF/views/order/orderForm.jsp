@@ -221,13 +221,12 @@
             // 결제검증
             $.ajax({
               type : "POST",
-              url  : "/verifyIamport/" + rsp.imp_uid,
-              data: {
-                productIds: productIds, // productId 추가
-                itemPrices: itemPrices, // productPrice 추가
-                itemQuantities: itemQuantities // productQuntity 추가
-              },
-              dataType: "json"
+              url  : "/verifyIamport/" + rsp.imp_uid
+              // data: {
+              //   itemPrices: itemPrices, // productPrice 추가
+              //   itemQuantities: itemQuantities // productQuntity 추가
+              // },
+              // dataType: "json"
             }).done(function(data){
               console.log(data);
 
@@ -237,7 +236,6 @@
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
               if(rsp.paid_amount == data.response.amount) {
                 sil();
-
               } else {
                 Swal.fire({
                   icon: 'error',

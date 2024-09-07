@@ -454,17 +454,28 @@
                 <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
                     <div class="payment-info">
                         <span>상품 합계</span>
-                        <span class="payment-info-price">${ myOrderInfo.totalValue }원</span>
+                        <span class="payment-info-price">
+                            <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue }" currencySymbol=""/>원
+                        </span>
                     </div>
 
                     <div class="payment-info">
                         <span>배송료</span>
-                        <span class="payment-info-price">(+)3,000원</span>
+                        <c:if test="${ myOrderInfo.totalValue < 100000 }">
+                            <span class="payment-info-price">(+)3,000원</span>
+                        </c:if>
+                        <c:if test="${ myOrderInfo.totalValue >= 100000 }">
+                            <span class="payment-info-price">0원 (배송비 무료 이벤트 적용!)</span>
+                        </c:if>
                     </div>
 
                     <div class="payment-info" id="payment-info-bottom">
                         <span>총 결제 금액</span>
-                        <span class="payment-info-price-red">${ myOrderInfo.totalValue + 3000 }원</span>
+                        <span class="payment-info-price-red">
+                          <c:set var="finalValue"
+                                 value="${ myOrderInfo.totalValue < 100000 ? myOrderInfo.totalValue + 3000 : myOrderInfo.totalValue}"/>
+                          <fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원
+                        </span>
                     </div>
 
 

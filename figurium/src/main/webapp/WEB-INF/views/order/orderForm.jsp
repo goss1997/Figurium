@@ -61,10 +61,11 @@
 
       }
 
+      const phone_pattern = /^01\d{9}$/;
       function check_phone() {
 
         let order_phone = $("#order_phone").val();
-        let phone_pattern = /^01\d{9}$/;
+
 
         if(order_phone.length==0) {
           $("#phone_msg").html("");
@@ -81,10 +82,10 @@
 
       }
 
+      const email_pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|net)$/;
       function check_email() {
 
         let order_email = $("#order_email").val();
-        let email_pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|net)$/;
 
         if(order_email.length==0) {
           $("#email_msg").html("");
@@ -123,7 +124,6 @@
       function check_phone2() {
 
         let shipping_phone = $("#shipping_phone").val();
-        let phone_pattern = /^01\d{9}$/;
 
         if(shipping_phone.length==0) {
           $("#shipping_phone_msg").html("");
@@ -164,10 +164,52 @@
 
     function buyItems() {
 
+      // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
+      let order_name = $("#order_name").val();
+      let order_phone = $("#order_phone").val();
+      let order_email = $("#order_email").val();
+      if(order_name == "" || order_phone == "" || order_email == "" || !phone_pattern.test(order_phone)
+              || !email_pattern.test(order_email)) {
+        Swal.fire({
+          icon: 'error',
+          title: '알림',
+          text: '주문자 정보는 필수적으로 기입해야 합니다.',
+          confirmButtonText: '확인'
+        }); // 결제검증이 실패하면 이뤄지는 실패 로직
+        return;
+      }
+
+      let shipping_name = $("#shipping_name").val();
+      let shipping_phone = $("#shipping_phone").val();
+      let address = $("#address").val();
+      let mem_zipcode1 = $("#mem_zipcode1").val();
+      let mem_zipcode2 = $("#mem_zipcode2").val();
+      if(shipping_name == "" || shipping_phone == ""
+              || address == "" || mem_zipcode1 == "" || mem_zipcode2 == ""
+              || !phone_pattern.test(shipping_phone)) {
+        Swal.fire({
+          icon: 'error',
+          title: '알림',
+          text: '배송지 정보는 필수적으로 기입해야 합니다.',
+          confirmButtonText: '확인'
+        }); // 결제검증이 실패하면 이뤄지는 실패 로직
+        return;
+      }
+      // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
+
+
+
+
+
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       let paymentType = $("input[name='payment']:checked").val();
       if (paymentType == null) {
-        alert("결제방식을 선택하고 결제를 진행해주세요.");
+        Swal.fire({
+          icon: 'info',
+          title: '알림',
+          text: '결제방식을 선택하고 결제를 진행해주세요.',
+          confirmButtonText: '확인'
+        }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
       }
       // 약관 동의 체크
@@ -197,7 +239,7 @@
             icon: 'success',
             title: '' +
                     '<img src="/images/흰둥이.png" alt="흰둥이" style="width: 200px; height: auto;">' +
-                    '<br>재고가 정상적으로 확인되었습니다.'
+                    '<br>주문이 정상적으로 요청되었습니다.'
           })
 
           setTimeout(function () {
@@ -208,7 +250,8 @@
             pay_method: paymentType, // 결제 방식
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
-            amount: <c:out value="${totalPrice+3000}" />, // 가격
+            <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
+            amount: <c:out value="${amount}" />, // 가격
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
@@ -597,7 +640,7 @@
       <div class="payment-title">결제 정보</div>
 
       <%-- 상품가격 + 배송비 계산 항목 : 0828 --%>
-      <c:if test="${ itemList == null }">
+      <c:if test="${ cartsList == null }">
       <div class="payment-info">
         <span>상품 합계</span>
         <span class="payment-info-price">0원</span>
@@ -624,14 +667,20 @@
 
       <div class="payment-info">
         <span>배송료</span>
-        <span class="payment-info-price">(+)3,000원</span>
+        <c:if test="${ totalPrice < 100000 }">
+          <span class="payment-info-price">(+)3,000원</span>
+        </c:if>
+        <c:if test="${ totalPrice >= 100000 }">
+          <span class="payment-info-price">0원 (배송비 무료 이벤트 적용!)</span>
+        </c:if>
       </div>
 
       <div class="payment-info" id="payment-info-bottom">
         <span>총 결제 금액</span>
 
         <span class="payment-info-price-red">
-          <fmt:formatNumber type="currency" value="${ totalPrice + 3000 }" currencySymbol=""/>원
+          <c:set var="finalValue" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
+          <fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원
         </span>
       </div>
     </c:if>

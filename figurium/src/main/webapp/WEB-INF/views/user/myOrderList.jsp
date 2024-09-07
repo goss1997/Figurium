@@ -345,7 +345,11 @@
                                                         </c:if>
 
                                                         <td class="column-3" style="padding-bottom: 0px;">
-                                                            <span class="productPrice">${ myOrder.totalValue+3000 }원</span>
+                                                            <span class="productPrice">
+                                                                <c:set var="finalValue"
+                                                                       value="${ myOrder.totalValue < 100000 ? myOrder.totalValue + 3000 : myOrder.totalValue }"/>
+                                                                <fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원
+                                                            </span>
                                                         </td>
                                                         <td class="column-4" style="text-align: center; padding-bottom: 0px">
                                                             <c:if test="${ myOrder.paymentType != 'vbank' }">

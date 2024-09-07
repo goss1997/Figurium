@@ -48,7 +48,14 @@ pageEncoding="UTF-8" %>
 			});
 
 			$('#totalAmount').text(grandTotal.toLocaleString() + '원');
-			const finalTotal = grandTotal + shippingCost;
+			const finalTotal = grandTotal + shippingCost >= 100000 ? grandTotal : grandTotal + shippingCost;
+
+			if (grandTotal >= 100000) {
+				$('.shipping_fee').text('0원'); // 배송비 0원으로 표시
+			} else {
+				$('.shipping_fee').text(shippingCost.toLocaleString() + '원'); // 배송비 3,000원으로 표시
+			}
+
 			$('.total .amount.highlight').text(finalTotal.toLocaleString() + '원');
 		}
 
@@ -189,7 +196,7 @@ pageEncoding="UTF-8" %>
 				</div>
 				<div class="item">
 					<span class="label">배송비</span>
-					<span class="amount">3,000원</span>
+					<span class="shipping_fee"></span>
 				</div>
 				<div class="item">
 					<span class="label">=</span>

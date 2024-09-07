@@ -51,6 +51,15 @@
           and #{ end }
     </select>
 
+    <!-- 게시글에 달린 모든 답변 삭제 -->
+    <delete id="deleteAllRepliesForQa" parameterType="int">
+        DELETE FROM qa WHERE id = #{id} AND reply IS NOT NULL
+    </delete>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteReply" parameterType="int">
+        UPDATE qa SET reply = NULL WHERE id = #{id}
+    </delete>
 
 
         <!-- selectRowTotal 쿼리 정의 -->

@@ -80,11 +80,12 @@
 
 
 <div id="content-wrap-area">
-    <div class="container pt-5">
-        <h1>Q&A 게시판</h1>
+    <div class="container pt-3">
+        <h1 style="margin-bottom: 15px">Q&A 게시판</h1>
+        <hr>
         <table class="table table-hover">
             <thead class="thead-light">
-            <tr>
+            <tr style="text-align: center">
                 <th>번호</th>
                 <th>제목</th>
                 <th>답변여부</th>
@@ -92,13 +93,13 @@
                 <th>작성일</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody style="text-align: center;">
             <c:forEach var="qa" items="${qaList}" varStatus="status" >
-                <tr>
+                <tr onclick="location.href='/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
                     <td>${status.index+1}</td>
-                    <td class="truncate-title">
-                        <span style="font-size: 18px;" class="material-symbols-outlined">lock</span>
-                        <a href="/qa/qaSelect.do?id=${qa.id}">${qa.title}</a>
+                    <td class="truncate-title" style="text-align: left;">
+                        <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
+                        ${qa.title}
                     </td>
                     <td>${qa.replyStatus}</td>
                     <td>${qa.name}</td>
@@ -108,11 +109,11 @@
             </tbody>
         </table>
         <hr>
-        <button type="button" class="btn btn-dark float-right" onclick="qaInsert()">글쓰기</button>
+        <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="qaInsert()">글쓰기</button>
 
 
         <!-- 페이징 메뉴 -->
-        <div>
+        <div style="margin-top: 30px !important;">
             ${pageMenu}
         </div>
 

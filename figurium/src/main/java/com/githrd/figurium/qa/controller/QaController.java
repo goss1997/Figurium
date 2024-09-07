@@ -158,19 +158,18 @@ public class QaController {
         return "redirect:/qa/qaSelect.do?id=" + id;
     }
 
-
-    // 게시글 삭제 메서드 추가
-    @GetMapping("/qaDelete.do")
-    public String delete(@RequestParam("id") int id) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            return "redirect:/";
-        }
-
-        // 게시글 삭제
+    @PostMapping("/qaDelete.do")
+    public String delete(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
         qaService.deleteQa(id);
-
+        redirectAttributes.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
         return "redirect:/qa/qaList.do";
+    }
+
+    @PostMapping("/qaReplyDelete.do")
+    public String deleteReply(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        qaService.deleteReply(id);
+        redirectAttributes.addFlashAttribute("msg", "답변이 삭제되었습니다.");
+        return "redirect:/qa/qaSelect.do";
     }
 
 

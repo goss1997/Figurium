@@ -101,6 +101,126 @@
             font-family: 'Pretendard-Regular';
         }
 
+        #bankTransferModal {
+            margin-top: 200px;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+
+        .modal-header {
+            background-color: #3182f6;
+            color: white;
+            border-bottom: none;
+            padding: 20px 24px;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            opacity: 1;
+            font-size: 24px;
+            padding: 0;
+            margin: -1rem -1rem -1rem auto;
+        }
+
+        .modal-body {
+            margin: auto;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .row {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .col-md-3 img {
+            width: 100%;
+            max-width: 80px;
+            margin-right: 20px;
+        }
+
+        .col-md-8 {
+            margin: auto;
+        }
+
+        .col-md-8 h4 {
+            color: #0062fa;
+            font-size: 38px;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .bank-info {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .bank-info h5 {
+            color: #3182f6;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .info-text p {
+            color: #4e5968;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 1rem;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .col-md-3 img {
+                max-width: 60px;
+                margin-bottom: 16px;
+            }
+        }
+
+        #productVbank {
+            font-weight: bold;
+            color: #0083d7;
+            animation: fade 1s infinite alternate;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 1; /* 진하게 */
+            }
+            100% {
+                opacity: 0.5; /* 옅어지게 */
+            }
+        }
+
     </style>
 
 </head>
@@ -228,7 +348,14 @@
                                                             <span class="productPrice">${ myOrder.totalValue+3000 }원</span>
                                                         </td>
                                                         <td class="column-4" style="text-align: center; padding-bottom: 0px">
+                                                            <c:if test="${ myOrder.paymentType != 'vbank' }">
                                                             <span class="productPrice">${ myOrder.paymentType }</span>
+                                                            </c:if>
+                                                            <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                                            <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#bankTransferModal" style="cursor: pointer;">
+                                                                무통장입금
+                                                            </span>
+                                                            </c:if>
                                                         </td>
                                                         <td class="column-5" style="text-align: center; padding-bottom: 0px">
                                                             <span class="productPrice">${ myOrder.createdAt }</span>
@@ -236,13 +363,50 @@
                                                         <td class="column-6" style="text-align: center; padding-bottom: 0px">
                                                             <c:if test="${ myOrder.valid == 'y' }">
                                                                 <span class="productPrice">${ myOrder.status }</span>
-                                                             </c:if>
+                                                            </c:if>
                                                             <c:if test="${ myOrder.valid == 'n' }">
                                                                 <span class="productPrice">환불완료</span>
-                                                             </c:if>
+                                                            </c:if>
                                                         </td>
                                                     </tr>
                                             </table>
+                                        </div>
+                                        <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                        <div style="text-align: right; font-size: 0.8em; color: gray; margin-top: 10px;">
+                                            무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다.
+                                        </div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 모달 -->
+                            <div class="modal fade" id="bankTransferModal" tabindex="-1" aria-labelledby="bankTransferModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="bankTransferModalLabel">무통장입금 안내</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <img src="/images/신태일.png" alt="신태일.png" class="img-fluid">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h4>무통장 거래 입금안내</h4>
+                                                    <div class="bank-info mt-3">
+                                                        <h5>937702-00-363467 국민은행 피규리움</h5>
+                                                    </div>
+                                                    <div class="info-text mt-3">
+                                                        <p>관리자의 입금처리가 순차적으로 진행됩니다.</p>
+                                                        <p>승인까지 다소 시간이 소요될 수 있습니다.</p>
+                                                        <p>입금자명과 주문자명이 동일해야 정상적인 입금처리가 됨을 알려드립니다.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

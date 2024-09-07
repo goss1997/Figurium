@@ -666,7 +666,7 @@
     <button class="order-button" onclick="buyItems();">주문하기</button>
 
     <div class="info-section" style="display: flex; align-items: center; margin-top: 50px;">
-      <img src="/images/루피.png" alt="루피.png" style="width: 100px; height: auto; margin-right: 20px;">
+      <img src="/images/신태일.png" alt="신태일.png" style="width: 100px; height: auto; margin-left: 20px;">
       <div>
         <h1 style="font-size: 24px; margin: 0; text-align: left">잠깐만요!</h1>
         <p style="padding-top: 10px;">피규리움에서는 10만원 이상 결제시, 택배비가 무료!</p>

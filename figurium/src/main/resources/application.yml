@@ -80,4 +80,3 @@ jasypt:
   encryptor:
     bean: jasyptEncryptor
     password: ${ENCRYPT_KEY}
-

@@ -295,7 +295,12 @@
                                                         <span class="productPrice">${ myOrder.price * myOrder.quantity }원</span>
                                                     </td>
                                                     <td class="column-5" style="text-align: center; padding-bottom: 0px">
-                                                        <span class="productPrice">${ myOrder.paymentType }</span>
+                                                        <c:if test="${ myOrder.paymentType == 'card' }">
+                                                            <span class="productPrice">카드</span>
+                                                        </c:if>
+                                                        <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                                            <span class="productPrice">무통장입금</span>
+                                                        </c:if>
                                                     </td>
                                                     <td class="column-6" style="text-align: center; padding-bottom: 0px">
                                                         <span class="productPrice">${ myOrder.createdAt }</span>

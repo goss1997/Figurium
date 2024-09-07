@@ -671,7 +671,7 @@
           <span class="payment-info-price">(+)3,000원</span>
         </c:if>
         <c:if test="${ totalPrice >= 100000 }">
-          <span class="payment-info-price">0원 (배송비 무료 이벤트 적용!)</span>
+          <span class="payment-info-price glowing-text">0원 (배송비 무료 이벤트 적용!)</span>
         </c:if>
       </div>
 

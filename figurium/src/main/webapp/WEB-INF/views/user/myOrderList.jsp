@@ -353,8 +353,8 @@
                                                             </span>
                                                         </td>
                                                         <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                            <c:if test="${ myOrder.paymentType != 'vbank' }">
-                                                            <span class="productPrice">${ myOrder.paymentType }</span>
+                                                            <c:if test="${ myOrder.paymentType == 'card' }">
+                                                            <span class="productPrice">카드</span>
                                                             </c:if>
                                                             <c:if test="${ myOrder.paymentType == 'vbank' }">
                                                             <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#bankTransferModal" style="cursor: pointer;">

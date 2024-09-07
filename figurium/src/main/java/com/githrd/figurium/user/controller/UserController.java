@@ -9,6 +9,7 @@ import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import com.githrd.figurium.user.vo.UserVo;
 import com.githrd.figurium.util.mail.service.EmailService;
+import com.githrd.figurium.util.page.Paging;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+
+    private static final int PAGE_SIZE = 5;    // 페이지 사이즈
 
     private final UserService userService;
     private final HttpSession session;
@@ -257,10 +260,10 @@ public class UserController {
         int result = userService.updateUserPassword(user.getId(), encPwd);
 
         if (result > 0) {
-            session.setAttribute("alertMsg","비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
+            session.setAttribute("alertMsg", "비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
             return "redirect:/";
-        }else{
-            session.setAttribute("alertMsg","비밀번호 재설정 실패!");
+        } else {
+            session.setAttribute("alertMsg", "비밀번호 재설정 실패!");
             return "redirect:/";
         }
     }
@@ -358,19 +361,27 @@ public class UserController {
     }
 
     /**
-     * 좋아요한 상품 리스트 조회 페이지
+     * 좋아요한 상품 리스트 페이징 조회
      */
     @GetMapping("myProductLikeList.do")
-    public String myPostLikeList(Model model) {
+    public String myProductLikeListAll(@RequestParam(defaultValue = "1") int page, Model model) {
+
         User loginUser = (User) session.getAttribute("loginUser");
 
         int userId = loginUser.getId();
 
-        List<ProductsVo> myProductLikeList = userService.selectMyProductLikeList(userId);
+        int totalPages = userService.getTotalPagesByUserId(userId);
+        String pageView = Paging.getPaging("", page, totalPages, 5, 5);
+        int offset = (page - 1) * PAGE_SIZE;
 
+        List<ProductsVo> myProductLikeList = userService.selectMyProductLikeList(userId, PAGE_SIZE, offset);
+
+
+        model.addAttribute("pageView", pageView);
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("myProductLikeList", myProductLikeList);
 
-        return "user/myProductLikeList";
+        return "user/myProductLikesForm";
     }
 
 }

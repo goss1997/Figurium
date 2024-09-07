@@ -15,7 +15,7 @@ public class UserVo {
     private String name;
     private String phone;
     private String address;
-    private String profileImgUrl;
+    private String profileImgUrl = "/images/default-user-image.png";
     private int role;
     private int deleted;
     private String createdAt;

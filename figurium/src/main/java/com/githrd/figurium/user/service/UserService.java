@@ -39,6 +39,8 @@ public class UserService {
         if (!profileImage.isEmpty()) {
             String profileImgUrl = s3ImageService.uploadS3(profileImage);
             user.setProfileImgUrl(profileImgUrl);
+        }else{
+            user.setProfileImgUrl("/images/default-user-image.png");
         }
 
         return userMapper.insert(user);
@@ -137,7 +139,12 @@ public class UserService {
         return userMapper.updateUserPassword(userId,encPwd);
     }
 
-    public List<ProductsVo> selectMyProductLikeList(int userId) {
-        return userMapper.selectMyProductLikeList(userId);
+    public List<ProductsVo> selectMyProductLikeList(int userId, int pageSize,int offset) {
+
+        return userMapper.selectMyProductLikeList(userId, pageSize,offset);
+    }
+
+    public int getTotalPagesByUserId(int userId) {
+        return userMapper.getTotalCountByUserId(userId);
     }
 }

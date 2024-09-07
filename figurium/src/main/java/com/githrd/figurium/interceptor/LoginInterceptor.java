@@ -28,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 
             // 이전 페이지가 없으면 홈으로 있으면 이전 페이지로 리다이렉트.
-            response.sendRedirect(referer == null ? "/" : referer);
+            response.sendRedirect("/");
             return false;
         }else{
             return true;

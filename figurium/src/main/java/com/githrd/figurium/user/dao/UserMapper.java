@@ -26,5 +26,7 @@ public interface UserMapper {
 
     int updateUserPassword(int userId, String encPwd);
 
-    List<ProductsVo> selectMyProductLikeList(int userId);
+    List<ProductsVo> selectMyProductLikeList(int userId, int pageSize, int offset);
+
+    int getTotalCountByUserId(int userId);
 }

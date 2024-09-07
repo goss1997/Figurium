@@ -74,14 +74,14 @@
     <!-- Profile Header -->
     <div class="profile-header">
         <div style="display: inline-block; margin-left: 70px;">
-            <img src="${loginUser.profileImgUrl}" alt="Profile Picture">
+            <img src="${user.profileImgUrl}" alt="Profile Picture">
         </div>
         <div style="display:inline-block; width: 50px; margin-left: 10px;">
             <label for="profileImage" class="custom-file-upload">수정</label>
             <input type="file" id="profileImage" name="profileImage" onchange="updateProfileImage(this)"/>
         </div>
-        <h2>${loginUser.name}</h2>
-        <p>${loginUser.email}</p>
+        <h2>${user.name}</h2>
+        <p>${user.email}</p>
     </div>
     <br><br>
 

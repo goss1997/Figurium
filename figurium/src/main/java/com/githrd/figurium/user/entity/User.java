@@ -35,7 +35,7 @@ public class User {
     private String address;
 
     @Column(name = "profile_img_url")
-    private String profileImgUrl = "/resources/images/FiguriumHand.png";
+    private String profileImgUrl = "/images/default-user-image.png";
 
     @Column(name = "role")
     private int role = 0;

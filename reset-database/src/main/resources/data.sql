@@ -176,8 +176,8 @@ INSERT INTO users (email, password, name, role, profile_img_url)
 VALUES ('user1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '일용자', 0, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/smoker-smoke.png');
 
 -- 사용자 2
-INSERT INTO users (email, password, name, role)
-VALUES ('user2@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '이용자', 0);
+INSERT INTO users (email, password, name, role, profile_img_url)
+VALUES ('user2@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '이용자', 0,'/images/default-user-image.png');
 
 -- 관리자 1
 INSERT INTO users (email, password, name, role, profile_img_url)
@@ -230,6 +230,7 @@ INSERT INTO qa (user_id, title, content, reply)
 VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글의 내용입니다. 다양한 시나리오에 대한 테스트를 위한 게시글입니다.', '답변 6');
 
 -- 회원1(일용자)의 좋아요한 상품 더미 데이터
+-- 상품이 있어야함으로 주석 처리.
 # INSERT INTO product_likes VALUES (null,1,12,default);
 # INSERT INTO product_likes VALUES (null,1,22,default);
 # INSERT INTO product_likes VALUES (null,1,32,default);
@@ -253,5 +254,14 @@ VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글�
 # INSERT INTO product_likes VALUES (null,1,37,default);
 # INSERT INTO product_likes VALUES (null,1,47,default);
 # INSERT INTO product_likes VALUES (null,1,57,default);
-
+# INSERT INTO product_likes VALUES (null,1,60,default);
+# INSERT INTO product_likes VALUES (null,1,61,default);
+# INSERT INTO product_likes VALUES (null,1,62,default);
+# INSERT INTO product_likes VALUES (null,1,63,default);
+# INSERT INTO product_likes VALUES (null,1,64,default);
+# INSERT INTO product_likes VALUES (null,1,65,default);
+# INSERT INTO product_likes VALUES (null,1,66,default);
+# INSERT INTO product_likes VALUES (null,1,67,default);
+# INSERT INTO product_likes VALUES (null,1,68,default);
+# INSERT INTO product_likes VALUES (null,1,69,default);
 

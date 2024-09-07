@@ -49,6 +49,14 @@
         from products p
         left join product_likes on p.id = product_likes.product_id
         where product_likes.user_id = #{userId}
+        order by id desc
+        limit #{pageSize} offset #{offset}
+    </select>
+
+    <select id="getTotalCountByUserId" resultType="int">
+        select count(*)
+        from product_likes
+        where user_id = #{userId}
     </select>
 
 </mapper>

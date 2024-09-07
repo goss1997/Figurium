@@ -230,19 +230,28 @@ INSERT INTO qa (user_id, title, content, reply)
 VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글의 내용입니다. 다양한 시나리오에 대한 테스트를 위한 게시글입니다.', '답변 6');
 
 -- 회원1(일용자)의 좋아요한 상품 더미 데이터
-INSERT INTO product_likes VALUES (null,1,2,default);
-INSERT INTO product_likes VALUES (null,1,12,default);
-INSERT INTO product_likes VALUES (null,1,22,default);
-INSERT INTO product_likes VALUES (null,1,32,default);
-INSERT INTO product_likes VALUES (null,1,3,default);
-INSERT INTO product_likes VALUES (null,1,33,default);
-INSERT INTO product_likes VALUES (null,1,13,default);
-INSERT INTO product_likes VALUES (null,1,4,default);
-INSERT INTO product_likes VALUES (null,1,44,default);
-INSERT INTO product_likes VALUES (null,1,24,default);
-INSERT INTO product_likes VALUES (null,1,5,default);
-INSERT INTO product_likes VALUES (null,1,55,default);
-INSERT INTO product_likes VALUES (null,1,6,default);
-INSERT INTO product_likes VALUES (null,1,66,default);
+# INSERT INTO product_likes VALUES (null,1,12,default);
+# INSERT INTO product_likes VALUES (null,1,22,default);
+# INSERT INTO product_likes VALUES (null,1,32,default);
+# INSERT INTO product_likes VALUES (null,1,3,default);
+# INSERT INTO product_likes VALUES (null,1,33,default);
+# INSERT INTO product_likes VALUES (null,1,13,default);
+# INSERT INTO product_likes VALUES (null,1,4,default);
+# INSERT INTO product_likes VALUES (null,1,44,default);
+# INSERT INTO product_likes VALUES (null,1,24,default);
+# INSERT INTO product_likes VALUES (null,1,5,default);
+# INSERT INTO product_likes VALUES (null,1,55,default);
+# INSERT INTO product_likes VALUES (null,1,6,default);
+# INSERT INTO product_likes VALUES (null,1,16,default);
+# INSERT INTO product_likes VALUES (null,1,26,default);
+# INSERT INTO product_likes VALUES (null,1,36,default);
+# INSERT INTO product_likes VALUES (null,1,46,default);
+# INSERT INTO product_likes VALUES (null,1,56,default);
+# INSERT INTO product_likes VALUES (null,1,7,default);
+# INSERT INTO product_likes VALUES (null,1,17,default);
+# INSERT INTO product_likes VALUES (null,1,27,default);
+# INSERT INTO product_likes VALUES (null,1,37,default);
+# INSERT INTO product_likes VALUES (null,1,47,default);
+# INSERT INTO product_likes VALUES (null,1,57,default);
 
 

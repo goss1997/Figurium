@@ -105,7 +105,7 @@
                             <li class="list-group-item"><a
                                     href="/user/my-page.do">개인 정보 수정</a></li>
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="/user/myProductLikeList.do">관심 상품</a></li>
-                            <li class="list-group-item"><a href="/user/order-list.do">내 주문 내역</a></li>
+                            <li class="list-group-item"><a href="/user/order-list.do">주문 내역</a></li>
                             <li class="list-group-item"><a href="#">반품 내역</a></li>
                             <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
                         </ul>
@@ -155,10 +155,8 @@
                                     <td style="width: 5%;">
                                         <input style="width:30px; height: 30px; font-size: 12px;" onclick="deleteLikeBtn(${myProduct.id});" type="button" class="btn btn-danger" value="X"/>
                                     </td>
-                                </tr>
                             </c:forEach>
                         </table>
-                        <br>
                     </div>
                 </div>
             </div>

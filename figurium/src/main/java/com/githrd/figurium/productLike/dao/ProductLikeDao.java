@@ -32,7 +32,7 @@ public interface ProductLikeDao {
     /**
      * 사용자의 추천 정보를 제거
      */
-    public void removeLike(ProductLikeVo productLikeVo);
+    public int removeLike(ProductLikeVo productLikeVo);
 
     /**
      * 해당 상품과 유저의 id를 받아서 상품 화면에 뿌릴 때 좋아요를 눌렀는지 확인 하는 로직

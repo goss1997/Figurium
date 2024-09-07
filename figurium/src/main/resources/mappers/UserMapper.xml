@@ -44,6 +44,13 @@
         where id = #{userId}
     </update>
 
+    <select id="selectMyProductLikeList" parameterType="int" resultType="products">
+        select p.*
+        from products p
+        left join product_likes on p.id = product_likes.product_id
+        where product_likes.user_id = #{userId}
+    </select>
+
 </mapper>
 
 

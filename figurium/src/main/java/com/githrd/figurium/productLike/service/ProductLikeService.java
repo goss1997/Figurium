@@ -7,4 +7,6 @@ public interface ProductLikeService {
    public int toggleProductLike(ProductLikeVo vo);
 
    boolean isProductLikedByUser(int productId, int userId);
+
+   int deleteProductLike(ProductLikeVo productLikeVo);
 }

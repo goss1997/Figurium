@@ -4,6 +4,7 @@ import com.githrd.figurium.exception.customException.FailDeleteUserException;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
+import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import com.githrd.figurium.user.vo.UserVo;
@@ -354,6 +355,22 @@ public class UserController {
         } else {
             throw new FailDeleteUserException();
         }
+    }
+
+    /**
+     * 좋아요한 상품 리스트 조회 페이지
+     */
+    @GetMapping("myProductLikeList.do")
+    public String myPostLikeList(Model model) {
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        int userId = loginUser.getId();
+
+        List<ProductsVo> myProductLikeList = userService.selectMyProductLikeList(userId);
+
+        model.addAttribute("myProductLikeList", myProductLikeList);
+
+        return "user/myProductLikeList";
     }
 
 }

@@ -1,8 +1,11 @@
 package com.githrd.figurium.user.dao;
 
 import com.githrd.figurium.auth.dto.UserProfile;
+import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -22,4 +25,6 @@ public interface UserMapper {
     int findByEmailAndDeletedFalse(String findEmail);
 
     int updateUserPassword(int userId, String encPwd);
+
+    List<ProductsVo> selectMyProductLikeList(int userId);
 }

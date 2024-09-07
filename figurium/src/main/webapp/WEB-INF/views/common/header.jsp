@@ -269,10 +269,9 @@
                                             <a href="#">${loginUser.name}</a>
                                             <ul style="margin-top: 15px;" class="sub-menu">
                                                 <li><a href="/user/my-page.do">마이페이지</a></li>
+                                                <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
                                                 <li><a href="/user/order-list.do">주문 내역</a></li>
                                                 <li><a href="#">반품 내역</a></li>
-                                                <li><a href="#">위시리스트</a></li>
-                                                <hr>
                                                 <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
                                             </ul>
                                         </li>

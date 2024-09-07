@@ -1,6 +1,7 @@
 package com.githrd.figurium.user.service;
 
 import com.githrd.figurium.auth.dto.UserProfile;
+import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.dao.SocialAccountMapper;
 import com.githrd.figurium.user.dao.UserMapper;
 import com.githrd.figurium.user.entity.User;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -132,5 +135,9 @@ public class UserService {
     @Transactional
     public int updateUserPassword(int userId, String encPwd) {
         return userMapper.updateUserPassword(userId,encPwd);
+    }
+
+    public List<ProductsVo> selectMyProductLikeList(int userId) {
+        return userMapper.selectMyProductLikeList(userId);
     }
 }

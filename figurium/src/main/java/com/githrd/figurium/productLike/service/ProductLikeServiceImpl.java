@@ -4,9 +4,7 @@ import com.githrd.figurium.productLike.dao.ProductLikeDao;
 import com.githrd.figurium.productLike.vo.ProductLikeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductLikeServiceImpl implements ProductLikeService {
@@ -34,7 +32,13 @@ public class ProductLikeServiceImpl implements ProductLikeService {
 
     @Override
     public boolean isProductLikedByUser(int productId, int userId) {
-        return productLikeDao.isProductLikedByUser(productId,userId);
+        return productLikeDao.isProductLikedByUser(productId, userId);
+    }
+
+    @Override
+    @Transactional
+    public int deleteProductLike(ProductLikeVo productLikeVo) {
+        return productLikeDao.removeLike(productLikeVo);
     }
 
 

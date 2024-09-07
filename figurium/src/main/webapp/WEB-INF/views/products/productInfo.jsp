@@ -249,10 +249,50 @@
 
 </div>
 <!-- Q&A 영역 -->
+<div id="content-wrap-area">
+<div class="container pt-3">
+    <h1 style="margin-bottom: 15px">Q&A리스트</h1>
+    <hr>
+    <table class="table table-hover">
+        <thead class="thead-light">
+        <tr style="text-align: center">
+            <th>번호</th>
+            <th>제목</th>
+            <th>답변여부</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: center;">
+        <c:forEach var="qa" items="${qaList}" varStatus="status" >
+            <tr onclick="location.href='/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
+                <td>${status.index+1}</td>
+                <td class="truncate-title" style="text-align: left;">
+                    <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
+                        ${qa.title}
+                </td>
+                <td>${qa.replyStatus}</td>
+                <td>${qa.name}</td>
+                <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <hr>
+    <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="productQaInsert()">글쓰기</button>
 
-<div class="reviews_box" id="reviewAndQaContentArea">
+
+    <!-- 페이징 메뉴 -->
+    <div style="margin-top: 30px !important;">
+        ${pageMenu}
+    </div>
 
 </div>
+</div>
+
+
+
+
 
 
 <jsp:include page="../common/footer.jsp"/>

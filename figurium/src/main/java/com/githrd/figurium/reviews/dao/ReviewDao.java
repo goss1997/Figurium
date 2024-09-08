@@ -35,7 +35,7 @@ public interface ReviewDao {
     Integer reviewRatingAvg(int productId);
 
     // 페이징 처리를 위한 리뷰의 갯수를 반환
-    int selectRowTotal(Map<String, Object> map);
+    int selectRowTotal(int productid);
 
     // 페이징 처리를 한 후 리뷰의 리스트를 가져오기
     List<ReviewVo> selectAllWithPagination(Map<String, Object> map);

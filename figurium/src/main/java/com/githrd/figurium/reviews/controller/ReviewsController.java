@@ -109,21 +109,84 @@ public class ReviewsController {
         }
     }
 
-    // 리뷰 페이징 처리
-    @RequestMapping("/reviewsPaging")
-    @ResponseBody
-    public Map<String, Object> getReviews(@RequestParam("productId") int productId,
-                                          @RequestParam("page") int page,
-                                          @RequestParam("size") int size) {
+
+    // 리뷰의 리스트를 로드 할 곳
+    @RequestMapping("/loadReviews")
+    public String loadReviews(@RequestParam("productId") int productId,
+                              @RequestParam("page") int page,
+                              @RequestParam("size") int size,
+                              Model model) {
         int offset = (page - 1) * size;
         List<ReviewVo> reviews = reviewService.getReviewsWithPagination(productId, offset, size);
-        int reviewCount = reviewService.reviewCountByProductId(productId);
 
-        Map<String, Object> res_data = new HashMap<>();
-        res_data.put("reviews", reviews);
-        res_data.put("total", reviewCount);
-        return res_data;
+        // 리뷰 데이터를 model에 담아서 JSP로 넘김
+        model.addAttribute("reviews", reviews);
+        return "reviews/reviewList";
     }
+
+
+
+    // 리뷰의 페이징 처리
+    @RequestMapping("/reviewsPaging")
+    public @ResponseBody Map<String, Object> getReviews(
+            @RequestParam("productId") int productId, // 상품 ID
+            @RequestParam("page") int page, // 요청된 페이지 번호
+            @RequestParam("size") int size) { // 페이지당 리뷰 수
+
+        // 현재 페이지에 대한 오프셋 계산 (SQL 쿼리의 LIMIT 시작 위치)
+        int offset = (page - 1) * size;
+
+        // 페이지당 리뷰 수와 오프셋을 사용하여 리뷰 목록을 가져옴
+        List<ReviewVo> reviews = reviewService.getReviewsWithPagination(productId, offset, size);
+
+        // 총 리뷰 수를 조회 (페이지 네비게이션을 위해 필요)
+        int totalReviews = reviewService.selectRowTotal(productId);
+
+        // 총 페이지 수 계산
+        int totalPages = (int) Math.ceil((double) totalReviews / size);
+
+        // 시작 페이지와 끝 페이지 계산
+        int startPage = Math.max(1, page - 2); // 현재 페이지를 기준으로 시작 페이지
+        int endPage = Math.min(totalPages, page + 2); // 현재 페이지를 기준으로 끝 페이지
+
+        // 5개씩 버튼을 보여주기 위한 조정
+        // 시작 페이지와 끝 페이지가 5개보다 적을 경우 조정
+        if (endPage - startPage < 4) {
+            // 시작 페이지가 1보다 크면 끝 페이지를 조정
+            if (startPage > 1) {
+                startPage = Math.max(1, endPage - 4);
+            }
+            // 끝 페이지가 총 페이지 수보다 적으면 시작 페이지를 조정
+            if (endPage < totalPages) {
+                endPage = Math.min(totalPages, startPage + 4);
+            }
+        }
+
+        // 이전 페이지가 있는지 여부
+        boolean hasPrevious = page > 1;
+
+        // 다음 페이지가 있는지 여부
+        boolean hasNext = page < totalPages;
+
+        // 응답 데이터 구성
+        Map<String, Object> response = new HashMap<>();
+        response.put("reviews", reviews); // 리뷰 목록
+        response.put("totalPages", totalPages); // 총 페이지 수
+        response.put("currentPage", page); // 현재 페이지 번호
+        response.put("startPage", startPage); // 시작 페이지 번호
+        response.put("endPage", endPage); // 끝 페이지 번호
+        response.put("hasPrevious", hasPrevious); // 이전 페이지 존재 여부
+        response.put("hasNext", hasNext); // 다음 페이지 존재 여부
+
+        return response;
+    }
+
+
+
+
+
+
+
 
 
 

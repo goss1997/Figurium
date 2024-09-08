@@ -1,0 +1,163 @@
+/* 리뷰 영역 */
+
+.reviews_box{
+    margin: auto;
+    margin-top: 75px;
+    width: 1300px;
+}
+
+/* 리뷰 작성 버튼 */
+.reviewInsert_btn_box{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.reviewInsert_btn{
+    width: 100px;
+    height: 30px;
+    background-color: #232323;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.reviewInsert_btn:hover{
+    background-color: #404040;
+}
+
+.pagination-button {
+    padding: 5px 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.pagination-button.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+
+/* 리뷰 상세 보기 CSS 요소 */
+
+/* 리뷰 내용 왼쪽 정렬 */
+.review-text-left {
+    text-align: left; /* 내용 왼쪽 정렬 */
+    margin-left: 85px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    overflow-wrap: anywhere;
+}
+
+/* 이미지 중앙 정렬 */
+.review-text img {
+    display: block; /* 이미지가 블록 요소로 취급되도록 */
+    margin-left: auto; /* 좌측 여백 자동 조정 */
+    margin-right: auto; /* 우측 여백 자동 조정 */
+    margin-bottom: 50px;
+    max-width: 100%; /* 최대 너비 100%로 설정 */
+    height: auto; /* 자동 높이 조정 */
+}
+
+/* 제목 왼쪽 정렬 */
+.review-title {
+    text-align: left; /* 제목 왼쪽 정렬 */
+    display: block; /* 제목이 블록 요소로 취급되도록 */
+    color: #6c6c6c;
+}
+
+/* 리뷰의 수정 삭제 버튼 */
+
+.review_buttons {
+    margin-bottom: 30px;
+    text-align: -webkit-center;
+}
+
+.review_buttons .edit_button,
+.review_buttons .delete_button {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.review_buttons .edit_button {
+    width: 60px;
+    border-radius: 25px;
+    background-color: #489aff;
+    color: white;
+}
+
+.review_buttons .delete_button {
+    width: 60px;
+    border-radius: 25px;
+    background-color: #f44336;
+    color: white;
+}
+
+
+.review_buttons .edit_button:hover {
+    background-color: #3636ff;
+}
+
+.review_buttons .delete_button:hover {
+    background-color: #ff0000;
+}
+
+
+/* 리뷰 테이블의 요소 */
+
+.review_table{
+    margin: auto;
+    margin-top: 15px;
+    width: 1300px;
+    text-align: center;
+}
+
+.review_table th{
+    background-color: whitesmoke;
+    height: 50px;
+}
+
+.review_table td{
+    height: 50px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.review_table .review_number{
+    width: 10%;
+}
+
+.review_table .review_title{
+    width: 45%;
+}
+
+.review_table .review_name{
+    width: 10%;
+}
+
+.review_table .review_regdate{
+    width: 25%;
+}
+
+.review_table .review_star{
+    width: 10%;
+}
+
+
+.review_td_title{
+    text-align: left;
+}
+
+/* 리뷰의 별점 */
+.star {
+    color: #ff3d3d;  /* 채워진 별의 색상 */
+    font-size: 20px;
+}
+
+.star.empty {
+    color: lightgray; /* 빈 별의 색상 */
+}

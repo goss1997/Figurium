@@ -65,8 +65,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public int selectRowTotal(Map<String, Object> map) {
-        return reviewDao.selectRowTotal(map);
+    public int selectRowTotal(int productId) {
+        return reviewDao.selectRowTotal(productId);
     }
 
     @Override

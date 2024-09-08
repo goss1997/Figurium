@@ -172,7 +172,9 @@
 
 
         <!-- 해당 상품의 리뷰의 리스트를 가져와서 출력 할 곳 -->
+        <c:if test="${!empty reviewList}">
         <div id="productReviewList"></div>
+        </c:if>
         <div id="pagination" style="text-align: center;"></div>
 
     </div>

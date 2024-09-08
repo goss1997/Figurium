@@ -39,6 +39,12 @@
         DELETE FROM qa WHERE id = #{id}
     </delete>
 
+    <update id="deleteReply" parameterType="int">
+        UPDATE qa
+        SET reply = NULL, replyStatus = '답변준비중'
+        WHERE id = #{id}
+    </update>
+
     <!-- 페이징 처리된 게시글 조회 -->
     <select id="selectAllWithPagination" parameterType="map" resultType="QaVo">
         select q.*, u.name
@@ -51,18 +57,7 @@
           and #{ end }
     </select>
 
-    <!-- 게시글에 달린 모든 답변 삭제 -->
-    <delete id="deleteAllRepliesForQa" parameterType="int">
-        DELETE FROM qa WHERE id = #{id} AND reply IS NOT NULL
-    </delete>
-
-    <!-- 댓글 삭제 -->
-    <delete id="deleteReply" parameterType="int">
-        UPDATE qa SET reply = NULL WHERE id = #{id}
-    </delete>
-
-
-        <!-- selectRowTotal 쿼리 정의 -->
+    <!-- selectRowTotal 쿼리 정의 -->
         <select id="selectRowTotal" resultType="int">
             SELECT COUNT(*)
             FROM qa

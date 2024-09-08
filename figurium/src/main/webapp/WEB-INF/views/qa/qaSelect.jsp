@@ -21,6 +21,16 @@ To change this template use File | Settings | File Templates.
 
 </style>
 
+    <script>
+        function handleSubmit(event) {
+            var content = document.getElementById('content').value;
+            if (!content.trim()) {
+                alert('답변 내용을 입력해 주세요.');
+                event.preventDefault();
+            }
+        }
+    </script>
+
 </head>
 
 <body>
@@ -55,7 +65,10 @@ To change this template use File | Settings | File Templates.
     <div class="text-right">
         <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
         <c:if test="${loginUser.role == '1'}">
-            <input type="button" style="margin-bottom: 30px;" class="btn btn-light" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.id}'">
+            <form action="/qa/qaDelete.do" method="post" style="display:inline;">
+                <input type="hidden" name="id" value="${qa.id}">
+                <button type="submit" style="margin-bottom: 30px;" class="btn btn-light" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+            </form>
         </c:if>
     </div>
 
@@ -69,19 +82,18 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
         <c:if test="${loginUser.role == '1'}">
-            <input type="button" style="margin-bottom: 30px; margin-top: 15px; float: right" class="btn btn-light" value="삭제" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='/qa/qaDelete.do?id=${qa.id}'">
+        <form action="/qa/qaReplyDelete.do" method="post" style="display:inline;">
+        <button type="submit" value="삭제" style="margin-bottom: 30px; margin-top: 15px; float: right" class="btn btn-light">답변 삭제</button> <%-- 이게 답변 삭제 버튼 --%>
         </c:if>
     </c:forEach>
-
     <c:if test="${loginUser.role == '1'}">
-
-        <form action="/qa/qaReplySave.do" method="post">
+            <form id="replyForm" action="/qa/qaReplySave.do" method="post" onsubmit="return handleSubmit(event)">
             <input type="hidden" name="id" value="${qa.id}">
             <div class="form-group">
                 <label for="content" style="margin-top: 30px; font-size: 18px; margin-bottom: 15px;">답변 내용</label>
-                <textarea class="form-control" style="resize: none; height: 150px;" id="content" name="content" rows="4" required></textarea>
+                <textarea class="form-control" style="resize: none; height: 150px;" id="content" name="content" rows="4"></textarea>
             </div>
-            <button type="submit" style="margin-bottom: 30px; float: right" class="btn btn-dark">등록</button>
+                <button type="button" style="margin-bottom: 30px; float: right" class="btn btn-dark" onclick="document.getElementById('replyForm').submit();">등록</button>
             <button type="button" style="margin-bottom: 30px; margin-right: 10px;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
 
 

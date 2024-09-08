@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class QaVo {
     private Integer id;
     private Integer userId;  // Integer 타입으로 설정
+    private Integer productId;
     private String title;
     private String content;
     private String reply;
@@ -16,5 +17,4 @@ public class QaVo {
     private String category;
     private String replyStatus;
     private String name;
-
 }

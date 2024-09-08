@@ -40,20 +40,12 @@
 
         @Override
         public void deleteQa(int id) {
-            // 먼저 게시글에 달린 모든 답변을 삭제
-            qaMapper.deleteAllRepliesForQa(id);
-            // 그 다음 게시글 삭제
             qaMapper.delete(id);
         }
 
         @Override
         public void deleteReply(int id) {
             qaMapper.deleteReply(id);
-        }
-
-        @Override
-        public void deleteAllRepliesForQa(int id) {
-            qaMapper.deleteAllRepliesForQa(id);
         }
 
         @Override
@@ -65,9 +57,6 @@
         public  List<QaVo> selectAllWithPagination(Map<String, Object> map) {
             return qaMapper.selectAllWithPagination(map);
         }
-
-
-
 
         @Override
         public List<QaVo> getQaWithPagination(int offset, int limit) {

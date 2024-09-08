@@ -265,7 +265,7 @@
         </thead>
         <tbody style="text-align: center;">
         <c:forEach var="qa" items="${qaList}" varStatus="status" >
-            <tr onclick="location.href='/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
+            <tr onclick="location.href='/qa/productQaSelect.do?id=${qa.id}'" style="cursor: pointer;">
                 <td>${status.index+1}</td>
                 <td class="truncate-title" style="text-align: left;">
                     <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
@@ -279,7 +279,7 @@
         </tbody>
     </table>
     <hr>
-    <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="productQaInsert()">글쓰기</button>
+    <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="location.href='productQaInsert.jsp'">글쓰기</button>
 
 
     <!-- 페이징 메뉴 -->

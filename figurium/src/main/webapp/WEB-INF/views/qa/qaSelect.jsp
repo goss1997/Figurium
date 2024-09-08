@@ -63,9 +63,9 @@ To change this template use File | Settings | File Templates.
     </div>
     <hr>
     <div class="text-right">
-        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
+        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'">목록</button>
         <c:if test="${loginUser.role == '1'}">
-            <form action="/qa/qaDelete.do" method="post" style="display:inline;">
+            <form action="${pageContext.request.contextPath}/qa/qaDelete.do" method="post" style="display:inline;">
                 <input type="hidden" name="id" value="${qa.id}">
                 <button type="submit" style="margin-bottom: 30px;" class="btn btn-light" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
             </form>
@@ -74,7 +74,7 @@ To change this template use File | Settings | File Templates.
 
     <%--관리자 댓글 목록--%>
     <c:forEach var="reply" items="${qa.reply}">
-        <div class="card mt-3">
+        <div class="card mt-3" style="margin-bottom: 50px;">
             <div class="card-body" style="height: 180px;">
 <%--            <h5 class="card-title">${qa.name}</h5>--%>
                 <p class="card-update">${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</p>
@@ -82,21 +82,19 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
         <c:if test="${loginUser.role == '1'}">
-        <form action="/qa/qaReplyDelete.do" method="post" style="display:inline;">
+        <form action="${pageContext.request.contextPath}/qa/qaReplyDelete.do" method="post" style="display:inline;">
         <button type="submit" value="삭제" style="margin-bottom: 30px; margin-top: 15px; float: right" class="btn btn-light">답변 삭제</button> <%-- 이게 답변 삭제 버튼 --%>
         </c:if>
     </c:forEach>
     <c:if test="${loginUser.role == '1'}">
-            <form id="replyForm" action="/qa/qaReplySave.do" method="post" onsubmit="return handleSubmit(event)">
+            <form id="replyForm" action="${pageContext.request.contextPath}/qa/qaReplySave.do" method="post" onsubmit="return handleSubmit(event)">
             <input type="hidden" name="id" value="${qa.id}">
             <div class="form-group">
                 <label for="content" style="margin-top: 30px; font-size: 18px; margin-bottom: 15px;">답변 내용</label>
                 <textarea class="form-control" style="resize: none; height: 150px;" id="content" name="content" rows="4"></textarea>
             </div>
                 <button type="button" style="margin-bottom: 30px; float: right" class="btn btn-dark" onclick="document.getElementById('replyForm').submit();">등록</button>
-            <button type="button" style="margin-bottom: 30px; margin-right: 10px;" class="btn btn-dark" onclick="location.href='/qa/qaList.do'">목록</button>
-
-
+            <button type="button" style="margin-bottom: 30px; margin-right: 10px;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'">목록</button>
         </form>
     </c:if>
 

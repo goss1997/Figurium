@@ -240,7 +240,7 @@
                         </li>
 
                         <li>
-                            <a href="/qa/qaList.do">Q&A</a>
+                            <a href="${pageContext.request.contextPath}/qa/qaList.do">Q&A</a>
                         </li>
                     </ul>
                 </div>
@@ -396,7 +396,7 @@
             </li>
 
             <li>
-                <a href="/qa/qaList.do">Q&A</a>
+                <a href=${pageContext.request.contextPath}qaList.do">Q&A</a>
             </li>
         </ul>
     </div>

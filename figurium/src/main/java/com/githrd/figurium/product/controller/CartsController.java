@@ -19,9 +19,9 @@ import java.util.Map;
 @Controller
 public class CartsController {
 
-    private HttpSession session;
-    private CartsMapper cartsMapper;
-    private ProductsMapper productsMapper;
+    private final HttpSession session;
+    private final CartsMapper cartsMapper;
+    private final ProductsMapper productsMapper;
 
     @Autowired
     public CartsController(HttpSession session, CartsMapper cartsMapper,

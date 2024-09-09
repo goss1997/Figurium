@@ -65,7 +65,6 @@
     </div>
 
     <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
-    <input type="hidden" value="${product.id}">
     <form>
         <div class="product_title">
             <div class="product_img_box">

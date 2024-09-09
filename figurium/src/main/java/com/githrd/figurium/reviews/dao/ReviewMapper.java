@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ReviewDao {
+public interface ReviewMapper {
 
 
     // 해당 상품에 대한 리뷰 Insert

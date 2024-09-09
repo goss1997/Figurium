@@ -4,7 +4,7 @@ import com.githrd.figurium.productLike.vo.ProductLikeVo;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ProductLikeDao {
+public interface ProductLikeMapper {
 
     /**
      * 사용자가 해당 상품을 이미 추천했는지 확인

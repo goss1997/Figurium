@@ -1,6 +1,6 @@
 package com.githrd.figurium.productLike.service;
 
-import com.githrd.figurium.productLike.dao.ProductLikeDao;
+import com.githrd.figurium.productLike.dao.ProductLikeMapper;
 import com.githrd.figurium.productLike.vo.ProductLikeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,36 +9,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductLikeServiceImpl implements ProductLikeService {
 
-    private final ProductLikeDao productLikeDao;
+    private final ProductLikeMapper productLikeMapper;
 
     @Autowired
-    ProductLikeServiceImpl(ProductLikeDao productLikeDao) {
-        this.productLikeDao = productLikeDao;
+    ProductLikeServiceImpl(ProductLikeMapper productLikeMapper) {
+        this.productLikeMapper = productLikeMapper;
     }
 
 
     @Override
     public int toggleProductLike(ProductLikeVo productLikeVo) {
-        if (productLikeDao.isProductLiked(productLikeVo)) {
-            productLikeDao.decrementLikeCount(productLikeVo);
-            productLikeDao.removeLike(productLikeVo);
+        if (productLikeMapper.isProductLiked(productLikeVo)) {
+            productLikeMapper.decrementLikeCount(productLikeVo);
+            productLikeMapper.removeLike(productLikeVo);
             return 0; // 좋아요 취소
         } else {
-            productLikeDao.addLike(productLikeVo);
-            productLikeDao.incrementLikeCount(productLikeVo);
+            productLikeMapper.addLike(productLikeVo);
+            productLikeMapper.incrementLikeCount(productLikeVo);
             return 1; // 좋아요 추가
         }
     }
 
     @Override
     public boolean isProductLikedByUser(int productId, int userId) {
-        return productLikeDao.isProductLikedByUser(productId, userId);
+        return productLikeMapper.isProductLikedByUser(productId, userId);
     }
 
     @Override
     @Transactional
     public int deleteProductLike(ProductLikeVo productLikeVo) {
-        return productLikeDao.removeLike(productLikeVo);
+        return productLikeMapper.removeLike(productLikeVo);
     }
 
 

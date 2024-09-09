@@ -264,23 +264,23 @@ pageEncoding="UTF-8" %>
 	// x 누른 image 카트에서 삭제되게 하기
 	function itemCartDelete(element){
 
-		if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
-			return;
-		}
-
 		let deleteImg = element.querySelector('img');
 		let productId = deleteImg.alt;
-		let loginUser = '${ loginUser.id }';
+		let loginUser = "${sessionScope.loginUser.id}"
+
+		if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
+			console.log(productId);
+			console.log(loginUser);
+			return;
+		};
 
 		$.ajax({
 			url 	: "CartDelete.do",
 			type	: "POST",
-			data	: { productId : productId,
-				loginUser : loginUser
-			},
+			data	: { productId : productId, loginUser : loginUser},
 			success	: function (res_data) {
 				alert("장바구니에서 상품이 삭제되었습니다.");
-				location.href="CartList.do?loginUser=" + loginUser;
+				return "shopingCart.do"
 			},
 			error	: function (err) {
 				alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");

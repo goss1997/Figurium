@@ -7,8 +7,13 @@ import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 
@@ -20,6 +25,7 @@ public class ProductsService {
 
 
 
+    @Autowired
     ProductsService(ProductRepository productRepository, S3ImageService s3ImageService, ProductsMapper productsMapper) {
         this.productRepository = productRepository;
         this.s3ImageService = s3ImageService;
@@ -75,4 +81,6 @@ public class ProductsService {
     public int productSave(ProductsVo products) {
         return productsMapper.productInsert(products);
     }
+
+
 }

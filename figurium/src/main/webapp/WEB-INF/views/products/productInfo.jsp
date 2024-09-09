@@ -233,9 +233,6 @@
 
 
 
-
-
-
 <jsp:include page="../common/footer.jsp"/>
 
 
@@ -346,7 +343,10 @@
 </script>
 
 
+
+
 <script>
+    // 리뷰의 페이징 처리
     $(document).ready(function() {
         function loadReviews(page) {
             const productId = ${product.id};  // 현재 페이지의 상품 ID

@@ -1,9 +1,12 @@
 package com.githrd.figurium.home.controller;
 
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
 import com.githrd.figurium.product.repository.ProductRepository;
+import com.githrd.figurium.product.service.ProductsService;
+import com.githrd.figurium.product.vo.ProductsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +32,14 @@ public class HomeController {
 
     private final ProductRepository productRepository;
     private final CategoriesRepository categoriesRepository;
+    private final ProductsService productsService;
 
     @Autowired
     HomeController(ProductRepository productRepository,
-                   CategoriesRepository categoriesRepository) {
+                   CategoriesRepository categoriesRepository,  ProductsService productsService) {
         this.productRepository = productRepository;
         this.categoriesRepository = categoriesRepository;
+        this.productsService = productsService;
     }
 
     @GetMapping("/")
@@ -74,4 +82,7 @@ public class HomeController {
         response.put("hasNext", productsPage.hasNext()); // 다음 페이지가 있는지 여부
         return ResponseEntity.ok(response);
     }
+
+
+
 }

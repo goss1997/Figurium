@@ -9,6 +9,7 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ public class PaymentController {
     private IamportClient api;
 
     private RefundService refundService;
+    private HttpSession session;
 
     // application.properties에 암호를 저장하여 Controller에 기록이 안되게 암호화 시킴
     @Value("${imp.api.key}")
@@ -116,10 +118,14 @@ public class PaymentController {
 
     @ResponseBody   // JSON 형태로 반환
     @RequestMapping(value="/verifyIamport/{imp_uid}")
-    public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid)
+    public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid,
+                                                    Integer totalPrice)
             throws IamportResponseException, IOException {
         // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
         // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
+        int serverTotalPrice = (int) session.getAttribute("sessionTotalPrice");
+
+        // if(serverTotalPrice )
 
             return api.paymentByImpUid(imp_uid);
     }

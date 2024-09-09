@@ -39,6 +39,7 @@ public class MyOrderVo {
 
     // sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
     private int totalValue;         // order 번호에 대한 총가격 계산 컬럼
+    private String refundReason;    // 환불사유
 
 
 }

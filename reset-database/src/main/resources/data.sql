@@ -95,7 +95,7 @@ CREATE TABLE orders
     user_id      INT         NOT NULL COMMENT '사용자 고유 번호',
     payment_type VARCHAR(50) NOT NULL COMMENT '주문 결제 방식',
     price        INT         NOT NULL COMMENT '주문한 상품 총 가격',
-    status       VARCHAR(20) DEFAULT '준비중' CHECK (status IN ('준비중', '출고대기', '배송중', '배송완료')) COMMENT '주문 상태(준비중 / 출고대기 / 배송중 / 배송완료)',
+    status       VARCHAR(20) DEFAULT '준비중' CHECK (status IN ('입금대기', '준비중', '출고대기', '배송중', '배송완료','환불완료')) COMMENT '주문 상태(입금대기, 준비중, 출고대기, 배송중, 배송완료, 환불완료)',
     created_at   DATETIME    DEFAULT CURRENT_TIMESTAMP COMMENT '주문 시간',
     valid        CHAR(1)  DEFAULT 'y' CHECK (valid IN ('y', 'n')) COMMENT '유효한 주문',
     merchant_id  VARCHAR(200) NOT NULL COMMENT '사용자 결제 번호',
@@ -135,6 +135,13 @@ CREATE TABLE shipping_addresses
     address          VARCHAR(100) COMMENT '배송 주소',
     delivery_request VARCHAR(200) COMMENT '배송 요청 사항',
     FOREIGN KEY (order_id) REFERENCES orders (id)
+);
+
+-- 환불 사유
+create table rfreasons
+(
+    name VARCHAR(15) check (name in ('단순 변심', '제품 불량', '잘못된 주문', '오배송', '기타')) PRIMARY KEY COMMENT '환불 사유',
+    order_id INT COMMENT '주문 고유 번호'
 );
 
 -- 리뷰 테이블
@@ -201,6 +208,20 @@ from orders o inner join order_items oi on o.id = oi.order_id
               inner join customers c on o.id = c.order_id
               inner join shipping_addresses s on o.id = s.order_id
               inner join products p on oi.product_id = p.id;
+
+-- 환불 사유 추가 view
+create or replace view order_history_refund_view
+as
+select
+    o.id as id,o.payment_type,o.user_id,o.status,o.created_at,o.valid,o.merchant_id,
+    oi.price,oi.quantity,c.name,c.phone as customer_phone,
+    c.email,s.recipient_name,s.phone,s.address,s.delivery_request,
+    p.name as product_name, p.image_url, p.id as p_id, r.name as refund_reason
+from orders o inner join order_items oi on o.id = oi.order_id
+              inner join customers c on o.id = c.order_id
+              inner join shipping_addresses s on o.id = s.order_id
+              inner join products p on oi.product_id = p.id
+              left  join rfreasons r on o.id = r.order_id;
 
 -- Cart에 넣는 데이터
 create or replace view product_cart_view

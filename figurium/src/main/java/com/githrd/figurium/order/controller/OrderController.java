@@ -93,7 +93,7 @@ public class OrderController {
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
-        // session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
 

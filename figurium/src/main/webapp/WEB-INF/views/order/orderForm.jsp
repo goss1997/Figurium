@@ -264,7 +264,7 @@
             // 결제검증
             $.ajax({
               type : "POST",
-              url  : "/verifyIamport/" + rsp.imp_uid
+              url  : "/verifyIamport/" + rsp.imp_uid + ${ totalPrice }
               // data: {
               //   itemPrices: itemPrices, // productPrice 추가
               //   itemQuantities: itemQuantities // productQuntity 추가

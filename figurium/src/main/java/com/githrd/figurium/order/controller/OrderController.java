@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/order")
@@ -140,6 +141,12 @@ public class OrderController {
         map.put("paymentType",paymentType);
         map.put("userId", userId);
         map.put("merchantUid", merchantUid);
+
+        if (Objects.equals(paymentType, "vbank")) {
+            map.put("status","입금대기");
+        }else {
+            map.put("status","준비중");
+        }
 
         int res = orderMapper.insertOrders(map);
         System.out.println("결제성공");

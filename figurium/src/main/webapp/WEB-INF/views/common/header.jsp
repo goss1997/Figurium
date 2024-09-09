@@ -268,6 +268,9 @@
                                         <li style="padding : 0;">
                                             <a href="#">${loginUser.name}</a>
                                             <ul style="margin-top: 15px;" class="sub-menu">
+                                                <c:if test="${loginUser.role == '1'}">
+                                                    <li><a href="/admin.do">관리자페이지</a></li>
+                                                </c:if>
                                                 <li><a href="/user/my-page.do">마이페이지</a></li>
                                                 <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
                                                 <li><a href="/user/order-list.do">주문 내역</a></li>

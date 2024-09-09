@@ -25,7 +25,7 @@ public class adminController {
     private final OrderMapper orderMapper;
 
 
-    @GetMapping("/admin")
+    @GetMapping("/admin.do")
     public String admin(Model model) {
 
         User loginUser = (User) session.getAttribute("loginUser");

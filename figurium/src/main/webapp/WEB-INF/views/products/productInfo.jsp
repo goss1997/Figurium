@@ -325,6 +325,14 @@
 
         let productId = f.productId.value;
 
+        let user = "${sessionScope.loginUser}";
+
+        if (user === "null" || user === "") {
+            alert("로그인이 필요한 서비스 입니다.");
+            return;
+        }
+
+
         if (isNaN(quantity) || quantity <= 0) {
             alert("현재 재고가 없습니다.");
             return;

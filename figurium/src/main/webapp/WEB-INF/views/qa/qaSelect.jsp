@@ -74,6 +74,8 @@ To change this template use File | Settings | File Templates.
 
     <%--관리자 댓글 목록--%>
     <c:forEach var="reply" items="${qa.reply}">
+        <form action="${pageContext.request.contextPath}/qa/qaReplyDelete.do" method="post" style="display:inline;">
+        <input type="hidden" name="id" value="${qa.id}">
         <div class="card mt-3" style="margin-bottom: 50px;">
             <div class="card-body" style="height: 180px;">
 <%--            <h5 class="card-title">${qa.name}</h5>--%>
@@ -82,11 +84,13 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
         <c:if test="${loginUser.role == '1'}">
-        <form action="${pageContext.request.contextPath}/qa/qaReplyDelete.do" method="post" style="display:inline;">
+
         <button type="submit" value="삭제" style="margin-bottom: 30px; margin-top: 15px; float: right" class="btn btn-light">답변 삭제</button> <%-- 이게 답변 삭제 버튼 --%>
+        </form>
         </c:if>
     </c:forEach>
     <c:if test="${loginUser.role == '1'}">
+
             <form id="replyForm" action="${pageContext.request.contextPath}/qa/qaReplySave.do" method="post" onsubmit="return handleSubmit(event)">
             <input type="hidden" name="id" value="${qa.id}">
             <div class="form-group">

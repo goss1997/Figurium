@@ -64,4 +64,12 @@
         </select>
 
 
+<!--  admin Qa 미답변 List  -->
+    <select id="replyQaList" resultType="com.githrd.figurium.qa.vo.QaVo">
+        SELECT * FROM qa where replyStatus = '답변준비중'
+        ORDER BY id DESC
+    </select>
+
+
+
 </mapper>

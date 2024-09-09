@@ -1,19 +1,23 @@
 package com.githrd.figurium.admin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.vo.MyOrderVo;
+import com.githrd.figurium.qa.service.QaService;
+import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.util.page.CommonPage;
+import com.githrd.figurium.util.page.Paging;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +27,8 @@ public class adminController {
 
     private final HttpSession session;
     private final OrderMapper orderMapper;
+    private final QaService qaService;
+    private final ObjectMapper objectMapper;
 
 
     @GetMapping("/admin.do")
@@ -76,5 +82,35 @@ public class adminController {
     }
 
 
-}
+    @GetMapping("/adminQaList.do")
+    @ResponseBody
+    public ResponseEntity<String> adminQaList() {
+        try {
+            List<QaVo> qaList = qaService.replyQaList();
+            // qaList를 JSON으로 변환
+            String json = objectMapper.writeValueAsString(qaList);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
 
+    @GetMapping("/qaCount.do")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> getQaCount() {
+        try {
+            int count = qaService
+                    .getQaCount(); // qaService에서 QA 갯수 가져오는 메서드 호출
+            Map<String, Integer> response = new HashMap<>();
+            response.put("count", count);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+}

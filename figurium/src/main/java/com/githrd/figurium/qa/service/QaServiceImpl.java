@@ -58,9 +58,22 @@
             return qaMapper.selectAllWithPagination(map);
         }
 
+
+
         @Override
         public List<QaVo> getQaWithPagination(int offset, int limit) {
             return qaMapper.selectAllWithPagination(Map.of("offset", offset, "limit", limit));
+        }
+
+
+        @Override
+        public List<QaVo> replyQaList() {
+            return qaMapper.replyQaList();
+        }
+
+        @Override
+        public int getQaCount() {
+            return qaMapper.getQaCount(); // qaMapper에서 QA 갯수 가져오는 메서드 호출
         }
 
 

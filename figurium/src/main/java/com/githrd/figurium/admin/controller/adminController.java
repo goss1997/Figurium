@@ -102,8 +102,8 @@ public class adminController {
     @ResponseBody
     public ResponseEntity<Map<String, Integer>> getQaCount() {
         try {
-            int count = qaService
-                    .getQaCount(); // qaService에서 QA 갯수 가져오는 메서드 호출
+            int count = qaService.getQaCount();
+            System.out.println("답변준비중인 게시글 수: " + count);
             Map<String, Integer> response = new HashMap<>();
             response.put("count", count);
             return ResponseEntity.ok(response);

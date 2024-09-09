@@ -11,6 +11,7 @@
     @Service
     public class QaServiceImpl implements QaService {
 
+
         private final QaMapper qaMapper;
 
         @Autowired
@@ -71,8 +72,11 @@
             return qaMapper.replyQaList();
         }
 
+
+
         @Override
         public int getQaCount() {
+
             return qaMapper.getQaCount(); // qaMapper에서 QA 갯수 가져오는 메서드 호출
         }
 

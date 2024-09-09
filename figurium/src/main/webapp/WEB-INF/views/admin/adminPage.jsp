@@ -146,6 +146,7 @@
 
         updateQaCount();
 
+
         $('#changeStatus').click(function (event) {
             event.preventDefault();
             adminRefund();

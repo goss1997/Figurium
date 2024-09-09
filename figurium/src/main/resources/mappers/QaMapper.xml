@@ -66,10 +66,20 @@
 
 <!--  admin Qa 미답변 List  -->
     <select id="replyQaList" resultType="com.githrd.figurium.qa.vo.QaVo">
-        SELECT * FROM qa where replyStatus = '답변준비중'
+        select q.*, u.name
+        from (select rank() over(order by id desc) as no,
+            i.*
+              from
+                  (select * from qa) i) q
+                 left join users u on q.user_id = u.id
+        where replyStatus = '답변준비중'
         ORDER BY id DESC
     </select>
 
-
+    <select id="getQaCount" resultType="int">
+        SELECT COUNT(*)
+        FROM qa
+        where replyStatus = '답변준비중'
+    </select>
 
 </mapper>

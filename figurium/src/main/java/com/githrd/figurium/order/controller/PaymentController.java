@@ -14,13 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 @Controller
 @Slf4j  // 로깅을 위한 log 객체를 자동으로 생성
@@ -119,13 +117,48 @@ public class PaymentController {
     @ResponseBody   // JSON 형태로 반환
     @RequestMapping(value="/verifyIamport/{imp_uid}")
     public IamportResponse<Payment> paymentByImpUid(@PathVariable(value="imp_uid") String imp_uid,
-                                                    Integer totalPrice)
+                                                    @RequestParam(value="totalPrice") Integer sessionTotalPrice,
+                                                    @RequestParam(value="merchantUid") String merchantUid, HttpServletResponse response)
             throws IamportResponseException, IOException {
+
+
+        IamportResponse<Payment> res = api.paymentByImpUid(imp_uid);
+        Payment payment = res.getResponse();
+        BigDecimal amount = payment.getAmount();
+
         // @PathVariable(value="imp_uid")로 지정된 값을 String imp_uid에 지정
         // 특졍 결제 ID(imp_uid)를 기반으로 결제 정보 조회 후 JSON으로 클라이언트에게 응답
-        int serverTotalPrice = (int) session.getAttribute("sessionTotalPrice");
+        BigDecimal serverTotalPrice = (BigDecimal) session.getAttribute("sessionTotalPrice");
+        
+        log.info("넘어온 session 가격값: {}", serverTotalPrice);
+        log.info("iamport amount 값 {}", amount);
 
-        // if(serverTotalPrice )
+        // 결제 검증로직
+        if(serverTotalPrice != amount) {
+
+            String accessToken = refundService.getToken(apiKey, secretKey);
+            String reason = "치명적 데이터 변조";
+
+            // 결제 검증 후 데이터변조 발견 시 환불
+            try {
+                refundService.refundRequest(accessToken, merchantUid, reason);
+                log.info("결제 검증 실패로 인한 환불: 주문번호 {}", merchantUid);
+                response.setContentType("text/html; charset=UTF-8");
+                PrintWriter out = response.getWriter();
+                out.println("<script>alert('결제 데이터 변조로 인하여 초기 화면으로 되돌아갑니다.');</script>");
+                out.flush();
+                return api.paymentByImpUid(imp_uid);
+            } catch (IOException e) {
+                log.error("환불 요청 실패: {}", e.getMessage());
+    
+                // response로 알림창 넘겨주기
+                response.setContentType("text/html; charset=UTF-8");
+                PrintWriter out = response.getWriter();
+                out.println("<script>alert('환불에 실패했습니다. 관리자에게 문의바랍니다.');</script>");
+                out.flush();
+                return api.paymentByImpUid(imp_uid);
+            }
+        }
 
             return api.paymentByImpUid(imp_uid);
     }

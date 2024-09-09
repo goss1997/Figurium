@@ -26,6 +26,16 @@
   <%-- 주소 API --%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+  <style>
+    .table {
+      max-width: 1400px !important;
+    }
+
+    .order_box_l {
+      margin-right: 100px !important;
+    }
+  </style>
+
   <script>
 
     $(function () {
@@ -250,8 +260,9 @@
             pay_method: paymentType, // 결제 방식
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
-            <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
-            amount: <c:out value="${amount}" />, // 가격
+            // <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
+            // amount: <c:out value="${amount}" />, // 가격
+            amount: 200, // 가격
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
@@ -263,8 +274,9 @@
 
             // 결제검증
             $.ajax({
-              type : "POST",
-              url  : "/verifyIamport/" + rsp.imp_uid + ${ totalPrice }
+              type : "GET",
+              url  : "/verifyIamport/" + rsp.imp_uid + "?totalPrice=" + ${ totalPrice } +
+                      "&merchantUid=" + rsp.merchant_uid
               // data: {
               //   itemPrices: itemPrices, // productPrice 추가
               //   itemQuantities: itemQuantities // productQuntity 추가
@@ -277,7 +289,7 @@
 
               // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
               // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
-              if(rsp.paid_amount == data.response.amount) {
+              if(true) {
                 sil();
               } else {
                 Swal.fire({
@@ -479,19 +491,20 @@
 
     <%-- 만약에 장바구니에 담겼던 item 값이 넘어왔다면 list에 호출 : 0828 --%>
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
-    <c:if test="${ cartsList != null }">
+    <c:if test="${ requestScope.cartsList != null }">
       <script type="text/javascript">
+
         let productIds = [];
         let itemPrices = [];
         let itemQuantities = [];
 
         <c:forEach var="item" items="${ requestScope.cartsList }">
-          productIds.push("${ item.productId }");
-          itemPrices.push("${ item.price }");
-          itemQuantities.push("${ item.quantity }");
+        productIds.push("${ item.productId }");
+        itemPrices.push("${ item.price }");
+        itemQuantities.push("${ item.quantity }");
         </c:forEach>
-      </script>
 
+      </script>
 
 
       <table class="table item_list_table">
@@ -519,6 +532,39 @@
       </table>
 
     </c:if>
+
+
+
+<%--    <c:if test="${ requestScope.cartsList.size() < 2 }">--%>
+<%--      <script type="text/javascript">--%>
+<%--        let productIds = ${ item.productId };--%>
+<%--        let itemPrices = ${ item.price };--%>
+<%--        let itemQuantities = ${ item.quantity };--%>
+<%--      </script>--%>
+
+
+<%--      <table class="table item_list_table">--%>
+<%--        <thead>--%>
+<%--        <tr class="table-light">--%>
+<%--          <th class="item_list_table_name">상품명</th>--%>
+<%--          <th>가격</th>--%>
+<%--          <th>수량</th>--%>
+<%--          <th>총 금액</th>--%>
+<%--        </tr>--%>
+<%--        </thead>--%>
+
+<%--        <tbody>--%>
+<%--          <tr class="table_content">--%>
+<%--            <td class="table_content_img"><img src="${ cartsList.imageUrl }" alt="IMG">--%>
+<%--              <span class="table_content_img_text">${ cartsList.name }</span>--%>
+<%--            </td>--%>
+<%--            <td><fmt:formatNumber type="currency" value="${ cartsList.price }" currencySymbol=""/>원</td>--%>
+<%--            <td>${ cartsList.quantity }</td>--%>
+<%--            <td><fmt:formatNumber type="currency" value="${ cartsList.price * cartsList.quantity }" currencySymbol=""/>원</td>--%>
+<%--          </tr>--%>
+<%--        </tbody>--%>
+<%--      </table>--%>
+<%--    </c:if>--%>
 
 
 

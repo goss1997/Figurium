@@ -133,7 +133,7 @@
 
                 <div class="price_bye">
                     <input class="price_bye_btn" type="button" value="바로구매"
-                           onclick="location.href='shopingCart2.do'">
+                           onclick="location.href='/order/orderFormRight.do?quantity='+ $('#quantity').val() + '&productId=' + ${product.id}">
                 </div>
 
 

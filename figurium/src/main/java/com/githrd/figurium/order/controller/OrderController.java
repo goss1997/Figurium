@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/order")
@@ -55,6 +54,37 @@ public class OrderController {
         this.orderItemsMapper = orderItemsMapper;
         this.session = session;
         this.productsMapper = productsMapper;
+    }
+
+
+    /*
+     *   바로구매창
+     */
+    @RequestMapping("orderFormRight.do")
+    public String orderFormRight(@RequestParam(required = false) int quantity,
+                            @RequestParam(required = false) int productId,
+                            HttpSession session,
+                            Model model) {
+
+        User user = (User) session.getAttribute("loginUser");
+
+        // 해당 상품이 추가되어있으면 더이상 insert 하지 않기
+        CartsVo checkCart = cartsMapper.selectCartsById(productId,user.getId());
+
+        if (checkCart == null) {
+            int res = cartsMapper.insertCartItem(user.getId(),productId,quantity);
+
+        }
+        List<CartsVo> cartsList = cartsMapper.checksCartItemOne(user.getId(),productId);
+
+        // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
+        CartsVo cartsVo = cartsList.get(0);
+        int totalPrice = cartsVo.getPrice() * cartsVo.getQuantity();
+
+        model.addAttribute("cartsList", cartsList);
+        model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionTotalPrice", totalPrice);
+        return "order/orderForm";
     }
 
 
@@ -142,7 +172,7 @@ public class OrderController {
         map.put("userId", userId);
         map.put("merchantUid", merchantUid);
 
-        if (Objects.equals(paymentType, "vbank")) {
+        if (paymentType.equals("vbank")) {
             map.put("status","입금대기");
         }else {
             map.put("status","준비중");

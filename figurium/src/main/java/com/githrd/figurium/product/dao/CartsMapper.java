@@ -30,5 +30,8 @@ public interface CartsMapper {
     // 장바구니 에서 선택된 상품만 전달
     List<CartsVo> checksCartItemList(int userId, List<Integer> productId);
 
+    // 즉시구매처리하기
+    List<CartsVo> checksCartItemOne(int userId, int productId);
+
 
 }

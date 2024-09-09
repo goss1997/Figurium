@@ -34,6 +34,10 @@
     .order_box_l {
       margin-right: 100px !important;
     }
+
+    #table_under_box {
+      margin-right: 63px !important;
+    }
   </style>
 
   <script>
@@ -149,6 +153,16 @@
         }
 
       }
+
+    window.onload = function() {
+      var fullAddress = "${sessionScope.loginUser.address}";
+      var zipcode = fullAddress.substring(0, 5);
+      var remainingAddress = fullAddress.substring(6); // 우편번호 다음의 공백을 제거하기 위해 6부터 시작
+
+      document.getElementById('shipping_address').value = fullAddress;
+      document.getElementById('mem_zipcode1').value = remainingAddress;
+      document.getElementById('address').value = zipcode;
+    }
 
 
 

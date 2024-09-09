@@ -261,8 +261,7 @@
             merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
             name: '피규리움 결제창',   // 상품명
             // <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
-            // amount: <c:out value="${amount}" />, // 가격
-            amount: 200, // 가격
+            amount: <c:out value="${amount}" />, // 가격
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
@@ -275,41 +274,42 @@
             // 결제검증
             $.ajax({
               type : "GET",
-              url  : "/verifyIamport/" + rsp.imp_uid + "?totalPrice=" + ${ totalPrice } +
-                      "&merchantUid=" + rsp.merchant_uid
-              // data: {
-              //   itemPrices: itemPrices, // productPrice 추가
-              //   itemQuantities: itemQuantities // productQuntity 추가
-              // },
-              // dataType: "json"
-            }).done(function(data){
-              console.log(data);
-
-              merchantUid = rsp.merchant_uid;
-
-              // 위의 rsp.paid_amount(결제 완료 후 객체 정보를 JSON으로 뽑아옴)와
-              // data.response.amount(서버에서 imp_uid로 iamport에 요청된 결제 정보)를 비교한후 로직 실행
-              if(true) {
-                sil();
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: '결제 실패',
-                  text: '결제에 실패했습니다. 관리자에게 문의해주세요.',
-                  confirmButtonText: '확인'
-                }); // 결제검증이 실패하면 이뤄지는 실패 로직
-              }
+              url  : "/verifyIamport/" + rsp.imp_uid + "?merchantUid=" + rsp.merchant_uid,
+              success : function (res_data) {
+                if (res_data && res_data.status === 'ready') {
+                    Swal.fire({
+                      icon: 'success',
+                      title: '결제 성공',
+                      text: '결제가 완료되었습니다.',
+                      confirmButtonText: '확인'
+                    });
+                    merchantUid = rsp.merchant_uid;
+                    sil();
+                  } else {
+                    // 결제 상태가 'paid'가 아닌 경우
+                    Swal.fire({
+                      icon: 'warning',
+                      title: '결제 상태',
+                      text: '결제 상태가 확인되지 않았습니다.',
+                      confirmButtonText: '확인'
+                    });
+                    return;
+                  }
+                },
+                error : function () {
+                  Swal.fire({
+                    icon: 'error',
+                    title: '결제 실패',
+                    text: '결제에 실패했습니다. 관리자에게 문의해주세요.',
+                    confirmButtonText: '확인'
+                  }); // 결제검증이 실패하면 이뤄지는 실패 로직
+                  return;
+                }
             });
           });
         }, 2500);
         },
-        error: function(err){
-          alert("해당 상품의 재고가 충분하지 않습니다. 해당 상품의 재고를 문의해주세요.");
-          return;
-        }
       });
-
-
     }
 
 
@@ -317,6 +317,7 @@
 
       let paymentType = $("input[name='payment']:checked").val();
       let userId = document.getElementById("order_id").value;    // 보낸 사람 id
+
 
       console.log(paymentType);
 

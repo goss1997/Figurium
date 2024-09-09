@@ -8,6 +8,9 @@
 <head>
     <title>Figurium</title>
     <meta charset="UTF-8">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
     <style>
 
@@ -31,6 +34,26 @@
 <body class="animsition">
 <jsp:include page="./common/header.jsp"/>
 <div style="height: 75px;"></div>
+
+<c:if test="${not empty message}">
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '알림',
+            text: '${message}'
+        });
+    </script>
+</c:if>
+
+<c:if test="${not empty error}">
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '오류',
+            text: '${error}'
+        });
+    </script>
+</c:if>
 
 <!-- 장바구니 모달 -->
 <div class="wrap-header-cart js-panel-cart">

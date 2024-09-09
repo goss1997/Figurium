@@ -274,15 +274,20 @@
             // 결제검증
             $.ajax({
               type : "GET",
-              url  : "/verifyIamport/" + rsp.imp_uid + "?merchantUid=" + rsp.merchant_uid,
+              url  : "../api/verifyIamport.do",
+              data : {
+                imp_uid : rsp.imp_uid,
+                merchantUid : rsp.merchant_uid
+              },
               success : function (res_data) {
-                if (res_data && res_data.status === 'ready') {
+                if (res_data.paidAt != null) {
                     Swal.fire({
                       icon: 'success',
                       title: '결제 성공',
                       text: '결제가 완료되었습니다.',
                       confirmButtonText: '확인'
                     });
+                    console.log(res_data);
                     merchantUid = rsp.merchant_uid;
                     sil();
                   } else {
@@ -293,14 +298,16 @@
                       text: '결제 상태가 확인되지 않았습니다.',
                       confirmButtonText: '확인'
                     });
+                    console.log(res_data);
                     return;
                   }
                 },
-                error : function () {
+                error : function (jqXHR) {
+                  const errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : '결제에 실패했습니다. 관리자에게 문의해주세요.';
                   Swal.fire({
                     icon: 'error',
                     title: '결제 실패',
-                    text: '결제에 실패했습니다. 관리자에게 문의해주세요.',
+                    text: errorMessage,
                     confirmButtonText: '확인'
                   }); // 결제검증이 실패하면 이뤄지는 실패 로직
                   return;
@@ -739,7 +746,7 @@
       <div class="payment-method-title">결제 수단</div>
 
       <div class="payment-option">
-        <input type="radio" id="credit_card" name="payment" value="card">
+        <input type="radio" id="credit_card" name="payment" value="card" checked>
         <label for="credit_card">통합결제</label>
       </div>
 

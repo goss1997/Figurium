@@ -321,7 +321,7 @@
 
                                                     <tr class="table_row" style="height: 100px;">
                                                         <td class="column-1" style="padding-bottom: 0px;" >
-                                                            <div class="how-itemcart1" onclick="location.href='../refund.do?id=${ myOrder.id }'">
+                                                            <div class="how-itemcart1" onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
                                                                 <img src="${ myOrder.imageUrl }"
                                                                      alt="${ myOrder.id }" style="text-align: left;">
                                                             </div>

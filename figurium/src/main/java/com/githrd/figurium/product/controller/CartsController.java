@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -75,10 +76,12 @@ public class CartsController {
         // 장바구니에 담긴 상품 삭제
         @RequestMapping(value = "/CartDelete.do")
         @ResponseBody
-        public String CartDelete(int productId, int loginUser) {
+        public String CartDelete(@RequestParam(value = "productId") int productId,
+                                 @RequestParam(value = "loginUserId") int  loginUserId ) {
 
-            int res = cartsMapper.deleteCartProduct(productId, loginUser);
-
+            int res = cartsMapper.deleteCartProduct(productId, loginUserId);
+            System.out.println("productId = " + productId);
+            System.out.println("loginUserId = " + loginUserId);
             return "success";
         }
 
@@ -91,10 +94,6 @@ public class CartsController {
             List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 
             model.addAttribute("cartsVo", cartsVo);
-
-            for(CartsVo carts : cartsVo){
-                System.out.println("carts = " + carts.getProductId());
-            }
 
             return "products/shopingCart";
         }

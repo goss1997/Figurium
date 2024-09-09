@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and user_id = #{loginUserId}
     </select>
 
-    <delete id="deleteCartProduct" parameterType="int">
+    <delete id="deleteCartProduct" parameterType="map">
         delete from carts where product_id = #{ productId } and
                                 user_id = #{ loginUserId }
     </delete>

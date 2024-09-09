@@ -151,7 +151,7 @@ pageEncoding="UTF-8" %>
 									<td class="column-1"  style="padding-bottom: 0px";>
 										<div class="how-itemcart1" onclick="itemCartDelete(this)">
 											<img src="${ cart.imageUrl }"
-												 alt="${ cart.id }">
+												 alt="${ cart.productId }">
 										</div>
 									</td>
 									<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
@@ -265,22 +265,20 @@ pageEncoding="UTF-8" %>
 	function itemCartDelete(element){
 
 		let deleteImg = element.querySelector('img');
-		let productId = deleteImg.alt;
-		let loginUser = "${sessionScope.loginUser.id}"
+		let productId = element.querySelector('img').alt; // 해당 이미지의 alt 속성에 저장한 productId를 가져와서 사용
+		let loginUserId  = "${sessionScope.loginUser.id}"
 
 		if(confirm("장바구니 아이템을 삭제하시겠습니까?") == false) {
-			console.log(productId);
-			console.log(loginUser);
 			return;
-		};
+		}
 
 		$.ajax({
 			url 	: "CartDelete.do",
 			type	: "POST",
-			data	: { productId : productId, loginUser : loginUser},
+			data	: { productId : productId,  loginUserId  :  loginUserId },
 			success	: function (res_data) {
 				alert("장바구니에서 상품이 삭제되었습니다.");
-				return "shopingCart.do"
+					location.href = "CartList.do"
 			},
 			error	: function (err) {
 				alert("오류로 인해 장바구니에서 상품 삭제가 취소되었습니다.");

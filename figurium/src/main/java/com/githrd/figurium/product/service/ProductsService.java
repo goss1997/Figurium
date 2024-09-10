@@ -83,9 +83,9 @@ public class ProductsService {
     }
 
 
-    // 상품의 카테고리 별 조회
-    List<ProductsVo> selectCategories(int productId){
-        return productsMapper.selectCategories(productId);
+    // 상품 카테고리 리스트의 동적 쿼리
+    public List<ProductsVo> categoriesList(Map<String,Object> params){
+        return productsMapper.categoriesList(params);
     }
 
 

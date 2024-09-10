@@ -1,5 +1,6 @@
 package com.githrd.figurium.product.controller;
 
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -18,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +33,25 @@ public class ProductsController {
     private final HttpSession session;
     private final ProductLikeService productLikeService;
     private final S3ImageService s3ImageService;
+    private final ProductsMapper productsMapper;
 
+
+    @GetMapping("/productList.do")
+    public String productList(@RequestParam(defaultValue = "all") String selectFilter,
+                              @RequestParam(value = "name") String categoryName,
+                              Model model) {
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("selectFilter",selectFilter);
+        params.put("categoryName",categoryName);
+
+        List<ProductsVo> productCategoriesList = productsService.categoriesList(params);
+        model.addAttribute("productCategoriesList", productCategoriesList);
+        model.addAttribute("selectFilter", selectFilter);
+        model.addAttribute("categoryName", categoryName);
+
+        return "products/productCategories";
+    }
 
 
 

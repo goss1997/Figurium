@@ -1,0 +1,23 @@
+
+
+.categories_main_box{
+    margin: auto;
+    width: 1400px;
+}
+
+.sort_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  /* 수직 중앙 정렬 */
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+.filter_box {
+    margin-left: auto;
+}
+
+.select_filter {
+    padding: 5px;       /* 선택 박스의 패딩 */
+    border-radius: 5px; /* 선택 박스의 둥근 모서리 */
+}

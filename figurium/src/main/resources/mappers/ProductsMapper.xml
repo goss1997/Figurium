@@ -36,16 +36,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </update>
 
- <!--   &lt;!&ndash; 상품의 카테고리별 조회 &ndash;&gt;
-    <select id="categoriesList" resultType="products" parameterType="int">
-        SELECT p.productId, p.productName, c.name AS categoryName
-        FROM products p
-                 JOIN categories c ON p.categoryId = c.id
-        WHERE p.productId = #{productId}
-
+    <!-- 상품의 카테고리별 조회 및 필터링 -->
+    <select id="categoriesList" resultType="products" parameterType="Map">
+        SELECT *
+        FROM products
+        <where>
+            <!-- 카테고리 필터링 -->
+            <if test="categoryName != null and categoryName != ''">
+                category_name = #{categoryName}
+            </if>
+        </where>
+        <!-- 상품 정렬 필터 -->
+        <choose>
+            <when test="selectFilter == 'newProducts'">
+                ORDER BY created_at DESC
+            </when>
+            <when test="selectFilter == 'highPrice'">
+                ORDER BY price DESC
+            </when>
+            <when test="selectFilter == 'lowPrice'">
+                ORDER BY price ASC
+            </when>
+            <otherwise>
+                ORDER BY id DESC  <!-- 기본 정렬: 최신순 -->
+            </otherwise>
+        </choose>
     </select>
 
--->
+
+
+
+
 </mapper>
 
 

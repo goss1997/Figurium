@@ -237,7 +237,7 @@
                             <a href="#">카테고리</a>
                             <ul class="sub-menu">
                                 <c:forEach var="category" items="${headerCategories}">
-                                    <li><a href="categoriesList.do">${category.name}</a></li>
+                                    <li><a href="productList.do?name=${category.name}">${category.name}</a></li>
                                 </c:forEach>
                             </ul>
                         </li>

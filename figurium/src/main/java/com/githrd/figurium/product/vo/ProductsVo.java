@@ -16,6 +16,7 @@ public class ProductsVo {
     int price;
     int quantity;
     String imageUrl;
-    
+    String createdAt;
+    String updatedAt;
 
 }

@@ -1,6 +1,5 @@
 package com.githrd.figurium.product.controller;
 
-import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -9,7 +8,6 @@ import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.productLike.service.ProductLikeService;
 import com.githrd.figurium.qa.dao.QaMapper;
 import com.githrd.figurium.qa.vo.QaVo;
-import com.githrd.figurium.reviews.dao.ReviewMapper;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
@@ -19,12 +17,14 @@ import com.githrd.figurium.util.page.ProductQaCommonPage;
 import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,6 @@ public class ProductsController {
     private final HttpSession session;
     private final ProductLikeService productLikeService;
     private final S3ImageService s3ImageService;
-    private final ProductsMapper productsMapper;
     private final QaMapper qaMapper;
 
 
@@ -58,6 +57,21 @@ public class ProductsController {
         model.addAttribute("categoryName", categoryName); // 필터 처리를 위해 모델에 담음
         model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
         return "products/productCategories";
+    }
+
+    /**
+     * No Offset 페이징 처리
+     */
+    @GetMapping("/load-more-products")
+    @ResponseBody
+    public List<ProductsVo> loadMoreProducts(
+            @RequestParam(value = "lastCreatedAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime lastCreatedAt,
+            @RequestParam(value = "lastId", required = false) Integer lastId) {
+
+        List<ProductsVo> nexProductList = productsService.getNextPageByCreatedAt(lastCreatedAt, lastId);
+
+        return nexProductList;
+
     }
 
 

@@ -1,10 +1,9 @@
 package com.githrd.figurium.product.dao;
 
-import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.vo.ProductsVo;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +20,5 @@ public interface ProductsMapper {
     List<ProductsVo> categoriesList(Map<String,Object> params);
 
 
+    List<ProductsVo> getNextPageByCreatedAt(LocalDateTime lastCreatedAt, Integer lastId);
 }

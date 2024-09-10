@@ -191,73 +191,13 @@
             </div>
 
 
-
-
-
-            <script>
-                document.getElementById('filterSelect').addEventListener('change', function() {
-                    var selectedValue = this.value;
-                    console.log('선택된 값:', selectedValue);
-
-                    // 선택된 값에 따라 필터링 로직 추가
-                    // 예를 들어 AJAX 요청을 통해 필터링된 결과를 가져올 수 있습니다.
-                });
-            </script>
-
-
         </div>
 
         <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
-            <!-- 초기 40개의 제품이 여기에 렌더링됩니다 -->
-            <c:forEach var="products" items="${productsList}">
 
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.category.name}">
-                    <!-- Block2 -->
-                    <div class="block2">
-                        <div class="block2-pic hov-img0">
-                            <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <a href="productInfo.do?id=${products.id}"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
-                                상품 상세
-                            </a>
-                        </div>
-                        <div class="block2-txt flex-w flex-t p-t-14">
-                            <div class="block2-txt-child1 flex-col-l ">
-                                <a href="productInfo.do?id=${products.id}"
-                                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                        ${products.name}
-                                </a>
-                                <span class="stext-105 cl3">
-                        상품 가격 : ${products.price}￦
-                    </span>
-                                <span class="stext-105 cl3">
-                                    <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>
-                        상품 등록일 : <fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
-                    </span>
-                            </div>
-                            <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04"
-                                         src="/images/icons/icon-heart-01.png"
-                                         alt="ICON">
-                                    <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                         src="/images/icons/icon-heart-02.png"
-                                         alt="ICON">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
         </div>
 
-        <!-- Load more -->
-        <div class="laedMoreBtn" style="text-align: center">
-            <input type="hidden" id="currentPage" value="0">
-            <input type="hidden" id="pageSize" value="20">
-            <button id="load-more-btn" class="btn btn-info">Load More</button>
-        </div>
     </div>
 </section>
 
@@ -267,41 +207,61 @@
 
 
 <script>
-    $(document).ready(function () {
         var lastCreatedAt = null; // 마지막 생성일자 저장
         var lastId = null; // 마지막 상품 ID 저장
+        var loading = false; // 데이터 로딩 중인지 상태를 저장
+        var noMoreData = false; // 더 이상 데이터가 없음을 표시
 
+    $(document).ready(function () {
+        loadMore();
         // Isotope 초기화
         var $container = $('#productsList').isotope({
             itemSelector: '.isotope-item',
             layoutMode: 'fitRows'
         });
 
-        $('#load-more-btn').click(function () {
-            $.ajax({
-                url: '/load-more-products',
-                method: 'GET',
-                data: {
-                    lastCreatedAt: lastCreatedAt,
-                    lastId: lastId
-                },
-                success: function (response) {
-                    const products = response.products; // API 응답에서 products 배열 추출
 
-                    if (products.length === 0) {
-                        $('#load-more-btn').hide(); // 더 이상 데이터가 없으면 버튼 숨김
-                    } else {
-                        let html = '';
-                        products.forEach(function (product) {
-                            // JavaScript에서 날짜 문자열을 Date 객체로 변환
-                            var createdAt = new Date(product.createdAt);
+        // 무한 스크롤 이벤트 리스너 추가
+        $(window).on('scroll', function () {
+            // // 화면의 푸터 영역 위에 스크롤이 도달했을 경우 loadMore() 호출.
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 320) {
+                if (!loading && !noMoreData) {
+                    loadMore();
+                }
+            }
+        });
 
-                            // 날짜를 원하는 형식으로 포맷
-                            var options = {year: 'numeric', month: 'long', day: 'numeric'};
-                            var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
-                            console.log(formattedDate);
-                            html += `
-                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.category.name}' >
+    });
+
+    function loadMore() {
+        // 데이터 로딩 중인 상태로 변경
+        loading = true;
+
+        // 날짜를 원하는 형식으로 포맷 옵션
+        var options = {year: 'numeric', month: 'long', day: 'numeric'};
+
+        $.ajax({
+            url: '/load-more-products',
+            method: 'GET',
+            data: {
+                'lastCreatedAt': lastCreatedAt,
+                'lastId': lastId
+            },
+            success: function (response) {
+                const products = response;
+
+                if (products.length === 0) {
+                    noMoreData = true; // 더 이상 데이터가 없음을 표시
+                } else {
+                    let html = '';
+                    products.forEach(function (product) {
+                        // JavaScript에서 날짜 문자열을 Date 객체로 변환
+                        var createdAt = new Date(product.createdAt);
+
+                        // 날짜를 원하는 형식으로 포맷
+                        var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
+                        html += `
+                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' >
                                 <div class="block2">
                                     <div class="block2-pic hov-img0">
                                         <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
@@ -312,7 +272,7 @@
                                     </div>
                                     <div class="block2-txt flex-w flex-t p-t-14">
                                         <div class="block2-txt-child1 flex-col-l">
-                                            <a href="productInfo.do?id=\${products.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                            <a href="productInfo.do?id=\${product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                                 \${product.name}
                                             </a>
                                             <span class="stext-105 cl3">
@@ -325,28 +285,33 @@
                                     </div>
                                 </div>
                             </div>`;
-                        });
+                    });
 
-                        // 새 아이템을 추가하고 Isotope 레이아웃을 업데이트합니다.
-                        const $newItems = $(html);
-                        $('#productsList').append($newItems).isotope('appended', $newItems);
+                    // 새 아이템을 추가하고 Isotope 레이아웃을 업데이트합니다.
+                    const $newItems = $(html);
+                    $('#productsList').append($newItems).isotope('appended', $newItems);
 
-                        // 마지막 생성일자 및 ID 업데이트
-                        lastCreatedAt = new Date(products[products.length - 1].createdAt).toISOString();
-                        lastId = products[products.length - 1].id;
+                    // 마지막 생성일자 및 ID 업데이트
+                    lastCreatedAt = products[products.length - 1].createdAt;
+                    lastId = products[products.length - 1].id;
 
-                        // 다음 페이지가 없으면 버튼 숨김
-                        if (!response.hasNext) {
-                            $('#load-more-btn').hide();
-                        }
+                    // 다음 페이지가 없으면 버튼 숨김
+                    if (products.length < 20) {
+                        noMoreData = true; // 더 이상 데이터가 없음을 표시
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error loading products:', error);
+
+                    // 데이터 로딩 상태를 완료로 변경
+                    loading = false;
                 }
-            });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading products:', error);
+                loading = false; // 에러 발생 시 로딩 상태 초기화
+            }
         });
-    });
+
+    }
+
 </script>
 
 

@@ -84,9 +84,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </choose>
     </select>
 
-
-
-
+    <select id="getNextPageByCreatedAt" resultType="products">
+        SELECT *
+        FROM products
+        <if test="lastCreatedAt != null and lastId != null">
+            WHERE #{lastCreatedAt} > created_at
+            OR (created_at = #{lastCreatedAt} AND #{lastId} > id)
+        </if>
+        ORDER BY created_at DESC, id DESC
+        LIMIT 20
+    </select>
 
 
 

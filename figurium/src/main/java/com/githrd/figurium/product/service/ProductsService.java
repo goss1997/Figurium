@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -59,14 +59,7 @@ public class ProductsService {
 
     // 업로드된 프로필 이미지 수정
     public int updateProductsImage(ProductsVo products, MultipartFile productImage) {
-
-        // s3에서 상품의 이미지 제거.
-        s3ImageService.deleteImageFromS3(products.getImageUrl());
-
-        // s3에 수정할 이미지 업로드 후 상품에 이미지 기재하기.
-        products.setImageUrl(s3ImageService.uploadS3(productImage));
-
-        return productsMapper.productUpdate(products);
+        return 0;
     }
 
     public void deleteById(int id) {
@@ -89,4 +82,7 @@ public class ProductsService {
     }
 
 
+    public List<ProductsVo> getNextPageByCreatedAt(LocalDateTime lastCreatedAt, Integer lastId) {
+        return productsMapper.getNextPageByCreatedAt(lastCreatedAt, lastId);
+    }
 }

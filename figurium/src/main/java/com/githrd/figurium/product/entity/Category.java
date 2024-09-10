@@ -13,6 +13,6 @@ public class Category {
 
     @Id
     @Column(name = "name")
-    private String Name;
+    private String name;
 
 }

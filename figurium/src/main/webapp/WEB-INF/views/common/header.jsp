@@ -233,7 +233,14 @@
                         <li>
                             <a href="/">Home</a>
                         </li>
-
+                        <li>
+                            <a href="#">카테고리</a>
+                            <ul class="sub-menu">
+                                <c:forEach var="category" items="${headerCategories}">
+                                    <li><a href="categoriesList.do">${category.name}</a></li>
+                                </c:forEach>
+                            </ul>
+                        </li>
 
                         <li <%--class="label1" data-label1="hot"--%>>
                             <a href="/CartList.do">장바구니</a>

@@ -37,8 +37,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </update>
 
+ <!--   &lt;!&ndash; 상품의 카테고리별 조회 &ndash;&gt;
+    <select id="categoriesList" resultType="products" parameterType="int">
+        SELECT p.productId, p.productName, c.name AS categoryName
+        FROM products p
+                 JOIN categories c ON p.categoryId = c.id
+        WHERE p.productId = #{productId}
 
+    </select>
 
+-->
 </mapper>
 
 

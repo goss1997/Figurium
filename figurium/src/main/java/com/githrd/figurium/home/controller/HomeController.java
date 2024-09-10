@@ -16,10 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -55,6 +52,7 @@ public class HomeController {
         return "home";
     }
 
+
     @GetMapping("/load-more-products")
     public ResponseEntity<?> loadMoreProducts(
             @RequestParam(value = "lastCreatedAt", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastCreatedAt,
@@ -82,6 +80,8 @@ public class HomeController {
         response.put("hasNext", productsPage.hasNext()); // 다음 페이지가 있는지 여부
         return ResponseEntity.ok(response);
     }
+
+
 
 
 

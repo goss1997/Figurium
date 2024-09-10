@@ -18,4 +18,7 @@ public interface ProductsMapper {
     int productUpdate(ProductsVo vo);
 
 
+    List<ProductsVo> selectCategories(int productId);
+
+
 }

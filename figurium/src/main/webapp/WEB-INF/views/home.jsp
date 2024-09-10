@@ -185,28 +185,14 @@
         <!-- 카테고리 -->
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-                    전체상품
+                <button class="stext-106 " data-filter="*">
+                    이달의 신상품
                 </button>
-
-                <c:forEach var="categori" items="${categoriesList}">
-                    <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".${categori.name}">
-                            ${categori.name}
-                    </button>
-                </c:forEach>
             </div>
 
 
 
-            <!-- Filter -->
-            <div class="filter_box">
-                <select class="select_filter" name="mySelect">
-                    <option>::최신상품::</option>
-                    <option value="recommendProducts">추천 상품</option>
-                    <option value="highPrice">높은 가격순</option>
-                    <option value="lowPrice">낮은 가격순</option>
-                </select>
-            </div>
+
 
             <script>
                 document.getElementById('filterSelect').addEventListener('change', function() {

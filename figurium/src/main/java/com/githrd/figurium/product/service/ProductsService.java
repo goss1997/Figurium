@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +81,7 @@ public class ProductsService {
     }
 
 
-    public List<ProductsVo> getNextPageByCreatedAt(LocalDateTime lastCreatedAt, Integer lastId) {
-        return productsMapper.getNextPageByCreatedAt(lastCreatedAt, lastId);
+    public List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params) {
+        return productsMapper.getNextPageByCreatedAt(params);
     }
 }

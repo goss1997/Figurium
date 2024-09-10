@@ -69,7 +69,6 @@
         <form action="/productList.do" method="get">
         <input type="hidden" name="name" value="${categoryName}">
             <select class="select_filter" name="selectFilter" onchange="this.form.submit()">
-                <option value="default" ${selectFilter == 'default' ? 'selected' : ''}>:: 기본정렬 ::</option>
                 <option value="newProducts" ${selectFilter == 'newProducts' ? 'selected' : ''}>신상품</option>
                 <option value="bestProducts" ${selectFilter == 'bestProducts' ? 'selected' : ''}>추천★상품</option>
                 <option value="highPrice" ${selectFilter == 'highPrice' ? 'selected' : ''}>높은 가격순</option>

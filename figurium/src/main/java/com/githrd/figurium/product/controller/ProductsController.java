@@ -46,11 +46,11 @@ public class ProductsController {
     public String productList(@RequestParam(defaultValue = "all") String selectFilter,
                               @RequestParam(value = "name") String categoryName,
                               Model model) {
-        
+
         // filter와 name을 같이 받아오기 위해 맵에다가 저장
-        Map<String,Object> params = new HashMap<>();
-        params.put("selectFilter",selectFilter);
-        params.put("categoryName",categoryName);
+        Map<String, Object> params = new HashMap<>();
+        params.put("selectFilter", selectFilter);
+        params.put("categoryName", categoryName);
 
         List<ProductsVo> productCategoriesList = productsService.categoriesList(params);
         model.addAttribute("productCategoriesList", productCategoriesList);
@@ -66,18 +66,34 @@ public class ProductsController {
     @ResponseBody
     public List<ProductsVo> loadMoreProducts(
             @RequestParam(value = "lastCreatedAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime lastCreatedAt,
-            @RequestParam(value = "lastId", required = false) Integer lastId) {
+            @RequestParam(value = "lastPrice", required = false) Integer lastPrice,
+            @RequestParam(value = "lastLikeCount", required = false) Integer lastLikeCount,
+            @RequestParam(value = "lastId", required = false) Integer lastId,
+            @RequestParam(value = "categoryName", required = false) String categoryName,
+            @RequestParam(value = "selectFilter", required = false , defaultValue = "newProducts") String selectFilter) {
 
-        List<ProductsVo> nextProductList = productsService.getNextPageByCreatedAt(lastCreatedAt, lastId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("lastCreatedAt", lastCreatedAt);
+        params.put("lastPrice", lastPrice);
+        params.put("lastId", lastId);
+        params.put("categoryName", categoryName);
+        params.put("selectFilter", selectFilter);
+        params.put("lastLikeCount",lastLikeCount);
 
-        return nextProductList;
+        System.out.println("lastCreatedAt = " + lastCreatedAt);
+        System.out.println("lastPrice = " + lastPrice);
+        System.out.println("lastLikeCount = " + lastLikeCount);
+        System.out.println("lastId = " + lastId);
+        System.out.println("categoryName = " + categoryName);
+        System.out.println("selectFilter = " + selectFilter);
+
+        return productsService.getNextPageByCreatedAt(params);
 
     }
 
 
-
     @RequestMapping("/productInfo.do")
-    public String list(@RequestParam(value = "id" , required = false) Integer id,
+    public String list(@RequestParam(value = "id", required = false) Integer id,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        HttpSession session,
                        Model model, Map map) {
@@ -147,12 +163,12 @@ public class ProductsController {
     }
 
     @GetMapping("/productInsertForm.do")
-    public String productInsertForm(Model model){
+    public String productInsertForm(Model model) {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -166,9 +182,8 @@ public class ProductsController {
     public String productInsert(ProductsVo products, @RequestParam MultipartFile productImage) {
 
 
-
         String save;
-        if(productImage.isEmpty()){
+        if (productImage.isEmpty()) {
 
             products.setImageUrl("/resources/images/noImage1.png");
 
@@ -195,15 +210,14 @@ public class ProductsController {
     }
 
 
-
     @RequestMapping("/productModifyForm.do")
-    public String productModifyForm(@RequestParam(value = "id" , required = false) Integer id,
+    public String productModifyForm(@RequestParam(value = "id", required = false) Integer id,
                                     Model model) {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -220,12 +234,9 @@ public class ProductsController {
     public String productModify(ProductsVo products, @RequestParam MultipartFile productImage) {
 
 
-
-
         Products productById = productsService.getProductById(products.getId());
         String oldImageUrl = productById.getImageUrl();
         products.setImageUrl(oldImageUrl);
-
 
 
         int save = productsService.updateProductsImage(products, productImage);
@@ -243,12 +254,12 @@ public class ProductsController {
 
 
     @DeleteMapping("/product/{id}")
-    public Object productDeleteById(@PathVariable int id){
+    public Object productDeleteById(@PathVariable int id) {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if(loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg","관리자만 접속이 가능합니다.");
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 

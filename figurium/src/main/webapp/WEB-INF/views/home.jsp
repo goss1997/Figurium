@@ -29,6 +29,63 @@
         .item-slick1{
             max-height: 500px;
         }
+
+        .product-category a {
+            color : black;
+            text-decoration: none;
+            font-size: 18px;
+            height: 30px;
+        }
+
+        .sort_box {
+            justify-content: space-between;
+            align-items: center;  /* 수직 중앙 정렬 */
+            margin-bottom: 30px;
+        }
+
+
+        .select_filter {
+            padding: 5px;       /* 선택 박스의 패딩 */
+            border-radius: 5px; /* 선택 박스의 둥근 모서리 */
+        }
+
+        /* 필터 박스 스타일 */
+        .filter_box {
+            display: flex;
+            justify-content: flex-end; /* 오른쪽 정렬 */
+            margin: 20px; /* 여백 추가 */
+        }
+
+        /* 선택 컨테이너 스타일 */
+        .select_container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 드롭다운 스타일 */
+        .select_filter {
+            font-size: 16px;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select_filter:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.2);
+        }
+
+        .select_filter option {
+            padding: 10px;
+        }
+
     </style>
 </head>
 <body class="animsition">
@@ -181,16 +238,30 @@
                 ★ Figurium New Figure ★
             </h3>
         </div>
-
+        <br>
         <!-- 카테고리 -->
-        <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 " data-filter="*">
-                    이달의 신상품
-                </button>
+                <ul class="nav justify-content-center">
+                    <li class="nav-item product-category">
+                        <a class="nav-link" href="javascript:void(0);">전체</a>
+                    </li>
+                <c:forEach var="category" items="${categoriesList}">
+                    <li class="nav-item product-category">
+                        <a class="nav-link" href="javascript:void(0);">${category.name}</a>
+                    </li>
+                </ul>
+                </c:forEach>
             </div>
-
-
+        <div class="sort_box">
+            <!-- Filter -->
+            <div class="filter_box">
+                <select class="select_filter">
+                    <option value="newProducts">최신순</option>
+                    <option value="bestProducts">추천★상품</option>
+                    <option value="highPrice">높은 가격순</option>
+                    <option value="lowPrice">낮은 가격순</option>
+                </select>
+            </div>
         </div>
 
         <!-- 상품(피규어) 조회 -->
@@ -207,13 +278,75 @@
 
 
 <script>
-        var lastCreatedAt = null; // 마지막 생성일자 저장
-        var lastId = null; // 마지막 상품 ID 저장
-        var loading = false; // 데이터 로딩 중인지 상태를 저장
-        var noMoreData = false; // 더 이상 데이터가 없음을 표시
+    var lastCreatedAt = null; // 마지막 생성일자 저장
+    var lastId = null; // 마지막 상품 ID 저장
+    var lastPrice = null; // 마지막 상품 가격 저장
+    var lastLikeCount = null; // 마지막 좋아요 수 저장
+    var categoryName = '전체'; // 조회할 카테고리 이름(기본값:전체)
+    var selectFilter = 'newProducts'; // 정렬 옵션(기본값:newProducts)
+    var loading = false; // 데이터 로딩 중인지 상태를 저장
+    var noMoreData = false; // 더 이상 데이터가 없음을 표시
+
+    // 카테고리 a 태그 클릭 시 실행할 함수
+    $('.product-category > a').click(function () {
+        categoryName = $(this).text();
+        // 해당 카테고리 css 변경.
+        $('.product-category > a').css('font-weight','');
+        $(this).css('font-weight','bold');
+        // 정렬 옵션 기본값(최신순)으로 초기화.
+        $('.select_filter').val('newProducts').change();
+
+        // 카테고리 이름 변수에 할당.
+
+        // 마지막 생성일자, 가격, 좋아요 수, 상품 ID 값 초기화
+        lastCreatedAt = null;
+        lastPrice = null;
+        lastLikeCount = null;
+        lastId = null;
+
+        // 리스트 뿌릴 div 비우기.
+        $('#productsList').empty();
+
+        // 템플릿 Isotope 초기화.
+        $container = $('#productsList').isotope({
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows'
+        });
+
+        loadMore();
+    });
+
+    // select태그 option 선택 시 호출하는 함수
+    $('.select_filter').on('change', function (){
+       selectFilter = $(this).val(); // 선택한 옵션 할당.
+        // categoryName을 제외한  나머지 초기화.
+        lastCreatedAt = null;
+        lastPrice = null;
+        lastLikeCount = null;
+        lastId = null;
+        console.log(selectFilter);
+
+        // 리스트 뿌릴 div 비우기.
+        $('#productsList').empty();
+
+        // 템플릿 Isotope 초기화.
+        $container = $('#productsList').isotope({
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows'
+        });
+
+        loadMore();
+    });
+
+
 
     $(document).ready(function () {
+
         loadMore();
+
+        // 리스트 뿌릴 div 비우기.
+        $('#productsList').empty();
+
         // Isotope 초기화
         var $container = $('#productsList').isotope({
             itemSelector: '.isotope-item',
@@ -234,22 +367,29 @@
     });
 
     function loadMore() {
+        console.log(categoryName);
+
         // 데이터 로딩 중인 상태로 변경
         loading = true;
 
         // 날짜를 원하는 형식으로 포맷 옵션
         var options = {year: 'numeric', month: 'long', day: 'numeric'};
 
+
         $.ajax({
             url: '/load-more-products',
             method: 'GET',
             data: {
                 'lastCreatedAt': lastCreatedAt,
-                'lastId': lastId
+                'lastId': lastId,
+                'lastPrice':lastPrice,
+                'categoryName': categoryName,
+                'selectFilter' : selectFilter,
+                "lastLikeCount" : lastLikeCount
             },
             success: function (response) {
                 const products = response;
-
+                console.log(products);
                 if (products.length === 0) {
                     noMoreData = true; // 더 이상 데이터가 없음을 표시
                 } else {
@@ -273,7 +413,7 @@
                                     <div class="block2-txt flex-w flex-t p-t-14">
                                         <div class="block2-txt-child1 flex-col-l">
                                             <a href="productInfo.do?id=\${product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                                \${product.name}
+                                               [\${product.categoryName}]  \${product.name}
                                             </a>
                                             <span class="stext-105 cl3">
                                                 상품 가격 : \${product.price}￦
@@ -291,8 +431,10 @@
                     const $newItems = $(html);
                     $('#productsList').append($newItems).isotope('appended', $newItems);
 
-                    // 마지막 생성일자 및 ID 업데이트
+                    // 마지막 생성일자 or 마지막 가격 or 마지막 좋아요 수 or 상품 ID 업데이트
                     lastCreatedAt = products[products.length - 1].createdAt;
+                    lastPrice = products[products.length - 1].price;
+                    lastLikeCount = products[products.length - 1].likeCount;
                     lastId = products[products.length - 1].id;
 
                     // 다음 페이지가 없으면 버튼 숨김

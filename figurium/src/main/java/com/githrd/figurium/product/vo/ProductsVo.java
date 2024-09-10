@@ -3,8 +3,6 @@ package com.githrd.figurium.product.vo;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
-import java.util.Date;
-
 @Data
 @Alias("products")
 public class ProductsVo {
@@ -18,5 +16,6 @@ public class ProductsVo {
     String imageUrl;
     String createdAt;
     String updatedAt;
+    int likeCount;
 
 }

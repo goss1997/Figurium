@@ -288,8 +288,9 @@
 
                     <div style="width: 1300px; margin-left: -160px">
                         <h1>주문내역</h1>
-                        <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
+
                         <div class="container">
+                            <c:forEach var="myOrder" items="${ requestScope.myOrdersList }">
                             <div class="row">
                                 <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
                                     <div class="m-l-25 m-r--38 m-lr-0-xl">
@@ -321,10 +322,13 @@
 
                                                     <tr class="table_row" style="height: 100px;">
                                                         <td class="column-1" style="padding-bottom: 0px;" >
-                                                            <div class="how-itemcart1" onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                            <div class="how-itemcart1" data-toggle="modal" data-target="#refundReasonModal" style="cursor: pointer;"
+                                                                 onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
                                                                 <img src="${ myOrder.imageUrl }"
                                                                      alt="${ myOrder.id }" style="text-align: left;">
                                                             </div>
+
+
 
                                                         </td>
                                                         <c:if test="${ myOrder.productCount <= 0 }">
@@ -366,17 +370,14 @@
                                                             <span class="productPrice">${ myOrder.createdAt }</span>
                                                         </td>
                                                         <td class="column-6" style="text-align: center; padding-bottom: 0px">
-                                                            <c:if test="${ myOrder.valid == 'y' }">
+                                                            <c:if test="${ myOrder.valid == 'y' || myOrder.valid == 'n' }">
                                                                 <span class="productPrice">${ myOrder.status }</span>
-                                                            </c:if>
-                                                            <c:if test="${ myOrder.valid == 'n' }">
-                                                                <span class="productPrice">환불완료</span>
                                                             </c:if>
                                                         </td>
                                                     </tr>
                                             </table>
                                         </div>
-                                        <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                        <c:if test="${ myOrder.paymentType == 'vbank' && myOrder.status == '입금대기' }">
                                         <div style="text-align: right; font-size: 0.8em; color: gray; margin-top: 10px;">
                                             무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다.
                                         </div>
@@ -418,6 +419,39 @@
                             </div>
 
 
+                            <!-- 모달 -->
+                            <div class="modal fade" id="refundReasonModal" tabindex="-1" aria-labelledby="refundReasonModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="refundReasonModalLabel">무통장입금 안내</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <img src="/images/신태일.png" alt="신태일.png" class="img-fluid">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h4>무통장 거래 입금안내</h4>
+                                                    <div class="bank-info mt-3">
+                                                        <h5>937702-00-363467 국민은행 피규리움</h5>
+                                                    </div>
+                                                    <div class="info-text mt-3">
+                                                        <p>관리자의 입금처리가 순차적으로 진행됩니다.</p>
+                                                        <p>승인까지 다소 시간이 소요될 수 있습니다.</p>
+                                                        <p>입금자명과 주문자명이 동일해야 정상적인 입금처리가 됨을 알려드립니다.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <hr id="list-hr1">
 
                             <div class="total-container">
@@ -432,7 +466,9 @@
                                 </div>
                                 <div class="item">
                                     <span class="label">총배송비</span>
-                                    <span class="amount">3,000원</span>
+                                    <c:set var="finalValue"
+                                           value="${ myOrder.totalValue < 100000 ? 3000 : 0}"/>
+                                    <span class="amount"><fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원</span>
                                 </div>
                                 <div class="item">
                                     <span class="label">=</span>
@@ -440,7 +476,9 @@
                                 <div class="item total">
                                     <span class="label">TOTAL</span>
                                     <span class="amount highlight">
-                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue+3000 }" currencySymbol=""/>원
+                                        <c:set var="finalValue"
+                                               value="${ myOrder.totalValue < 100000 ? myOrder.totalValue + 3000 : myOrder.totalValue}"/>
+                                        <fmt:formatNumber type="currency" value="${ finalValue }" currencySymbol=""/>원
                                     </span>
                                     <span class="extra">FIGU</span>
                                 </div>

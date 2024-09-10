@@ -58,7 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
         from order_history_view
         where user_id = #{ user_id }
-        group by id;
+        group by id
+        order by max(created_at) desc   -- 역순 정렬
     </select>
 
     <select id="selectListByDetailOrder" resultType="myOrders" parameterType="int">
@@ -128,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <update id="updateByRefund" parameterType="int">
-        update orders set valid = 'n'
+        update orders set valid = 'n', status = '환불완료'
         where id = #{ id }
     </update>
 

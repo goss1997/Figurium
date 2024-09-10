@@ -148,7 +148,8 @@ public class OrderController {
 
             int itemQuantityCheck = productsVo.getQuantity();
 
-            if(itemQuantityCheck <= itemQuantity) {
+            // 남아있는 재고 <= 주문재고
+            if(itemQuantityCheck-itemQuantity<0) {
                 return "error";
             }
         }

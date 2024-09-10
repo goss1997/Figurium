@@ -329,7 +329,9 @@
                                 </div>
                                 <div class="item">
                                     <span class="label">총배송비</span>
-                                    <span class="amount">3,000원</span>
+                                    <c:set var="finalValue"
+                                           value="${ myOrderInfo.totalValue < 100000 ? 3000 : 0}"/>
+                                    <span class="amount"><fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원</span>
                                 </div>
                                 <div class="item">
                                     <span class="label">=</span>
@@ -337,7 +339,9 @@
                                 <div class="item total">
                                     <span class="label">TOTAL</span>
                                     <span class="amount highlight">
-                                        <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue+3000 }" currencySymbol=""/>원
+                                        <c:set var="finalValue"
+                                               value="${ myOrderInfo.totalValue < 100000 ? myOrderInfo.totalValue + 3000 : myOrderInfo.totalValue}"/>
+                                        <fmt:formatNumber type="currency" value="${ finalValue }" currencySymbol=""/>원
                                     </span>
                                     <span class="extra">FIGU</span>
                                 </div>

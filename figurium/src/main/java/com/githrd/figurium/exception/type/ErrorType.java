@@ -16,7 +16,8 @@ public enum ErrorType {
     REDIRECT_EXCEPTION("리다이렉트할 수 없습니다."),
     GENERAL_EXCEPTION("서버 내부 오류가 발생했습니다."),
     FAIL_DELETE_USER_EXCEPTION("회원 탈퇴에 실패했습니다."),
-    NO_RESOURCE_FOUND_EXCEPTION("요청하신 페이지를 찾을 수 없습니다.");
+    NO_RESOURCE_FOUND_EXCEPTION("요청하신 페이지를 찾을 수 없습니다.")
+    ;
 
 
     private final String message;

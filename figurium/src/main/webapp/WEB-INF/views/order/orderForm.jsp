@@ -32,6 +32,7 @@
     }
 
     .order_box_l {
+      width: 900px !important;
       margin-right: 100px !important;
     }
 
@@ -276,6 +277,7 @@
             name: '피규리움 결제창',   // 상품명
             // <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
             amount: <c:out value="${amount}" />, // 가격
+            //amount : 200,
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
@@ -294,17 +296,17 @@
                 merchantUid : rsp.merchant_uid
               },
               success : function (res_data) {
-                if (res_data.paidAt != null) {
-                    Swal.fire({
-                      icon: 'success',
-                      title: '결제 성공',
-                      text: '결제가 완료되었습니다.',
-                      confirmButtonText: '확인'
-                    });
+                if (res_data.failReason == null) {
+                    // Swal.fire({
+                    //   icon: 'success',
+                    //   title: '결제 성공',
+                    //   text: '결제가 완료되었습니다.',
+                    //   confirmButtonText: '확인'
+                    // });
                     console.log(res_data);
                     merchantUid = rsp.merchant_uid;
                     sil();
-                  } else {
+                  } else if (res_data.failReason != null) {
                     // 결제 상태가 'paid'가 아닌 경우
                     Swal.fire({
                       icon: 'warning',
@@ -348,6 +350,7 @@
         url  : "/order/inicisPay.do",
         data : {
           price: <c:out value="${totalPrice+3000}" />,
+          //price: 200,
           paymentType: paymentType,
           userId: userId,
           merchantUid: merchantUid
@@ -369,10 +372,6 @@
 
       // 주문 리스트에 저장될 값들 전부 변수로 저장
 
-      // var itemNames = [ 아이템 이름 배열 저장 ];
-      // var itemPrices = [ 아이템 가격 배열 저장 ];
-      // var itemQuantities = [ 아이템 갯수 배열 저장 ];
-
       let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
       let name = document.getElementById("order_name").value;         // 보낸 사람 이름
       let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
@@ -390,15 +389,6 @@
       let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
       let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
 
-
-      console.log(address);
-
-  /*    let shipping_address = f.shipping_address.value;  // 배송지
-      let shipping_name = f.shipping_name.value;        // 받는 사람
-      let shipping_phone = f.shipping_phone.value;      // 받는 사람 전화번호
-      let delivery_request = f.delivery_request.value;  // 배송시 요청사항*/
-
-
       $.ajax({
         type : "POST",
         url : "insertInformation.do",
@@ -414,11 +404,6 @@
           productIds : productIds,
           itemPrices : itemPrices,
           itemQuantities : itemQuantities
-/*          shipping_address : shipping_address,
-          paymentType : paymentType,
-          itemNames : itemNames,
-          itemPrices : itemPrices,
-          itemQuantities : itemQuantities*/
         },
         success: function(res_data){
           Toast.fire({

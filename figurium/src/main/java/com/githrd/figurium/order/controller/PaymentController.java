@@ -15,11 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collections;
 
 @Controller
@@ -87,6 +89,12 @@ public class PaymentController {
                 log.error("환불 요청 실패: {}", e.getMessage());
                 return ResponseEntity.badRequest().body(Collections.singletonMap("message", "결제 금액 불일치"));
             }
+        }
+        
+        // 사용자의 결제 취소
+        if(payment.getPaidAt() == null) {
+            log.error("결제 요청 실패: {}", "사용자 임의의 결제 취소");
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "사용자의 결제 취소"));
         }
 
         return ResponseEntity.ok(payment);

@@ -49,7 +49,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/user/order-list.do",
                         "/user/my-page.do",
                         "/user/update.do",
-                        "/user/find-password-form.do",
                         "/user/deleteForm.do",
                         "/user/delete.do",
                         "/user/deleteSocial.do",

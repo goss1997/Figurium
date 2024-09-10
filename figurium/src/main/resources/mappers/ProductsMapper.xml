@@ -9,8 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectOneCheckProduct" resultType="products" parameterType="int">
-        select * from products where id = #{ productId } and
-                                     quantity >= #{ itemQuantity }
+        select * from products where id = #{ productId }
     </select>
 
     <update id="updateProductQuantity" parameterType="int">

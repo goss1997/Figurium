@@ -260,15 +260,26 @@
           itemQuantities : itemQuantities
         },
         success: function(res_data){
-          Toast.fire({
-            icon: 'success',
-            title: '' +
-                    '<img src="/images/흰둥이.png" alt="흰둥이" style="width: 200px; height: auto;">' +
-                    '<br>주문이 정상적으로 요청되었습니다.'
-          })
+          if(res_data === "success") {
+            Toast.fire({
+              icon: 'success',
+              title: '' +
+                      '<img src="/images/흰둥이.png" alt="흰둥이" style="width: 200px; height: auto;">' +
+                      '<br>주문이 정상적으로 요청되었습니다.'
+            });
+          } else if (res_data ==="error"){
+            Toast.fire({
+              icon: 'error',
+              title: '' +
+                      '<div style="text-align: center;">' +
+                      '<img src="/images/재고부족.png" alt="재고부족" style="width: 200px; height: auto;">' +
+                      '<br style="text-align: center">재고가 부족합니다.' +
+                      '</div>'
+            });
 
+            return;
+          }
           setTimeout(function () {
-
 
           IMP.request_pay({
             pg: 'kcp', // PG사 코드표에서 선택

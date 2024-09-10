@@ -13,8 +13,10 @@ import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 @RequestMapping("/order")
 public class OrderController {
 
@@ -134,27 +137,31 @@ public class OrderController {
      */
     @RequestMapping("checkProduct.do")
     @ResponseBody
-    public String checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
-                               @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
+    public ResponseEntity<?> checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
+                                       @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
 
         for(int i = 0; i < productIds.toArray().length; i++) {
 
             int productId = productIds.get(i); // 재고 상품 정보
             int itemQuantity = itemQuantities.get(i); // 재고 상품 갯수
 
+            log.info("재고 체크 productId 값 {}", productId);
+            log.info("재고 체크 itemQuantity 값 {}", itemQuantity);
+
+
 
             // ProductsVo에 담아서 재고 있는지 체크
             ProductsVo productsVo = productsMapper.selectOneCheckProduct(productId, itemQuantity);
-
             int itemQuantityCheck = productsVo.getQuantity();
+            log.info("재고 체크 itemQuantityCheck 값 {}", itemQuantityCheck);
 
             // 남아있는 재고 <= 주문재고
-            if(itemQuantityCheck-itemQuantity<0) {
-                return "error";
+            if((Integer) itemQuantityCheck == null || itemQuantityCheck-itemQuantity<0) {
+                return ResponseEntity.ok("error");
             }
         }
 
-        return "success";
+        return ResponseEntity.ok("success");
 
     }
     

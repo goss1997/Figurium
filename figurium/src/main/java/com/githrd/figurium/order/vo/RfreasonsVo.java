@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 
 @Data           // Getter + Setter
 @Alias("rfreasons")
-public class Rfreasons {
+public class RfreasonsVo {
 
     String name;
     int orderId;

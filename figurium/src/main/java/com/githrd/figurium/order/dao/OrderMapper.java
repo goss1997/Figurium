@@ -39,5 +39,5 @@ public interface OrderMapper {
     // 가격 검증 로직 확인용 데이터
     int selectOneByProductsId(int userId);
 
-    int insertRfreasons(String name, int orderId )
+    int insertRfreasons(String name, int orderId );
 }

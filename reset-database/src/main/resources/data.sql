@@ -140,7 +140,7 @@ CREATE TABLE shipping_addresses
 -- 환불 사유
 create table rfreasons
 (
-    name VARCHAR(15) check (name in ('단순 변심', '제품 불량', '잘못된 주문', '오배송', '기타')) PRIMARY KEY COMMENT '환불 사유',
+    name VARCHAR(15) check (name in ('단순 변심', '제품 불량', '잘못된 주문', '오배송', '기타')) COMMENT '환불 사유',
     order_id INT COMMENT '주문 고유 번호'
 );
 

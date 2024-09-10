@@ -363,32 +363,19 @@ public class UserController {
     /**
      * 좋아요한 상품 리스트 페이징 조회
      */
-    @GetMapping("myProductLikeList.do")
-    public String myProductLikeListAll(@RequestParam(defaultValue = "1") int page, Model model) {
+    @GetMapping("refundReasonResult.do")
+    public String refundReasonResult(@RequestParam int orderId, @RequestParam String name) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        int res = orderMapper.insertRfreasons(name, orderId);
 
-        int userId = loginUser.getId();
-
-        int totalPages = userService.getTotalPagesByUserId(userId);
-        String pageView = Paging.getPaging("", page, totalPages, 5, 5);
-        int offset = (page - 1) * PAGE_SIZE;
-
-        List<ProductsVo> myProductLikeList = userService.selectMyProductLikeList(userId, PAGE_SIZE, offset);
-
-
-        model.addAttribute("pageView", pageView);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("myProductLikeList", myProductLikeList);
-
-        return "user/myProductLikesForm";
+        return "redirect:order-list.do";
     }
 
     /**
      * 좋아요한 상품 리스트 페이징 조회
      */
-    @GetMapping("refundReasonResult.do")
-    public String refundReasonResult(@RequestParam(defaultValue = "1") int page, Model model) {
+    @GetMapping("myProductLikeList.do")
+    public String myProductLikeListAll(@RequestParam(defaultValue = "1") int page, Model model) {
 
         User loginUser = (User) session.getAttribute("loginUser");
 

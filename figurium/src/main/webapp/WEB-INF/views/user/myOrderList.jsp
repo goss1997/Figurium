@@ -101,7 +101,7 @@
             font-family: 'Pretendard-Regular';
         }
 
-        #bankTransferModal {
+        #bankTransferModal, #refundReasonModal {
             margin-top: 200px;
         }
 
@@ -222,6 +222,14 @@
         }
 
     </style>
+    <script>
+        function refundReasonResult() {
+            var orderId = $("#orderId").val();
+            var selectReason = $("#refundReason").val();
+
+            location.href = "refundReasonResult.do?orderId=" + orderId + "&name=" + selectReason;
+        }
+    </script>
 
 </head>
 
@@ -445,16 +453,18 @@
                                                     <h4>환불신청</h4>
                                                     <div class="bank-info mt-3">
                                                         <h5>환불사유</h5>
+                                                        <input value="${myOrder.id}" type="hidden" id="orderId">
                                                     </div>
                                                     <div class="info-text mt-3">
-                                                        <select >
+                                                        <select id="refundReason">
                                                             <option value="단순 변심">단순 변심</option>
                                                             <option value="제품 불량">제품 불량</option>
                                                             <option value="잘못된 주문">잘못된 주문</option>
                                                             <option value="오배송">오배송</option>
                                                             <option value="기타">기타</option>
-                                                            <input type="button" value="관리자에게 환불신청" onclick="location.href='refundReasonResult.do'">
                                                         </select>
+                                                            <input type="button" value="관리자에게 환불신청" onclick="refundReasonResult()">
+
                                                     </div>
                                                 </div>
                                             </div>

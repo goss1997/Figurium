@@ -240,7 +240,7 @@ public class OrderController {
                 int itemQuantityCheck = productsVo.getQuantity();
                 // 상품 정보에 재고 업데이트
                 // TODO 귀여미 Exception 처리
-                if(itemQuantity-itemQuantityCheck<0) {
+                if(itemQuantityCheck-itemQuantity<0) {
                     log.error("There is insufficient stock due to someone else's purchase.: {}", "재고수량부족");
                     throw new OutofStockException("Insufficient stock: 재고가 부족합니다.");
                 }

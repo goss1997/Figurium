@@ -141,6 +141,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         limit 1
     </select>
 
+
+    <insert id="insertRfreasons" parameterType="Map">
+        insert into rfreasons (name, order_id)
+        values(
+               #{ name },
+               #{ orderId }
+              )
+    </insert>
+
 </mapper>
 
 

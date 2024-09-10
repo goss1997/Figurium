@@ -363,6 +363,31 @@
     border-color: #007bff;
 }
 
+.qa_box{
+    margin: auto;
+    margin-top: 20px;
+    width: 1300px;
+}
+
+/* 질문 작성 버튼 */
+.qaInsert_btn_box{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.qaInsert_btn{
+    width: 100px;
+    height: 30px;
+    background-color: #232323;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.qaInsert_btn:hover{
+    background-color: #404040;
+}
+
 
 /* 리뷰 상세 보기 CSS 요소 */
 

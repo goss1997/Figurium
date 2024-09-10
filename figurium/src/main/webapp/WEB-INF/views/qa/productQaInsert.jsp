@@ -36,7 +36,8 @@
 <div class="container pt-3">
     <h1 style="margin-bottom: 15px">게시글 작성</h1>
     <hr>
-    <form action="/qa/qaSave.do" method="post">
+    <form action="${pageContext.request.contextPath}/qa/productQaSave.do" method="post">
+        <input type="hidden" name="productQaId" value="${productQaId}">
         <div class="form-group">
             <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
         </div>
@@ -45,14 +46,14 @@
             <div class="form-group">
                 <select id="category" name="category" class="custom-select" onchange="updateTitle()">
                     <option selected disabled>:::분류 선택:::</option>
-                    <option value="배송문의">상품문의</option>
-                    <option value="취소문의">입고문의</option>
+                    <option value="상품문의">상품문의</option>
+                    <option value="입고문의">입고문의</option>
                 </select>
             </div>
             <textarea class="form-control" style="resize: none; height: 300px;" id="content" name="content"
                       placeholder="내용을 입력하세요" autocomplete="off"></textarea>
         </div>
-        <a href="/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px; float: right;">취소</a>
+        <a href="${pageContext.request.contextPath}/qa/productQaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px; float: right;">취소</a>
         <button type="submit" class="btn btn-dark" style="margin-bottom: 10px; float: right; margin-right: 10px;">등록</button>
 
     </form>

@@ -150,13 +150,14 @@
 
     <div class="tap_box">
         <ul class="tap_detail">
-            <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
-            <li class="tap_qa"><a href="#">Q&A(0)</a></li>
+            <li class="tap_review" onclick="showTab('reviews')"><a href="#">Reviews(${reviewCount})</a></li>
+            <li class="tap_qa" onclick="showTab('qa')"><a href="#">Q&A(${productQaCount})</a></li>
         </ul>
 
     </div>
 
     <!-- 리뷰영역 -->
+    <div id="reviews" class="tab-content">
     <div class="reviews_box">
         <form>
             <input type="hidden" name="productId" value="${product.id}">
@@ -175,61 +176,29 @@
         <div id="productReviewList"></div>
         </c:if>
         <div id="pagination" style="text-align: center;"></div>
-
+    </div>
     </div>
 </div>
 
-
-<!-- Q&A Tap -->
-
-<div class="tap_box">
-    <ul class="tap_detail">
-        <li class="tap_review"><a href="#">Reviews(${reviewCount})</a></li>
-        <li class="tap_qa"><a href="#">Q&A(0)</a></li>
-    </ul>
-
-</div>
 <!-- Q&A 영역 -->
-<div id="content-wrap-area">
-<div class="container pt-3">
-    <h1 style="margin-bottom: 15px">Q&A리스트</h1>
-    <hr>
-    <table class="table table-hover">
-        <thead class="thead-light">
-        <tr style="text-align: center">
-            <th>번호</th>
-            <th>제목</th>
-            <th>답변여부</th>
-            <th>작성자</th>
-            <th>작성일</th>
-        </tr>
-        </thead>
-        <tbody style="text-align: center;">
-        <c:forEach var="qa" items="${qaList}" varStatus="status" >
-            <tr onclick="location.href='/qa/productQaSelect.do?id=${qa.id}'" style="cursor: pointer;">
-                <td>${status.index+1}</td>
-                <td class="truncate-title" style="text-align: left;">
-                    <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
-                        ${qa.title}
-                </td>
-                <td>${qa.replyStatus}</td>
-                <td>${qa.name}</td>
-                <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <hr>
-    <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="location.href='productQaInsert.jsp'">글쓰기</button>
+   <div id="qa" class="tab-content">
+<div class="qa_box">
+        <form>
+            <input type="hidden" name="productId" value="${product.id}">
+            <span class="qaInsert_btn_box">
+                <input class="qaInsert_btn" type="button" value="질문작성" onclick="qaInsert()">
+            </span>
+        </form>
 
-
-    <!-- 페이징 메뉴 -->
-    <div style="margin-top: 30px !important;">
-        ${pageMenu}
+        <c:if test="${!empty productQaList}">
+            <div id="productQaList">
+                <jsp:include page="../qa/productQaList.jsp"/>
+            </div>
+        </c:if>
+        <div id="productQaPaging" style="text-align: center;"></div>
     </div>
+</div>
 
-</div>
-</div>
 
 
 
@@ -240,6 +209,34 @@
 
 
 <script>
+
+// 탭 전환 함수
+     // 탭 전환 함수
+    function showTab(tabId) {
+        // 모든 탭 내용을 숨깁니다
+        var tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(function(tab) {
+            tab.style.display = 'none';
+        });
+
+        // 선택된 탭만 표시합니다
+        var activeTab = document.getElementById(tabId);
+        if (activeTab) {
+            activeTab.style.display = 'block';
+        }
+    }
+
+    // 페이지 로드 시 기본적으로 'Reviews' 탭을 활성화합니다
+    document.addEventListener('DOMContentLoaded', function() {
+        showTab('reviews');
+    });
+
+
+    function qaInsert(){
+        window.location.href = '/qa/productQaInsert.do';
+    }
+
+
     $(document).ready(function () {
         // 서버에서 전달된 하트 상태를 기반으로 초기화
         var isLiked = "${isLiked}" === 'true';  // JSP에서 'true' 또는 'false'로 전달됨

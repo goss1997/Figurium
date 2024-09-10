@@ -82,4 +82,10 @@
         where replyStatus = '답변준비중'
     </select>
 
+    <!-- Product QA Count 조회 -->
+    <select id="getProductQaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM qa
+        WHERE product_id = #{productId} <!-- 컬럼명을 실제 데이터베이스에 맞게 수정 -->
+    </select>
 </mapper>

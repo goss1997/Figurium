@@ -15,6 +15,7 @@ public interface QaMapper {
     void update(QaVo qaVo); // 게시글 수정
     void delete(int id); // 게시글 삭제
     void deleteReply(int id); // 답변 삭제
+    int getProductQaCount(int productQaId);
 
     List<QaVo> selectAllWithPagination(Map<String, Object> map);
 

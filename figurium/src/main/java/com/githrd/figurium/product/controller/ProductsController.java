@@ -7,9 +7,15 @@ import com.githrd.figurium.product.repository.CategoriesRepository;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.productLike.service.ProductLikeService;
+import com.githrd.figurium.qa.dao.QaMapper;
+import com.githrd.figurium.qa.vo.QaVo;
+import com.githrd.figurium.reviews.dao.ReviewMapper;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.util.page.CommonPage;
+import com.githrd.figurium.util.page.Paging;
+import com.githrd.figurium.util.page.ProductQaCommonPage;
 import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +40,7 @@ public class ProductsController {
     private final ProductLikeService productLikeService;
     private final S3ImageService s3ImageService;
     private final ProductsMapper productsMapper;
+    private final QaMapper qaMapper;
 
 
     @GetMapping("/productList.do")
@@ -59,7 +66,7 @@ public class ProductsController {
     public String list(@RequestParam(value = "id" , required = false) Integer id,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        HttpSession session,
-                       Model model) {
+                       Model model, Map map) {
 
         // 해상 상품에 해당하는 ID를 받아옴
         Products selectOne = productsService.getProductById(id);
@@ -97,6 +104,31 @@ public class ProductsController {
         } else {
             model.addAttribute("isLiked", false);
         }
+
+
+        // Q&A 리스트와 관련된 페이징 설정
+        // Q&A 관련 정보 설정
+        Map<String, Object> qaMap = new HashMap<>();
+        int qaStart = (page - 1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
+        int qaEnd = qaStart + ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
+
+        qaMap.put("start", qaStart);
+        qaMap.put("end", qaEnd);
+        qaMap.put("productId", id);
+
+        List<QaVo> productQaList = qaMapper.selectAllWithPagination(qaMap);
+        int productQaCount = qaMapper.getProductQaCount(id);
+
+        String qaPageMenu = Paging.getPaging("productInfo.do",
+                page,
+                productQaCount,
+                CommonPage.qaList.BLOCK_LIST,
+                CommonPage.qaList.BLOCK_PAGE);
+
+        model.addAttribute("qaPageMenu", qaPageMenu);
+        model.addAttribute("productQaList", productQaList);
+        model.addAttribute("productQaCount", productQaCount);
+
         return "products/productInfo";
     }
 

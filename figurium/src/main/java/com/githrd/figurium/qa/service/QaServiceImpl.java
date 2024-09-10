@@ -50,6 +50,11 @@
         }
 
         @Override
+        public int getProductQaCount(int productId) {
+            return qaMapper.getProductQaCount(productId);
+        }
+
+        @Override
         public int selectRowTotal(Map<String, Object> map) {
             return qaMapper.selectRowTotal(map);
         }
@@ -76,8 +81,7 @@
 
         @Override
         public int getQaCount() {
-
-            return qaMapper.getQaCount(); // qaMapper에서 QA 갯수 가져오는 메서드 호출
+            return qaMapper.getQaCount();
         }
 
 

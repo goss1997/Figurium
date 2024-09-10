@@ -5,6 +5,8 @@ import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.util.page.CommonPage;
 import com.githrd.figurium.util.page.Paging;
+import com.githrd.figurium.util.page.ProductQaCommonPage;
+import com.githrd.figurium.util.page.ProductQaPaging;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,8 +66,46 @@ public class QaController {
         return "qa/qaList";
     }
 
+    @GetMapping("/productQaList.do")
+    public String getProductQaList(@RequestParam(name = "page", defaultValue = "1") int nowPage,
+                                   @RequestParam(name = "productQaId", required = false) int productQaId,
+                                   Model model) {
 
 
+
+        //검색조건을 담을 맵
+        Map<String, Object> map = new HashMap<>();
+
+        //start/end
+        int start = (nowPage-1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
+        int end   = start+ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
+
+
+        map.put("start", start);
+        map.put("end", end);
+        map.put("productQaId", productQaId);
+
+        // 총게시물수
+        int rowTotal = qaService.selectRowTotal(map);
+
+        //pageMenu만들기
+        String pageMenu = ProductQaPaging.getPaging("productQaList.do",
+                nowPage,
+                rowTotal,
+                ProductQaCommonPage.productQaList.BLOCK_LIST ,
+                ProductQaCommonPage.productQaList.BLOCK_PAGE);
+
+        //-------[ End :  Page Menu ]------------------------
+
+        // 결과적으로 request binding
+        model.addAttribute("pageMenu", pageMenu);
+        model.addAttribute("productQaList", qaService.selectAllWithPagination(map));
+        model.addAttribute("productQaId", productQaId);
+
+        return "qa/productQaList";
+}
+
+    //Q&A게시판에서 게시글 작성시
     @GetMapping("/qaInsert.do")
     public String insertForm(Model model) {
         User loginUser = (User) session.getAttribute("loginUser");
@@ -76,6 +116,19 @@ public class QaController {
         return "qa/qaInsert";
     }
 
+    //상품상세페이지에서 게시글 작성시
+    @GetMapping("/productQaInsert.do")
+    public String productInsertForm(@RequestParam(name = "productQaId", required = false) Integer productQaId, Model model) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        // 로그인 상태를 확인
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("productQaId", productQaId);
+        return "qa/productQaInsert";
+    }
+
+    //Q&A게시판에서 게시글 작성시
     @PostMapping("/qaSave.do")
     public String save(@RequestParam("title") String title,
                        @RequestParam("content") String content,
@@ -102,9 +155,46 @@ public class QaController {
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);
+
         qaService.saveQa(qaVo);
 
         return "redirect:/qa/qaList.do";
+    }
+
+    //상품상세페이지에서 게시글 작성시
+    @PostMapping("/productQaSave.do")
+    public String productQaSave(@RequestParam("title") String title,
+                                @RequestParam("content") String content,
+                                @RequestParam("category") String category,
+                                @RequestParam(value = "reply", required = false) String reply,
+                                @RequestParam(value = "productQaId") int productQaId) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        // 로그인 상태를 확인
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+
+        // 카테고리와 제목을 처리하기 위한 코드 추가
+        if (title != null && !title.startsWith("[" + category + "]")) {
+            title = "[" + category + "] " + title;
+        }
+
+        QaVo qaVo = new QaVo();
+        // User ID 처리
+        if (loginUser.getId() != null) {
+            // Integer 타입일 경우
+            qaVo.setUserId(loginUser.getId());
+        }
+
+
+        qaVo.setTitle(title);
+        qaVo.setContent(content);
+        qaVo.setReply(reply);
+        qaVo.setProductQaId(productQaId);
+        qaService.saveQa(qaVo);
+
+        // 상품 상세 페이지로 리디렉션하며 해당 상품의 Q&A 목록도 함께 포함
+        return "redirect:/productInfo.do?id=" + productQaId + "&showQa=true";
     }
 
     @GetMapping("/qaSelect.do")

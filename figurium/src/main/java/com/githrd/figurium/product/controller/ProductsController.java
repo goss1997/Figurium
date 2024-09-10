@@ -47,16 +47,16 @@ public class ProductsController {
     public String productList(@RequestParam(defaultValue = "all") String selectFilter,
                               @RequestParam(value = "name") String categoryName,
                               Model model) {
-
+        
+        // filter와 name을 같이 받아오기 위해 맵에다가 저장
         Map<String,Object> params = new HashMap<>();
         params.put("selectFilter",selectFilter);
         params.put("categoryName",categoryName);
 
         List<ProductsVo> productCategoriesList = productsService.categoriesList(params);
         model.addAttribute("productCategoriesList", productCategoriesList);
-        model.addAttribute("selectFilter", selectFilter);
-        model.addAttribute("categoryName", categoryName);
-
+        model.addAttribute("categoryName", categoryName); // 필터 처리를 위해 모델에 담음
+        model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
         return "products/productCategories";
     }
 

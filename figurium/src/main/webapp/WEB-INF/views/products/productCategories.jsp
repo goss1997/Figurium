@@ -19,7 +19,7 @@
         .section-slide{
         }
         .item-slick1{
-            max-height: 500px;
+            max-height: 550px;
         }
     </style>
 </head>
@@ -60,21 +60,20 @@
 
 <div class="categories_main_box">
     <div class="categories_title_box" style="text-align: center; margin-top: 100px">
-        <h3>${categoryName}</h3>
+        <h1>★ ${categoryName} ★</h1>
     </div>
 
     <div class="sort_box">
-        <span>현재 상품이 n개 있습니다</span>
         <!-- Filter -->
         <div class="filter_box">
         <form action="/productList.do" method="get">
         <input type="hidden" name="name" value="${categoryName}">
             <select class="select_filter" name="selectFilter" onchange="this.form.submit()">
-                <option>::상품정렬::</option>
-                <option value="newProducts">신상품</option>
-                <option value="bestProducts">추천 상품</option>
-                <option value="highPrice">높은 가격순</option>
-                <option value="lowPrice">낮은 가격순</option>
+                <option value="default" ${selectFilter == 'default' ? 'selected' : ''}>:: 기본정렬 ::</option>
+                <option value="newProducts" ${selectFilter == 'newProducts' ? 'selected' : ''}>신상품</option>
+                <option value="bestProducts" ${selectFilter == 'bestProducts' ? 'selected' : ''}>추천★상품</option>
+                <option value="highPrice" ${selectFilter == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+                <option value="lowPrice" ${selectFilter == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
             </select>
         </form>
         </div>
@@ -82,7 +81,7 @@
     <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
                 <c:forEach var="products" items="${productCategoriesList}">
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item <%--${products.category.name}--%>">
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" style="margin-top: 30px;">
                     <!-- Block2 -->
                     <div class="block2">
                         <div class="block2-pic hov-img0">

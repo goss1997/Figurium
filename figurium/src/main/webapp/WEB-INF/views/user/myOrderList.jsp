@@ -390,7 +390,7 @@
                                             <c:if test="${ myOrder.paymentType == 'vbank' && myOrder.status == '입금대기' }">
                                             무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다.
                                             </c:if>
-                                            <c:if test="${ myOrder.status != '환불완료' }">
+                                            <c:if test="${ myOrder.status != '환불완료' && myOrder.refundReason == null }">
                                                 <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#refundReasonModal" style="cursor: pointer;">
                                                     환불신청
                                                 </span>

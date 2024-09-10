@@ -55,8 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             min(image_url) as image_url,
             max(status) as status,
             max(valid) as valid,
+            max(refund_reason) as refund_reason,
             sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
-        from order_history_view
+        from order_history_refund_view
         where user_id = #{ user_id }
         group by id
         order by max(created_at) desc   -- 역순 정렬

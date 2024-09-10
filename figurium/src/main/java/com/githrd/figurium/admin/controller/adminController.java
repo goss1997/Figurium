@@ -48,7 +48,15 @@ public class adminController {
         return "admin/adminPage";
     }
 
+    @PostMapping("/adminPayment.do")
+    @ResponseBody
+    public List<MyOrderVo> adminPayment() {
+        // 주문 목록을 가져오기
+        List<MyOrderVo> paymentList = orderMapper.viewAllList();
 
+        // orderList를 JSON 형태로 반환
+        return paymentList;
+    }
 
     @PostMapping("/adminRefund.do")
     @ResponseBody

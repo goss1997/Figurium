@@ -17,6 +17,9 @@
             text-align: center;
             vertical-align: middle !important;
         }
+        .nav-link:hover{
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -32,16 +35,17 @@
                 <a class="nav-link" href="productInsertForm.do">상품 등록</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">사용자 결제 & 반품 승인</a>
+                <a class="nav-link" id="adminPayment" >사용자 결제 & 반품 승인</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="changeStatus" href="adminRefund();">배송상태 변경</a>
+                <a class="nav-link" id="changeStatus">배송상태 변경</a>
             </li>
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
                      id="qa-notify"
                      data-notify="0">
-                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;" id="viewQaList" href="#">Q&A 미답변</a>
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       id="viewQaList" >Q&A 미답변</a>
                 </div>
             </li>
         </ul>
@@ -57,6 +61,60 @@
 
 
 <script>
+
+
+    function adminPayment() {
+        $.ajax({
+            url: 'adminPayment.do',
+            type: 'POST',
+            success: function (paymentList) {
+                let html = `
+                <table class="table table-hover" style="width: 90%; margin: auto">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="col-3">주문번호<br>주문일자</th>
+                            <th class="col-3">상품명</th>
+                            <th class="col-1">결제방식</th>
+                            <th class="col-1">총 결제금액</th>
+                            <th class="col-1">결제상태</th>
+                            <th class="col-1">주문상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+                paymentList.forEach(function (order) {
+                    html += `
+                    <tr>
+                        <td>\${order.id}<br>\${order.createdAt}</td>
+                        <td>\${order.productName}</td>
+                        <td>\${order.paymentType === 'vbank' ? '무통장입금' : '카드결제'}
+                            <!-- TODO 무통장입금건 입금확인요청시 체크할 버튼필요-->
+
+                        </td>
+                        <td>\${order.price}</td>
+                        <td>\${order.valid === 'y' ? '결제완료' : '환불완료'}</td>
+                               <!-- TODO 환불요청시 환불처리 기능 필요 -->
+                        <td>\${order.status}</td>
+                        <input type="hidden" name="ordersId" value="\${order.id}">
+                    </tr>
+                `;
+                });
+
+                html += `
+                    </tbody>
+                </table>
+            `;
+
+                // 동적으로 생성한 HTML을 페이지에 삽입
+                $('#admin-view').html(html);
+            },
+            error: function (xhr, status, error) {
+                $('#admin-view').html('<p>문제가 발생했습니다. 다시 시도해주세요.</p>');
+            }
+        });
+
+
+    }
 
     function adminRefund() {
         $.ajax({
@@ -79,7 +137,7 @@
             `;
 
                 // orderList가 배열일 경우 각 항목을 반복
-                orderList.forEach(function(order) {
+                orderList.forEach(function (order) {
                     html += `
                     <tr>
                         <td>\${order.id}<br>\${order.createdAt}</td>
@@ -89,13 +147,13 @@
                         <td>\${order.valid === 'y' ? '결제완료' : '환불완료'}</td>
                         <td>
                             <a>\${order.status}</a>&nbsp;&nbsp;
-                            <input type="button" class="deliveryButton" value="상태변경" style="display: inline-block;" onclick="toggleButtons(this);">
-                            <select style="margin: 0px; display: none;" class="deliveryCondition" name="deliveryCondition">
-                                <option>준비중</option>
-                                <option>출고대기</option>
-                                <option>배송중</option>
-                                <option>배송완료</option>
-                            </select>
+                                <input type="button" class="deliveryButton" value="상태변경" style="display: inline-block;" onclick="toggleButtons(this);">
+                                <select style="margin: 0px; display: none;" class="deliveryCondition" name="deliveryCondition">
+                                    <option value="준비중" \${order.status == '준비중' ? 'selected' : ''}>준비중</option>
+                                    <option value="출고대기" \${order.status == '출고대기' ? 'selected' : ''}>출고대기</option>
+                                    <option value="배송중" \${order.status == '배송중' ? 'selected' : ''}>배송중</option>
+                                    <option value="배송완료" \${order.status == '배송완료' ? 'selected' : ''}>배송완료</option>
+                                </select>
                             <input type="button" class="delivery" value="적용" style="display: none;" onclick="deliveryChange(this);">
                             <input type="hidden" name="ordersId" value="\${order.id}">
                         </td>
@@ -192,6 +250,11 @@
         updateQaCount();
 
 
+        $('#adminPayment').click(function (event) {
+            event.preventDefault();
+            adminPayment();
+        });
+
         $('#changeStatus').click(function (event) {
             event.preventDefault();
             adminRefund();
@@ -245,21 +308,21 @@
             type: 'POST',
             url: '/statusChange.do',  // 컨트롤러의 URL
             contentType: 'application/json',  // 요청의 타입
-            data: JSON.stringify({ id: ordersId, status: deliveryConditionValue }),  // JSON 형식으로 데이터 전송
-            success: function(response) {
+            data: JSON.stringify({id: ordersId, status: deliveryConditionValue}),  // JSON 형식으로 데이터 전송
+            success: function (response) {
                 console.log('Success:', response);
                 // 성공 시 처리할 내용
                 alert("배송상태 변경 성공");
-                location.reload();
+                //location.reload();
+                adminRefund();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log('Error:', error);
                 // 오류 시 처리할 내용
                 alert("변경이 실패했습니다.\n잠시후 다시시도 해주세요");
             }
         });
     }
-
 
 
 </script>

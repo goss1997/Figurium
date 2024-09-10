@@ -68,9 +68,9 @@ public class ProductsController {
             @RequestParam(value = "lastCreatedAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime lastCreatedAt,
             @RequestParam(value = "lastId", required = false) Integer lastId) {
 
-        List<ProductsVo> nexProductList = productsService.getNextPageByCreatedAt(lastCreatedAt, lastId);
+        List<ProductsVo> nextProductList = productsService.getNextPageByCreatedAt(lastCreatedAt, lastId);
 
-        return nexProductList;
+        return nextProductList;
 
     }
 

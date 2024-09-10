@@ -1,5 +1,7 @@
 package com.githrd.figurium.order.controller;
 
+import com.githrd.figurium.exception.customException.AccountLinkException;
+import com.githrd.figurium.exception.customException.OutofStockException;
 import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
@@ -208,72 +210,71 @@ public class OrderController {
                                     @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities
                                     ) {
 
-        System.out.println("insertInformation 입력완료");
+        try {
+            // Customers insert
+            // 최근에 생성된 order_id의 idx 주입
+            int orderId = orderMapper.selectOneLast().getId();
 
 
-        // Customers insert
-        // 최근에 생성된 order_id의 idx 주입
-        int orderId = orderMapper.selectOneLast().getId();
+            for(int i = 0; i < productIds.toArray().length; i++) {
 
+                OrderItems orderItems = new OrderItems();
+                orderItems.setOrderId(orderId);
 
+                int productId = productIds.get(i);
+                int itemPrice = itemPrices.get(i);
+                int itemQuantity = itemQuantities.get(i);
 
-        for(int i = 0; i < productIds.toArray().length; i++) {
+                // 각 값을 저장
+                orderItems.setProductId(productId);
+                orderItems.setItemPrice(itemPrice);
+                orderItems.setItemQuantity(itemQuantity);
 
-            OrderItems orderItems = new OrderItems();
-            orderItems.setOrderId(orderId);
+                // 장바구니에 입력되어 있는 정보 중 구매한 상품 전부 삭제
+                cartsMapper.deleteCartProduct(productId, loginUserId);
 
-            int productId = productIds.get(i);
-            int itemPrice = itemPrices.get(i);
-            int itemQuantity = itemQuantities.get(i);
+                orderItemsMapper.insertOrderItems(orderItems);
 
-            // 각 값을 저장
-            orderItems.setProductId(productId);
-            orderItems.setItemPrice(itemPrice);
-            orderItems.setItemQuantity(itemQuantity);
+                // 처음에 재고 확인 후 시간차 주문공격 체크
+                ProductsVo productsVo = productsMapper.selectOneCheckProduct(productId, itemQuantity);
+                int itemQuantityCheck = productsVo.getQuantity();
+                // 상품 정보에 재고 업데이트
+                // TODO 귀여미 Exception 처리
+                if(itemQuantity-itemQuantityCheck<0) {
+                    log.error("There is insufficient stock due to someone else's purchase.: {}", "재고수량부족");
+                    throw new OutofStockException("Insufficient stock: 재고가 부족합니다.");
+                }
 
-            // 장바구니에 입력되어 있는 정보 중 구매한 상품 전부 삭제
-            cartsMapper.deleteCartProduct(productId, loginUserId);
+                int res = productsMapper.updateProductQuantity(productId, itemQuantity);
+            }
 
-            orderItemsMapper.insertOrderItems(orderItems);
-            
-            // 상품 정보에 재고 업데이트
-            int res = productsMapper.updateProductQuantity(productId, itemQuantity);
-            
+            Customers customers = new Customers();
 
+            customers.setOrderId(orderId);
+            customers.setName(name);
+            customers.setPhone(phone);
+            customers.setEmail(email);
+
+            int res = customersMapper.insertCustomers(customers);
+
+            // Shipping_addresses insert
+            ShippingAddresses shippingAddresses = new ShippingAddresses();
+
+            shippingAddresses.setOrderId(orderId);
+            shippingAddresses.setRecipientName(recipientName);
+            shippingAddresses.setShippingPhone(shippingPhone);
+            shippingAddresses.setAddress(address);
+            shippingAddresses.setDeliveryRequest(deliveryRequest);
+
+            // 매핑 생성
+            int res2 = shippingAddressesMapper.insertShippingAddresses(shippingAddresses);
+
+            return "success";
+        } catch (Exception e) {
+            log.error("Error occurred while linking account: ", e);
+            throw new AccountLinkException("Failed to link account: " + e.getMessage());
         }
 
-
-
-        Customers customers = new Customers();
-
-        customers.setOrderId(orderId);
-        customers.setName(name);
-        customers.setPhone(phone);
-        customers.setEmail(email);
-
-        int res = customersMapper.insertCustomers(customers);
-
-        // Shipping_addresses insert
-        ShippingAddresses shippingAddresses = new ShippingAddresses();
-
-        shippingAddresses.setOrderId(orderId);
-        shippingAddresses.setRecipientName(recipientName);
-        shippingAddresses.setShippingPhone(shippingPhone);
-        shippingAddresses.setAddress(address);
-        shippingAddresses.setDeliveryRequest(deliveryRequest);
-
-        // 매핑 생성
-        int res2 = shippingAddressesMapper.insertShippingAddresses(shippingAddresses);
-
-
-
-        System.out.println("입력성공");
-
-
-        return "success";
     }
-
-
-
 
 }

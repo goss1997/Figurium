@@ -66,6 +66,8 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             return ErrorType.FAIL_DELETE_USER_EXCEPTION;
         } else if (ex instanceof NoResourceFoundException) {
             return ErrorType.NO_RESOURCE_FOUND_EXCEPTION;
+        } else if (ex instanceof OutofStockException) {
+            return ErrorType.OUT_OF_STOCK_EXCEPTION;
         }
 
         // 기본적으로 일반 예외로 처리

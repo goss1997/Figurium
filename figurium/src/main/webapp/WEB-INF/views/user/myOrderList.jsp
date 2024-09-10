@@ -322,7 +322,7 @@
 
                                                     <tr class="table_row" style="height: 100px;">
                                                         <td class="column-1" style="padding-bottom: 0px;" >
-                                                            <div class="how-itemcart1" data-toggle="modal" data-target="#refundReasonModal" style="cursor: pointer;"
+                                                            <div class="how-itemcart1" style="cursor: pointer;"
                                                                  onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
                                                                 <img src="${ myOrder.imageUrl }"
                                                                      alt="${ myOrder.id }" style="text-align: left;">
@@ -377,11 +377,18 @@
                                                     </tr>
                                             </table>
                                         </div>
-                                        <c:if test="${ myOrder.paymentType == 'vbank' && myOrder.status == '입금대기' }">
+
                                         <div style="text-align: right; font-size: 0.8em; color: gray; margin-top: 10px;">
+                                            <c:if test="${ myOrder.paymentType == 'vbank' && myOrder.status == '입금대기' }">
                                             무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다.
+                                            </c:if>
+                                            <c:if test="${ myOrder.status != '환불완료' }">
+                                                <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#refundReasonModal" style="cursor: pointer;">
+                                                    환불신청
+                                                </span>
+                                            </c:if>
                                         </div>
-                                        </c:if>
+
                                     </div>
                                 </div>
                             </div>
@@ -424,7 +431,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="refundReasonModalLabel">무통장입금 안내</h5>
+                                            <h5 class="modal-title" id="refundReasonModalLabel">환불안내</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -435,14 +442,19 @@
                                                     <img src="/images/신태일.png" alt="신태일.png" class="img-fluid">
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <h4>무통장 거래 입금안내</h4>
+                                                    <h4>환불신청</h4>
                                                     <div class="bank-info mt-3">
-                                                        <h5>937702-00-363467 국민은행 피규리움</h5>
+                                                        <h5>환불사유</h5>
                                                     </div>
                                                     <div class="info-text mt-3">
-                                                        <p>관리자의 입금처리가 순차적으로 진행됩니다.</p>
-                                                        <p>승인까지 다소 시간이 소요될 수 있습니다.</p>
-                                                        <p>입금자명과 주문자명이 동일해야 정상적인 입금처리가 됨을 알려드립니다.</p>
+                                                        <select >
+                                                            <option value="단순 변심">단순 변심</option>
+                                                            <option value="제품 불량">제품 불량</option>
+                                                            <option value="잘못된 주문">잘못된 주문</option>
+                                                            <option value="오배송">오배송</option>
+                                                            <option value="기타">기타</option>
+                                                            <input type="button" value="관리자에게 환불신청" onclick="location.href='refundReasonResult.do'">
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>

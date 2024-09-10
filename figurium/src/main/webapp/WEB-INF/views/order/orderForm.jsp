@@ -421,7 +421,6 @@
             icon: 'success',
             title: '주문이 정상적으로 처리되었습니다.'
           });
-
           // 2초 후에 페이지 이동
           setTimeout(function () {
             location.href="../user/order-list.do";
@@ -434,6 +433,7 @@
 
 
     }
+
   </script>
 
 
@@ -443,10 +443,7 @@
 <div style="height: 90px"></div>
 
 
-
-
-
-
+<%-- 구글 관리자 이메일로 보내는 로직 --%>
 
 
 
@@ -742,7 +739,7 @@
       <div class="payment-info" id="payment-info-bottom">
         <span>총 결제 금액</span>
 
-        <span class="payment-info-price-red">
+        <span class="payment-info-price-red" name="totalPrice">
           <c:set var="finalValue" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
           <fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원
         </span>

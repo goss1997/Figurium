@@ -54,6 +54,8 @@
     <link rel="stylesheet" type="text/css" href="/css/util.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--===============================================================================================-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -222,7 +224,7 @@
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="/" class="logo">
+                <a href="/" class="logo" style="margin-left: -40px;">
                     <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
 
@@ -293,7 +295,7 @@
 
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-                         data-notify="2">
+                         data-notify="0">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
@@ -301,6 +303,11 @@
                        data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+
+                    <%--알림 버튼--%>
+                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+                    <i class="zmdi zmdi-notifications"></i>
+                    </div>
 
                     <!-- 상품 검색 -->
                     <div class="search_box">

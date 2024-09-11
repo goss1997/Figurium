@@ -214,6 +214,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
 
+    <!-- 인기 검색어 상위 5개 조회 -->
+    <select id="searchHistory" resultType="String">
+        SELECT search_name
+        FROM product_search_history
+        ORDER BY search_count DESC
+        LIMIT 5
+    </select>
 
 </mapper>
 

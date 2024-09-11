@@ -18,4 +18,6 @@ public class ProductsVo {
     String updatedAt;
     int likeCount;
 
+    String searchName;
+
 }

@@ -376,10 +376,10 @@ public class ProductsController {
     }
 
     // 상품의 검색어 순위
-    @PostMapping("searchRank")
-    public String searchRank(Model model) {
-        
-        return "common/header";
+    @RequestMapping("searchRank")
+    @ResponseBody
+    public List<String> searchRank() {
+        return productsService.searchHistory();
     }
 
 

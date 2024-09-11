@@ -25,6 +25,8 @@ public interface ProductsMapper {
     int searchProductsCount(Map<String,Object> params);
     // 상품을 검색 했을 때 검색 히스토리를 저장
     int searchProductsNameHistory(String search);
+    // 상품 검색 순위별 조회하기
+    List<String> searchHistory();
 
     List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params);
 

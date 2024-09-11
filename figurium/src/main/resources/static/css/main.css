@@ -3344,6 +3344,7 @@ input.num-product::-webkit-inner-spin-button {
   border: 1px solid #ececec;
   border-radius: 10px;
   background-color: #fafafa;
+  position: relative;
 }
 
 .search_products_box{
@@ -3352,4 +3353,27 @@ input.num-product::-webkit-inner-spin-button {
   background-color: #fafafa;
 }
 
+/* 스타일을 추가하여 드롭다운 메뉴를 표시 */
+#popularSearches {
+  position: absolute;
+  top: 100%; /* 부모 요소의 하단에 위치 */
+  left: 0;
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  background-color: #fff; /* 배경 색상 */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  width: 100%; /* 부모 요소와 같은 너비 */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* 그림자 */
+}
+#popularSearches li {
+  padding: 8px 12px;
+}
+#popularSearches li a {
+  text-decoration: none;
+  color: #333;
+}
+#popularSearches li a:hover {
+  background-color: #f5f5f5;
+  color: #6cb2ff;
+}
 

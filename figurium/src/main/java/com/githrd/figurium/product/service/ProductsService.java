@@ -95,7 +95,10 @@ public class ProductsService {
     public int searchProductsNameHistory(String search){
         return productsMapper.searchProductsNameHistory(search);
     }
-
+    // 검색 상품의 순위별 조회
+    public List<String> searchHistory(){
+       return productsMapper.searchHistory();
+    }
 
 
     public List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params) {

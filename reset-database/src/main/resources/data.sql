@@ -176,6 +176,18 @@ CREATE TABLE qa
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+CREATE TABLE notifications (
+   id INT AUTO_INCREMENT PRIMARY KEY COMMENT '알림 ID (Primary Key, 자동 증가)',
+   user_id INT NOT NULL COMMENT '알림을 받는 사용자 ID',
+   message TEXT NOT NULL COMMENT '알림 내용',
+   url VARCHAR(255) COMMENT '알림 클릭 시 이동할 URL',
+   isRead BOOLEAN DEFAULT FALSE COMMENT '알림 읽음 여부',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '알림 생성 시간',
+   FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+
 -- 더미 데이터
 -- 회원 테이블 더미데이터
 -- 사용자 1

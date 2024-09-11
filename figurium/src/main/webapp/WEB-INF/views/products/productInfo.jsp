@@ -211,39 +211,32 @@
 <script>
 
 // 탭 전환 함수
-function showTab(tabId) {
-    // 모든 탭 내용을 숨깁니다
-    var tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(function(tab) {
-        tab.style.display = 'none';
+     // 탭 전환 함수
+    function showTab(tabId) {
+        // 모든 탭 내용을 숨깁니다
+        var tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(function(tab) {
+            tab.style.display = 'none';
+        });
+
+        // 선택된 탭만 표시합니다
+        var activeTab = document.getElementById(tabId);
+        if (activeTab) {
+            activeTab.style.display = 'block';
+        }
+    }
+
+    // 페이지 로드 시 기본적으로 'Reviews' 탭을 활성화합니다
+    document.addEventListener('DOMContentLoaded', function() {
+        showTab('reviews');
     });
 
-    // 선택된 탭만 표시합니다
-    var activeTab = document.getElementById(tabId);
-    if (activeTab) {
-        activeTab.style.display = 'block';
-    }
-}
-
-// 페이지 로드 시 해시 값에 따라 탭을 활성화합니다
-document.addEventListener('DOMContentLoaded', function() {
-    // URL 해시를 가져옵니다
-    var hash = window.location.hash.substr(1); // '#'을 제거
-
-    // 해시 값이 있을 경우 해당 탭을 표시합니다
-    if (hash) {
-        showTab(hash);
-    } else {
-        // 기본 탭을 활성화합니다 (예: 'qa')
-        showTab('qa');
-    }
-});
 
     function qaInsert(f){
     f.method = "GET"
     f.action = '/qa/productQaInsert.do';
     f.submit();
-}
+
 
     $(document).ready(function () {
         // 서버에서 전달된 하트 상태를 기반으로 초기화

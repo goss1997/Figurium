@@ -8,7 +8,6 @@
         SELECT * FROM qa
         ORDER BY created DESC
     </select>
-
         <!--SELECT@rownum := @rownum + 1 AS no, qa.*FROM qa, (SELECT @rownum := 0) AS r ORDER BY id-->
 
     <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
@@ -25,12 +24,6 @@
         INSERT INTO qa (user_id, title, content, reply)
         VALUES (#{userId}, #{title}, #{content}, #{reply})
     </insert>
-
-    <insert id="product_insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
-        INSERT INTO qa (user_id, product_id,title, content, reply)
-        VALUES (#{userId}, #{productQaId},#{title}, #{content}, #{reply})
-    </insert>
-
 
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
         UPDATE qa
@@ -59,18 +52,6 @@
             i.*
               from
                   (select * from qa) i) q
-                 left join users u on q.user_id = u.id
-        where no between #{ start }
-          and #{ end }
-    </select>
-
-    <!-- 페이징 처리된 게시글 조회 -->
-    <select id="selectProductAllWithPagination" parameterType="map" resultType="QaVo">
-        select q.*, u.name
-        from (select rank() over(order by id desc) as no,
-            i.*
-              from
-                  (select * from qa where product_id=#{productId}) i) q
                  left join users u on q.user_id = u.id
         where no between #{ start }
           and #{ end }

@@ -35,11 +35,6 @@
         }
 
         @Override
-        public void saveProductQa(QaVo qaVo) {
-            qaMapper.product_insert(qaVo);
-        }
-
-        @Override
         public void updateQa(QaVo qaVo) {
             qaMapper.update(qaVo);
         }
@@ -69,10 +64,6 @@
             return qaMapper.selectAllWithPagination(map);
         }
 
-        @Override
-        public  List<QaVo> selectProductAllWithPagination(Map<String, Object> map) {
-            return qaMapper.selectProductAllWithPagination(map);
-        }
 
 
         @Override

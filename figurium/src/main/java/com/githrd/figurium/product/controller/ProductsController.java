@@ -95,11 +95,8 @@ public class ProductsController {
     @RequestMapping("/productInfo.do")
     public String list(@RequestParam(value = "id", required = false) Integer id,
                        @RequestParam(value = "page", defaultValue = "1") int page,
-                       @RequestParam(value = "showQa", defaultValue = "false") String showQa,
                        HttpSession session,
                        Model model, Map map) {
-
-
 
         // 해상 상품에 해당하는 ID를 받아옴
         Products selectOne = productsService.getProductById(id);
@@ -141,34 +138,44 @@ public class ProductsController {
 
         // Q&A 리스트와 관련된 페이징 설정
         // Q&A 관련 정보 설정
-        // Q&A 리스트 및 페이징 처리
-        if (true) {
-            int qaPageSize = 5;
-            int qaOffset = (page - 1) * qaPageSize;
+        Map<String, Object> qaMap = new HashMap<>();
+        int qaStart = (page - 1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
+        int qaEnd = qaStart + ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
 
-            Map<String, Object> qaMap = new HashMap<>();
-            qaMap.put("start", qaOffset + 1);
-            qaMap.put("end", qaOffset + qaPageSize);
-            qaMap.put("productId", id);
+        qaMap.put("start", qaStart);
+        qaMap.put("end", qaEnd);
+        qaMap.put("productId", id);
 
-            List<QaVo> productQaList = qaMapper.selectProductAllWithPagination(qaMap);
-            int productQaCount = qaMapper.getProductQaCount(id);
+        List<QaVo> productQaList = qaMapper.selectAllWithPagination(qaMap);
+        int productQaCount = qaMapper.getProductQaCount(id);
 
-            String qaPageMenu = Paging.getPaging("productInfo.do",
-                    page,
-                    productQaCount,
-                    qaPageSize,
-                    CommonPage.qaList.BLOCK_PAGE);
+        String qaPageMenu = Paging.getPaging("productInfo.do",
+                page,
+                productQaCount,
+                CommonPage.qaList.BLOCK_LIST,
+                CommonPage.qaList.BLOCK_PAGE);
 
-            model.addAttribute("qaPageMenu", qaPageMenu);
-            model.addAttribute("productQaList", productQaList);
-            model.addAttribute("productQaCount", productQaCount);
-            model.addAttribute("showQa", true);
-        } else {
-            model.addAttribute("showQa", false);
-        }
+        model.addAttribute("qaPageMenu", qaPageMenu);
+        model.addAttribute("productQaList", productQaList);
+        model.addAttribute("productQaCount", productQaCount);
 
         return "products/productInfo";
+    }
+
+    @GetMapping("/productInsertForm.do")
+    public String productInsertForm(Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
+
+        List<Category> categoriesList = categoriesRepository.findAll();
+        model.addAttribute("categoriesList", categoriesList);
+
+        return "products/productInsertForm";
     }
 
     @RequestMapping("/productInsert.do")

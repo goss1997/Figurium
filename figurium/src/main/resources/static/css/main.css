@@ -3335,3 +3335,21 @@ input.num-product::-webkit-inner-spin-button {
   }
 
 }
+
+.search_box{
+  margin-left: 45px;
+  margin-right: -40px;
+  padding: 7px;
+  display: inline-block;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+.search_products_box{
+  display: inline-block;
+  padding-left: 8px;
+  background-color: #fafafa;
+}
+
+

@@ -234,7 +234,7 @@
                             <a href="/">Home</a>
                         </li>
                         <li>
-                            <a href="#">카테고리</a>
+                            <a href="productList.do?name=전체 상품">카테고리</a>
                             <ul class="sub-menu">
                                 <c:forEach var="category" items="${headerCategories}">
                                     <li><a href="productList.do?name=${category.name}">${category.name}</a></li>
@@ -291,9 +291,7 @@
                         </div>
                     </c:if>
 
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                        <i class="zmdi zmdi-search"></i>
-                    </div>
+
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
                          data-notify="2">
@@ -304,6 +302,16 @@
                        data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+
+                    <!-- 상품 검색 -->
+                    <div class="search_box">
+                    <form>
+                        <input class="search_products_box" type="text" name="search" placeholder="Search..">
+                        <button class="search_btn" style="display: inline-block;" onclick="searchProduct(this.form)">
+                            <i class="zmdi zmdi-search"></i>
+                        </button>
+                    </form>
+                    </div>
                 </div>
 
                 <!-- Login Modal Structure -->
@@ -411,21 +419,6 @@
         </ul>
     </div>
 
-    <!-- Modal Search -->
-    <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-        <div class="container-search-header">
-            <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="/images/icons/icon-close2.png" alt="CLOSE">
-            </button>
-
-            <form class="wrap-search-header flex-w p-l-15">
-                <button class="flex-c-m trans-04">
-                    <i class="zmdi zmdi-search"></i>
-                </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
-            </form>
-        </div>
-    </div>
 </header>
 
 
@@ -543,8 +536,26 @@
         });
 
     });
-
-
 </script>
+
+<script>
+    function searchProduct(f){
+
+        let search = f.search.value;
+
+        if (search === ""){
+            alert("검색하실 상품을 입력해 주세요")
+            f.search.focus();
+            return false;
+        }
+
+        f.method = "GET";
+        f.action = "searchProductsList.do?search=" + search;
+        f.submit();
+
+
+    }
+</script>
+
 </body>
 </html>

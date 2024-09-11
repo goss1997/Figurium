@@ -1,74 +1,25 @@
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
 <head>
-    <title>카테고리 별 조회</title>
+    <title>상품 검색</title>
     <link rel="stylesheet" type="text/css" href="/css/searchAndCategoriesList.css">
-    <style>
-
-        .product_insert > a {
-            text-decoration: none;
-            color: #888;
-        }
-
-        .product_insert:hover > a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .section-slide{
-        }
-        .item-slick1{
-            max-height: 550px;
-        }
-    </style>
 </head>
 <%@ include file="../common/header.jsp" %>
 <body>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
-<!-- Slider -->
-<div class="container-fluid" style="padding: 0;width: 100%;">
-    <section class="section-slide">
-        <div class="wrap-slick1">
-            <div class="slick1">
-                <div class="item-slick1"
-                     style="background-image: url(/images/Slider1.jpg);">
-                    <div class="container">
-
-                    </div>
-                </div>
-
-                <div class="item-slick1"
-                     style="background-image: url(/images/Slider2.jpg);">
-                    <div class="container">
-
-                    </div>
-                </div>
-
-                <div class="item-slick1"
-                     style="background-image: url(/images/Slider3.jpg);">
-                    <div class="container">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-<br>
-
-<div class="categories_main_box">
-    <div class="categories_title_box" style="text-align: center; margin-top: 100px">
-        <h1>★ ${categoryName} ★</h1>
+    <div class="Search_title_box" style="text-align: center; margin-top: 100px">
+        <h1>★ 검색결과 : ${search} ★</h1>
     </div>
 
+    <div class="categories_main_box">
     <div class="sort_box">
-        <span>현재 조회된 상품의 수 <b>${totalCount}</b>개</span>
+        <span>현재 검색된 상품의 수 <b>${totalCount}</b>개</span>
         <!-- Filter -->
         <div class="filter_box" style="display: inline-block">
-        <form action="/productList.do" method="get">
-        <input type="hidden" name="name" value="${categoryName}">
+        <form action="/searchProductsList.do" method="get">
+            <input type="hidden" name="search" value="${search}">
             <select class="select_filter" name="selectFilter" onchange="this.form.submit()">
                 <option value="newProducts" ${selectFilter == 'newProducts' ? 'selected' : ''}>신상품</option>
                 <option value="bestProducts" ${selectFilter == 'bestProducts' ? 'selected' : ''}>추천★상품</option>
@@ -80,7 +31,7 @@
     </div>
     <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
-                <c:forEach var="products" items="${productCategoriesList}">
+                <c:forEach var="products" items="${productsSearchList}">
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" style="margin-top: 30px;">
                     <!-- Block2 -->
                     <div class="block2">
@@ -125,32 +76,25 @@
         </div>
         <div class="pagination">
             <!-- 이전 버튼 -->
-            <a href="?name=${categoryName}&selectFilter=${selectFilter}&page=${prevPage}"
+            <a href="?search=${search}&selectFilter=${selectFilter}&page=${prevPage}"
                class="pagination-button ${currentPage <= 5 ? 'disabled' : ''}">
                <<
             </a>
 
             <!-- 페이지 버튼들 -->
             <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                <a href="?name=${categoryName}&selectFilter=${selectFilter}&page=${i}"
+                <a href="?search=${search}&selectFilter=${selectFilter}&page=${i}"
                    class="pagination-button ${i == currentPage ? 'active' : ''}">
                    ${i}
                 </a>
             </c:forEach>
 
             <!-- 다음 버튼 -->
-            <a href="?name=${categoryName}&selectFilter=${selectFilter}&page=${nextPage}"
+            <a href="?search=${search}&selectFilter=${selectFilter}&page=${nextPage}"
                class="pagination-button ${currentPage >= totalPages ? 'disabled' : ''}">
                >>
             </a>
         </div>
-
-</div>
-
-
-
-
-
 
 </div>
 <jsp:include page="../common/footer.jsp"/>

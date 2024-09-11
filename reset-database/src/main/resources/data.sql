@@ -71,7 +71,7 @@ CREATE TABLE product_likes
 CREATE TABLE product_search_history
 (
     id           INT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 검색어 고유 ID (자동 증가)',
-    search_name  VARCHAR(255) NOT NULL COMMENT '검색어',
+    search_name  VARCHAR(255) UNIQUE NOT NULL COMMENT '검색어',
     search_count INT       DEFAULT 0 COMMENT '해당 검색어 검색 횟수',
     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '검색어 작성 시간'
 );

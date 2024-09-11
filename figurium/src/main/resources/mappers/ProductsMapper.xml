@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 상품의 카테고리별 조회 및 필터링 동적 쿼리문 -->
     <select id="categoriesList" resultType="products" parameterType="Map">
         <!-- 서브쿼리를 사용하여 상품 정보와 좋아요 수를 집계 -->
-        SELECT p.*, COALESCE(likeCount, 0) AS likeCount
+        SELECT p.*, COALESCE(p.likeCount, 0) AS likeCount
         FROM (
         <!-- 서브쿼리 시작 -->
         SELECT p.id, p.category_name, p.name, p.price, p.created_at, p.image_url,
@@ -47,8 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
-            <!-- 카테고리 필터링: categoryName이 null이 아니고 빈 문자열이 아닐 때 필터 적용 -->
-            <if test="categoryName != null and categoryName != ''">
+            <if test="categoryName != '전체 상품' and categoryName != ''">
                 p.category_name = #{categoryName}
             </if>
         </where>
@@ -78,7 +77,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ORDER BY p.created_at DESC
             </otherwise>
         </choose>
+        <!-- 페이징 처리를 위한 LIMIT과 OFFSET 추가 -->
+        <if test="offset != null and pageSize != null">
+            LIMIT #{pageSize} OFFSET #{offset}
+        </if>
     </select>
+
+
+
+    <!-- 해당 카테고리의 상품의 갯수를 가져오기 -->
+    <select id="categoriesProductsCount" parameterType="Map" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+        SELECT p.id
+        FROM products p
+        LEFT JOIN product_likes pl ON p.id = pl.product_id
+        <where>
+            <if test="categoryName != '전체 상품' and categoryName != ''">
+                p.category_name = #{categoryName}
+            </if>
+        </where>
+        GROUP BY p.id
+        ) AS filteredProducts
+    </select>
+
 
     <select id="getNextPageByCreatedAt" parameterType="Map" resultType="products">
         SELECT p.*, COALESCE(like_count, 0) AS likeCount
@@ -137,6 +159,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LIMIT 20
     </select>
 
+    <!-- 상품 검색과 필터를 위한 동적 SQL문 -->
+    <select id="searchProductsList" resultType="products" parameterType="Map">
+        SELECT p.*, COALESCE(likeCount, 0) AS likeCount
+        FROM (
+        SELECT p.id, p.name, p.price, p.created_at, p.image_url,p.category_name,
+        COALESCE(SUM(pl.product_count), 0) AS likeCount
+        FROM products p
+        LEFT JOIN product_likes pl ON p.id = pl.product_id
+        <where>
+            <!-- 검색어 필터링 -->
+            <if test="search != null and search != ''">
+                p.name LIKE CONCAT('%', #{search}, '%')
+            </if>
+        </where>
+        GROUP BY p.id, p.name, p.price, p.created_at
+        ) AS p
+        <choose>
+            <when test="selectFilter == 'default'">
+                ORDER BY p.id DESC
+            </when>
+            <when test="selectFilter == 'newProducts'">
+                ORDER BY p.created_at DESC
+            </when>
+            <when test="selectFilter == 'bestProducts'">
+                ORDER BY p.likeCount DESC
+            </when>
+            <when test="selectFilter == 'highPrice'">
+                ORDER BY p.price DESC
+            </when>
+            <when test="selectFilter == 'lowPrice'">
+                ORDER BY p.price ASC
+            </when>
+            <otherwise>
+                ORDER BY p.id DESC
+            </otherwise>
+        </choose>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 페이징 처리를 위해 검색된 총 상품의 수를 구해온다 -->
+    <select id="searchProductsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM products
+        WHERE products.name LIKE CONCAT('%', #{search}, '%')
+    </select>
+
+
+    <!-- 현재 검색된 상품의 히스토리를 저장 -->
+    <insert id="searchProductsNameHistory">
+        INSERT INTO product_search_history (search_name, search_count, created_at)
+        VALUES (#{searchName}, 1, NOW())
+        ON DUPLICATE KEY UPDATE search_count = search_count + 1;
+    </insert>
 
 
 

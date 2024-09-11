@@ -15,9 +15,17 @@ public interface ProductsMapper {
     int productInsert(ProductsVo vo);
     int productUpdate(ProductsVo vo);
 
-
+    // 카테고리 리스트의 필터 처리
     List<ProductsVo> categoriesList(Map<String,Object> params);
-
+    // 카테고리의 페이징 처리를 위해 갯수 가져오기
+    int categoriesProductsCount(Map<String, Object> params);
+    // 검색 상품 리스트의 필터 처리
+    List<ProductsVo> searchProductsList(Map<String,Object> params);
+    // 검색 상품의 페이징 처리를 위해 갯수 구하기
+    int searchProductsCount(Map<String,Object> params);
+    // 상품을 검색 했을 때 검색 히스토리를 저장
+    int searchProductsNameHistory(String search);
 
     List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params);
+
 }

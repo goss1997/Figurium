@@ -76,12 +76,30 @@ public class ProductsService {
 
 
     // 상품 카테고리 리스트의 동적 쿼리
-    public List<ProductsVo> categoriesList(Map<String,Object> params){
+    public List<ProductsVo> categoriesList(Map<String,Object> params ,int page, int pageSize){
         return productsMapper.categoriesList(params);
     }
+    // 상품 카테고리의 페이징 처리를 위한 갯수 가져오기
+    public int categoriesProductsCount(Map<String,Object> params){
+        return productsMapper.categoriesProductsCount(params);
+    }
+    // 검색 상품의 동적쿼리
+    public List<ProductsVo> searchProductsList(Map<String,Object> params, int page, int pageSize){
+        return productsMapper.searchProductsList(params);
+    }
+    // 검색 상품의 페이지 처리를 위한 갯수
+    public int searchProductCount(Map<String, Object> params) {
+        return productsMapper.searchProductsCount(params);
+    }
+    // 검색 상품의 히스토리 저장
+    public int searchProductsNameHistory(String search){
+        return productsMapper.searchProductsNameHistory(search);
+    }
+
 
 
     public List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params) {
         return productsMapper.getNextPageByCreatedAt(params);
     }
+
 }

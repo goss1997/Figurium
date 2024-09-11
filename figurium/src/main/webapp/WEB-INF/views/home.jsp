@@ -289,6 +289,7 @@
 
     // 카테고리 a 태그 클릭 시 실행할 함수
     $('.product-category > a').click(function () {
+        // 카테고리 이름 변수에 할당.
         categoryName = $(this).text();
         // 해당 카테고리 css 변경.
         $('.product-category > a').css('font-weight','');
@@ -296,7 +297,6 @@
         // 정렬 옵션 기본값(최신순)으로 초기화.
         $('.select_filter').val('newProducts').change();
 
-        // 카테고리 이름 변수에 할당.
 
         // 마지막 생성일자, 가격, 좋아요 수, 상품 ID 값 초기화
         lastCreatedAt = null;

@@ -85,25 +85,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products
         <where>
             <if test="categoryName != '전체'">
-                category_name = #{categoryName}
+                AND category_name = #{categoryName}
             </if>
             <choose>
                 <when test="selectFilter == 'newProducts'">
                     <if test="lastCreatedAt != null and lastId != null">
-                        AND #{lastCreatedAt} > created_at
-                        OR (created_at = #{lastCreatedAt} AND #{lastId} > id)
+                        AND ( #{lastCreatedAt} > created_at
+                        OR (created_at = #{lastCreatedAt} AND #{lastId} > id) )
                     </if>
                 </when>
                 <when test="selectFilter == 'highPrice'">
                     <if test="lastPrice != null and lastId != null">
-                        AND #{lastPrice} > price
-                        OR (price = #{lastPrice} AND #{lastId} > id)
+                        AND ( #{lastPrice} > price
+                        OR (price = #{lastPrice} AND #{lastId} > id) )
                     </if>
                 </when>
                 <when test="selectFilter == 'lowPrice'">
                     <if test="lastPrice != null and lastId != null">
-                        AND price > #{lastPrice}
-                            OR (price = #{lastPrice} AND #{lastId} > id )
+                        AND ( price > #{lastPrice}
+                        OR (price = #{lastPrice} AND #{lastId} > id ) )
                     </if>
                 </when>
             </choose>

@@ -6,12 +6,9 @@ import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.page.CommonPage;
-import com.githrd.figurium.util.page.Paging;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,25 +45,38 @@ public class adminController {
         return "admin/adminPage";
     }
 
-    @PostMapping("/adminPayment.do")
-    @ResponseBody
-    public List<MyOrderVo> adminPayment() {
-        // 주문 목록을 가져오기
-        List<MyOrderVo> paymentList = orderMapper.viewAllList();
+    @GetMapping("/adminPayment.do")
+    public String adminPayment(Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
+
+        // 취소요청 목록을 가져오기
+        List<MyOrderVo> paymentList = orderMapper.selectListByPayment();
+
+        model.addAttribute("paymentList", paymentList);
+
 
         // orderList를 JSON 형태로 반환
-        return paymentList;
+        return "admin/adminPayment";
     }
 
-    @PostMapping("/adminRefund.do")
+    @PostMapping("/ordersRefund.do")
     @ResponseBody
-    public List<MyOrderVo> adminRefund() {
-        // 주문 목록을 가져오기
-        List<MyOrderVo> orderList = orderMapper.viewAllList();
+    public int ordersRefund(int id) {
 
-        // orderList를 JSON 형태로 반환
-        return orderList;
+        int response = orderMapper.updateByRefund(id);
+
+        return response;
     }
+
+
+
+
 
     @PostMapping("/statusChange.do")
     @ResponseBody
@@ -103,19 +113,24 @@ public class adminController {
 
 
     @GetMapping("/adminQaList.do")
-    @ResponseBody
-    public ResponseEntity<String> adminQaList() {
-        try {
+    public String adminQaList(Model model) {
+
             List<QaVo> qaList = qaService.replyQaList();
-            // qaList를 JSON으로 변환
-            String json = objectMapper.writeValueAsString(qaList);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
+
+
+            model.addAttribute("qaList" , qaList);
+
+            return "admin/adminQaList";
+
+    }
+
+    @GetMapping("/adminRefund.do")
+    public String changeStatus(Model model) {
+        List<MyOrderVo> orderList = orderMapper.viewAllList();
+
+        model.addAttribute("orderList" , orderList);
+
+        return "admin/adminRefund";
     }
 
     @GetMapping("/qaCount.do")

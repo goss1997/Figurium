@@ -221,6 +221,47 @@
             }
         }
 
+        #refund-button {
+            margin: auto;
+            margin-top: 30px;
+            width: 250px;
+            height: 60px;
+
+            font-size: 17px;
+
+            padding: 5px 10px; /* 버튼 내 여백 */
+            background-color: #007bff; /* 버튼 배경색 */
+            color: white; /* 버튼 텍스트 색상 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #refund-button:hover {
+            background-color: #0056b3;
+        }
+
+        #refundReason {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #00aaff;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #333;
+            width: 250px;
+        }
+
+        #refundReason option {
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        /* 드롭다운 메뉴에 포커스 시 스타일 변경 */
+        #refundReason:focus {
+            outline: none; /* 기본 아웃라인 제거 */
+            border-color: #0077cc; /* 포커스 시 테두리 색상 변경 */
+        }
+
     </style>
     <script>
         function refundReasonResult() {
@@ -452,7 +493,8 @@
                                                 <div class="col-md-8">
                                                     <h4>환불신청</h4>
                                                     <div class="bank-info mt-3">
-                                                        <h5>환불사유</h5>
+                                                        <h5>환불사유를 선택해주세요.<br>
+                                                            해당 요청은 관리자가 확인 후 빠른 시일내에 처리해드릴게요.</h5>
                                                         <input value="${myOrder.id}" type="hidden" id="orderId">
                                                     </div>
                                                     <div class="info-text mt-3">
@@ -463,7 +505,7 @@
                                                             <option value="오배송">오배송</option>
                                                             <option value="기타">기타</option>
                                                         </select>
-                                                            <input type="button" value="관리자에게 환불신청" onclick="refundReasonResult()">
+                                                            <input type="button" id="refund-button" value="관리자에게 환불신청" onclick="refundReasonResult()">
 
                                                     </div>
                                                 </div>

@@ -232,7 +232,7 @@
 <br>
 <!-- Product -->
 <section class="bg0 p-t-23 p-b-140">
-    <div class="container">
+    <div class="container" style="max-width: 1230px !important;">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 ★ Figurium New Figure ★
@@ -289,6 +289,7 @@
 
     // 카테고리 a 태그 클릭 시 실행할 함수
     $('.product-category > a').click(function () {
+        // 카테고리 이름 변수에 할당.
         categoryName = $(this).text();
         // 해당 카테고리 css 변경.
         $('.product-category > a').css('font-weight','');
@@ -296,7 +297,6 @@
         // 정렬 옵션 기본값(최신순)으로 초기화.
         $('.select_filter').val('newProducts').change();
 
-        // 카테고리 이름 변수에 할당.
 
         // 마지막 생성일자, 가격, 좋아요 수, 상품 ID 값 초기화
         lastCreatedAt = null;
@@ -401,7 +401,7 @@
                         // 날짜를 원하는 형식으로 포맷
                         var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
                         html += `
-                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' >
+                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' style='margin-top:30px;' >
                                 <div class="block2">
                                     <div class="block2-pic hov-img0">
                                         <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
@@ -416,7 +416,7 @@
                                                [\${product.categoryName}]  \${product.name}
                                             </a>
                                             <span class="stext-105 cl3">
-                                                상품 가격 : \${product.price}￦
+                                                상품 가격 : \${product.price}￦   ♡:\${product.likeCount}
                                             </span>
                                             <span class="stext-105 cl3">
                                                 상품 등록일 : \${formattedDate}

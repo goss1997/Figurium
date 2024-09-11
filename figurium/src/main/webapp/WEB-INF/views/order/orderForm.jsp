@@ -426,8 +426,19 @@
             location.href="../user/order-list.do";
           }, 2500);
         },
-        error: function(err){
-          alert(err.responseText);
+        error: function(xhr){
+          // 오류 발생 시
+          try {
+            const response = JSON.parse(xhr.responseText); // JSON 파싱
+            if (response.message) {
+              alert(response.message); // 메시지 표시
+              // 어디로 가야 하오...
+            } else {
+              alert('알 수 없는 오류가 발생했습니다.');
+            }
+          } catch (e) {
+            alert('응답 형식 오류가 발생했습니다.');
+          }
         }
       });
 

@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.io.IOException;
+
 @Slf4j
 public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
@@ -33,13 +35,32 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
         System.out.println("statusCode = " + statusCode);
         // 예외에 따라 적절한 상태 코드와 에러 페이지 설정
+        // 비동기 요청인지 동기 요청인지 판별
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+        // 예외에 따라 적절한 상태 코드와 에러 페이지 설정
+        if (isAjax) {
+            response.setStatus(statusCode);
+            response.setContentType("application/json; charset=UTF-8");
+
+            try {
+                System.out.println("@@@@ 에러메세지 = " + errorType.getMessage());
+                String jsonResponse = String.format("{\"message\": \"%s\"}", errorType.getMessage());
+                response.getWriter().write(jsonResponse);
+                response.getWriter().flush();
+            } catch (IOException e) {
+                log.error("JSON 응답 작성 중 오류 발생", e);
+            }
+            return new ModelAndView(); // 비동기 요청은 ModelAndView를 사용하지 않음
+        } else {
+            // 동기 요청인 경우 에러 페이지로 이동
             ModelAndView mv = new ModelAndView();
             mv.addObject("errorMessage", errorType.getMessage());
-            mv.addObject("statusCode",statusCode);
+            mv.addObject("statusCode", statusCode);
             mv.setViewName("errorPage/error");
-
             return mv;
         }
+    }
 
 
 

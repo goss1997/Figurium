@@ -186,7 +186,7 @@
         <form>
             <input type="hidden" name="productId" value="${product.id}">
             <span class="qaInsert_btn_box">
-                <input class="qaInsert_btn" type="button" value="질문작성" onclick="qaInsert()">
+             <input class="qaInsert_btn" type="button" value="질문작성" onclick="qaInsert(this.form)">
             </span>
         </form>
 
@@ -232,9 +232,10 @@
     });
 
 
-    function qaInsert(){
-        window.location.href = '/qa/productQaInsert.do';
-    }
+    function qaInsert(f){
+    f.method = "GET"
+    f.action = '/qa/productQaInsert.do';
+    f.submit();
 
 
     $(document).ready(function () {

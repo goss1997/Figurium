@@ -118,7 +118,7 @@ public class QaController {
 
     //상품상세페이지에서 게시글 작성시
     @GetMapping("/productQaInsert.do")
-    public String productInsertForm(@RequestParam(name = "productQaId", required = false) Integer productQaId, Model model) {
+    public String productInsertForm(@RequestParam(name = "productId", required = false) Integer productQaId, Model model) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인
         if (loginUser == null) {

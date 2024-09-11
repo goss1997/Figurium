@@ -83,6 +83,7 @@ public class OrderController {
                             Model model) {
 
         User user = (User) session.getAttribute("loginUser");
+        int loginUserId = user.getId();
 
         List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
 
@@ -112,6 +113,48 @@ public class OrderController {
         session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
+
+
+    /*
+     *   주문/결제창
+     */
+//    @RequestMapping("orderForm.do")
+//    public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
+//                            @RequestParam(required = false) List<Integer> productId,
+//                            HttpSession session,
+//                            Model model) {
+//
+//        User user = (User) session.getAttribute("loginUser");
+//        int loginUserId = user.getId();
+//
+//        List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
+//
+//        // 기존 수량 체크
+//        for (int i = 0; i < cartsList.size(); i++) {
+//            CartsVo cartsVo = cartsList.get(i);
+//            int existingQuantity = cartsVo.getQuantity();
+//            int newQuantity = cartQuantities.get(i);
+//
+//            if(existingQuantity != newQuantity) {
+//                cartsVo.setQuantity(newQuantity); // 새로운 수량으로 업데이트
+//                // 수량을 가져와서 수량이 변경되었다면, 변경된 수량 반영
+//                int res = cartsMapper.updateCartQuantity(cartsVo);
+//            }
+//        }
+//
+//
+//        // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
+//        int totalPrice = 0;
+//
+//        for(CartsVo products:cartsList) {
+//            totalPrice += products.getPrice() * products.getQuantity();
+//        }
+//
+//        model.addAttribute("cartsList", cartsList);
+//        model.addAttribute("totalPrice", totalPrice);
+//        session.setAttribute("sessionTotalPrice", totalPrice);
+//        return "order/orderForm";
+//    }
 
 
     /*

@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderService {
 
     // 전체조회
-    List<CartsVo> updateCartQuantities(List<Integer> productId, int loginUserId, List<Integer> cartQuantities);
+    int updateCartQuantityRight(int quantity, int loginUserId, int productId);
 
     int calculateTotalPrice(List<CartsVo> cartsVoList);
 

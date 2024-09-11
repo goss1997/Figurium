@@ -40,28 +40,24 @@ public class OrderServiceImpl implements OrderService {
     private final Lock lock = new ReentrantLock();
 
 
-    // 주문창 가져오기
+    // 주문창으로 가져올때 바로구매 버전
     @Override
-    public List<CartsVo> updateCartQuantities(List<Integer> cartQuantities, int loginUserId, List<Integer> productId) {
+    public int updateCartQuantityRight(int quantity, int loginUserId, int productId) {
 
-        // 카드에 담겨있는 상품 가져오기
-        List<CartsVo> cartsList = cartsMapper.checksCartItemList(loginUserId,productId);
+        // 해당 상품이 추가되어있으면 더이상 insert 하지 않기
+        CartsVo checkCart = cartsMapper.selectCartsById(productId,loginUserId);
 
-        // 기존 수량 체크
-        for (int i = 0; i < cartsList.size(); i++) {
-
-            CartsVo cartsVo = cartsList.get(i);
-            int existingQuantity = cartsVo.getQuantity();
-            int newQuantity = cartQuantities.get(i);
-
-            if (existingQuantity != newQuantity) {
-                cartsVo.setQuantity(newQuantity); // 새로운 수량으로 업데이트
-                // 수량을 가져와서 수량이 변경되었다면, 변경된 수량 반영
-                int res = cartsMapper.updateCartQuantity(cartsVo);
-            }
+        if(checkCart == null) {
+            int res = cartsMapper.insertCartItem(loginUserId, productId, quantity);
+        } else if(checkCart.getQuantity() != quantity) {
+            checkCart.setQuantity(quantity); // 새로운 수량으로 업데이트
+            // 수량을 가져와서 수량이 변경되었다면, 변경된 수량 반영
+            int res = cartsMapper.updateCartQuantity(checkCart);
         }
 
-        return cartsList;
+        int totalPrice = checkCart.getPrice() * checkCart.getQuantity();
+
+        return totalPrice;
     }
 
 

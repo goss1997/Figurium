@@ -24,7 +24,6 @@ repositories {
 	mavenCentral()
 }
 
-// 0828 선일 iamport 테스트 주입
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -51,6 +50,7 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.mockito:mockito-core:4.8.0'
 }
 
 test {

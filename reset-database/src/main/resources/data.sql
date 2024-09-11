@@ -286,3 +286,17 @@ VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글�
 # INSERT INTO product_likes VALUES (null,1,68,default);
 # INSERT INTO product_likes VALUES (null,1,69,default);
 
+-- 회원2(이용자)의 좋아요한 상품 더미 데이터
+# INSERT INTO product_likes VALUES (null,2,47,default);
+# INSERT INTO product_likes VALUES (null,2,57,default);
+# INSERT INTO product_likes VALUES (null,2,61,default);
+# INSERT INTO product_likes VALUES (null,2,62,default);
+# INSERT INTO product_likes VALUES (null,2,60,default);
+# INSERT INTO product_likes VALUES (null,2,63,default);
+# INSERT INTO product_likes VALUES (null,2,64,default);
+# INSERT INTO product_likes VALUES (null,2,65,default);
+# INSERT INTO product_likes VALUES (null,2,66,default);
+# INSERT INTO product_likes VALUES (null,2,67,default);
+# INSERT INTO product_likes VALUES (null,2,68,default);
+# INSERT INTO product_likes VALUES (null,2,69,default);
+

@@ -232,7 +232,7 @@
 <br>
 <!-- Product -->
 <section class="bg0 p-t-23 p-b-140">
-    <div class="container">
+    <div class="container" style="max-width: 1230px !important;">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 ★ Figurium New Figure ★
@@ -401,7 +401,7 @@
                         // 날짜를 원하는 형식으로 포맷
                         var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
                         html += `
-                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' >
+                            <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' style='margin-top:30px;' >
                                 <div class="block2">
                                     <div class="block2-pic hov-img0">
                                         <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
@@ -416,7 +416,7 @@
                                                [\${product.categoryName}]  \${product.name}
                                             </a>
                                             <span class="stext-105 cl3">
-                                                상품 가격 : \${product.price}￦
+                                                상품 가격 : \${product.price}￦   ♡:\${product.likeCount}
                                             </span>
                                             <span class="stext-105 cl3">
                                                 상품 등록일 : \${formattedDate}

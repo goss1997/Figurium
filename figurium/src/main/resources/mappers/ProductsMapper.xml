@@ -81,8 +81,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="getNextPageByCreatedAt" parameterType="Map" resultType="products">
-        SELECT *
-        FROM products
+        SELECT p.*, COALESCE(like_count, 0) AS likeCount
+        FROM products p
+        LEFT JOIN ( SELECT product_id, COUNT(*) AS like_count
+                      FROM product_likes
+                     GROUP BY product_id ) pl ON p.id = pl.product_id
         <where>
             <if test="categoryName != '전체'">
                 AND category_name = #{categoryName}
@@ -106,6 +109,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         OR (price = #{lastPrice} AND #{lastId} > id ) )
                     </if>
                 </when>
+                <when test="selectFilter == 'bestProducts'">
+                    <if test="lastLikeCount != null and lastId != null">
+                        AND ( #{lastLikeCount} > COALESCE(like_count, 0)
+                         OR ( COALESCE(like_count, 0) = #{lastLikeCount} AND #{lastId} > id) )
+                    </if>
+                </when>
             </choose>
         </where>
         <choose>
@@ -117,6 +126,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </when>
             <when test="selectFilter == 'lowPrice'">
                 ORDER BY price ASC, id DESC
+            </when>
+            <when test="selectFilter == 'bestProducts'">
+                ORDER BY likeCount DESC, id DESC
             </when>
             <otherwise>
                 ORDER BY created_at DESC, id DESC

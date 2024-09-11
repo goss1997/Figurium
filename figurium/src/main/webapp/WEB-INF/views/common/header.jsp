@@ -292,7 +292,6 @@
                     </c:if>
 
 
-
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
                          data-notify="2">
                         <i class="zmdi zmdi-shopping-cart"></i>
@@ -307,13 +306,15 @@
                     <div class="search_box">
                         <form>
                             </ul>
-                            <input id="search_products_box" class="search_products_box" type="text" name="search" placeholder="Search.." autocomplete="off">
-                            <button class="search_btn" style="display: inline-block;" onclick="searchProduct(this.form)">
+                            <input id="search_products_box" class="search_products_box" type="text" name="search"
+                                   placeholder="Search.." autocomplete="off">
+                            <button class="search_btn" style="display: inline-block;"
+                                    onclick="searchProduct(this.form)">
                                 <i class="zmdi zmdi-search"></i>
                             </button>
                         </form>
-                         <!-- 인기 검색어 드롭다운 메뉴 -->
-                            <ul id="popularSearches" class="dropdown-menu" style="display:none;"></ul>
+                        <!-- 인기 검색어 드롭다운 메뉴 -->
+                        <ul id="popularSearches" class="dropdown-menu" style="display:none;"></ul>
                     </div>
                 </div>
 
@@ -462,7 +463,7 @@
     $('#password').on('keydown', function (e) {
         if (e.key === 'Enter') {
             if (!$("#loginModal").hidden) {
-                console.log('모달 숨었니? : '+$("#loginModal").hidden);
+                console.log('모달 숨었니? : ' + $("#loginModal").hidden);
                 login();
             }
         }
@@ -491,7 +492,6 @@
                 method: 'post',
                 data: {email: email, password: password},
                 success: function (result) {
-                    console.log(result);
                     location.reload();
                 },
                 error: function (error) {
@@ -539,19 +539,34 @@
         });
 
     });
+
+
 </script>
+<c:if test="${loginUser != null}">
+<script>
+    /**
+     * SSE 연결
+     */
+    const eventSource = new EventSource('/api/notifications/subscribe');
+
+    eventSource.addEventListener('notification', event => {
+        console.log(event.data);
+    });
+</script>
+</c:if>
+
 
 <script>
-    function searchProduct(f){
+    function searchProduct(f) {
 
         let search = f.search.value;
 
-        if (search === ""){
+        if (search === "") {
             alert("검색하실 상품을 입력해 주세요")
             return false;
         }
 
-        if (search === " "){
+        if (search === " ") {
             alert("공백은 입력하실 수 없습니다.")
             return false;
         }
@@ -565,44 +580,44 @@
 </script>
 
 <script>
-   // 검색어 입력 필드를 클릭했을 때 인기 검색어를 불러오는 AJAX 요청
- $(document).ready(function() {
-            $('.search_products_box').on('focus', function() {
-                // AJAX로 인기 검색어 가져오기
-                $.ajax({
-                    url: '/searchRank',
-                    method: 'GET',
-                    success: function(data) {
-                        var searchList = $('#popularSearches');
-                        var searchHtml = ''; // HTML을 담을 변수
+    // 검색어 입력 필드를 클릭했을 때 인기 검색어를 불러오는 AJAX 요청
+    $(document).ready(function () {
+        $('.search_products_box').on('focus', function () {
+            // AJAX로 인기 검색어 가져오기
+            $.ajax({
+                url: '/searchRank',
+                method: 'GET',
+                success: function (data) {
+                    var searchList = $('#popularSearches');
+                    var searchHtml = ''; // HTML을 담을 변수
 
-                        if(data.length > 0) {
-                            // 인기 검색어 리스트의 헤더를 추가
-                            searchHtml += '<li class="dropdown-header" style="text-align: center; font-weight: bold; font-size: 17px;">★ 인기 검색어 순위 ★</li>';
+                    if (data.length > 0) {
+                        // 인기 검색어 리스트의 헤더를 추가
+                        searchHtml += '<li class="dropdown-header" style="text-align: center; font-weight: bold; font-size: 17px;">★ 인기 검색어 순위 ★</li>';
 
-                            // 각 인기 검색어에 대한 항목을 HTML로 생성
-                            $.each(data, function(index, searchTerm) {
-                                searchHtml += '<li style="margin-left: 15px"><a href="/searchProductsList.do?search=' + encodeURIComponent(searchTerm) + '">' + (index + 1) + '. ' + searchTerm + '</a></li>';
-                            });
-                        } else {
-                            // 인기 검색어가 없을 경우
-                            searchHtml += '<li>인기 검색어가 없습니다.</li>';
-                        }
-
-                        // 완성된 HTML을 드롭다운 메뉴에 삽입
-                        searchList.html(searchHtml);
-                        searchList.show(); // 드롭다운 메뉴 보이기
+                        // 각 인기 검색어에 대한 항목을 HTML로 생성
+                        $.each(data, function (index, searchTerm) {
+                            searchHtml += '<li style="margin-left: 15px"><a href="/searchProductsList.do?search=' + encodeURIComponent(searchTerm) + '">' + (index + 1) + '. ' + searchTerm + '</a></li>';
+                        });
+                    } else {
+                        // 인기 검색어가 없을 경우
+                        searchHtml += '<li>인기 검색어가 없습니다.</li>';
                     }
-                });
-            });
 
-            // 검색어 입력 필드 밖을 클릭하면 드롭다운 메뉴 숨기기
-            $(document).on('click', function(event) {
-                if (!$(event.target).closest('.search_box').length) {
-                    $('#popularSearches').hide();
+                    // 완성된 HTML을 드롭다운 메뉴에 삽입
+                    searchList.html(searchHtml);
+                    searchList.show(); // 드롭다운 메뉴 보이기
                 }
             });
         });
+
+        // 검색어 입력 필드 밖을 클릭하면 드롭다운 메뉴 숨기기
+        $(document).on('click', function (event) {
+            if (!$(event.target).closest('.search_box').length) {
+                $('#popularSearches').hide();
+            }
+        });
+    });
 </script>
 
 

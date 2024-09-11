@@ -119,13 +119,6 @@ public class ProductsController {
         params.put("selectFilter", selectFilter);
         params.put("lastLikeCount",lastLikeCount);
 
-        System.out.println("lastCreatedAt = " + lastCreatedAt);
-        System.out.println("lastPrice = " + lastPrice);
-        System.out.println("lastLikeCount = " + lastLikeCount);
-        System.out.println("lastId = " + lastId);
-        System.out.println("categoryName = " + categoryName);
-        System.out.println("selectFilter = " + selectFilter);
-
         return productsService.getNextPageByCreatedAt(params);
 
     }

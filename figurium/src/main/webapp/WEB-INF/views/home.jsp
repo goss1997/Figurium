@@ -324,7 +324,6 @@
         lastPrice = null;
         lastLikeCount = null;
         lastId = null;
-        console.log(selectFilter);
 
         // 리스트 뿌릴 div 비우기.
         $('#productsList').empty();
@@ -367,7 +366,6 @@
     });
 
     function loadMore() {
-        console.log(categoryName);
 
         // 데이터 로딩 중인 상태로 변경
         loading = true;
@@ -389,7 +387,6 @@
             },
             success: function (response) {
                 const products = response;
-                console.log(products);
                 if (products.length === 0) {
                     noMoreData = true; // 더 이상 데이터가 없음을 표시
                 } else {

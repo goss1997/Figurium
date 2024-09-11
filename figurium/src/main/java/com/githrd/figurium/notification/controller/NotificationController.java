@@ -1,8 +1,10 @@
 package com.githrd.figurium.notification.controller;
 
 import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.user.entity.User;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -13,16 +15,19 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final HttpSession session;
 
     /**
      * 사용자가 알림을 구독
-     * @param userId : 사용자 ID (로그인 사용자의 ID)
      * @return : SseEmitter : SSE 연결 객체
      */
-    @GetMapping("/subscribe")
-    public SseEmitter subscribe(@RequestParam int userId) {
+    @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe() {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
         // 서비스에서 구독 처리 후 SSE 연결 반환
-        return notificationService.subscribe(userId);
+        return notificationService.subscribe(loginUser.getId());
     }
 
     /**

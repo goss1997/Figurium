@@ -3,6 +3,7 @@ package com.githrd.figurium.notification.sevice;
 import com.githrd.figurium.notification.dao.NotificationMapper;
 import com.githrd.figurium.notification.vo.Notification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
     // 구독하는 사용자 ID와 해당 사용자의 SseEmitter 객체를 저장할 Map
@@ -26,6 +28,7 @@ public class NotificationService {
      * @return SseEmitter : SSE 연결을 담당하는 객체
      */
     public SseEmitter subscribe(int userId) {
+        log.info("subscribe 메소드 호출!");
         // 30분 동안 유지되는 SseEmitter 생성
         SseEmitter emitter = new SseEmitter(30 * 60 * 1000L);
 
@@ -37,6 +40,9 @@ public class NotificationService {
 
         // 연결이 중단된 경우 구독 목록에서 제거
         emitter.onTimeout(() -> emitters.remove(userId));
+
+        // 503 에러를 방지하기 위한 더미 이벤트 전송
+        sendNotification(userId, "EventStream Created. [userId=" + userId + "]");
 
         return emitter; // SSE 연결 반환
     }
@@ -55,6 +61,8 @@ public class NotificationService {
                 emitter.send(SseEmitter.event()
                         .name("notification") // 이벤트 이름 설정
                         .data(message));                // 알림 메시지 전송
+
+                log.info("사용자"+userId+"번 에게 메세지 전송");
             } catch (IOException e) {
                 // 전송 실패 시 해당 사용자의 구독 해제
                 emitters.remove(userId);

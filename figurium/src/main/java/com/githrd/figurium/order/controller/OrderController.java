@@ -1,6 +1,5 @@
 package com.githrd.figurium.order.controller;
 
-import com.githrd.figurium.exception.customException.AccountLinkException;
 import com.githrd.figurium.exception.customException.OutofStockException;
 import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderItemsMapper;
@@ -20,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -200,8 +201,9 @@ public class OrderController {
     /*
      *   결제 성공시 주문 데이터 저장
      */
-    @RequestMapping(value = "insertInformation.do")
+    @PostMapping(value = "insertInformation.do")
     @ResponseBody
+    @Transactional
     public String insertInformation(int loginUserId, String name, String phone, String email,
                                     String address, String recipientName,
                                     String shippingPhone, String deliveryRequest,
@@ -270,9 +272,10 @@ public class OrderController {
             int res2 = shippingAddressesMapper.insertShippingAddresses(shippingAddresses);
 
             return "success";
+
         } catch (Exception e) {
             log.error("Error occurred while linking account: ", e);
-            throw new AccountLinkException("Failed to link account: " + e.getMessage());
+            throw new OutofStockException("Failed to link account: " + e.getMessage());
         }
 
     }

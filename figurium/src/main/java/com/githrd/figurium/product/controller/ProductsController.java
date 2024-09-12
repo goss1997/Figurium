@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class ProductsController {
         /**
          *  해당 카테고리의 리스트를 동적 쿼리를 사용해 가져옴
          * */
-        List<ProductsVo> productCategoriesList = productsService.categoriesList(params,page,pageSize);
+        List<ProductsVo> productCategoriesList = productsService.categoriesList(params, page, pageSize);
 
         model.addAttribute("productCategoriesList", productCategoriesList);
         model.addAttribute("categoryName", categoryName); // 필터 처리를 위해 모델에 담음
@@ -110,7 +109,7 @@ public class ProductsController {
             @RequestParam(value = "lastLikeCount", required = false) Integer lastLikeCount,
             @RequestParam(value = "lastId", required = false) Integer lastId,
             @RequestParam(value = "categoryName", required = false) String categoryName,
-            @RequestParam(value = "selectFilter", required = false , defaultValue = "newProducts") String selectFilter) {
+            @RequestParam(value = "selectFilter", required = false, defaultValue = "newProducts") String selectFilter) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("lastCreatedAt", lastCreatedAt);
@@ -118,7 +117,7 @@ public class ProductsController {
         params.put("lastId", lastId);
         params.put("categoryName", categoryName);
         params.put("selectFilter", selectFilter);
-        params.put("lastLikeCount",lastLikeCount);
+        params.put("lastLikeCount", lastLikeCount);
 
         return productsService.getNextPageByCreatedAt(params);
 
@@ -128,6 +127,7 @@ public class ProductsController {
     @RequestMapping("/productInfo.do")
     public String list(@RequestParam(value = "id", required = false) Integer id,
                        @RequestParam(value = "page", defaultValue = "1") int page,
+                       @RequestParam(value = "showQa", defaultValue = "false") String showQa,
                        HttpSession session,
                        Model model, Map map) {
 
@@ -171,26 +171,37 @@ public class ProductsController {
 
         // Q&A 리스트와 관련된 페이징 설정
         // Q&A 관련 정보 설정
-        Map<String, Object> qaMap = new HashMap<>();
-        int qaStart = (page - 1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
-        int qaEnd = qaStart + ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
+        // Q&A 리스트 및 페이징 처리
+        if (true) {
+            int qaPageSize = 5;
+            int qaOffset
+                    = (page - 1) * qaPageSize;
 
-        qaMap.put("start", qaStart);
-        qaMap.put("end", qaEnd);
-        qaMap.put("productId", id);
+            Map<String, Object> qaMap = new HashMap<>();
+            qaMap.put("start", qaOffset + 1);
 
-        List<QaVo> productQaList = qaMapper.selectAllWithPagination(qaMap);
-        int productQaCount = qaMapper.getProductQaCount(id);
+            qaMap.put("end", qaOffset + qaPageSize);
 
-        String qaPageMenu = Paging.getPaging("productInfo.do",
-                page,
-                productQaCount,
-                CommonPage.qaList.BLOCK_LIST,
-                CommonPage.qaList.BLOCK_PAGE);
+            qaMap.put("productId", id);
 
-        model.addAttribute("qaPageMenu", qaPageMenu);
-        model.addAttribute("productQaList", productQaList);
-        model.addAttribute("productQaCount", productQaCount);
+            List<QaVo> productQaList = qaMapper.selectProductAllWithPagination(qaMap);
+
+            int productQaCount = qaMapper.getProductQaCount(id);
+
+            String qaPageMenu = Paging.getPaging("productInfo.do",
+                    page,
+                    productQaCount,
+                    qaPageSize,
+
+                    CommonPage.qaList.BLOCK_PAGE);
+
+            model.addAttribute("qaPageMenu", qaPageMenu);
+            model.addAttribute("productQaList", productQaList);
+            model.addAttribute("productQaCount", productQaCount);
+            model.addAttribute("showQa", true);
+        } else {
+            model.addAttribute("showQa", false);
+        }
 
         return "products/productInfo";
     }
@@ -317,66 +328,60 @@ public class ProductsController {
                              Model model) {
 
         int searchHistorySuccess = productsService.searchProductsNameHistory(search);
-        // 검색에 대한 검증 통과 시 수행될 로직
 
-        // 검색 검증이 공백일 때
-        if (searchHistorySuccess == -1){
-            model.addAttribute("search_empty" , true);
+
+        if (searchHistorySuccess < 0) {
+
             return "redirect:/";
         }
 
-        // 검색 상품이 없을경우
-        if (searchHistorySuccess == 0){
-            model.addAttribute("not_search" , true);
-            return "products/productsSearch";
-        }
 
+        // 한 화면에 보여질 상품의 갯수
+        int pageSize = 80;
+        int offset = (page - 1) * pageSize;
 
-            // 한 화면에 보여질 상품의 갯수
-            int pageSize = 80;
-            int offset = (page - 1) * pageSize;
+        // filter와 name을 같이 받아오기 위해 맵에다가 저장
+        Map<String, Object> params = new HashMap<String, Object>();
 
-            // filter와 name을 같이 받아오기 위해 맵에다가 저장
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("selectFilter", selectFilter);
-            params.put("search", search);
-            params.put("offset", offset);
-            params.put("pageSize", pageSize);
+        params.put("selectFilter", selectFilter);
+        params.put("search", search);
+        params.put("offset", offset);
+        params.put("pageSize", pageSize);
 
-            // 검색된 상품의 리스트
-            List<ProductsVo> productsSearchList = productsService.searchProductsList(params, page, pageSize);
+        // 검색된 상품의 리스트
+        List<ProductsVo> productsSearchList = productsService.searchProductsList(params, page, pageSize);
 
-            model.addAttribute("productsSearchList", productsSearchList);
-            model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
-            model.addAttribute("search", search); // option을 선택 했을 경우 해당하는 option의 parameter를 다시 넘겨주기 위해 모델에 담음
+        model.addAttribute("productsSearchList", productsSearchList);
+        model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
+        model.addAttribute("search", search); // option을 선택 했을 경우 해당하는 option의 parameter를 다시 넘겨주기 위해 모델에 담음
 
-            // 총 상품 수를 가져와서 페이지네이션 계산
-            int totalCount = productsService.searchProductCount(params);
-            model.addAttribute("totalCount", totalCount);
+        // 총 상품 수를 가져와서 페이지네이션 계산
+        int totalCount = productsService.searchProductCount(params);
+        model.addAttribute("totalCount", totalCount);
 
-            // 총 페이지 수 계산
-            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        // 총 페이지 수 계산
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("currentPage", page); // 현재 페이지 정보
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page); // 현재 페이지 정보
 
         /* 페이지 버튼 범위 계산
             현재 페이지에서 2페이지 이전이 최소 1페이지보다 작을 경우, 시작 페이지를 1로 설정 */
-            int startPage = Math.max(1, page - 2); // 시작 페이지
+        int startPage = Math.max(1, page - 2); // 시작 페이지
 
-            // 현재 페이지에서 2페이지 이후가 총 페이지 수보다 클 경우, 끝 페이지를 총 페이지 수로 설정
-            int endPage = Math.min(totalPages, page + 2); // 끝 페이지
+        // 현재 페이지에서 2페이지 이후가 총 페이지 수보다 클 경우, 끝 페이지를 총 페이지 수로 설정
+        int endPage = Math.min(totalPages, page + 2); // 끝 페이지
 
-            // 이전 및 다음 버튼 페이지 범위 계산
-            int prevPage = Math.max(1, page - 5); // 이전 버튼을 누를 경우 이동할 페이지
-            int nextPage = Math.min(totalPages, page + 5); // 다음 버튼을 누를 경우 이동할 페이지
+        // 이전 및 다음 버튼 페이지 범위 계산
+        int prevPage = Math.max(1, page - 5); // 이전 버튼을 누를 경우 이동할 페이지
+        int nextPage = Math.min(totalPages, page + 5); // 다음 버튼을 누를 경우 이동할 페이지
 
-            model.addAttribute("startPage", startPage);
-            model.addAttribute("endPage", endPage);
-            model.addAttribute("prevPage", prevPage); // 이전 버튼 페이지 번호
-            model.addAttribute("nextPage", nextPage); // 다음 버튼 페이지 번호
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", prevPage); // 이전 버튼 페이지 번호
+        model.addAttribute("nextPage", nextPage); // 다음 버튼 페이지 번호
 
-            return "products/productsSearch";
+        return "products/productsSearch";
     }
 
     // 상품의 검색어 순위

@@ -158,31 +158,31 @@
 
     <!-- 리뷰영역 -->
     <div id="reviews" class="tab-content">
-    <div class="reviews_box">
-        <form>
-            <input type="hidden" name="productId" value="${product.id}">
-            <span class="reviewInsert_btn_box">
+        <div class="reviews_box">
+            <form>
+                <input type="hidden" name="productId" value="${product.id}">
+                <span class="reviewInsert_btn_box">
                     <input class="reviewInsert_btn" type="button" value="리뷰작성" onclick="reviewInsertForm(this.form);">
                 </span>
-        </form>
+            </form>
 
-        <c:if test="${empty reviewList}">
-            <h3 style="text-align: center; color: #ff5959">현재 작성된 리뷰가 없습니다.</h3>
-        </c:if>
+            <c:if test="${empty reviewList}">
+                <h3 style="text-align: center; color: #ff5959">현재 작성된 리뷰가 없습니다.</h3>
+            </c:if>
 
 
-        <!-- 해당 상품의 리뷰의 리스트를 가져와서 출력 할 곳 -->
-        <c:if test="${!empty reviewList}">
-        <div id="productReviewList"></div>
-        </c:if>
-        <div id="pagination" style="text-align: center;"></div>
-    </div>
+            <!-- 해당 상품의 리뷰의 리스트를 가져와서 출력 할 곳 -->
+            <c:if test="${!empty reviewList}">
+                <div id="productReviewList"></div>
+            </c:if>
+            <div id="pagination" style="text-align: center;"></div>
+        </div>
     </div>
 </div>
 
 <!-- Q&A 영역 -->
-   <div id="qa" class="tab-content">
-<div class="qa_box">
+<div id="qa" class="tab-content">
+    <div class="qa_box">
         <form>
             <input type="hidden" name="productId" value="${product.id}">
             <span class="qaInsert_btn_box">
@@ -200,22 +200,16 @@
 </div>
 
 
-
-
 <jsp:include page="../common/footer.jsp"/>
-
-
-
 
 
 <script>
 
-// 탭 전환 함수
-     // 탭 전환 함수
+    // 탭 전환 함수
     function showTab(tabId) {
         // 모든 탭 내용을 숨깁니다
         var tabs = document.querySelectorAll('.tab-content');
-        tabs.forEach(function(tab) {
+        tabs.forEach(function (tab) {
             tab.style.display = 'none';
         });
 
@@ -226,13 +220,29 @@
         }
     }
 
-    // 페이지 로드 시 기본적으로 'Reviews' 탭을 활성화합니다
-    document.addEventListener('DOMContentLoaded', function() {
-        showTab('reviews');
-    });
+    // 페이지 로드 시 해시 값에 따라 탭을 활성화합니다
+    document.addEventListener('DOMContentLoaded',
+        function () {
+            // URL 해시를 가져옵니다
+            var hash = window.location.hash.substr(1); // '#'을 제거
+
+            // 해시 값이 있을 경우 해당 탭을 표시합니다
+            if (hash) {
+                showTab(hash);
+            } else {
+            // 기본 탭을 활성화합니다 (예: 'qa')
+                showTab('qa');
+            }
+        });
+
+    function qaInsert(f) {
+        f.method = "GET"
+        f.action = '/qa/productQaInsert.do';
+        f.submit();
+    }
 
 
-    function qaInsert(f){
+    function qaInsert(f) {
         f.method = "GET"
         f.action = '/qa/productQaInsert.do';
         f.submit();
@@ -292,43 +302,43 @@
 
 <script>
     // 주문 할 상품의 수량 선택
-let maxQuantity = parseInt("${product.quantity}"); // 재고 수량
-let productPrice = parseInt("${product.price}");   // 상품 가격
+    let maxQuantity = parseInt("${product.quantity}"); // 재고 수량
+    let productPrice = parseInt("${product.price}");   // 상품 가격
 
-function updateTotalPrice() {
-    let quantityInput = document.getElementById('quantity');
-    let currentQuantity = parseInt(quantityInput.value);
-    let totalPrice = productPrice * currentQuantity;
+    function updateTotalPrice() {
+        let quantityInput = document.getElementById('quantity');
+        let currentQuantity = parseInt(quantityInput.value);
+        let totalPrice = productPrice * currentQuantity;
 
-    // 총 결제 금액을 업데이트
-    document.getElementById('total_price').innerText = totalPrice;
-}
-
-function increaseQuantity() {
-    let quantityInput = document.getElementById('quantity');
-    let currentQuantity = parseInt(quantityInput.value);
-
-    if (currentQuantity < maxQuantity) {
-        quantityInput.value = currentQuantity + 1;
-        updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
-    } else {
-        alert('재고 수량을 초과할 수 없습니다.');
+        // 총 결제 금액을 업데이트
+        document.getElementById('total_price').innerText = totalPrice;
     }
-}
 
-function decreaseQuantity() {
-    let quantityInput = document.getElementById('quantity');
-    let currentQuantity = parseInt(quantityInput.value);
+    function increaseQuantity() {
+        let quantityInput = document.getElementById('quantity');
+        let currentQuantity = parseInt(quantityInput.value);
 
-    if (currentQuantity > 1) {
-        quantityInput.value = currentQuantity - 1;
-        updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
+        if (currentQuantity < maxQuantity) {
+            quantityInput.value = currentQuantity + 1;
+            updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
+        } else {
+            alert('재고 수량을 초과할 수 없습니다.');
+        }
     }
-}
 
-    </script>
+    function decreaseQuantity() {
+        let quantityInput = document.getElementById('quantity');
+        let currentQuantity = parseInt(quantityInput.value);
 
-    <script>
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+            updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
+        }
+    }
+
+</script>
+
+<script>
     // 장바구니에 상품 추가 함수
     function addToCart(f) {
 
@@ -349,27 +359,27 @@ function decreaseQuantity() {
         }
 
         $.ajax({
-            url      :      "checkCartItem",
-            type     :      "POST",
-            dataType :      "json",
-            data     :      {
-                productId : productId,
-                user : user
-                },
-            success  :      function (response){
+            url: "checkCartItem",
+            type: "POST",
+            dataType: "json",
+            data: {
+                productId: productId,
+                user: user
+            },
+            success: function (response) {
 
-                if (response.data){
+                if (response.data) {
 
-                    if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false){
+                    if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false) {
                         return false;
                     }
-                        // 장바구니 페이지에 이동
-                        f.action = "shoppingCart.do";
-                        f.method = "POST";
-                        f.submit();
+                    // 장바구니 페이지에 이동
+                    f.action = "shoppingCart.do";
+                    f.method = "POST";
+                    f.submit();
                 }
-                    },
-            error    :   function (err){
+            },
+            error: function (err) {
                 alert("상품이 담기는 도중 에러가 발생 하였습니다.")
             }
         });
@@ -378,11 +388,9 @@ function decreaseQuantity() {
 </script>
 
 
-
-
 <script>
     // 리뷰의 페이징 처리
-    $(document).ready(function() {
+    $(document).ready(function () {
         function loadReviews(page) {
             const productId = ${product.id};  // 현재 페이지의 상품 ID
             $.ajax({
@@ -393,92 +401,88 @@ function decreaseQuantity() {
                     page: page,
                     size: 5  // 한 페이지에 보여줄 리뷰 수
                 },
-                success: function(data) {
+                success: function (data) {
                     $('#productReviewList').html(generateReviewsHtml(data.reviews));
                     $('#pagination').html(generatePaginationHtml(data.startPage, data.endPage, data.currentPage, data.totalPages, data.hasPrevious, data.hasNext));
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("에러 발생:", error);
                 }
             });
         }
 
         // 리뷰 목록을 HTML 형식으로 생성하는 함수
-    function generateReviewsHtml(reviews) {
-        let html = '<table class="review_table">';
-        html += '<thead><tr><th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>별점</th></tr></thead><tbody>';
+        function generateReviewsHtml(reviews) {
+            let html = '<table class="review_table">';
+            html += '<thead><tr><th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>별점</th></tr></thead><tbody>';
 
-        // 각 리뷰를 테이블의 행으로 추가
-        reviews.forEach(review => {
-            html += '<tr>';
-            html += '<td class="review_number">' + review.number + '</td>';
-            html += '<td><a href="#" class="review-title" data-id="' + review.id + '">' + review.title + '</a></td>';
-            html += '<td class="review_name">' + review.userName + '</td>';
-            html += '<td class="review_regdate">' + review.createdAt.substring(0, 10) + ' ' + review.createdAt.substring(11, 16) + '</td>';
-            html += '<td class="review_star">';
+            // 각 리뷰를 테이블의 행으로 추가
+            reviews.forEach(review => {
+                html += '<tr>';
+                html += '<td class="review_number">' + review.number + '</td>';
+                html += '<td><a href="#" class="review-title" data-id="' + review.id + '">' + review.title + '</a></td>';
+                html += '<td class="review_name">' + review.userName + '</td>';
+                html += '<td class="review_regdate">' + review.createdAt.substring(0, 10) + ' ' + review.createdAt.substring(11, 16) + '</td>';
+                html += '<td class="review_star">';
 
-            // 별점 출력
-            for (let i = 0; i < review.rating; i++) {
-                html += '<span class="star">&#9733;</span>'; // 별점 표시
+                // 별점 출력
+                for (let i = 0; i < review.rating; i++) {
+                    html += '<span class="star">&#9733;</span>'; // 별점 표시
+                }
+                for (let i = review.rating; i < 5; i++) {
+                    html += '<span class="star">&#9734;</span>'; // 빈 별 표시
+                }
+                html += '</td></tr>';
+
+                // 리뷰 내용과 버튼을 포함하는 행 추가
+                html += '<tr id="reviewContent-' + review.id + '" class="review-content" style="display:none;">';
+                html += '<td colspan="5"><div id="spinner-' + review.id + '" class="spinner" style="display:none;">로딩 중...</div>';
+                html += '<div id="reviewText-' + review.id + '" class="review-text"></div>';
+                html += '<div class="review_buttons" id="reviewButtons-' + review.id + '" style="display:none;">';
+                html += '<form><input type="hidden" name="userId" value="' + review.userId + '">';
+                html += '<input type="hidden" name="id" value="' + review.id + '">';
+                html += '<input type="hidden" name="productId" value="' + review.productId + '">';
+                html += '<input type="button" class="edit_button" data-id="' + review.id + '" value="수정" onclick="update_review(this.form)">';
+                html += '<input type="button" class="delete_button" data-id="' + review.id + '" value="삭제" onclick="delete_review(this.form)"></form></div></td></tr>';
+            });
+            html += '</tbody></table>';
+            return html;
+        }
+
+        // 페이지 버튼을 HTML 형식으로 생성하는 함수
+        function generatePaginationHtml(startPage, endPage, currentPage, totalPages, hasPrevious, hasNext) {
+            let html = '<div class="pagination">';
+
+            // 이전 페이지 버튼 추가
+            if (hasPrevious) {
+                html += '<a href="#" class="pagination-button" data-page="' + (currentPage - 1) + '">이전</a>';
             }
-            for (let i = review.rating; i < 5; i++) {
-                html += '<span class="star">&#9734;</span>'; // 빈 별 표시
-            }
-            html += '</td></tr>';
 
-            // 리뷰 내용과 버튼을 포함하는 행 추가
-            html += '<tr id="reviewContent-' + review.id + '" class="review-content" style="display:none;">';
-            html += '<td colspan="5"><div id="spinner-' + review.id + '" class="spinner" style="display:none;">로딩 중...</div>';
-            html += '<div id="reviewText-' + review.id + '" class="review-text"></div>';
-            html += '<div class="review_buttons" id="reviewButtons-' + review.id + '" style="display:none;">';
-            html += '<form><input type="hidden" name="userId" value="' + review.userId + '">';
-            html += '<input type="hidden" name="id" value="' + review.id + '">';
-            html += '<input type="hidden" name="productId" value="' + review.productId + '">';
-            html += '<input type="button" class="edit_button" data-id="' + review.id + '" value="수정" onclick="update_review(this.form)">';
-            html += '<input type="button" class="delete_button" data-id="' + review.id + '" value="삭제" onclick="delete_review(this.form)"></form></div></td></tr>';
+            // 페이지 번호 버튼 추가
+            for (let i = startPage; i <= endPage; i++) {
+                html += '<a href="#" class="pagination-button' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</a>';
+            }
+
+            // 다음 페이지 버튼 추가
+            if (hasNext) {
+                html += '<a href="#" class="pagination-button" data-page="' + (currentPage + 1) + '">다음</a>';
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // 페이지 버튼 클릭 시 이벤트 처리
+        $(document).on('click', '.pagination-button', function (e) {
+            e.preventDefault(); // 링크 클릭 기본 동작 방지
+            const page = $(this).data('page'); // 클릭된 버튼의 페이지 번호
+            loadReviews(page); // 해당 페이지의 리뷰를 로드
         });
-        html += '</tbody></table>';
-        return html;
-    }
 
-    // 페이지 버튼을 HTML 형식으로 생성하는 함수
-    function generatePaginationHtml(startPage, endPage, currentPage, totalPages, hasPrevious, hasNext) {
-        let html = '<div class="pagination">';
-
-        // 이전 페이지 버튼 추가
-        if (hasPrevious) {
-            html += '<a href="#" class="pagination-button" data-page="' + (currentPage - 1) + '">이전</a>';
-        }
-
-        // 페이지 번호 버튼 추가
-        for (let i = startPage; i <= endPage; i++) {
-            html += '<a href="#" class="pagination-button' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</a>';
-        }
-
-        // 다음 페이지 버튼 추가
-        if (hasNext) {
-            html += '<a href="#" class="pagination-button" data-page="' + (currentPage + 1) + '">다음</a>';
-        }
-
-        html += '</div>';
-        return html;
-    }
-
-    // 페이지 버튼 클릭 시 이벤트 처리
-    $(document).on('click', '.pagination-button', function(e) {
-        e.preventDefault(); // 링크 클릭 기본 동작 방지
-        const page = $(this).data('page'); // 클릭된 버튼의 페이지 번호
-        loadReviews(page); // 해당 페이지의 리뷰를 로드
+        // 페이지가 로드될 때 맨처음 5개의 리스트 출력
+        loadReviews(1);
     });
-
-    // 페이지가 로드될 때 맨처음 5개의 리스트 출력
-    loadReviews(1);
-});
 </script>
-
-
-
-
 
 
 <script>
@@ -505,64 +509,64 @@ function decreaseQuantity() {
 
 <script>
     $(document).ready(function () {
-    // 리뷰 제목 클릭시 발생 할 이벤트와 Ajax
-    $(document).on('click', '.review-title', function (e) {
-        e.preventDefault();
+        // 리뷰 제목 클릭시 발생 할 이벤트와 Ajax
+        $(document).on('click', '.review-title', function (e) {
+            e.preventDefault();
 
-        var reviewId = $(this).data('id');
-        var contentRow = $('#reviewContent-' + reviewId);
-        var spinner = $('#spinner-' + reviewId);
-        var reviewText = $('#reviewText-' + reviewId);
-        var reviewButtons = $('#reviewButtons-' + reviewId);
+            var reviewId = $(this).data('id');
+            var contentRow = $('#reviewContent-' + reviewId);
+            var spinner = $('#spinner-' + reviewId);
+            var reviewText = $('#reviewText-' + reviewId);
+            var reviewButtons = $('#reviewButtons-' + reviewId);
 
-        if (contentRow.is(':visible')) {
-            contentRow.hide();
-            return;
-        }
-
-        $('.review-content').hide();
-        spinner.show();
-
-        $.ajax({
-            url: 'getReviewContent',
-            type: 'GET',
-            data: { id: reviewId },
-            success: function (data) {
-                var contentHtml = '<div class="review-text-left">' + data.content + '</div>';
-
-                if (data.imageUrl) {
-                    contentHtml += '<img src="' + data.imageUrl + '" alt="Review Image">';
-                }
-
-                reviewText.html(contentHtml);
-
-                var loginUserId = parseInt("${sessionScope.loginUser.id}");
-
-                if (data.reviewUserId === loginUserId) {
-                    reviewButtons.show();
-                } else {
-                    reviewButtons.hide();
-                }
-
-                contentRow.show();
-                spinner.hide();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                var errorMessage = '리뷰 내용을 불러오는 데 실패했습니다.';
-
-                if (jqXHR.status) {
-                    errorMessage += ' 상태 코드: ' + jqXHR.status;
-                }
-                if (errorThrown) {
-                    errorMessage += ', 오류 메시지: ' + errorThrown;
-                }
-
-                alert(errorMessage);
-                spinner.hide();
+            if (contentRow.is(':visible')) {
+                contentRow.hide();
+                return;
             }
+
+            $('.review-content').hide();
+            spinner.show();
+
+            $.ajax({
+                url: 'getReviewContent',
+                type: 'GET',
+                data: {id: reviewId},
+                success: function (data) {
+                    var contentHtml = '<div class="review-text-left">' + data.content + '</div>';
+
+                    if (data.imageUrl) {
+                        contentHtml += '<img src="' + data.imageUrl + '" alt="Review Image">';
+                    }
+
+                    reviewText.html(contentHtml);
+
+                    var loginUserId = parseInt("${sessionScope.loginUser.id}");
+
+                    if (data.reviewUserId === loginUserId) {
+                        reviewButtons.show();
+                    } else {
+                        reviewButtons.hide();
+                    }
+
+                    contentRow.show();
+                    spinner.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errorMessage = '리뷰 내용을 불러오는 데 실패했습니다.';
+
+                    if (jqXHR.status) {
+                        errorMessage += ' 상태 코드: ' + jqXHR.status;
+                    }
+                    if (errorThrown) {
+                        errorMessage += ', 오류 메시지: ' + errorThrown;
+                    }
+
+                    alert(errorMessage);
+                    spinner.hide();
+                }
+            });
         });
     });
-});
 
 
 </script>
@@ -597,9 +601,6 @@ function decreaseQuantity() {
     }
 
 </script>
-
-
-
 
 
 <script>

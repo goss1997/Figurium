@@ -3116,11 +3116,11 @@ input.num-product::-webkit-inner-spin-button {
 .hov-img0 {
   display: block;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
 }
 
 .hov-img0 img{
   width: 100%;
-  aspect-ratio: 1 / 1;
   -webkit-transition: transform 0.9s ease;
   -o-transition: transform 0.9s ease;
   -moz-transition: transform 0.9s ease;

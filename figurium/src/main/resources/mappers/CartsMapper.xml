@@ -22,7 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             c.quantity,             -- 장바구니에 담긴 수량
             p.name AS name,         -- 상품 이름
             p.price AS price,       -- 상품 가격
-            p.image_url AS imageUrl -- 상품 이미지 URL
+            p.image_url AS imageUrl, -- 상품 이미지 URL
+            p.quantity AS productQuantity -- 상품 재고 수량
         FROM
             carts c
                 JOIN

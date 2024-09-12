@@ -17,7 +17,7 @@ public class CartsVo {
     int productId;
     int quantity;
     Date addedTime;
-
+    int productQuantity;
     String name;
     int price;
     String imageUrl;

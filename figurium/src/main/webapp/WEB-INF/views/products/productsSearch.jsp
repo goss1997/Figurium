@@ -94,6 +94,7 @@
                     <div class="block2">
                         <div class="block2-pic hov-img0" style="border: 1px solid #dcdcdc">
                             <img src="${products.imageUrl}" alt="IMG-PRODUCT">
+                            <img src="/images/soldout.png" alt="Sold Out" class="sold-out-overlay" style="${products.quantity == 0 ? 'display: block;' : 'display: none;'}">
                             <a href="productInfo.do?id=${products.id}"
                                class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 상품 상세
@@ -103,7 +104,7 @@
                             <div class="block2-txt-child1 flex-col-l ">
                                 <a href="productInfo.do?id=${products.id}"
                                    class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                   ${products.name}
+                                   ${products.name} ${products.quantity}
                                 </a>
                     <span class="stext-105 cl3">
                                     <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>

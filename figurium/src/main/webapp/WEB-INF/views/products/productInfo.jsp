@@ -71,7 +71,10 @@
                 <!-- 상품의 이미지가 들어 갈 곳 -->
                 <div class="product_img">
                     <img src="${product.imageUrl}">
+                    <!-- SOLD OUT 오버레이 이미지 -->
+                    <img src="/images/soldout.png" alt="Sold Out" class="sold-out-overlay" style="${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
                 </div>
+
             </div>
 
             <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
@@ -343,8 +346,9 @@
     function addToCart(f) {
 
         let quantity = f.quantity.value;  // 해당 상품의 수량 가져오기
-
         let productId = f.productId.value;
+
+        console.log(quantity);
 
         let user = "${sessionScope.loginUser.id}";
 
@@ -353,10 +357,6 @@
             return;
         }
 
-        if (isNaN(quantity) || quantity <= 0) {
-            alert("현재 재고가 없습니다.");
-            return;
-        }
 
         $.ajax({
             url: "checkCartItem",
@@ -368,18 +368,21 @@
             },
             success: function (response) {
 
-                if (response.data) {
+                        if (response.data){
 
-                    if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false) {
-                        return false;
-                    }
-                    // 장바구니 페이지에 이동
-                    f.action = "shoppingCart.do";
-                    f.method = "POST";
-                    f.submit();
-                }
-            },
-            error: function (err) {
+                            if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false){
+                                return false;
+                            }
+                                // 장바구니 페이지에 이동
+                                f.action = "shoppingCart.do";
+                                f.method = "POST";
+                                f.submit();
+                        }else{
+                            location.href='/CartList.do';
+                        }
+                    },
+            error    :   function (err){
+
                 alert("상품이 담기는 도중 에러가 발생 하였습니다.")
             }
         });

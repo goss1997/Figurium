@@ -62,6 +62,14 @@ pageEncoding="UTF-8" %>
 		$('.btn-num-product-up').on('click', function() {
 			const item = $(this).closest('.table_row');
 			const quantityInput = item.find('.num-product');
+
+			// 현재 상품의 재고 수량을 초과하여 장바구니에 담을 수 없음
+			if (quantityInput.val() >= $('.productQuantity').val()){
+				alert("현재 재고 수량을 넘길 수 없습니다.")
+				return;
+			}
+
+
 			quantityInput.val(parseInt(quantityInput.val()) + 1);
 			updateTotalPrice(item);
 			updateGrandTotal();
@@ -163,7 +171,7 @@ pageEncoding="UTF-8" %>
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-minus"></i>
 											</div>
-
+											<input class="productQuantity" name="productQuantity" type="hidden" value="${cart.productQuantity}">
 											<input class="mtext-104 cl3 txt-center num-product" type="number"
 												   name="quantity[]" value="${ cart.quantity }" readonly>
 

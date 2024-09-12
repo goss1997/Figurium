@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT p.*, COALESCE(p.likeCount, 0) AS likeCount
         FROM (
         <!-- 서브쿼리 시작 -->
-        SELECT p.id, p.category_name, p.name, p.price, p.created_at, p.image_url,
+        SELECT p.id, p.category_name, p.name, p.price, p.created_at, p.image_url,p.quantity,
         COALESCE(SUM(pl.product_count), 0) AS likeCount
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
@@ -164,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="searchProductsList" resultType="products" parameterType="Map">
         SELECT p.*, COALESCE(likeCount, 0) AS likeCount
         FROM (
-        SELECT p.id, p.name, p.price, p.created_at, p.image_url,p.category_name,
+        SELECT p.id, p.name, p.price, p.created_at, p.image_url,p.category_name,p.quantity,
         COALESCE(SUM(pl.product_count), 0) AS likeCount
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id

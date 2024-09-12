@@ -129,6 +129,7 @@ public class ProductsController {
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "showQa", defaultValue = "false") String showQa,
                        HttpSession session,
+                       RedirectAttributes ra,
                        Model model, Map map) {
 
         // 해상 상품에 해당하는 ID를 받아옴
@@ -167,7 +168,6 @@ public class ProductsController {
         } else {
             model.addAttribute("isLiked", false);
         }
-
 
         // Q&A 리스트와 관련된 페이징 설정
         // Q&A 관련 정보 설정

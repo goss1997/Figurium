@@ -262,6 +262,14 @@ VALUES (2, '다섯 번째 게시글 제목', '다섯 번째 게시글 내용으�
 INSERT INTO qa (user_id, title, content, reply)
 VALUES (3, '여섯 번째 게시글 제목', '여기는 여섯 번째 게시글의 내용입니다. 다양한 시나리오에 대한 테스트를 위한 게시글입니다.', '답변 6');
 
+-- 회원1(일용자)에게 전송된 알림 더미 데이터
+insert into notifications (id, user_id, message)
+values (1, 1, '관리자가 회원님의 게시물의 답변을 남겼습니다.');
+insert into notifications (id, user_id, message)
+values (2, 1, '관리자가 회원님의 게시물의 답변을 남겼습니다.');
+insert into notifications (id, user_id, message)
+values (3, 1, '관리자가 회원님의 게시물의 답변을 남겼습니다.');
+
 -- 회원1(일용자)의 좋아요한 상품 더미 데이터
 -- 상품이 있어야함으로 주석 처리.
 # INSERT INTO product_likes VALUES (null,1,12,default);

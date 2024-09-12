@@ -1,5 +1,6 @@
 package com.githrd.figurium.qa.controller;
 
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
@@ -129,6 +130,7 @@ public class QaController {
             return "redirect:/";
         }
         model.addAttribute("productQaId", productQaId);
+
         return "qa/productQaInsert";
     }
 

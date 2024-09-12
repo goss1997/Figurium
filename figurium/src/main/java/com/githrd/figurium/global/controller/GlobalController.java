@@ -1,5 +1,6 @@
 package com.githrd.figurium.global.controller;
 
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.repository.CategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,6 @@ public class GlobalController {
         return  categoriesRepository.findAll();
     }
 
+    @ModelAttribute("notifications")
+    public List<Notification> notifications() {return notifications();}
 }

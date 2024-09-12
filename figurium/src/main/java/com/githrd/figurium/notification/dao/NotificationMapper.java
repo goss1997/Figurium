@@ -27,4 +27,22 @@ public interface NotificationMapper {
      */
     void updateNotificationAsRead(int notificationId);
 
+    /**
+     * 모든 알림을 조회
+     * @return : 모든 알림 목록
+     */
+    List<Notification> getAllNotifications();
+
+
+    /**
+     * 특정 알림 삭제
+     * @param notificationId : 삭제할 알림 ID
+     */
+    void deleteNotification(int notificationId);
+
+    /**
+     * 모든 알림 삭제
+     */
+    void deleteAllNotifications();
 }
+

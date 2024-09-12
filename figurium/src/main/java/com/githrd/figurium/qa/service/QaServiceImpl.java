@@ -36,6 +36,16 @@
         @Override
         public void saveQa(QaVo qaVo) {
             qaMapper.insert(qaVo);
+
+            // 알림 객체 생성
+            Notification notification = Notification.builder()
+                    .userId(qaVo.getUserId())
+                    .message("새로운 Q&A 게시글이 작성되었습니다.")
+                    .url("/qaSelect.do?id=" + qaVo.getId())
+                    .build();
+
+            // 알림 전송
+            notificationService.sendNotification(notification);
         }
         @Override
         public void saveProductQa(QaVo qaVo) {

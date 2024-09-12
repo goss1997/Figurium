@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -121,5 +123,87 @@ public class NotificationService {
             }
         });
     }
+
+    /**
+     * 특정 사용자의 알림 목록을 조회
+     * @param userId : 알림을 조회할 사용자 ID
+     * @return : 사용자에게 전송된 알림 목록
+     */
+    public List<Notification> getNotificationsByUserId(int userId) {
+        return notificationMapper.getNotificationsByUserId(userId);
+    }
+
+    /**
+     * 모든 알림을 조회
+     * @return : 모든 알림 목록
+     */
+    public List<Notification> getAllNotifications() {
+        return notificationMapper.getAllNotifications();
+    }
+
+    /**
+     * 알림을 읽음 상태로 업데이트
+     * @param notificationId : 읽음 상태로 업데이트할 알림 ID
+     */
+    public void updateNotificationAsRead(int notificationId) {
+        notificationMapper.updateNotificationAsRead(notificationId);
+    }
+
+    /**
+     * 특정 알림 삭제
+     * @param notificationId : 삭제할 알림 ID
+     */
+    public void deleteNotification(int notificationId) {
+        notificationMapper.deleteNotification(notificationId);
+    }
+
+    /**
+     * 모든 알림을 삭제
+     */
+    public void deleteAllNotifications() {
+        notificationMapper.deleteAllNotifications();
+    }
+
+
+    /**
+     * 사용자가 게시글을 작성했을 때 관리자에게 알림 전송
+     * @param userId : 게시글 작성자 ID
+     * @param postTitle : 게시글 제목
+     */
+    public void notifyAdminOnPost(int userId, String postTitle) {
+        // 관리자에게 알림 생성
+        String message = "회원님이 게시글을 남겼습니다: " + postTitle;
+        Notification notification = new Notification();
+        notification.setUserId(1); // 관리자 ID (예: 1)
+        notification.setMessage(message);
+        notification.setCreatedAt(LocalDateTime.now());
+
+        // 알림 저장
+        notificationMapper.insertNotification(notification);
+
+        // 관리자에게 SSE로 알림 전송
+        sendNotification(notification);
+    }
+
+    /**
+     * 관리자가 게시글에 답변을 작성했을 때 사용자에게 알림 전송
+     * @param userId : 게시글 작성자 ID
+     * @param responseTitle : 답변 제목
+     */
+    public void notifyUserOnResponse(int userId, String responseTitle) {
+        // 사용자에게 알림 생성
+        String message = "관리자가 게시글에 답변을 남겼습니다: " + responseTitle;
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setMessage(message);
+        notification.setCreatedAt(LocalDateTime.now());
+
+        // 알림 저장
+        notificationMapper.insertNotification(notification);
+
+        // 사용자에게 SSE로 알림 전송
+        sendNotification(notification);
+    }
+
 }
 

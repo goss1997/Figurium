@@ -32,4 +32,6 @@ public interface ProductsMapper {
 
     List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params);
 
+    // Test
+    int getProductQuantity(int productId);
 }

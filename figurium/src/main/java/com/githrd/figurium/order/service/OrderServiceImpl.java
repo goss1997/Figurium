@@ -132,28 +132,34 @@ public class OrderServiceImpl implements OrderService {
 
 
     /**
-     *  재고 synchronized 동기화 영역
+     * 재고 synchronized 동기화 영역
      */
-//    @Override
-//    @Transactional
-//    public synchronized int updateProductQuantity(int productId, int itemQuantity) {
-//        return productsMapper.updateProductQuantity(productId, itemQuantity);
-//    }
+    @Override
+    @Transactional
+    public synchronized boolean updateProductQuantity(int productId, int itemQuantity) {
+
+        int currentStock = productsMapper.getProductQuantity(productId);
+        if (currentStock > itemQuantity) {
+            productsMapper.updateProductQuantity(productId, itemQuantity);
+            return true;
+        }
+        return false;
+    }
 
 
     /**
      *  Lock를 이용한 동기화 처리
      */
-    @Override
-    @Transactional
-    public int updateProductQuantity(int productId, int itemQuantity) {
-        lock.lock();
-        try {
-            return productsMapper.updateProductQuantity(productId, itemQuantity);
-        } finally {
-            lock.unlock();
-        }
-    }
+//    @Override
+//    @Transactional
+//    public int updateProductQuantity(int productId, int itemQuantity) {
+//        lock.lock();
+//        try {
+//            return productsMapper.updateProductQuantity(productId, itemQuantity);
+//        } finally {
+//            lock.unlock();
+//        }
+//    }
 
 
     /**
@@ -196,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new OutofStockException("Insufficient stock: 재고가 부족합니다.");
             }
 
-            int res = updateProductQuantity(productId, itemQuantity);
+            updateProductQuantity(productId, itemQuantity);
         }
 
         return orderId;

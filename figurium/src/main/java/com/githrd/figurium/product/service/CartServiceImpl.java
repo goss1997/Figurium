@@ -49,4 +49,14 @@ public class CartServiceImpl implements CartService {
         params.put("userId", userId);
         return cartsMapper.checksCartItem(params);
     }
+
+    @Override
+    public int checkProductQuantity(int productId, int userId) {
+        return cartsMapper.checkProductQuantity(productId, userId);
+    }
+
+    @Override
+    public int getProductQuantity(int productId) {
+        return cartsMapper.getProductQuantity(productId);
+    }
 }

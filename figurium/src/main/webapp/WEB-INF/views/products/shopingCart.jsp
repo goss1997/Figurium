@@ -62,10 +62,12 @@ pageEncoding="UTF-8" %>
 		$('.btn-num-product-up').on('click', function() {
 			const item = $(this).closest('.table_row');
 			const quantityInput = item.find('.num-product');
+			const productQuantity = parseInt(item.find('.productQuantity').val()); // 현재 상품의 재고 수량
+
 
 			// 현재 상품의 재고 수량을 초과하여 장바구니에 담을 수 없음
-			if (quantityInput.val() >= $('.productQuantity').val()){
-				alert("현재 재고 수량을 넘길 수 없습니다.")
+			if (parseInt(quantityInput.val()) >= productQuantity) {
+				alert("현재 재고 수량을 넘길 수 없습니다.");
 				return;
 			}
 

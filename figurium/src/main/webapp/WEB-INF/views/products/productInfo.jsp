@@ -344,9 +344,9 @@
 <script>
     // 장바구니에 상품 추가 함수
     function addToCart(f) {
-
         let quantity = f.quantity.value;  // 해당 상품의 수량 가져오기
         let productId = f.productId.value;
+        let productQuantity = "${product.quantity}";
 
         console.log(quantity);
 
@@ -357,6 +357,10 @@
             return;
         }
 
+        if (productQuantity <= 0) {
+            alert("현재 상품은 품절 되었습니다.\n상품 입고까지 조금만 기다려주세요.");
+            return;
+        }
 
         $.ajax({
             url: "checkCartItem",
@@ -364,31 +368,50 @@
             dataType: "json",
             data: {
                 productId: productId,
-                user: user
+                user: user,
+                productQuantity: quantity // 여기에 장바구니에 추가하려는 수량을 전송
             },
             success: function (response) {
+                // 현재 장바구니에 상품이 존재하면 호출
+                if (response.selectProductsCart) {
 
-                        if (response.data){
+                    // 해당 상품의 재고 수량을 초과할 경우
+                    if (response.selectProductsQuantity) {
+                        alert(response.message); // 재고초과 불가능 메시지 띄우기
+                        return;
+                    }
 
-                            if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false){
-                                return false;
-                            }
-                                // 장바구니 페이지에 이동
-                                f.action = "shoppingCart.do";
-                                f.method = "POST";
-                                f.submit();
-                        }else{
-                            location.href='/CartList.do';
-                        }
-                    },
-            error    :   function (err){
+                    // 같은 상품이 있으면 수량 업데이트
+                    if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") === false) {
+                        return;
+                    }
 
+                    // 장바구니 업데이트
+                    f.action = "shoppingCart.do";
+                    f.method = "POST";
+                    f.submit();
+
+                }
+                // 같은 상품이 없을 시 반환
+                else if (response.selectProductsQuantity === false) {
+
+                    if (confirm("해당 상품을 장바구니에 추가 하시겠습니까?") === false) {
+                        return;
+                    }
+
+                    // 장바구니 업데이트
+                    f.action = "shoppingCart.do";
+                    f.method = "POST";
+                    f.submit();
+                }
+            },
+            error: function (err) {
                 alert("상품이 담기는 도중 에러가 발생 하였습니다.")
             }
         });
     }
-
 </script>
+
 
 
 <script>

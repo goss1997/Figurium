@@ -3431,3 +3431,35 @@ input.num-product::-webkit-inner-spin-button {
   color: #6cb2ff;
 }
 
+/*Sold Out*/
+.block2-pic {
+  position: relative;
+  display: inline-block;
+}
+
+.block2-pic img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sold-out-overlay {
+  position: absolute;
+  width: 525px;
+  height: 525px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8); /* 흐림 효과를 위한 배경 */
+  color: red; /* SOLD OUT 텍스트 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  z-index: 10; /* 이미지 위에 표시되도록 설정 */
+  opacity: 0.7; /* 흐림 효과 */
+  pointer-events: none; /* 오버레이가 클릭되지 않도록 설정 */
+}

@@ -65,15 +65,15 @@ public class CartsController {
             cartsMapper.updateCartItemQuantity(checkCart.getId(), checkCart.getQuantity() + quantity);
         }
 
-
-
         // 장바구니 목록 다시 가져오기
         List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
         model.addAttribute("cartsVo", cartsVo);
 
+        return "redirect:/CartList.do";
 
-        return "products/shopingCart";
         }
+
+
 
         // 장바구니에 담긴 상품 삭제
         @RequestMapping(value = "/CartDelete.do")
@@ -86,6 +86,9 @@ public class CartsController {
             System.out.println("loginUserId = " + loginUserId);
             return "success";
         }
+
+
+
 
         // 내 장바구니 리스트 호출
         @RequestMapping(value = "/CartList.do")
@@ -100,24 +103,47 @@ public class CartsController {
             return "products/shopingCart";
         }
 
+
+
+
         // 해당 상품이 장바구니에 있는지 확인
-    @RequestMapping("checkCartItem")
-    @ResponseBody
-    public Map<String,Object> checkCartItem(@RequestParam("productId") int productId,
-                                            @RequestParam("user") int userId) {
-        Map<String,Object> response = new HashMap<>();
+        @RequestMapping("checkCartItem")
+        @ResponseBody
+        public Map<String, Object> checkCartItem(@RequestParam("productId") int productId,
+                                                 @RequestParam("user") int userId,
+                                                 @RequestParam("productQuantity") int productQuantity) {
+            Map<String, Object> response = new HashMap<>();
 
-        int result = cartService.checksCartItem(productId, userId);
+            // 장바구니에 상품이 있는지 확인
+            int checksCartItem = cartService.checksCartItem(productId, userId);
 
-        if (result > 0) {
-            response.put("data",true); // 성공시 ture
-        }else {
-            response.put("data",false); // 실패시 false
+            // 장바구니에 담긴 특정 상품의 수량 확인
+            int cartsQuantity = cartService.checkProductQuantity(productId, userId);
+
+            // 현재 상품의 총 재고 수 확인
+            int productsQuantity = cartsMapper.getProductQuantity(productId);
+
+            // 현재 장바구니에 담겨있는 재고 수 + 추가하려는 수량
+            int totalQuantity = cartsQuantity + productQuantity;
+
+            // 상품이 장바구니에 존재하는지 체크
+            if (checksCartItem > 0) {
+                response.put("selectProductsCart", true); // 성공시 true
+            } else {
+                response.put("selectProductsCart", false); // 실패시 false
+            }
+
+            // 재고 초과 여부를 체크
+            if (totalQuantity > productsQuantity) {
+                response.put("selectProductsQuantity", true); // 재고 초과시 true 반환
+                response.put("message", "장바구니에 상품의 남은 재고수량을 초과하여 추가 하실 수 없습니다.");
+            } else {
+                response.put("selectProductsQuantity", false); // 정상적으로 장바구니에 담을 수 있는 경우 false 반환
+            }
+
+            return response;
         }
 
-        return response;
-
-    }
 
 
 

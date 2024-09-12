@@ -36,4 +36,10 @@ public interface CartsMapper {
     // 장바구니에 담기전에 해당 상품이 장바구니에 존재하는지 확인
     int checksCartItem(Map<String, Object> params);
 
+    // 현재 상품의 총 재고 수량을 가져옴
+    int getProductQuantity(int productId);
+
+    // 장바구니에 상품을 담기 전 해당 상품의 재고가 있는지 확인
+    int checkProductQuantity(int productId, int userId);
+
 }

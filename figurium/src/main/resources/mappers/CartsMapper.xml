@@ -107,5 +107,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           AND user_id = #{userId}
     </select>
 
+    <!-- 상품의 총 재고 수량을 가져오는 쿼리 -->
+    <select id="getProductQuantity" parameterType="int" resultType="int">
+        SELECT quantity
+        FROM products
+        WHERE id = #{productId}
+    </select>
 
+    <!-- 장바구니에 담기전에 해당 상품의 재고가 있는지 확인 -->
+    <select id="checkProductQuantity" resultType="int">
+        SELECT COALESCE(SUM(quantity), 0)
+        FROM carts
+        WHERE user_id = #{userId}
+          AND product_id = #{productId}
+    </select>
 </mapper>

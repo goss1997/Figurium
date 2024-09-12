@@ -14,4 +14,8 @@ public interface CartService {
 
     int checksCartItem(int productId , int userId);
 
+    int checkProductQuantity(int productId , int userId);
+
+    int getProductQuantity(int productId);
+
 }

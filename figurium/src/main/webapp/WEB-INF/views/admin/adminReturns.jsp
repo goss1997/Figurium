@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: 14A
@@ -8,16 +7,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 <html>
 <head>
-  <title>Q&A 미답변 현황</title>
+  <title>반품승인</title>
   <!-- TODO : 제목 과 스타일 영역 -->
   <style>
     .thead-light>tr>th{
-      text-align: center;
-      vertical-align: middle !important;
+    text-align: center;
+    vertical-align: middle !important;
     }
     tbody>tr>td{
       text-align: center;
@@ -45,11 +42,12 @@
         <a class="nav-link" href="admin.do">주문조회</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="adminPayment" href="adminPayment.do">결제취소</a>
+        <a class="nav-link" id="adminPayment" href="adminReturns.do">결제취소</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="adminReturns.do">반품 승인</a>
+        <a class="nav-link" onclick="location.reload();">반품 승인</a>
       </li>
+
 
       <li class="nav-item">
         <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
@@ -59,51 +57,40 @@
              id="qa-notify"
              data-notify="0">
           <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
-             id="viewQaList" onclick="location.reload();">Q&A 미답변</a>
+             id="viewQaList" href="adminQaList.do" >Q&A 미답변</a>
         </div>
       </li>
     </ul>
   </nav>
 
   <br><br>
-
-  <div class="container pt-3">
-    <hr>
-    <table class="table table-hover">
-      <thead class="thead-light">
-      <tr style="text-align: center">
-        <th class="col-1">번호</th>
-        <th class="col-2">제목</th>
-        <th class="col-1">상품번호</th>
-        <th class="col-1">답변여부</th>
-        <th class="col-1">작성자</th>
-        <th class="col-2">작성일</th>
+  <table class="table table-hover" style="width: 90%; margin: auto">
+    <thead class="thead-light">
+    <tr>
+      <th class="col-2">주문번호<br>주문일자</th>
+      <th class="col-3">상품명</th>
+      <th class="col-1">결제방식</th>
+      <th class="col-1">총 결제금액</th>
+      <th class="col-1">결제상태</th>
+      <th class="col-1">주문상태</th>
+      <th class="col-1">반품처리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="listReturns" items="${listReturns}">
+      <tr>
+        <td>${listReturns.id}<br>${listReturns.createdAt}</td>
+        <td>${listReturns.productName}</td>
+        <td>${listReturns.paymentType == 'vbank' ? '무통장입금' : '카드결제'}</td>
+        <td>${listReturns.price}원</td>
+        <td>${listReturns.valid == 'y' ? '결제완료' : '환불완료'}</td>
+        <td>${listReturns.status}</td>
+        <td><input class="btn btn-light" type="button" value="환불처리" onclick="ordersReturns(this);"></td>
+        <input type="hidden" name="returnsId" value="${listReturns.id}">
       </tr>
-      </thead>
-      <tbody style="text-align: center;">
-      <c:forEach var="qa" items="${qaList}" varStatus="status">
-      <tr onclick="location.href='qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
-        <td>${status.index + 1}</td>
-        <td class="truncate-title" style="text-align: left;">
-          <span style="font-size: 18px;" class="material-symbols-outlined">lock</span>
-          ${qa.title}
-        </td>
-        <td>
-          <c:if test="${qa.productQaId eq null}">
-            -
-          </c:if>
-          <c:if test="${qa.productQaId ne null}">
-            ${qa.productQaId}
-          </c:if>
-        </td>
-        <td>${qa.replyStatus}</td>
-        <td>${qa.name}</td>
-        <td>${fn:substring(qa.created,0,10)} ${fn:substring(qa.created,11,16)}</td>
-      </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-  </div>
+    </c:forEach>
+    </tbody>
+  </table>
 
 </div>
 <!-- 푸터 -->
@@ -112,15 +99,34 @@
 
 <script>
 
+  function ordersReturns(button){
+
+    // 클릭된 버튼의 부모 tr 설정
+    const row = $(button).closest('tr');
+
+    // ordersId 값을 가져오기
+    const returnsId = row.find('input[name="returnsId"]').val();
+
+    $.ajax({
+      url: 'ordersRefund.do', // 컨트롤러에서 갯수를 가져오는 URL
+      type: 'POST',
+      data: { id : returnsId},
+      dataType: 'json',
+      success: function (response) {
+        if (response > 0 ){
+          alert("반품처리에 성공했습니다.");
+          location.reload();
+        }
+      },
+      error: function (xhr, status, error) {
+        alert("반품 처리에 실패했습니다.");
+      }
+    });
+  }
 
   $(document).ready(function () {
 
     updateQaCount();
-
-    $('#viewQaList').click(function (event) {
-      event.preventDefault();
-      location.reload();
-    });
 
   });
 

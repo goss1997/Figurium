@@ -10,6 +10,7 @@
         List<QaVo> getAllQa(); // 모든 게시글 조회
         QaVo getQaById(int id); // ID로 게시글 조회
         void saveQa(QaVo qaVo); // 게시글 저장
+        void saveProductQa(QaVo qaVo); // 게시글 저장
         void updateQa(QaVo qaVo); // 게시글 수정
         void deleteQa(int id); // 게시글 삭제
         void deleteReply(int id);
@@ -19,6 +20,8 @@
         int selectRowTotal(Map<String, Object> map); // 총 게시물 수 조회
 
         List<QaVo> selectAllWithPagination(Map<String, Object> map);
+
+        List<QaVo> selectProductAllWithPagination(Map<String, Object> map);
 
         /*admin Page 미답변 List 조회*/
         List<QaVo> replyQaList();

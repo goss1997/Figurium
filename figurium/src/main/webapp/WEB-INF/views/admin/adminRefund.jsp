@@ -12,7 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 <html>
 <head>
-  <title>Title</title>
+  <title>배송상태 변경</title>
   <!-- TODO : 제목 과 스타일 영역 -->
   <style>
     .thead-light>tr>th{
@@ -48,18 +48,18 @@
         <a class="nav-link" id="adminPayment" href="adminPayment.do">결제취소</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">반품 승인</a>
+        <a class="nav-link" href="adminReturns.do">반품 승인</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" id="changeStatus" href="#">배송상태 변경</a>
+        <a class="nav-link" id="changeStatus" onclick="location.reload();">배송상태 변경</a>
       </li>
       <li class="nav-item">
-        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
              id="qa-notify"
              data-notify="0">
           <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
-             id="viewQaList" >Q&A 미답변</a>
+             id="viewQaList" href="adminQaList.do">Q&A 미답변</a>
         </div>
       </li>
     </ul>
@@ -88,6 +88,7 @@
       <td>${order.valid == 'y' ? '결제완료' : '환불완료'}</td>
       <td>
         <a>${order.status}</a>&nbsp;&nbsp;
+        <c:if test="${order.status ne '환불완료'}">
         <input type="button" class="deliveryButton" value="상태변경" style="display: inline-block;" onclick="toggleButtons(this);">
         <select style="margin: 0px; display: none;" class="deliveryCondition" name="deliveryCondition">
           <option value="준비중" ${order.status == '준비중' ? 'selected' : ''}>준비중</option>
@@ -96,6 +97,7 @@
           <option value="배송완료" ${order.status == '배송완료' ? 'selected' : ''}>배송완료</option>
         </select>
         <input type="button" class="delivery" value="적용" style="display: none;" onclick="deliveryChange(this);">
+        </c:if>
         <input type="hidden" name="ordersId" value="${order.id}">
       </td>
     </tr>
@@ -104,6 +106,8 @@
   </table>
 
 </div>
+<!-- 푸터 -->
+<jsp:include page="../common/footer.jsp"/>
 </body>
 
 

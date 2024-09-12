@@ -14,7 +14,7 @@ public interface OrderService {
 
     List<MyOrderVo> selectListByUserId(int userId);
 
-    int updateProductQuantity(int productId, int loginUserId);
+    boolean updateProductQuantity(int productId, int itemQuantity);
 
     // 상품 재고 체크
     String checkProductStock(List<Integer> productIds, List<Integer> itemQuantities);

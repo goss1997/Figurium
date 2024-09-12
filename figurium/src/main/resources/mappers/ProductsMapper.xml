@@ -12,12 +12,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from products where id = #{ productId }
     </select>
 
-    <update id="updateProductQuantity" parameterType="int">
-        update products
-        set quantity = quantity - #{ itemQuantity }
-            where id = #{ productId }
-    </update>
 
+    <update id="updateProductQuantity" parameterType="int">
+        UPDATE products
+        SET quantity = quantity - #{itemQuantity}
+        WHERE id = #{productId}
+        FOR UPDATE
+    </update>
 
 
 
@@ -227,6 +228,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM products
         WHERE name LIKE CONCAT('%',#{search},'%')
     </select>
+
+    <!--  Test  -->
+    <select id="getProductQuantity" parameterType="int" resultType="int">
+        SELECT quantity
+        FROM products
+        WHERE id = #{productId}
+    </select>
+
 </mapper>
 
 

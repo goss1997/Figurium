@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.githrd.figurium.qa.dao.QaMapper">
     <select id="selectAll" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT * FROM qa
         ORDER BY created DESC
     </select>
-        <!--SELECT@rownum := @rownum + 1 AS no, qa.*FROM qa, (SELECT @rownum := 0) AS r ORDER BY id-->
+
+    <!--SELECT@rownum := @rownum + 1 AS no, qa.*FROM qa, (SELECT @rownum := 0) AS r ORDER BY id-->
 
     <select id="selectById" parameterType="int" resultType="com.githrd.figurium.qa.vo.QaVo">
         SELECT *
         FROM (
-                 SELECT q.*, u.name
-                 FROM qa q
-                          LEFT JOIN users u ON q.user_id = u.id
-             ) q
+        SELECT q.*, u.name
+        FROM qa q
+        LEFT JOIN users u ON q.user_id = u.id
+        ) q
         WHERE id = #{id}
     </select>
 
@@ -25,13 +26,19 @@
         VALUES (#{userId}, #{title}, #{content}, #{reply})
     </insert>
 
+    <insert id="product_insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
+        INSERT INTO qa (user_id, product_id,title, content, reply)
+        VALUES (#{userId}, #{productQaId},#{title}, #{content}, #{reply})
+    </insert>
+
+
     <update id="update" parameterType="com.githrd.figurium.qa.vo.QaVo">
         UPDATE qa
         SET title = #{title},
-            content = #{content},
-            reply = #{reply},
-            updated = #{updated},
-            replyStatus = #{replyStatus}
+        content = #{content},
+        reply = #{reply},
+        updated = #{updated},
+        replyStatus = #{replyStatus}
         WHERE id = #{id}
     </update>
 
@@ -49,29 +56,41 @@
     <select id="selectAllWithPagination" parameterType="map" resultType="QaVo">
         select q.*, u.name
         from (select rank() over(order by id desc) as no,
-            i.*
-              from
-                  (select * from qa) i) q
-                 left join users u on q.user_id = u.id
+        i.*
+        from
+        (select * from qa) i) q
+        left join users u on q.user_id = u.id
         where no between #{ start }
-          and #{ end }
+        and #{ end }
+    </select>
+
+    <!-- 페이징 처리된 게시글 조회 -->
+    <select id="selectProductAllWithPagination" parameterType="map" resultType="QaVo">
+        select q.*, u.name
+        from (select rank() over(order by id desc) as no,
+        i.*
+        from
+        (select * from qa where product_id=#{productId}) i) q
+        left join users u on q.user_id = u.id
+        where no between #{ start }
+        and #{ end }
     </select>
 
     <!-- selectRowTotal 쿼리 정의 -->
-        <select id="selectRowTotal" resultType="int">
-            SELECT COUNT(*)
-            FROM qa
-        </select>
+    <select id="selectRowTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM qa
+    </select>
 
 
-<!--  admin Qa 미답변 List  -->
+    <!--  admin Qa 미답변 List  -->
     <select id="replyQaList" resultType="com.githrd.figurium.qa.vo.QaVo">
         select q.*, u.name
         from (select rank() over(order by id desc) as no,
-            i.*
-              from
-                  (select * from qa) i) q
-                 left join users u on q.user_id = u.id
+        i.*
+        from
+        (select * from qa) i) q
+        left join users u on q.user_id = u.id
         where replyStatus = '답변준비중'
         ORDER BY id DESC
     </select>

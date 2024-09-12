@@ -35,11 +35,13 @@
 
         @Override
         public void saveQa(QaVo qaVo) {
-
             qaMapper.insert(qaVo);
-
-
         }
+        @Override
+        public void saveProductQa(QaVo qaVo) {
+            qaMapper.product_insert(qaVo);
+        }
+
 
         @Override
         public void updateQa(QaVo qaVo) {
@@ -80,26 +82,24 @@
         public  List<QaVo> selectAllWithPagination(Map<String, Object> map) {
             return qaMapper.selectAllWithPagination(map);
         }
-
+        @Override
+        public  List<QaVo> selectProductAllWithPagination(Map<String, Object> map) {
+            return qaMapper.selectProductAllWithPagination(map);
+        }
 
 
         @Override
         public List<QaVo> getQaWithPagination(int offset, int limit) {
             return qaMapper.selectAllWithPagination(Map.of("offset", offset, "limit", limit));
         }
-
-
         @Override
         public List<QaVo> replyQaList() {
             return qaMapper.replyQaList();
         }
 
-
-
         @Override
         public int getQaCount() {
             return qaMapper.getQaCount();
         }
-
 
     }

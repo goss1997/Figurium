@@ -91,10 +91,25 @@ public class ProductsService {
     public int searchProductCount(Map<String, Object> params) {
         return productsMapper.searchProductsCount(params);
     }
+
     // 검색 상품의 히스토리 저장
     public int searchProductsNameHistory(String search){
+
+        // 검색어가 없거나 빈 문자열만 입력시 저장X
+        if (search == null || search.trim().isEmpty()) {
+            return -1;
+        }
+
+        // 해당 상품을 검색된 상품이 존재하는지 확인
+        List<ProductsVo> searchProducts = productsMapper.selectSearchProductsList(search);
+        if (searchProducts == null || searchProducts.isEmpty()) {
+            return 0;
+        }
+
+        // 검증 통과 시 DB에 검색어를 저장 후 1을 반환
         return productsMapper.searchProductsNameHistory(search);
     }
+
     // 검색 상품의 순위별 조회
     public List<String> searchHistory(){
        return productsMapper.searchHistory();

@@ -4,16 +4,73 @@
 <head>
     <title>상품 검색</title>
     <link rel="stylesheet" type="text/css" href="/css/searchAndCategoriesList.css">
+    <style>
+        .error-body {
+            margin-top: 150px;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .error-container {
+            max-width: 1000px;
+            min-height: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-body h1 {
+            color: #e74c3c;
+        }
+
+        .error-body a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .error-body a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <%@ include file="../common/header.jsp" %>
 <body>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
-    <div class="Search_title_box" style="text-align: center; margin-top: 100px">
-        <h1>★ 검색결과 : ${search} ★</h1>
-    </div>
+
+    <c:if test="${!not_search}">
+        <div class="Search_title_box" style="text-align: center; margin-top: 100px">
+            <h1>★ 검색결과 : ${search} ★</h1>
+        </div>
+    </c:if>
+
+
 
     <div class="categories_main_box">
+
+    <c:if test="${not_search}">
+        <div class="error-body">
+            <div class="error-container">
+                <img src="/images/훈이.png" alt="훈이.png" style="width: 200px; height: auto; margin-right: 20px;">
+                <div>
+                    <h2>검색 결과가 없습니다.</h2>
+                    <p>죄송합니다. 현재 검색된 상품은 존재하지 않습니다.</p>
+                    <p>다른 상품 검색을 해 주시거나, 아래의 링크를 통해 다른 페이지로 이동해 주세요.</p>
+                    <a href="<c:url value='/' />">홈으로 돌아가기</a>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+
+
+    <c:if test="${!not_search}">
     <div class="sort_box">
         <span>현재 검색된 상품의 수 <b>${totalCount}</b>개</span>
         <!-- Filter -->
@@ -95,6 +152,8 @@
                >>
             </a>
         </div>
+        </c:if>
+    </div>
 
 </div>
 <jsp:include page="../common/footer.jsp"/>

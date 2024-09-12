@@ -31,7 +31,9 @@ public interface CartsMapper {
     List<CartsVo> checksCartItemList(int userId, List<Integer> productId);
 
     // 즉시구매처리하기
-    List<CartsVo> checksCartItemOne(int userId, int productId);
+    List<CartsVo> checksCartItemOne(int productId, int userId);
 
+    // 장바구니에 담기전에 해당 상품이 장바구니에 존재하는지 확인
+    int checksCartItem(Map<String, Object> params);
 
 }

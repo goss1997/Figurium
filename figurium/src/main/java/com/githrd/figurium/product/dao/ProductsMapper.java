@@ -27,6 +27,8 @@ public interface ProductsMapper {
     int searchProductsNameHistory(String search);
     // 상품 검색 순위별 조회하기
     List<String> searchHistory();
+    // 검색된 상품에 해당하는 상품이 존재하는지 검증
+    List<ProductsVo> selectSearchProductsList(String search);
 
     List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params);
 

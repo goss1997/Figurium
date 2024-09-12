@@ -149,10 +149,15 @@
 
 .total_price{
     display: inline-block;
-    width: 250px;
+    width: 200px;
     margin-left: 15px;
 
 }
+
+#total_price{
+    width: 150px;
+}
+
 
 .product_info p{
     text-align: right;
@@ -326,8 +331,9 @@
 
 .reviews_box{
     margin: auto;
-    margin-top: 20px;
+    margin-top: 50px;
     width: 1300px;
+    margin-bottom: 200px;
 }
 
 /* 리뷰 작성 버튼 */

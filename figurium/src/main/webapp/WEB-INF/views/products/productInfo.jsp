@@ -233,10 +233,10 @@
 
 
     function qaInsert(f){
-    f.method = "GET"
-    f.action = '/qa/productQaInsert.do';
-    f.submit();
-
+        f.method = "GET"
+        f.action = '/qa/productQaInsert.do';
+        f.submit();
+    }
 
     $(document).ready(function () {
         // 서버에서 전달된 하트 상태를 기반으로 초기화
@@ -292,26 +292,43 @@
 
 <script>
     // 주문 할 상품의 수량 선택
-    var maxQuantity = "${product.quantity}"; // 재고 수량
-    function increaseQuantity() {
-        var quantityInput = document.getElementById('quantity');
-        var currentQuantity = parseInt(quantityInput.value);
-        if (currentQuantity < maxQuantity) {
-            quantityInput.value = currentQuantity + 1;
+let maxQuantity = parseInt("${product.quantity}"); // 재고 수량
+let productPrice = parseInt("${product.price}");   // 상품 가격
 
-        } else {
-            alert('재고 수량을 초과할 수 없습니다.');
-        }
+function updateTotalPrice() {
+    let quantityInput = document.getElementById('quantity');
+    let currentQuantity = parseInt(quantityInput.value);
+    let totalPrice = productPrice * currentQuantity;
+
+    // 총 결제 금액을 업데이트
+    document.getElementById('total_price').innerText = totalPrice;
+}
+
+function increaseQuantity() {
+    let quantityInput = document.getElementById('quantity');
+    let currentQuantity = parseInt(quantityInput.value);
+
+    if (currentQuantity < maxQuantity) {
+        quantityInput.value = currentQuantity + 1;
+        updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
+    } else {
+        alert('재고 수량을 초과할 수 없습니다.');
     }
+}
 
-    function decreaseQuantity() {
-        var quantityInput = document.getElementById('quantity');
-        var currentQuantity = parseInt(quantityInput.value);
-        if (currentQuantity > 1) {
-            quantityInput.value = currentQuantity - 1;
-        }
+function decreaseQuantity() {
+    let quantityInput = document.getElementById('quantity');
+    let currentQuantity = parseInt(quantityInput.value);
+
+    if (currentQuantity > 1) {
+        quantityInput.value = currentQuantity - 1;
+        updateTotalPrice(); // 수량 변경 시 총 결제 금액 업데이트
     }
+}
 
+    </script>
+
+    <script>
     // 장바구니에 상품 추가 함수
     function addToCart(f) {
 
@@ -319,23 +336,43 @@
 
         let productId = f.productId.value;
 
-        let user = "${sessionScope.loginUser}";
+        let user = "${sessionScope.loginUser.id}";
 
         if (user === "null" || user === "") {
             alert("로그인이 필요한 서비스 입니다.");
             return;
         }
 
-
         if (isNaN(quantity) || quantity <= 0) {
             alert("현재 재고가 없습니다.");
             return;
         }
 
-        // 장바구니 페이지에 이동
-        f.action = "shoppingCart.do";
-        f.method = "POST";
-        f.submit();
+        $.ajax({
+            url      :      "checkCartItem",
+            type     :      "POST",
+            dataType :      "json",
+            data     :      {
+                productId : productId,
+                user : user
+                },
+            success  :      function (response){
+
+                if (response.data){
+
+                    if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") == false){
+                        return false;
+                    }
+                        // 장바구니 페이지에 이동
+                        f.action = "shoppingCart.do";
+                        f.method = "POST";
+                        f.submit();
+                }
+                    },
+            error    :   function (err){
+                alert("상품이 담기는 도중 에러가 발생 하였습니다.")
+            }
+        });
     }
 
 </script>

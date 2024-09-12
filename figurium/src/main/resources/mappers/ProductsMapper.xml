@@ -222,6 +222,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LIMIT 5
     </select>
 
+    <!-- 해당 상품이 존재하는지 검증 -->
+    <select id="selectSearchProductsList" resultType="products">
+        SELECT * FROM products
+        WHERE name LIKE CONCAT('%',#{search},'%')
+    </select>
 </mapper>
 
 

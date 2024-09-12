@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -316,56 +317,66 @@ public class ProductsController {
                              Model model) {
 
         int searchHistorySuccess = productsService.searchProductsNameHistory(search);
+        // 검색에 대한 검증 통과 시 수행될 로직
 
-        if (searchHistorySuccess < 0) {
+        // 검색 검증이 공백일 때
+        if (searchHistorySuccess == -1){
+            model.addAttribute("search_empty" , true);
             return "redirect:/";
         }
 
-        // 한 화면에 보여질 상품의 갯수
-        int pageSize = 80;
-        int offset = (page - 1) * pageSize;
+        // 검색 상품이 없을경우
+        if (searchHistorySuccess == 0){
+            model.addAttribute("not_search" , true);
+            return "products/productsSearch";
+        }
 
-        // filter와 name을 같이 받아오기 위해 맵에다가 저장
-        Map<String, Object> params = new HashMap<String,Object>();
-        params.put("selectFilter", selectFilter);
-        params.put("search", search);
-        params.put("offset", offset);
-        params.put("pageSize", pageSize);
 
-        // 검색된 상품의 리스트
-        List<ProductsVo> productsSearchList = productsService.searchProductsList(params,page,pageSize);
+            // 한 화면에 보여질 상품의 갯수
+            int pageSize = 80;
+            int offset = (page - 1) * pageSize;
 
-        model.addAttribute("productsSearchList", productsSearchList);
-        model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
-        model.addAttribute("search", search); // option을 선택 했을 경우 해당하는 option의 parameter를 다시 넘겨주기 위해 모델에 담음
+            // filter와 name을 같이 받아오기 위해 맵에다가 저장
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("selectFilter", selectFilter);
+            params.put("search", search);
+            params.put("offset", offset);
+            params.put("pageSize", pageSize);
 
-        // 총 상품 수를 가져와서 페이지네이션 계산
-        int totalCount = productsService.searchProductCount(params);
-        model.addAttribute("totalCount", totalCount);
+            // 검색된 상품의 리스트
+            List<ProductsVo> productsSearchList = productsService.searchProductsList(params, page, pageSize);
 
-        // 총 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            model.addAttribute("productsSearchList", productsSearchList);
+            model.addAttribute("selectFilter", selectFilter); // 현재 필터링 된 option을 보여주기 위해 모델에 담음
+            model.addAttribute("search", search); // option을 선택 했을 경우 해당하는 option의 parameter를 다시 넘겨주기 위해 모델에 담음
 
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", page); // 현재 페이지 정보
+            // 총 상품 수를 가져와서 페이지네이션 계산
+            int totalCount = productsService.searchProductCount(params);
+            model.addAttribute("totalCount", totalCount);
+
+            // 총 페이지 수 계산
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("currentPage", page); // 현재 페이지 정보
 
         /* 페이지 버튼 범위 계산
             현재 페이지에서 2페이지 이전이 최소 1페이지보다 작을 경우, 시작 페이지를 1로 설정 */
-        int startPage = Math.max(1, page - 2); // 시작 페이지
+            int startPage = Math.max(1, page - 2); // 시작 페이지
 
-        // 현재 페이지에서 2페이지 이후가 총 페이지 수보다 클 경우, 끝 페이지를 총 페이지 수로 설정
-        int endPage = Math.min(totalPages, page + 2); // 끝 페이지
+            // 현재 페이지에서 2페이지 이후가 총 페이지 수보다 클 경우, 끝 페이지를 총 페이지 수로 설정
+            int endPage = Math.min(totalPages, page + 2); // 끝 페이지
 
-        // 이전 및 다음 버튼 페이지 범위 계산
-        int prevPage = Math.max(1, page - 5); // 이전 버튼을 누를 경우 이동할 페이지
-        int nextPage = Math.min(totalPages, page + 5); // 다음 버튼을 누를 경우 이동할 페이지
+            // 이전 및 다음 버튼 페이지 범위 계산
+            int prevPage = Math.max(1, page - 5); // 이전 버튼을 누를 경우 이동할 페이지
+            int nextPage = Math.min(totalPages, page + 5); // 다음 버튼을 누를 경우 이동할 페이지
 
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage); // 이전 버튼 페이지 번호
-        model.addAttribute("nextPage", nextPage); // 다음 버튼 페이지 번호
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("prevPage", prevPage); // 이전 버튼 페이지 번호
+            model.addAttribute("nextPage", nextPage); // 다음 버튼 페이지 번호
 
-        return "products/productsSearch";
+            return "products/productsSearch";
     }
 
     // 상품의 검색어 순위

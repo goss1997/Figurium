@@ -2,6 +2,7 @@ package com.githrd.figurium.product.controller;
 
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
+import com.githrd.figurium.product.service.CartService;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
@@ -22,14 +23,15 @@ public class CartsController {
 
     private final HttpSession session;
     private final CartsMapper cartsMapper;
-    private final ProductsMapper productsMapper;
+    private final CartService cartService;
 
     @Autowired
-    public CartsController(HttpSession session, CartsMapper cartsMapper,
-                           ProductsMapper productsMapper) {
+    public CartsController(HttpSession session,
+                           CartsMapper cartsMapper,
+                           CartService cartService) {
         this.session = session;
         this.cartsMapper = cartsMapper;
-        this.productsMapper = productsMapper;
+        this.cartService = cartService;
     }
 
     // 장바구니에 담기
@@ -98,6 +100,24 @@ public class CartsController {
             return "products/shopingCart";
         }
 
+        // 해당 상품이 장바구니에 있는지 확인
+    @RequestMapping("checkCartItem")
+    @ResponseBody
+    public Map<String,Object> checkCartItem(@RequestParam("productId") int productId,
+                                            @RequestParam("user") int userId) {
+        Map<String,Object> response = new HashMap<>();
+
+        int result = cartService.checksCartItem(productId, userId);
+
+        if (result > 0) {
+            response.put("data",true); // 성공시 ture
+        }else {
+            response.put("data",false); // 실패시 false
+        }
+
+        return response;
+
+    }
 
 
 

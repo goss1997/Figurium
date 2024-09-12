@@ -5,7 +5,9 @@ import com.githrd.figurium.product.vo.CartsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -38,5 +40,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartsVo> checksCartItemList(int userId, List<Integer> productId) {
         return cartsMapper.checksCartItemList(userId, productId);
+    }
+
+    @Override
+    public int checksCartItem(int productId, int userId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("productId", productId);
+        params.put("userId", userId);
+        return cartsMapper.checksCartItem(params);
     }
 }

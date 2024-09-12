@@ -12,5 +12,10 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/home.do")
+    public String home2() {
+        return "home";
+    }
+
 
 }

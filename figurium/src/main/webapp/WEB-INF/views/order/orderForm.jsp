@@ -276,8 +276,20 @@
                       '<br style="text-align: center">재고가 부족합니다.' +
                       '</div>'
             });
-
             return;
+
+          } else if (res_data === "notSession") {
+            Toast.fire({
+              icon: 'error',
+              title: '' +
+                      '<div style="text-align: center;">' +
+                      '<img src="/images/재고부족.png" alt="로그인 정보 없음" style="width: 200px; height: auto;">' +
+                      '<br style="text-align: center">로그인 정보가 없으므로 전 페이지로 돌아갑니다.' +
+                      '</div>'
+            });
+            setTimeout(function() {
+              location.href ="/";
+            }, 2500);
           }
           setTimeout(function () {
 

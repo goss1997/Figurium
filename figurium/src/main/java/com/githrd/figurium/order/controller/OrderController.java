@@ -5,6 +5,7 @@ import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,9 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
     private final CartsMapper cartsMapper;
+    private final HttpSession session;
 
     @Value("${imp.api.key}")
     private String apiKey;
@@ -164,6 +167,13 @@ public class OrderController {
     @ResponseBody
     public ResponseEntity<?> checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
                                        @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
+
+        session.removeAttribute("loginUser");
+        // user session 없으면 결제 진행 불가
+        User user = (User) session.getAttribute("loginUser");
+        if(user == null) {
+            return ResponseEntity.ok("notSession");
+        }
 
         String result = orderService.checkProductStock(productIds, itemQuantities);
 

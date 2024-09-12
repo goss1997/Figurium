@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             sum(IFNULL(price, 0)) as price,
             date_format(max(created_at), '%Y/%m/%d') as created_at,
             max(product_name) as product_name,
-            count(distinct product_name) as product_count,
+            count(distinct product_name)-1 as product_count,
             -- product_name과 일치하는 대표 이미지 가져오기
             (select image_url
              from order_history_refund_view ohrv

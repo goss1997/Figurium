@@ -1,5 +1,6 @@
 package com.githrd.figurium.notification.controller;
 
+import com.githrd.figurium.exception.customException.UserNotFoundException;
 import com.githrd.figurium.notification.sevice.NotificationService;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
@@ -24,10 +25,17 @@ public class NotificationController {
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe() {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = null;
 
-        // 서비스에서 구독 처리 후 SSE 연결 반환
-        return notificationService.subscribe(loginUser.getId());
+        try {
+
+            loginUser = (User) session.getAttribute("loginUser");
+            // 서비스에서 구독 처리 후 SSE 연결 반환
+            return notificationService.subscribe(loginUser.getId());
+
+        } catch (Exception e) {
+            throw new UserNotFoundException();
+        }
     }
 
     /**

@@ -55,7 +55,7 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--===============================================================================================-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
-     <!--===============================================================================================-->
+    <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -306,7 +306,7 @@
 
                     <%--알림 버튼--%>
                     <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-                    <i class="zmdi zmdi-notifications"></i>
+                        <i class="zmdi zmdi-notifications"></i>
                     </div>
 
                     <!-- 상품 검색 -->
@@ -549,17 +549,36 @@
 
 
 </script>
-<c:if test="${loginUser != null}">
-<script>
-    /**
-     * SSE 연결
-     */
-    const eventSource = new EventSource('/api/notifications/subscribe');
 
-    eventSource.addEventListener('notification', event => {
-        console.log(event.data);
-    });
-</script>
+<c:if test="${loginUser != null}">
+    <script>
+        /**
+         * 로그인한 사용자면 SSE 연결
+         */
+
+        // EventSource 생성 후 SSE 연결하는 함수.
+        const eventSource = new EventSource('/api/notifications/subscribe');
+        eventSource.addEventListener('SSE-Connect', event => {
+            console.log(event.data);
+        });
+
+        // 알림 이벤트 읽는 함수(message용)
+        eventSource.addEventListener('message', event => {
+            // JSON 파싱
+            console.log('[단순 메세지 알림]');
+            console.log(event.data);
+        });
+
+        // 알림 이벤트 읽는 함수(Notification 객체용)
+        eventSource.addEventListener('notification', event => {
+            console.log('[알림]');
+            // JSON 파싱
+            const notification = JSON.parse(event.data);
+            console.log(notification.url);
+            console.log(notification.message);
+        });
+
+    </script>
 </c:if>
 
 

@@ -42,7 +42,17 @@ public class NotificationService {
         emitter.onTimeout(() -> emitters.remove(userId));
 
         // 503 에러를 방지하기 위한 더미 이벤트 전송
-        sendNotification(userId, "EventStream Created. [userId=" + userId + "]");
+        try {
+            // 사용자에게 알림 메시지 전송
+            emitter.send(SseEmitter.event()
+                    .name("SSE-Connect") // 연결 용 이벤트 이름
+                    .data("EventStream Created. [userId=" + userId + "]"));
+
+            log.info("connect to SSE");
+        } catch (IOException e) {
+            // 전송 실패 시 해당 사용자의 구독 해제
+            emitters.remove(userId);
+        }
 
         return emitter; // SSE 연결 반환
     }
@@ -59,10 +69,10 @@ public class NotificationService {
             try {
                 // 사용자에게 알림 메시지 전송
                 emitter.send(SseEmitter.event()
-                        .name("notification") // 이벤트 이름 설정
+                        .name("message") // 이벤트 이름 설정
                         .data(message));                // 알림 메시지 전송
 
-                log.info("사용자"+userId+"번 에게 메세지 전송");
+                log.info(message);
             } catch (IOException e) {
                 // 전송 실패 시 해당 사용자의 구독 해제
                 emitters.remove(userId);
@@ -72,22 +82,20 @@ public class NotificationService {
 
     /**
      * 특정 사용자에게 알림을 전송
-     * @param userId  : 알림을 받을 사용자 ID
-     * @param message : 알림 메시지
      * @param notification : db에 저장할 알림 객체
      */
-    public void sendNotification(int userId, String message, Notification notification) {
+    public void sendNotification(Notification notification) {
         // 해당 사용자 ID의 SseEmitter 객체 가져오기
-        SseEmitter emitter = emitters.get(userId);
+        SseEmitter emitter = emitters.get(notification.getUserId());
         if (emitter != null) {
             try {
                 // 사용자에게 알림 메시지 전송
                 emitter.send(SseEmitter.event()
                         .name("notification") // 이벤트 이름 설정
-                        .data(message));                // 알림 메시지 전송
+                        .data(notification));                // 알림 메시지 전송
             } catch (IOException e) {
                 // 전송 실패 시 해당 사용자의 구독 해제
-                emitters.remove(userId);
+                emitters.remove(notification.getUserId());
             }
         }
         // 알림 전송 후 db에 저장

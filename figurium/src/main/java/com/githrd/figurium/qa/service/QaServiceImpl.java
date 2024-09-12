@@ -1,5 +1,7 @@
     package com.githrd.figurium.qa.service;
 
+    import com.githrd.figurium.notification.sevice.NotificationService;
+    import com.githrd.figurium.notification.vo.Notification;
     import com.githrd.figurium.qa.dao.QaMapper;
     import com.githrd.figurium.qa.vo.QaVo;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,12 @@
 
 
         private final QaMapper qaMapper;
+        private final NotificationService notificationService;
 
         @Autowired
-        public QaServiceImpl(QaMapper qaMapper) {
+        public QaServiceImpl(QaMapper qaMapper, NotificationService notificationService) {
             this.qaMapper = qaMapper;
+            this.notificationService = notificationService;
         }
 
         @Override
@@ -31,12 +35,25 @@
 
         @Override
         public void saveQa(QaVo qaVo) {
+
             qaMapper.insert(qaVo);
+
+
         }
 
         @Override
         public void updateQa(QaVo qaVo) {
             qaMapper.update(qaVo);
+
+            // 빌더 패턴으로 Notification 객체 생성.
+            Notification notification = Notification.builder()
+                    .userId(qaVo.getUserId())
+                    .message("관리자가 답변을 남겼습니다.")
+                    .url("/qaSelect.do?id=" + qaVo.getId())
+                    .build();
+
+            // 사용자에게 알림 전송
+            notificationService.sendNotification(notification);
         }
 
         @Override

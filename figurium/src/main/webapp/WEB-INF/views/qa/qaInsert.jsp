@@ -47,10 +47,12 @@
                     <option selected disabled>:::분류 선택:::</option>
                     <option value="배송문의">배송문의</option>
                     <option value="취소문의">취소문의</option>
-                    <option value="교환">교환</option>
+                    <option value="교환문의">교환문의</option>
                     <option value="반품문의">반품문의</option>
                     <option value="배송지변경문의">배송지변경문의</option>
                     <option value="기타문의">기타문의</option>
+                    <option value="상품문의">상품문의</option>
+                    <option value="입고문의">입고문의</option>
                 </select>
             </div>
             <textarea class="form-control" style="resize: none; height: 300px;" id="content" name="content"

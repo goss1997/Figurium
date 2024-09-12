@@ -43,4 +43,7 @@ public interface OrderMapper {
     int selectOneByProductsId(int userId);
 
     int insertRfreasons(String name, int orderId );
+
+    // 관리자용 반품신청 리스트 조회
+    List<MyOrderVo> selectListByRetrun();
 }

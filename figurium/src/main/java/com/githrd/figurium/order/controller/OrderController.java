@@ -168,7 +168,6 @@ public class OrderController {
     public ResponseEntity<?> checkProduct(@RequestParam(value ="productIds[]") List<Integer> productIds,
                                        @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
 
-        session.removeAttribute("loginUser");
         // user session 없으면 결제 진행 불가
         User user = (User) session.getAttribute("loginUser");
         if(user == null) {

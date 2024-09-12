@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fun" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -77,16 +78,16 @@
             </tr>
             </thead>
             <tbody style="text-align: center;">
-            <c:forEach var="qa" items="${productQaList}" varStatus="status" >
-                <tr onclick="location.href='${pageContext.request.contextPath}/qa/productQaSelect.do?id=${qa.id}&productQaId=${product.id}'" style="cursor: pointer;">
-                    <td>${status.index+1}</td>
+            <c:forEach var="qa" items="${productQaList}" varStatus="status">
+                <tr onclick="location.href='${pageContext.request.contextPath}/qa/productQaSelect.do?id=${qa.id}&productQaId=${qa.productQaId}'" style="cursor: pointer;">
+                    <td>${status.index + 1}</td>
                     <td class="truncate-title" style="text-align: left;">
                         <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
                             ${qa.title}
                     </td>
                     <td>${qa.replyStatus}</td>
                     <td>${qa.name}</td>
-                    <td>${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</td>
+                    <td>${fun:substring(qa.created, 0, 10)} ${fun:substring(qa.created, 11, 16)}</td>
                 </tr>
             </c:forEach>
             </tbody>

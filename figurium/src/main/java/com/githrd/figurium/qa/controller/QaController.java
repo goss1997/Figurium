@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -68,18 +69,15 @@ public class QaController {
 
     @GetMapping("/productQaList.do")
     public String getProductQaList(@RequestParam(name = "page", defaultValue = "1") int nowPage,
-                                   @RequestParam(name = "productQaId", required = false) int productQaId,
+                                   @RequestParam(name = "productQaId", required = false) Integer productQaId, // Integer로 변경
                                    Model model) {
 
-
-
-        //검색조건을 담을 맵
+        // 검색조건을 담을 맵
         Map<String, Object> map = new HashMap<>();
 
-        //start/end
-        int start = (nowPage-1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
-        int end   = start+ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
-
+        // start/end
+        int start = (nowPage - 1) * ProductQaCommonPage.productQaList.BLOCK_LIST + 1;
+        int end = start + ProductQaCommonPage.productQaList.BLOCK_LIST - 1;
 
         map.put("start", start);
         map.put("end", end);
@@ -88,22 +86,28 @@ public class QaController {
         // 총게시물수
         int rowTotal = qaService.selectRowTotal(map);
 
-        //pageMenu만들기
+        // pageMenu 만들기
         String pageMenu = ProductQaPaging.getPaging("productQaList.do",
                 nowPage,
                 rowTotal,
-                ProductQaCommonPage.productQaList.BLOCK_LIST ,
+                ProductQaCommonPage.productQaList.BLOCK_LIST,
                 ProductQaCommonPage.productQaList.BLOCK_PAGE);
 
         //-------[ End :  Page Menu ]------------------------
 
+        // Q&A 목록을 가져오고 변수에 저장
+        List<QaVo> productQaList = qaService.selectAllWithPagination(map);
+
         // 결과적으로 request binding
         model.addAttribute("pageMenu", pageMenu);
-        model.addAttribute("productQaList", qaService.selectAllWithPagination(map));
+        model.addAttribute("productQaList", productQaList); // 수정된 부분
         model.addAttribute("productQaId", productQaId);
 
+        // 디버깅을 위한 출력
+        System.out.println("productQaList : " + productQaList);
+
         return "qa/productQaList";
-}
+    }
 
     //Q&A게시판에서 게시글 작성시
     @GetMapping("/qaInsert.do")

@@ -39,6 +39,9 @@
         <a class="nav-link" href="productInsertForm.do">상품 등록</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="adminQuantity.do">상품 재고수정</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="admin.do">주문조회</a>
       </li>
       <li class="nav-item">

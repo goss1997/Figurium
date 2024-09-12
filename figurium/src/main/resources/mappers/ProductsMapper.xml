@@ -236,6 +236,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{productId}
     </select>
 
+    <!-- 상품 재고 0개 조회-->
+    <select id="searchProductsQuantityList" resultType="products">
+        SELECT *
+        FROM products
+        WHERE quantity = 0
+    </select>
+
+
+    <update id="productQuantityUpdate" parameterType="int">
+        UPDATE products
+        SET quantity = #{quantity}
+        WHERE id = #{id}
+    </update>
+
 </mapper>
 
 

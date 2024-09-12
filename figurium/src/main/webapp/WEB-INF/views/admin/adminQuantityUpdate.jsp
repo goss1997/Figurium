@@ -35,7 +35,7 @@
                 <a class="nav-link" href="productInsertForm.do">상품 등록</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="adminQuantity.do">상품 재고수정</a>
+                <a class="nav-link" >상품 재고수정</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" onclick="location.reload();">주문조회</a>
@@ -66,25 +66,33 @@
     <table class="table table-hover" style="width: 90%; margin: auto">
         <thead class="thead-light">
         <tr>
-            <th class="col-1">주문번호<br>주문일자</th>
-            <th class="col-3">상품명</th>
-            <th class="col-1">결제방식</th>
-            <th class="col-1">총 결제금액</th>
-            <th class="col-1">결제상태</th>
-            <th class="col-1">주문상태</th>
+            <th class="col-1">상품번호<br>주문일자</th>
+            <th class="col-2">상품명</th>
+            <th class="col-1">상품이미지</th>
+            <th class="col-1">카테고리</th>
+            <th class="col-1">상품금액</th>
+            <th class="col-1">재고</th>
+            <th class="col-1">재고수정</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="order" items="${orderList}">
-        <tr>
-            <td>${order.id}<br>${order.createdAt}</td>
-            <td>${order.productName}</td>
-            <td>${order.paymentType == 'vbank' ? '무통장입금' : '카드결제'}</td>
-            <td>${order.price}원</td>
-            <td>${order.valid == 'y' ? '결제완료' : '환불완료'}</td>
-            <td>${order.status}</td>
-            <input type="hidden" name="ordersId" value="${order.id}">
-        </tr>
+        <c:forEach var="quantity" items="${quantityList}">
+            <tr>
+                <td>${quantity.id}<br>${quantity.updatedAt}</td>
+                <td>${quantity.name}</td>
+                <td>
+                    <div style="display: inline-block;">
+                    <img src="${quantity.imageUrl}" alt="Profile Picture" style="width: 100px; height: 100px;">
+                    </div>
+                </td>
+                <td>${quantity.categoryName}</td>
+                <td>${quantity.price}원</td>
+                <td>${quantity.quantity}</td>
+                <td>
+                    <input type="number" id="quantity" class="btn btn-dark" name="quantity" placeholder="수량입력"><br>
+                    <input class="btn btn-light" type="button" value="재고수정" onclick="productQuantity(this);"></td>
+                <input type="hidden" name="productId" value="${quantity.id}">
+            </tr>
         </c:forEach>
         </tbody>
     </table>
@@ -97,6 +105,33 @@
 
 
 <script>
+
+    function productQuantity(button){
+
+        // 클릭된 버튼의 부모 tr 설정
+        const row = $(button).closest('tr');
+
+        // ordersId 값을 가져오기
+        const productId = row.find('input[name="productId"]').val();
+        const quantity = row.find('input[name="quantity"]').val();
+
+        $.ajax({
+            url: 'productQuantity.do', // 컨트롤러에서 갯수를 가져오는 URL
+            type: 'POST',
+            data: { id : productId, quantity : quantity},
+            dataType: 'json',
+            success: function (response) {
+                if (response > 0 ){
+                    alert("재고 수정에 성공했습니다.");
+                    location.reload();
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("재고 수정에 실패했습니다.");
+            }
+        });
+    }
+
 
 
 

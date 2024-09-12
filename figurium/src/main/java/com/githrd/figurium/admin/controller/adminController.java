@@ -3,6 +3,8 @@ package com.githrd.figurium.admin.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.vo.MyOrderVo;
+import com.githrd.figurium.product.dao.ProductsMapper;
+import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
@@ -28,7 +30,7 @@ public class adminController {
     private final HttpSession session;
     private final OrderMapper orderMapper;
     private final QaService qaService;
-
+    private final ProductsMapper productsMapper;
 
 
     @GetMapping("/admin.do")
@@ -203,6 +205,41 @@ public class adminController {
     }
 
 
+
+    /* 상품 재고 수정*/
+
+    @GetMapping("/adminQuantity.do")
+    public String adminQuantity(Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
+
+        List<ProductsVo> quantityList = productsMapper.searchProductsQuantityList();
+
+        model.addAttribute("quantityList" , quantityList);
+
+        return "admin/adminQuantityUpdate";
+    }
+
+    @PostMapping("/productQuantity.do")
+    @ResponseBody
+    public int productQuantity(int id, int quantity) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+
+        }
+
+        int quantityupdate = productsMapper.productQuantityUpdate(id, quantity);
+
+        return quantityupdate;
+    }
 
 
 }

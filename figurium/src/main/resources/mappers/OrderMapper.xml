@@ -217,6 +217,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             qa on ohv.p_id = qa.product_id
         where
             qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
+             and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
         order by
             ohv.id desc                 -- 주문 ID 기준으로 정렬 (오름차순)
 

@@ -34,4 +34,9 @@ public interface ProductsMapper {
 
     // Test
     int getProductQuantity(int productId);
+
+    // 상품 재고 0개 조회
+    List<ProductsVo> searchProductsQuantityList();
+    int productQuantityUpdate(int id, int quantity);
+
 }

@@ -35,13 +35,13 @@
                 <a class="nav-link" href="productInsertForm.do">상품 등록</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">주문조회</a>
+                <a class="nav-link" onclick="location.reload();">주문조회</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="adminPayment.do">결제취소</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">반품승인</a>
+            <a class="nav-link" href="adminReturns.do">반품승인</a>
             </li>
 
 
@@ -49,11 +49,11 @@
                 <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
             </li>
             <li class="nav-item">
-                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="qa-notify"
                      data-notify="0">
                     <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
-                       id="viewQaList" onclick="location.href='adminQaList.do'" >Q&A 미답변</a>
+                       id="viewQaList" href="adminQaList.do" >Q&A 미답변</a>
                 </div>
             </li>
         </ul>

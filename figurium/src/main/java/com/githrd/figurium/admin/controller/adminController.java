@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +28,7 @@ public class adminController {
     private final HttpSession session;
     private final OrderMapper orderMapper;
     private final QaService qaService;
-    private final ObjectMapper objectMapper;
+
 
 
     @GetMapping("/admin.do")
@@ -69,6 +72,13 @@ public class adminController {
     @ResponseBody
     public int ordersRefund(int id) {
 
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+
+        }
+
         int response = orderMapper.updateByRefund(id);
 
         return response;
@@ -81,6 +91,13 @@ public class adminController {
     @PostMapping("/statusChange.do")
     @ResponseBody
     public ResponseEntity<String> handleDeliveryCondition(@RequestBody Map<String, Object> data) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+
+        }
         try {
 
             // JSON에서 전달된 id와 status 값을 추출
@@ -115,6 +132,13 @@ public class adminController {
     @GetMapping("/adminQaList.do")
     public String adminQaList(Model model) {
 
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
+
             List<QaVo> qaList = qaService.replyQaList();
 
 
@@ -126,6 +150,13 @@ public class adminController {
 
     @GetMapping("/adminRefund.do")
     public String changeStatus(Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
         List<MyOrderVo> orderList = orderMapper.viewAllList();
 
         model.addAttribute("orderList" , orderList);
@@ -136,9 +167,15 @@ public class adminController {
     @GetMapping("/qaCount.do")
     @ResponseBody
     public ResponseEntity<Map<String, Integer>> getQaCount() {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+
+        }
         try {
             int count = qaService.getQaCount();
-            System.out.println("답변준비중인 게시글 수: " + count);
             Map<String, Integer> response = new HashMap<>();
             response.put("count", count);
             return ResponseEntity.ok(response);
@@ -147,5 +184,25 @@ public class adminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/adminReturns.do")
+    public String adminReturns(Model model) {
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            return "redirect:/";
+        }
+
+        List<MyOrderVo> listReturns = orderMapper.selectListByRetrun();
+
+        model.addAttribute("listReturns" , listReturns);
+
+        return "admin/adminReturns";
+    }
+
+
+
 
 }

@@ -166,9 +166,9 @@ public class adminController {
         return "admin/adminRefund";
     }
 
-    @GetMapping("/qaCount.do")
+    @GetMapping("/count.do")
     @ResponseBody
-    public ResponseEntity<Map<String, Integer>> getQaCount() {
+    public ResponseEntity<Map<String, Integer>> getCount() {
 
         User loginUser = (User) session.getAttribute("loginUser");
 
@@ -177,9 +177,18 @@ public class adminController {
 
         }
         try {
-            int count = qaService.getQaCount();
+            int quantityCount = productsMapper.getQuantityCount();  // 재고 카운트
+            int paymentCount = orderMapper.getPaymentCount();   // 결제취소 카운트
+            int retrunCount = orderMapper.getRetrunCount();    // 반품 카운트
+            int qaCount = qaService.getQaCount();
+
+
+
             Map<String, Integer> response = new HashMap<>();
-            response.put("count", count);
+            response.put("quantityCount", quantityCount);
+            response.put("paymentCount", paymentCount);
+            response.put("retrunCount", retrunCount);
+            response.put("qaCount", qaCount);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();

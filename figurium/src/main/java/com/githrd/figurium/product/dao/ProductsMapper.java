@@ -38,5 +38,6 @@ public interface ProductsMapper {
     // 상품 재고 0개 조회
     List<ProductsVo> searchProductsQuantityList();
     int productQuantityUpdate(int id, int quantity);
+    int getQuantityCount();
 
 }

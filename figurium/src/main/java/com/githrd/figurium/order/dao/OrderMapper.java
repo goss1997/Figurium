@@ -46,4 +46,8 @@ public interface OrderMapper {
 
     // 관리자용 반품신청 리스트 조회
     List<MyOrderVo> selectListByRetrun();
+
+    // 관리자용 신청 리스트 카운트 조회
+    int getRetrunCount();
+    int getPaymentCount();
 }

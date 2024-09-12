@@ -223,6 +223,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
 
+    <select id="getRetrunCount" resultType="int">
+        select count(
+            ohv.id,                     -- 주문 ID (order_history_view의 id)
+            ohv.payment_type,           -- 결제 방식
+            ohv.user_id,                -- 사용자 ID
+            ohv.status,                 -- 주문 상태
+            ohv.created_at,             -- 주문 생성일자
+            ohv.valid,                  -- 주문의 유효성 여부 (valid)
+            ohv.merchant_id,            -- 상점 ID
+            ohv.price,                  -- 상품 가격
+            ohv.quantity,               -- 주문한 상품의 수량
+            ohv.name as customer_name,  -- 고객 이름 (customer 테이블의 name)
+            ohv.customer_phone,         -- 고객 전화번호 (customer 테이블의 phone)
+            ohv.email,                  -- 고객 이메일 (customer 테이블의 email)
+            ohv.recipient_name,         -- 배송 수취인 이름 (shipping_addresses 테이블의 recipient_name)
+            ohv.phone as shipping_phone,-- 배송지 전화번호 (shipping_addresses 테이블의 phone)
+            ohv.address,                -- 배송 주소 (shipping_addresses 테이블의 address)
+            ohv.delivery_request,       -- 배송 요청 사항 (shipping_addresses 테이블의 delivery_request)
+            ohv.product_name,           -- 주문한 상품 이름 (products 테이블의 name)
+            ohv.image_url,              -- 상품 이미지 URL (products 테이블의 image_url)
+            ohv.p_id,                   -- 상품 ID (products 테이블의 id)
+            qa.title,                   -- QA 제목 (qa 테이블의 title)
+            qa.content,                 -- QA 내용 (qa 테이블의 content)
+            qa.replyStatus,             -- QA 답변 상태 (qa 테이블의 replyStatus)
+            qa.created as qa_created)    -- QA 생성일자 (qa 테이블의 created)
+        from
+            order_history_view ohv      -- order_history_view와 qa 테이블을 product_id로 조인
+                inner join
+            qa on ohv.p_id = qa.product_id
+        where
+            qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
+          and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
+    </select>
+    <select id="getPaymentCount" resultType="myOrders" parameterType="int">
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            max(status) as status,
+            max(valid) as valid,
+            max(refund_reason) as refund_reason,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_refund_view
+        where refund_reason IS NOT NULL
+          and valid = 'y'
+        group by id
+        order by max(created_at) desc   -- 역순 정렬
+    </select>
 
 </mapper>
 

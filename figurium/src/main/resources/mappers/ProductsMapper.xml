@@ -243,12 +243,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE quantity = 0
     </select>
 
-
+    <!-- 상품 재고 수정-->
     <update id="productQuantityUpdate" parameterType="int">
         UPDATE products
         SET quantity = #{quantity}
         WHERE id = #{id}
     </update>
+
+    <!-- 상품 재고 0개 알람-->
+    <select id="getQuantityCount" resultType="int">
+        SELECT COUNT(*)
+        FROM products
+        where quantity = 0
+    </select>
 
 </mapper>
 

@@ -49,10 +49,10 @@ public class OrderController {
         CartsVo checkCart = cartsMapper.selectCartsById(productId,user.getId());
 
         if(checkCart == null) {
-            int res = cartsMapper.insertCartItem(user.getId(),productId,quantity);
+            int res = cartsMapper.insertCartItem(user.getId(), productId, quantity);
         }
 
-        List<CartsVo> cartsList = cartsMapper.checksCartItemOne(user.getId(),productId);
+        List<CartsVo> cartsList = cartsMapper.checksCartItemOne(productId, user.getId());
 
         // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
         CartsVo cartsVo = cartsList.get(0);

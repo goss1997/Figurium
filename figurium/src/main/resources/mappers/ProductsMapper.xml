@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE products
         SET quantity = quantity - #{itemQuantity}
         WHERE id = #{productId}
-        FOR UPDATE
+        AND quantity >= #{itemQuantity}
     </update>
 
 

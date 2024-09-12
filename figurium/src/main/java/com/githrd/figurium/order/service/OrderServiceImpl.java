@@ -137,13 +137,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public synchronized boolean updateProductQuantity(int productId, int itemQuantity) {
-
-        int currentStock = productsMapper.getProductQuantity(productId);
-        if (currentStock > itemQuantity) {
-            productsMapper.updateProductQuantity(productId, itemQuantity);
-            return true;
-        }
-        return false;
+        return productsMapper.updateProductQuantity(productId, itemQuantity) > 0;
     }
 
 

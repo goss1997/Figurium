@@ -43,8 +43,9 @@ public class OrderControllerTest {
             executorService.submit(()-> {
                 try {
                      // 재고 9개 - 1개씩 차감
-                    if (orderService.updateProductQuantity(9,1)) {
-                    }
+                    boolean result = orderService.updateProductQuantity(10,1);
+                    System.out.println(result);
+
                 } finally {
                     latch.countDown();
                 }
@@ -53,7 +54,7 @@ public class OrderControllerTest {
 
         latch.await();
         //assertEquals(9, successCount.get());
-        assertEquals(4, productsMapper.getProductQuantity(9));
+        assertEquals(5, productsMapper.getProductQuantity(10));
 
     }
 }

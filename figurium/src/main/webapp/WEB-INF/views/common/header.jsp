@@ -258,7 +258,7 @@
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <!-- NOTE : 로그인 아이콘 -->
                     <c:if test="${empty loginUser}">
-                        <div id="loginBtn" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+                        <div id="loginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11">
 
                             <i class="zmdi zmdi-account-circle"></i>
                         </div>
@@ -294,20 +294,21 @@
                     </c:if>
 
 
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-                         data-notify="0">
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-cart"
+                        >
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                       data-notify="0">
+                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11"
+                    >
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
 
                     <%--알림 버튼--%>
-                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11">
                         <i class="zmdi zmdi-notifications"></i>
                     </div>
+
 
                     <!-- 상품 검색 -->
                     <div class="search_box">
@@ -577,6 +578,7 @@
             console.log(notification.url);
             console.log(notification.message);
         });
+
 
     </script>
 </c:if>

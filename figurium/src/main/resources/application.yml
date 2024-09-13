@@ -1,0 +1,86 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(PJ0N3GzdMPiXu1nOGEfM7x6RgoFIT0z81FpdUtFaitjObtrcV6YwvrpYYngukvr2EavkdM7JzuPttj8P+ZnFkPN4V6bTMzXYXUoOOAxgy3kszi8xYX2T+Q==)
+            client-secret: ENC(HsFyH6oiq5Y1+XRA++1mK83QAuFrpZtBitWB4l7sWg2RUzNcIdH1HrVdnocgZEFj)
+            scope: email, profile
+
+          naver:
+            client-id: ENC(fOjsFMmJaGIfcTicqS7r/7cl30zrawLLflHtJ/Zs9lU=)
+            client-secret: ENC(DwZrRiaARhhzGtOk71WCs1XrO3/jc2nV)
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            authorization-grant-type: authorization_code
+            client-name: Naver
+            scope: name, email
+
+          kakao:
+            client-id: ENC(ibCdh3B/24ph4k64JpRD0rbOftIZcEIx7Morc8TUIeoreVvMVHd0K9a+zmDjBzUW)
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, profile_image, account_email
+            client-name: Kakao
+
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+---
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: go26423008
+    password: ENC(bHmF8ITNkpTROPmH8UaaAUlHdWsPOzR6/piHJ25tlzA=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+---
+
+
+imp:
+  api:
+    key: ENC(WAsg3A9A4dd/cusOKOVGwG7suHym11HDW6Rz3QWLr+4=)
+    secretkey: ENC(ilz5FxaveQdEbhAZJRVCJnXzyic012xjTCkCEt/aH/ywmTn/AHQavpEpK0dQHZATgHdrt6e4hP1vVO16ITjh4nXgepwe0nNxaD6zZBEQwBBR9EH/IHAOxeJdSyYEwqUo)
+
+
+---
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ENC(8zsnDGA1UKZ75Zi7giEQbqPPstCGZtgyuDxU1pF7Fdc=)
+      secret-key: ENC(gJXXb1TgdPnKOXsDP9KH0Zk9uDLSgIy0YCaSvUVy2C56oEABHZ1hWdOZ8ybuFHLB2xVzb+BBSXw=)
+    s3:
+      bucket: figurium-s3-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+---
+
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+    password: ${ENCRYPT_KEY}

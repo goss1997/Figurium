@@ -32,10 +32,18 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
                    href="productInsertForm.do">상품 등록</a>
             </li>
             &nbsp;&nbsp;
+            <li class="nav-item">
+                <a class="nav-link" href="admin.do">주문조회</a>
+            </li>
+            &nbsp;&nbsp;
+
+            <li class="nav-item">
+                <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+            </li>
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="quantity-notify"
@@ -43,10 +51,6 @@
                     <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
                        href="adminQuantity.do">상품 재고수정</a>
                 </div>
-            </li>
-            &nbsp;&nbsp;
-            <li class="nav-item">
-                <a class="nav-link" onclick="location.reload();">주문조회</a>
             </li>
             &nbsp;&nbsp;
             <li class="nav-item">
@@ -65,12 +69,8 @@
                     <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
                        href="adminReturns.do">반품승인</a>
                 </div>
-            </li>&nbsp;&nbsp;
-
-
-            <li class="nav-item">
-                <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
             </li>
+            &nbsp;&nbsp;
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="qa-notify"
@@ -117,8 +117,6 @@
 
 
 <script>
-
-
     function updateCount() {
         $.ajax({
             url: 'count.do', // 컨트롤러에서 갯수를 가져오는 URL

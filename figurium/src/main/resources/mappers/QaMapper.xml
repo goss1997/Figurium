@@ -96,7 +96,7 @@
     </select>
 
     <select id="getQaCount" resultType="int">
-        SELECT COUNT(*)
+        SELECT COALESCE(COUNT(*), 0)
         FROM qa
         where replyStatus = '답변준비중'
     </select>

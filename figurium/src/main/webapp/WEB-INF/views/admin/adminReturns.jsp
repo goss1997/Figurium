@@ -38,31 +38,51 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="productInsertForm.do">상품 등록</a>
+                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
+                   href="productInsertForm.do">상품 등록</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="adminQuantity.do">상품 재고수정</a>
-            </li>
+            &nbsp;&nbsp;
             <li class="nav-item">
                 <a class="nav-link" href="admin.do">주문조회</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="adminPayment" href="adminPayment.do">결제취소</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="location.reload();">반품 승인</a>
-            </li>
-
+            &nbsp;&nbsp;
 
             <li class="nav-item">
                 <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
             </li>
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                     id="quantity-notify"
+                     data-notify="0">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="adminQuantity.do">상품 재고수정</a>
+                </div>
+            </li>
+            &nbsp;&nbsp;
+            <li class="nav-item">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                     id="payment-notify"
+                     data-notify="0">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="adminPayment.do">결제취소</a>
+                </div>
+            </li>
+            &nbsp;&nbsp;
+            <li class="nav-item">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                     id="retrun-notify"
+                     data-notify="0">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="adminReturns.do">반품승인</a>
+                </div>
+            </li>
+            &nbsp;&nbsp;
+            <li class="nav-item">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="qa-notify"
                      data-notify="0">
                     <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
-                       id="viewQaList" href="adminQaList.do">Q&A 미답변</a>
+                       id="viewQaList" href="adminQaList.do" >Q&A 미답변</a>
                 </div>
             </li>
         </ul>
@@ -133,30 +153,51 @@
         });
     }
 
-    $(document).ready(function () {
-
-        updateQaCount();
-
-    });
-
-    function updateQaCount() {
+    function updateCount() {
         $.ajax({
-            url: 'qaCount.do', // 컨트롤러에서 갯수를 가져오는 URL
+            url: 'count.do', // 컨트롤러에서 갯수를 가져오는 URL
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response && response.count !== undefined) {
+                if (response.quantityCount !== undefined) {
+                    $('#quantity-notify').attr('data-notify', response.count);
+                } else {
+                    $('#quantity-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
+                }
+                if (response.paymentCount !== undefined) {
+                    $('#payment-notify').attr('data-notify', response.count);
+                } else {
+                    $('#payment-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
+                }
+                if (response.retrunCount !== undefined) {
+                    $('#retrun-notify').attr('data-notify', response.count);
+                } else {
+                    $('#retrun-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
+                }
+                if (response.qaCount !== undefined) {
                     $('#qa-notify').attr('data-notify', response.count);
                 } else {
                     $('#qa-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
                 }
+
             },
             error: function (xhr, status, error) {
-                console.error('QA 갯수 가져오는 데 실패했습니다.', error);
+                console.error('count 가져오는 데 실패했습니다.', error);
+                $('#quantity-notify').attr('data-notify', '0'); // 오류 발생 시 0으로 설정
+                $('#payment-notify').attr('data-notify', '0'); // 오류 발생 시 0으로 설정
+                $('#retrun-notify').attr('data-notify', '0'); // 오류 발생 시 0으로 설정
                 $('#qa-notify').attr('data-notify', '0'); // 오류 발생 시 0으로 설정
             }
         });
     }
+
+
+    $(document).ready(function () {
+
+        updateCount();
+
+    });
+</script>
 
 </script>
 </html>

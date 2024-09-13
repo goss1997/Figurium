@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -177,10 +178,10 @@ public class adminController {
 
         }
         try {
-            int quantityCount = productsMapper.getQuantityCount();  // 재고 카운트
-            int paymentCount = orderMapper.getPaymentCount();   // 결제취소 카운트
-            int retrunCount = orderMapper.getRetrunCount();    // 반품 카운트
-            int qaCount = qaService.getQaCount();
+            int quantityCount = Optional.ofNullable(productsMapper.getQuantityCount()).orElse(0);;  // 재고 카운트
+            int paymentCount = Optional.ofNullable(orderMapper.getPaymentCount()).orElse(0);;       // 결제취소 카운트
+            int retrunCount = Optional.ofNullable(orderMapper.getRetrunCount()).orElse(0);;         // 반품 카운트
+            int qaCount = Optional.ofNullable(qaService.getQaCount()).orElse(0);;                   // Qa 카운트
 
 
 

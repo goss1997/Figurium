@@ -48,6 +48,6 @@ public interface OrderMapper {
     List<MyOrderVo> selectListByRetrun();
 
     // 관리자용 신청 리스트 카운트 조회
-    int getRetrunCount();
-    int getPaymentCount();
+    Integer  getRetrunCount();
+    Integer  getPaymentCount();
 }

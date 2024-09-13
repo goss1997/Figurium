@@ -131,7 +131,7 @@
     const ordersId = row.find('input[name="ordersId"]').val();
 
     $.ajax({
-      url: 'ordersRefund.do', // 컨트롤러에서 갯수를 가져오는 URL
+      url: '/api/refundAdmin.do', // 컨트롤러에서 갯수를 가져오는 URL
       type: 'POST',
       data: { id : ordersId},
       dataType: 'json',

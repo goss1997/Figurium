@@ -213,11 +213,15 @@
             animation: fade 1s infinite alternate;
         }
 
-        #orderCancel {
+        .orderCancel {
             margin-left: 10px;
             font-weight: bold;
             color: #d21212;
             animation: fade 1s infinite alternate;
+        }
+
+        .orderCancel:hover {
+            cursor: pointer;
         }
 
         @keyframes fade {
@@ -229,7 +233,7 @@
             }
         }
 
-        #refund-button {
+        .refund-button {
             margin: auto;
             margin-top: 30px;
             width: 250px;
@@ -271,6 +275,7 @@
         }
 
     </style>
+
     <script>
         function refundReasonResult() {
             var orderId = $("#orderId").val();
@@ -360,7 +365,8 @@
                                                     <th class="column-2" style="width: 40%;">상품명</th>
                                                     <th class="column-3">결제금액</th>
                                                     <th class="column-4" style="text-align: center; width: 8%">결제타입</th>
-                                                    <th class="column-5" style="text-align: center; width: 15%">결제일자</th>
+                                                    <th class="column-5" style="text-align: center; width: 15%">결제일자
+                                                    </th>
                                                     <th class="column-6" style="text-align: center; width: 10%">
                                                         <c:if test="${ myOrder.valid == 'y' }">
                                                             배송상황
@@ -368,93 +374,114 @@
                                                         <c:if test="${ myOrder.valid == 'n' }">
                                                             주문상태
                                                         </c:if>
-                                                        </th>
+                                                    </th>
 
 
                                                 </tr>
 
 
-
                                                 <!-- td -->
 
-                                                    <tr class="table_row" style="height: 100px;">
-                                                        <td class="column-1" style="padding-bottom: 0px;" >
-                                                            <div class="how-itemcart1" style="cursor: pointer;"
-                                                                 onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
-                                                                <img src="${ myOrder.imageUrl }"
-                                                                     alt="${ myOrder.id }" style="text-align: left;">
-                                                            </div>
+                                                <tr class="table_row" style="height: 100px;">
+                                                    <td class="column-1" style="padding-bottom: 0px;">
+                                                        <div class="how-itemcart1" style="cursor: pointer;"
+                                                             onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                            <img src="${ myOrder.imageUrl }"
+                                                                 alt="${ myOrder.id }" style="text-align: left;">
+                                                        </div>
 
 
-
-                                                        </td>
-                                                        <c:if test="${ myOrder.productCount <= 0 }">
-                                                            <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do?myOrderId=${ myOrder.id }">
+                                                    </td>
+                                                    <c:if test="${ myOrder.productCount <= 0 }">
+                                                        <td class="column-2" style="padding-bottom: 0px;">
+                                                            <a href="orderDetail.do?myOrderId=${ myOrder.id }">
                                                                     ${ myOrder.productName }
-                                                                </a>
-                                                            </td>
+                                                            </a>
+                                                        </td>
 
-                                                        </c:if>
+                                                    </c:if>
 
-                                                        <c:if test="${ myOrder.productCount > 0 }">
-                                                            <td class="column-2" style="padding-bottom: 0px;">
-                                                                <a href="orderDetail.do?myOrderId=${ myOrder.id }">
-                                                                        ${ myOrder.productName } 외 ${ myOrder.productCount }개
-                                                                </a>
-                                                            </td>
+                                                    <c:if test="${ myOrder.productCount > 0 }">
+                                                        <td class="column-2" style="padding-bottom: 0px;">
+                                                            <a href="orderDetail.do?myOrderId=${ myOrder.id }">
+                                                                    ${ myOrder.productName } 외 ${ myOrder.productCount }개
+                                                            </a>
+                                                        </td>
 
-                                                        </c:if>
+                                                    </c:if>
 
-                                                        <td class="column-3" style="padding-bottom: 0px;">
+                                                    <td class="column-3" style="padding-bottom: 0px;">
                                                             <span class="productPrice">
                                                                 <c:set var="finalValue"
                                                                        value="${ myOrder.totalValue < 100000 ? myOrder.totalValue + 3000 : myOrder.totalValue }"/>
-                                                                <fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원
+                                                                <fmt:formatNumber type="currency" value="${finalValue}"
+                                                                                  currencySymbol=""/>원
                                                             </span>
-                                                        </td>
-                                                        <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                            <c:if test="${ myOrder.paymentType == 'card' }">
+                                                    </td>
+                                                    <td class="column-4"
+                                                        style="text-align: center; padding-bottom: 0px">
+                                                        <c:if test="${ myOrder.paymentType == 'card' }">
                                                             <span class="productPrice">카드</span>
-                                                            </c:if>
-                                                            <c:if test="${ myOrder.paymentType == 'vbank' }">
-                                                            <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#bankTransferModal" style="cursor: pointer;">
+                                                        </c:if>
+                                                        <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                                            <span class="productPrice" id="productVbank"
+                                                                  data-toggle="modal" data-target="#bankTransferModal"
+                                                                  style="cursor: pointer;">
                                                                 무통장입금
                                                             </span>
-                                                            </c:if>
-                                                        </td>
-                                                        <td class="column-5" style="text-align: center; padding-bottom: 0px">
-                                                            <span class="productPrice">${ myOrder.createdAt }</span>
-                                                        </td>
-                                                        <td class="column-6" style="text-align: center; padding-bottom: 0px">
-                                                            <c:if test="${ myOrder.valid == 'y' || myOrder.valid == 'n' }">
-                                                                <span class="productPrice">${ myOrder.status }</span>
-                                                            </c:if>
-                                                        </td>
-                                                    </tr>
+                                                        </c:if>
+                                                    </td>
+                                                    <td class="column-5"
+                                                        style="text-align: center; padding-bottom: 0px">
+                                                        <span class="productPrice">${ myOrder.createdAt }</span>
+                                                    </td>
+                                                    <td class="column-6"
+                                                        style="text-align: center; padding-bottom: 0px">
+                                                        <c:if test="${ myOrder.valid == 'y' || myOrder.valid == 'n' }">
+                                                            <span class="productPrice">${ myOrder.status }</span>
+                                                        </c:if>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
 
                                         <div style="text-align: right; font-size: 0.8em; color: gray; margin-top: 10px;">
                                             <c:if test="${ myOrder.paymentType == 'vbank' && myOrder.status == '입금대기' }">
-                                            무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다.
+                                                무통장입금을 누르시면, 입금계좌를 확인하실 수 있습니다. &nbsp;
+                                                <span class="productPrice orderCancel"
+                                                      onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                        주문취소
+                                                    </span>
                                             </c:if>
-                                            <c:if test="${ myOrder.status != '환불완료' && myOrder.refundReason == null }">
-                                                <span class="productPrice" id="productVbank" data-toggle="modal" data-target="#refundReasonModal" style="cursor: pointer;">
+                                            <c:if test="${  myOrder.status == '준비중' }">
+                                                <div style="margin-top: 5px">
+                                                    주문상태가 준비중일때 즉시 결제취소가 가능해요.
+                                                    <span class="productPrice orderCancel" style="cursor: pointer;
+                                                          onclick=" location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                    결제취소
+                                                    </span>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${  myOrder.status == '배송완료'}">
+
+                                            </c:if>
+                                            <c:if test="${ not empty myOrder.refundReason && myOrder.status != '환불완료' }">
+                                                <c:if test="${ myOrder.status != '배송완료'}">
+                                                    환불신청되어있는 상품입니다. 확인까지 시간 소요되는 점 양해 부탁드립니다.
+                                                </c:if>
+                                            </c:if>
+                                            <c:if test="${ myOrder.status == '출고대기' || myOrder.status == '배송중'  && empty myOrder.refundReason }">
+                                                 <span class="productPrice" id="productVbank" data-toggle="modal"
+                                                       data-target="#refundReasonModal" style="cursor: pointer;">
                                                     환불신청
                                                 </span>
                                             </c:if>
 
-                                            <c:if test="${ myOrder.status == '입금대기' || myOrder.status == '준비중' }">
+                                            <c:if test="${  myOrder.status == '환불완료' }">
                                                 <div style="margin-top: 5px">
-                                                주문상태가 배송준비중이거나, 입금대기일시에 결제취소가 가능해요.
-                                                    <span class="productPrice" id="orderCancel"
-                                                          onclick="location.href='../api/refund.do?id=${ myOrder.id }'" style="cursor: pointer;">
-                                                        결제취소
-                                                    </span>
+                                                    환불완료된 상품입니다.
                                                 </div>
                                             </c:if>
-
 
 
                                         </div>
@@ -464,7 +491,8 @@
                             </div>
 
                             <!-- 모달 -->
-                            <div class="modal fade" id="bankTransferModal" tabindex="-1" aria-labelledby="bankTransferModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="bankTransferModal" tabindex="-1"
+                                 aria-labelledby="bankTransferModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -497,7 +525,8 @@
 
 
                             <!-- 모달 -->
-                            <div class="modal fade" id="refundReasonModal" tabindex="-1" aria-labelledby="refundReasonModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="refundReasonModal" tabindex="-1"
+                                 aria-labelledby="refundReasonModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -526,8 +555,8 @@
                                                             <option value="오배송">오배송</option>
                                                             <option value="기타">기타</option>
                                                         </select>
-                                                            <input type="button" id="refund-button" value="관리자에게 환불신청" onclick="refundReasonResult()">
-
+                                                        <input type="button" id="refund-button" value="관리자에게 환불신청"
+                                                               onclick="refundReasonResult()">
                                                     </div>
                                                 </div>
                                             </div>
@@ -537,82 +566,85 @@
                             </div>
 
 
-                            <hr id="list-hr1">
+                                                <hr id="list-hr1">
 
-                            <div class="total-container">
-                                <div class="item">
-                                    <span class="label">총상품금액</span>
-                                    <span class="amount" id="totalAmount">
-                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue }" currencySymbol=""/>원
+                                                <div class="total-container">
+                                                    <div class="item">
+                                                        <span class="label">총상품금액</span>
+                                                        <span class="amount" id="totalAmount">
+                                        <fmt:formatNumber type="currency" value="${ myOrder.totalValue }"
+                                                          currencySymbol=""/>원
                                     </span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">+</span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">총배송비</span>
-                                    <c:set var="finalValue"
-                                           value="${ myOrder.totalValue < 100000 ? 3000 : 0}"/>
-                                    <span class="amount"><fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원</span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">=</span>
-                                </div>
-                                <div class="item total">
-                                    <span class="label">TOTAL</span>
-                                    <span class="amount highlight">
+                                                    </div>
+                                                    <div class="item">
+                                                        <span class="label">+</span>
+                                                    </div>
+                                                    <div class="item">
+                                                        <span class="label">총배송비</span>
+                                                        <c:set var="finalValue"
+                                                               value="${ myOrder.totalValue < 100000 ? 3000 : 0}"/>
+                                                        <span class="amount"><fmt:formatNumber type="currency"
+                                                                                               value="${finalValue}"
+                                                                                               currencySymbol=""/>원</span>
+                                                    </div>
+                                                    <div class="item">
+                                                        <span class="label">=</span>
+                                                    </div>
+                                                    <div class="item total">
+                                                        <span class="label">TOTAL</span>
+                                                        <span class="amount highlight">
                                         <c:set var="finalValue"
                                                value="${ myOrder.totalValue < 100000 ? myOrder.totalValue + 3000 : myOrder.totalValue}"/>
                                         <fmt:formatNumber type="currency" value="${ finalValue }" currencySymbol=""/>원
                                     </span>
-                                    <span class="extra">FIGU</span>
+                                                        <span class="extra">FIGU</span>
+                                                    </div>
+                                                </div>
+
+                                                <hr id="list-hr2">
+                                                </c:forEach>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
-                            <hr id="list-hr2">
-                            </c:forEach>
-
-
                         </div>
+
+
+                        <script>
+                            function updateProfileImage(input) {
+                                const file = input.files[0];
+
+                                // 파일이 잘 가져왔으면
+                                if (file) {
+                                    var formData = new FormData();
+                                    formData.append('file', file);
+
+                                    $.ajax({
+                                        url: "update-profile-image.do",
+                                        type: 'POST',
+                                        processData: false, // 필수: jQuery가 데이터를 처리하지 않도록 설정
+                                        contentType: false, // 필수: contentType을 false로 설정하여 jQuery가 자동으로 처리하지 않도록 설정
+                                        data: formData,
+                                        success: function () {
+                                            location.reload();
+                                        },
+                                        error: function (error) {
+                                            alert(error.responseText);
+                                        }
+
+                                    })
+
+                                }
+                            }
+                        </script>
+
+
                     </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        function updateProfileImage(input) {
-            const file = input.files[0];
-
-            // 파일이 잘 가져왔으면
-            if (file) {
-                var formData = new FormData();
-                formData.append('file', file);
-
-                $.ajax({
-                    url: "update-profile-image.do",
-                    type: 'POST',
-                    processData: false, // 필수: jQuery가 데이터를 처리하지 않도록 설정
-                    contentType: false, // 필수: contentType을 false로 설정하여 jQuery가 자동으로 처리하지 않도록 설정
-                    data: formData,
-                    success: function () {
-                        location.reload();
-                    },
-                    error: function (error) {
-                        alert(error.responseText);
-                    }
-
-                })
-
-            }
-        }
-    </script>
-
-
-</div>
-<!-- NOTE : 푸터바 -->
-<jsp:include page="../common/footer.jsp"/>
+                    <!-- NOTE : 푸터바 -->
+                    <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

@@ -71,6 +71,8 @@ public class adminController {
         return "admin/adminPayment";
     }
 
+    /*
+    결제취소 API 연동으로  해당  메서드는 미사용
     @PostMapping("/ordersRefund.do")
     @ResponseBody
     public int ordersRefund(int id) {
@@ -87,7 +89,7 @@ public class adminController {
         return response;
     }
 
-
+*/
 
 
 

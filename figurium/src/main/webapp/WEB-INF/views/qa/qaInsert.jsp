@@ -57,7 +57,7 @@
             <textarea class="form-control" style="resize: none; height: 300px;" id="content" name="content"
                       placeholder="내용을 입력하세요" autocomplete="off"></textarea>
         </div>
-        <input type="text" value="${requestScope.orderId}">
+        <input type="hidden" name="orderId" value="${requestScope.orderId}">
         <a href="${pageContext.request.contextPath}/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px; float: right;">취소</a>
         <button type="submit" class="btn btn-dark" style="margin-bottom: 10px; float: right; margin-right: 10px;">등록</button>
 

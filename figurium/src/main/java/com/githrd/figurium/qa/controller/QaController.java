@@ -150,6 +150,7 @@ public class QaController {
     public String save(@RequestParam("title") String title,
                        @RequestParam("content") String content,
                        @RequestParam("category") String category,
+                       @RequestParam(value = "orderId", required = false) String orderId,
                        @RequestParam(value = "reply", required = false) String reply) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인

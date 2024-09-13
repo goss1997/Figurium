@@ -86,6 +86,10 @@
             padding: 10px;
         }
 
+        #product-price {
+            text-align: center;
+        }
+
     </style>
 </head>
 <body class="animsition">
@@ -396,7 +400,14 @@
                         var createdAt = new Date(product.createdAt);
 
                         // 날짜를 원하는 형식으로 포맷
-                        var formattedDate = createdAt.toLocaleDateString('ko-KR', options);
+                        var options = {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        };
+
+                        // 날짜를 가져와서 .으로 구분된 형식으로 변환
+                        var formattedDate = createdAt.toLocaleDateString('ko-KR', options).replace(/\//g, '.');
                         html += `
                             <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item \${product.categoryName}' style='margin-top:30px;' >
                                 <div class="block2">
@@ -409,17 +420,24 @@
                                         </a>
                                     </div>
                                     <div class="block2-txt flex-w flex-t p-t-14">
-                                        <div class="block2-txt-child1 flex-col-l">
+                                        <div class="block2-txt-child1 flex-col-l" id="product-name" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
                                             <a href="productInfo.do?id=\${product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                                [\${product.categoryName}]  \${product.name}
                                             </a>
-                                            <span class="stext-105 cl3">
-                                                상품 가격 : \${product.price}￦   ♡:\${product.likeCount}
+                                            <span class="stext-105 cl3" id="product-price" style="font-weight: bold; font-size: 16px;">
+                                                \${product.price}￦
                                             </span>
-                                            <span class="stext-105 cl3">
-                                                상품 등록일 : \${formattedDate}
-                                            </span>
+                                    <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span class="stext-105 cl3" style="margin-right: 5px;">
+                                            \${formattedDate}
+                                        </span>
+                                        <span class="stext-105 cl3" id="product-like" style="font-weight: bold;">
+                                            💖\${product.likeCount}
+                                        </span>
+                                    </div>
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>`;

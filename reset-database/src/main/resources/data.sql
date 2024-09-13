@@ -165,6 +165,7 @@ CREATE TABLE qa
 (
     id         INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Q&A 게시물 IDX',
     product_id INT COMMENT '상품 ID',
+    orders_id  INT COMMENT '주문 ID',
     user_id    INT NOT NULL COMMENT '사용자가 질문을 작성한 경우',
     title      VARCHAR(100) COMMENT '질문제목',
     content    VARCHAR(400) COMMENT '질문내용',
@@ -173,6 +174,7 @@ CREATE TABLE qa
     created    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '작성일자',
     updated    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
     FOREIGN KEY (product_id) REFERENCES products (id),
+    FOREIGN KEY (orders_id) REFERENCES orders (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 

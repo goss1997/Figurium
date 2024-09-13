@@ -219,6 +219,9 @@ public class OrderController {
             // 배송지 정보 저장
             orderService.insertShippingAddresses(orderId, recipientName, shippingPhone, address, deliveryRequest);
 
+            // 주문 성공 알람 보내기
+            orderService.orderSuccessAlram(orderId, loginUserId);
+
             return "success";
 
         } catch (Exception e) {

@@ -30,4 +30,7 @@ public interface OrderService {
 
     // 배송지 정보 저장
     int insertShippingAddresses(int orderId, String recipientName, String shippingPhone, String address, String deliveryRequest);
+
+    // 주문 성공 알람
+    void orderSuccessAlram(int orderId, int loginUserId);
 }

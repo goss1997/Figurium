@@ -1,6 +1,8 @@
 package com.githrd.figurium.order.service;
 
 import com.githrd.figurium.exception.customException.OutofStockException;
+import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.order.dao.CustomersMapper;
 import com.githrd.figurium.order.dao.OrderItemsMapper;
 import com.githrd.figurium.order.dao.OrderMapper;
@@ -38,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemsMapper orderItemsMapper;
     private final HttpSession session;
     private final Lock lock = new ReentrantLock();
+    private final NotificationService notificationService;
 
 
     // 주문창으로 가져올때 바로구매 버전
@@ -236,6 +239,18 @@ public class OrderServiceImpl implements OrderService {
         shippingAddresses.setDeliveryRequest(deliveryRequest);
 
         return shippingAddressesMapper.insertShippingAddresses(shippingAddresses);
+    }
+
+    @Override
+    public void orderSuccessAlram(int orderId, int loginUserId) {
+
+        Notification notification = Notification.builder()
+                .userId(loginUserId)
+                .message("주문이 완료되었습니다.")
+                .url("/orderDetail.do?myOrderId=" + orderId)
+                .build();
+
+        notificationService.sendNotification(notification);
     }
 
 

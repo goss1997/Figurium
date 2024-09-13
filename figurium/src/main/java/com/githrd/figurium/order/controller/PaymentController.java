@@ -191,6 +191,33 @@ public class PaymentController {
         return "redirect:/";
     }
 
+    /**
+     *
+     * @param id
+     * @return 관리자 페이지 : ajax로 돌려주는 값
+     * @throws IOException
+     * 관리자 환불처리
+     */
+    @GetMapping("/refundAdmin.do")
+    @ResponseBody
+    public int requestAdminRefund(Integer id) throws IOException {
+
+        String accessToken = refundService.getToken(apiKey, secretKey);
+        MyOrderVo myOrderVo = orderMapper.selectOneByMerchantUid(id);
+        String merchantUid = myOrderVo.getMerchantId();
+        String reason = "단순 변심";
+
+        // 무통장입금으로 확인될 시에는 환불로직이 거치지 않고 결제취소 처리만 해줌
+        String status = orderMapper.selectOneByStatus(id);
+
+        refundService.refundRequest(accessToken, merchantUid, reason);
+        log.info("환불 요청 성공: 주문번호 {}", merchantUid);
+        // 결제 valid n 처리
+        int res = orderMapper.updateByRefund(id);
+
+        return res;
+    }
+
 //    @GetMapping("/refund.do")
 //    public String requestRefund(Integer id, RedirectAttributes ra) throws IOException {
 //

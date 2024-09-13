@@ -7,6 +7,8 @@ import com.githrd.figurium.exception.customException.AccountLinkException;
 import com.githrd.figurium.exception.customException.RedirectErrorException;
 import com.githrd.figurium.exception.customException.SocialLoginException;
 import com.githrd.figurium.exception.customException.UserNotFoundException;
+import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.user.dao.SocialAccountMapper;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -33,6 +36,7 @@ public class AuthController {
     private final UserService userService;
     private final HttpSession session;
     private final SocialAccountMapper socialAccountMapper;
+    private final NotificationService notificationService;
 
     @PostMapping("/save-url")
     @ResponseBody
@@ -64,6 +68,11 @@ public class AuthController {
 
             session.removeAttribute("userProfile");
             session.setAttribute("loginUser", loginUser);
+
+            // 사용자의 알림 리스트 조회
+            List<Notification> notificationList = notificationService.getNotificationsByUserId(loginUser.getId());
+            // 세션에 알림 set하기.
+            session.setAttribute("notificationList",notificationList);
 
             return redirectToPreviousPage();
         } catch (Exception e) {
@@ -107,6 +116,12 @@ public class AuthController {
                 } else {
                     log.info("이미 연동한 사용자");
                     session.setAttribute("loginUser", user);
+
+                    // 사용자의 알림 리스트 조회
+                    List<Notification> notificationList = notificationService.getNotificationsByUserId(user.getId());
+                    // 세션에 알림 set하기.
+                    session.setAttribute("notificationList",notificationList);
+
                     return redirectToPreviousPage();
                 }
             }
@@ -115,6 +130,12 @@ public class AuthController {
 
             User loginUser = userService.createSocialAccount(userProfile);
             session.setAttribute("loginUser", loginUser);
+
+            // 사용자의 알림 리스트 조회
+            List<Notification> notificationList = notificationService.getNotificationsByUserId(loginUser.getId());
+            // 세션에 알림 set하기.
+            session.setAttribute("notificationList",notificationList);
+
             return redirectToPreviousPage();
 
         } catch (Exception e) {

@@ -1,6 +1,8 @@
 package com.githrd.figurium.user.controller;
 
 import com.githrd.figurium.exception.customException.FailDeleteUserException;
+import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
@@ -38,6 +40,7 @@ public class UserController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
     private final EmailService emailService;
+    private final NotificationService notificationService;
 
     /**
      * 로그인
@@ -68,7 +71,14 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
             }
             // 로그인 성공 시
+
+            // 사용자의 알림 리스트 조회
+            List<Notification> notificationList = notificationService.getNotificationsByUserId(user.getId());
+
+            // 세션에 알림과 사용자 set하기.
+            session.setAttribute("notificationList",notificationList);
             session.setAttribute("loginUser", user);
+
             return ResponseEntity.ok("Login successful");
         }
     }

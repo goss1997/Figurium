@@ -318,10 +318,10 @@
                                         <h2 style="text-align: center;">Notification</h2>
                                         <hr>
                                         <%-- 데이터베이스에서 가져온 알림 데이터 리스트 출력 --%>
-                                        <c:forEach var="notifications" items="${notifications}">
+                                        <c:forEach var="notification" items="${notificationList}">
                                             <li style="font-size: 18px;">
                                                 <i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">
-                                                    ${notifications.message}
+                                                    ${notification.message}
                                                 </i>
                                             </li>
                                             </c:forEach>
@@ -606,38 +606,38 @@
 </c:if>
 
 
-<script>
+<%--<script>--%>
 
-   eventSource.addEventListener('DOMContentLoaded', function() {
-            const notificationContainer = document.getElementById('notification');
+<%--   eventSource.addEventListener('DOMContentLoaded', function() {--%>
+<%--            const notificationContainer = document.getElementById('notification');--%>
 
-            // SSE 연결 설정
-            const eventSource = new EventSource('/api/notifications/subscribe');
+<%--            // SSE 연결 설정--%>
+<%--            const eventSource = new EventSource('/api/notifications/subscribe');--%>
 
-            eventSource.onmessage = function(event) {
-                const notification = JSON.parse(event.data);
+<%--            eventSource.onmessage = function(event) {--%>
+<%--                const notification = JSON.parse(event.data);--%>
 
-                // 새로운 알림 항목 생성
-                const notificationItem = document.createElement('li');
-                notificationItem.style.fontSize = '18px';
-                notificationItem.innerHTML = `<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">
-                    ${notification.message} ${notification.createdAt.substring(0, 10)} ${notification.createdAt.substring(11, 16)}
-                </i>`;
+<%--                // 새로운 알림 항목 생성--%>
+<%--                const notificationItem = document.createElement('li');--%>
+<%--                notificationItem.style.fontSize = '18px';--%>
+<%--                notificationItem.innerHTML = `<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">--%>
+<%--                    ${notification.message} ${notification.createdAt.substring(0, 10)} ${notification.createdAt.substring(11, 16)}--%>
+<%--                </i>`;--%>
 
-                notificationContainer.appendChild(notificationItem);
-            };
+<%--                notificationContainer.appendChild(notificationItem);--%>
+<%--            };--%>
 
-            // 모든 알림 삭제 처리
-            document.getElementById('deleteAllNotifications').addEventListener('click', function() {
-                fetch('/api/notifications/deleteAll', { method: 'DELETE' })
-                    .then(response => response.text())
-                    .then(result => {
-                        alert(result);
-                        notificationContainer.innerHTML = ''; // 알림 목록 비우기
-                    });
-            });
-        });
-</script>
+<%--            // 모든 알림 삭제 처리--%>
+<%--            document.getElementById('deleteAllNotifications').addEventListener('click', function() {--%>
+<%--                fetch('/api/notifications/deleteAll', { method: 'DELETE' })--%>
+<%--                    .then(response => response.text())--%>
+<%--                    .then(result => {--%>
+<%--                        alert(result);--%>
+<%--                        notificationContainer.innerHTML = ''; // 알림 목록 비우기--%>
+<%--                    });--%>
+<%--            });--%>
+<%--        });--%>
+<%--</script>--%>
 
 <script>
     function searchProduct(f) {

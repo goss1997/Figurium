@@ -25,6 +25,4 @@ public class GlobalController {
         return  categoriesRepository.findAll();
     }
 
-    @ModelAttribute("notifications")
-    public List<Notification> notifications() {return notifications();}
 }

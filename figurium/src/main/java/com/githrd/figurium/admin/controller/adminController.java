@@ -5,6 +5,7 @@ import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.ProductsVo;
+import com.githrd.figurium.qa.dao.QaMapper;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
@@ -32,6 +33,7 @@ public class adminController {
     private final OrderMapper orderMapper;
     private final QaService qaService;
     private final ProductsMapper productsMapper;
+    private final QaMapper qaMapper;
 
 
     @GetMapping("/admin.do")
@@ -64,7 +66,9 @@ public class adminController {
         // 취소요청 목록을 가져오기
         List<MyOrderVo> paymentList = orderMapper.selectListByPayment();
 
+
         model.addAttribute("paymentList", paymentList);
+
 
 
         // orderList를 JSON 형태로 반환
@@ -144,9 +148,9 @@ public class adminController {
             return "redirect:/";
         }
 
-            List<QaVo> qaList = qaService.replyQaList();
+            List<QaVo> qaList = qaMapper.adminReplyQaList();
 
-
+             System.out.println(qaList);
             model.addAttribute("qaList" , qaList);
 
             return "admin/adminQaList";

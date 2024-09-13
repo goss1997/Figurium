@@ -228,7 +228,7 @@ public class ProductsController {
         String save;
         if (productImage.isEmpty()) {
 
-            products.setImageUrl("/resources/images/noImage1.png");
+            products.setImageUrl("/images/noImage1.png");
 
             int res = productsService.productSave(products);
 

@@ -205,22 +205,22 @@
       dataType: 'json',
       success: function (response) {
         if (response.quantityCount !== undefined) {
-          $('#quantity-notify').attr('data-notify', response.count);
+          $('#quantity-notify').attr('data-notify', response.quantityCount);
         } else {
           $('#quantity-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.paymentCount !== undefined) {
-          $('#payment-notify').attr('data-notify', response.count);
+          $('#payment-notify').attr('data-notify', response.paymentCount);
         } else {
           $('#payment-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.retrunCount !== undefined) {
-          $('#retrun-notify').attr('data-notify', response.count);
+          $('#retrun-notify').attr('data-notify', response.retrunCount);
         } else {
           $('#retrun-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.qaCount !== undefined) {
-          $('#qa-notify').attr('data-notify', response.count);
+          $('#qa-notify').attr('data-notify', response.qaCount);
         } else {
           $('#qa-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }

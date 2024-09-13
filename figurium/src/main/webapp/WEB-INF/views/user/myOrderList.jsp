@@ -238,19 +238,18 @@
             margin-top: 30px;
             width: 250px;
             height: 60px;
-
             font-size: 17px;
-
             padding: 5px 10px; /* 버튼 내 여백 */
             background-color: #007bff; /* 버튼 배경색 */
             color: white; /* 버튼 텍스트 색상 */
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s; /* 부드러운 배경색 변화 */
         }
 
-        #refund-button:hover {
-            background-color: #0056b3;
+        .refund-button:hover {
+            background-color: #0056b3; /* 호버 시 색상 변화 */
         }
 
         #refundReason {
@@ -274,18 +273,12 @@
             border-color: #0077cc; /* 포커스 시 테두리 색상 변경 */
         }
 
+
     </style>
 
-    <script>
-        function refundReasonResult() {
-            var orderId = $("#orderId").val();
-            var selectReason = $("#refundReason").val();
-
-            location.href = "refundReasonResult.do?orderId=" + orderId + "&name=" + selectReason;
-        }
-    </script>
-
 </head>
+
+
 
 <body>
 <!-- NOTE : 메뉴바 -->
@@ -470,9 +463,9 @@
                                                     환불신청되어있는 상품입니다. 확인까지 시간 소요되는 점 양해 부탁드립니다.
                                                 </c:if>
                                             </c:if>
-                                            <c:if test="${ myOrder.status == '출고대기' || myOrder.status == '배송중'  && empty myOrder.refundReason }">
-                                                 <span class="productPrice" id="productVbank" data-toggle="modal"
-                                                       data-target="#refundReasonModal" style="cursor: pointer;">
+
+                                            <c:if test="${ myOrder.status == '출고대기' || myOrder.status == '배송중' && empty myOrder.refundReason }">
+                                                <span class="productPrice refund-request order-item" data-order-id="${ myOrder.id }" style="cursor: pointer;">
                                                     환불신청
                                                 </span>
                                             </c:if>
@@ -524,46 +517,42 @@
                             </div>
 
 
-                            <!-- 모달 -->
-                            <div class="modal fade" id="refundReasonModal" tabindex="-1"
-                                 aria-labelledby="refundReasonModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="refundReasonModalLabel">환불안내</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img src="/images/신태일.png" alt="신태일.png" class="img-fluid">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <h4>환불신청</h4>
-                                                    <div class="bank-info mt-3">
-                                                        <h5>환불사유를 선택해주세요.<br>
-                                                            해당 요청은 관리자가 확인 후 빠른 시일내에 처리해드릴게요.</h5>
-                                                        <input value="${myOrder.id}" type="hidden" id="orderId">
+                                <!-- 모달 -->
+                                <div class="modal fade" id="refundReasonModal" tabindex="-1" aria-labelledby="refundReasonModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="refundReasonModalLabel">환불안내</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img src="/images/신태일.png" alt="신태일.png" class="img-fluid">
                                                     </div>
-                                                    <div class="info-text mt-3">
-                                                        <select id="refundReason">
-                                                            <option value="단순 변심">단순 변심</option>
-                                                            <option value="제품 불량">제품 불량</option>
-                                                            <option value="잘못된 주문">잘못된 주문</option>
-                                                            <option value="오배송">오배송</option>
-                                                            <option value="기타">기타</option>
-                                                        </select>
-                                                        <input type="button" id="refund-button" value="관리자에게 환불신청"
-                                                               onclick="refundReasonResult()">
+                                                    <div class="col-md-8">
+                                                        <h4>환불신청</h4>
+                                                        <div class="bank-info mt-3">
+                                                            <h5>환불사유를 선택해주세요.<br>해당 요청은 관리자가 확인 후 빠른 시일내에 처리해드릴게요.</h5>
+                                                        </div>
+                                                        <div class="info-text mt-3">
+                                                            <select id="refundReason">
+                                                                <option value="단순 변심">단순 변심</option>
+                                                                <option value="제품 불량">제품 불량</option>
+                                                                <option value="잘못된 주문">잘못된 주문</option>
+                                                                <option value="오배송">오배송</option>
+                                                                <option value="기타">기타</option>
+                                                            </select>
+                                                            <input type="button" id="refund-button" value="관리자에게 환불신청" onclick="refundReasonResult()">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
 
                                                 <hr id="list-hr1">
@@ -647,4 +636,34 @@
                     <!-- NOTE : 푸터바 -->
                     <jsp:include page="../common/footer.jsp"/>
 </body>
+<script>
+
+
+    $(document).ready(function () {
+
+
+        let selectedOrderId;
+
+        $(document).ready(function() {
+            // 환불신청 버튼 클릭 시 모달 열기
+            $(document).on("click", ".refund-request", function() {
+                selectedOrderId = $(this).closest('.order-item').data('order-id'); // 선택한 주문 ID 저장
+                $("#refundReasonModal").modal('show'); // 모달 열기
+            });
+
+            // 환불 사유 제출
+            $("#refund-button").on("click", function() {
+                var selectReason = $("#refundReason").val();
+                if (selectedOrderId) { // selectedOrderId가 유효한지 확인
+                    location.href = "refundReasonResult.do?orderId=" + selectedOrderId + "&name=" + selectReason;
+                } else {
+                    console.error("Order ID is undefined");
+                    alert("주문 ID를 찾을 수 없습니다.");
+                }
+            });
+        });
+
+
+    });
+</script>
 </html>

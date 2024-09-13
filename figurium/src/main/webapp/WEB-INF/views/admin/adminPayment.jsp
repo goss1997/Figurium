@@ -138,6 +138,10 @@
       success: function (response) {
         if (response > 0 ){
           alert("환불처리에 성공했습니다.");
+
+          if (confirm("환불하신 상품의 QA문의에 답글 작성하시겠습니까?")){
+            window.location.href = "qaSelect.do?id=" + response; // 페이지 이동
+          }
           location.reload();
         }
       },
@@ -154,22 +158,22 @@
       dataType: 'json',
       success: function (response) {
         if (response.quantityCount !== undefined) {
-          $('#quantity-notify').attr('data-notify', response.count);
+          $('#quantity-notify').attr('data-notify', response.quantityCount);
         } else {
           $('#quantity-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.paymentCount !== undefined) {
-          $('#payment-notify').attr('data-notify', response.count);
+          $('#payment-notify').attr('data-notify', response.paymentCount);
         } else {
           $('#payment-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.retrunCount !== undefined) {
-          $('#retrun-notify').attr('data-notify', response.count);
+          $('#retrun-notify').attr('data-notify', response.retrunCount);
         } else {
           $('#retrun-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.qaCount !== undefined) {
-          $('#qa-notify').attr('data-notify', response.count);
+          $('#qa-notify').attr('data-notify', response.qaCount);
         } else {
           $('#qa-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }

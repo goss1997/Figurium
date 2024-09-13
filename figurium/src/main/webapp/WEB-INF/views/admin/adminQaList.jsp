@@ -98,6 +98,7 @@
       <tr style="text-align: center">
         <th class="col-1">번호</th>
         <th class="col-2">제목</th>
+        <th class="col-1">주문번호</th>
         <th class="col-1">상품번호</th>
         <th class="col-1">답변여부</th>
         <th class="col-1">작성자</th>
@@ -113,12 +114,24 @@
           ${qa.title}
         </td>
         <td>
-          <c:if test="${qa.productQaId eq null}">
-            -
-          </c:if>
-          <c:if test="${qa.productQaId ne null}">
-            ${qa.productQaId}
-          </c:if>
+          <c:choose>
+            <c:when test="${qa.ordersId eq null}">
+              -
+            </c:when>
+            <c:otherwise>
+              ${qa.ordersId}
+            </c:otherwise>
+          </c:choose>
+        </td>
+        <td>
+          <c:choose>
+            <c:when test="${qa.productId eq null}">
+              -
+            </c:when>
+            <c:otherwise>
+              ${qa.productId}
+            </c:otherwise>
+          </c:choose>
         </td>
         <td>${qa.replyStatus}</td>
         <td>${qa.name}</td>
@@ -155,22 +168,22 @@
       dataType: 'json',
       success: function (response) {
         if (response.quantityCount !== undefined) {
-          $('#quantity-notify').attr('data-notify', response.count);
+          $('#quantity-notify').attr('data-notify', response.quantityCount);
         } else {
           $('#quantity-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.paymentCount !== undefined) {
-          $('#payment-notify').attr('data-notify', response.count);
+          $('#payment-notify').attr('data-notify', response.paymentCount);
         } else {
           $('#payment-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.retrunCount !== undefined) {
-          $('#retrun-notify').attr('data-notify', response.count);
+          $('#retrun-notify').attr('data-notify', response.retrunCount);
         } else {
           $('#retrun-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }
         if (response.qaCount !== undefined) {
-          $('#qa-notify').attr('data-notify', response.count);
+          $('#qa-notify').attr('data-notify', response.qaCount);
         } else {
           $('#qa-notify').attr('data-notify', '0'); // 갯수가 없을 경우 0으로 설정
         }

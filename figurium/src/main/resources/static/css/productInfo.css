@@ -55,7 +55,7 @@
     font-weight: bold;
     text-transform: uppercase;
     z-index: 10; /* 이미지 위에 표시되도록 설정 */
-    opacity: 0.7; /* 흐림 효과 */
+    opacity: 1.0 !important; /* 흐림 효과 */
     pointer-events: none; /* 오버레이가 클릭되지 않도록 설정 */
 }
 

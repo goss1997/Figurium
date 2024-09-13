@@ -72,7 +72,7 @@
                 <div class="product_img">
                     <img src="${product.imageUrl}">
                     <!-- SOLD OUT 오버레이 이미지 -->
-                    <img src="/images/soldout.png" alt="Sold Out" class="sold-out-overlay" style="${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
+                    <img src="/images/soldout1.png" alt="Sold Out" class="sold-out-overlay" style="${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
                 </div>
 
             </div>

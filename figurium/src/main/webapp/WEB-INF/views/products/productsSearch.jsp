@@ -94,7 +94,7 @@
                     <div class="block2">
                         <div class="block2-pic hov-img0" style="border: 1px solid #dcdcdc">
                             <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <img src="/images/soldout.png" alt="Sold Out" class="sold-out-overlay" style="${products.quantity == 0 ? 'display: block;' : 'display: none;'}">
+                            <img src="/images/soldout1.png" alt="Sold Out" class="sold-out-overlay" style="${products.quantity == 0 ? 'display: block;' : 'display: none;'}">
                             <a href="productInfo.do?id=${products.id}"
                                class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 상품 상세

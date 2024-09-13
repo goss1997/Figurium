@@ -34,9 +34,6 @@ jobs:
 
     # Gradle Build(test 제외)
     - name: Build with Gradle
-      # 환경변수
-      env:
-        ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
       run: ./gradlew clean bootWar --exclude-task test
       working-directory: ./figurium
 
@@ -78,6 +75,7 @@ jobs:
           echo "Running new container..."
           sudo docker run -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
           --name ${{ secrets.PROJECT_NAME }} \
+          -e "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" \
           -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
           
           echo "Done"

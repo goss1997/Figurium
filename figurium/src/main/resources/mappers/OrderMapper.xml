@@ -218,7 +218,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from
             order_history_view ohv      -- order_history_view와 qa 테이블을 product_id로 조인
                 inner join
-            qa on ohv.p_id = qa.product_id
+            qa on ohv.id = qa.orders_id
         where
             qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
              and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
@@ -232,12 +232,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from
             order_history_view ohv      -- order_history_view와 qa 테이블을 product_id로 조인
                 inner join
-            qa on ohv.p_id = qa.product_id
+            qa on ohv.id = qa.orders_id
         where
             qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
           and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
     </select>
-    <select id="getPaymentCount" resultType="myOrders" parameterType="int">
+    <select id="getPaymentCount"  parameterType="int">
         select COALESCE(COUNT(*), 0)
         from order_history_refund_view
         where refund_reason IS NOT NULL

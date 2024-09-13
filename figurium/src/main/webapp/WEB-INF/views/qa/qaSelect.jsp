@@ -63,7 +63,9 @@ To change this template use File | Settings | File Templates.
     </div>
     <hr>
     <div class="text-right">
-        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/qa/qaList.do'">목록</button>
+        <c:if test="${qa.productId ne null}">
+        <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/productInfo?id=${qa.productId}'">상품보러가기</button>
+        </c:if>
         <c:if test="${loginUser.role == '1'}">
             <form action="${pageContext.request.contextPath}/qa/qaDelete.do" method="post" style="display:inline;">
                 <input type="hidden" name="id" value="${qa.id}">

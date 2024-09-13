@@ -30,9 +30,9 @@
                 event.preventDefault();
             }
         }
-        // 목록 버튼 클릭 시 productQaId를 사용해 동적 URL로 이동
-        function redirectToProductInfo(productQaId) {
-            location.href = 'http://localhost:8080/productInfo.do?id=' + productQaId + '#qa';
+        // 목록 버튼 클릭 시 productId를 사용해 동적 URL로 이동
+        function redirectToProductInfo(productId) {
+            location.href = 'http://localhost:8080/productInfo.do?id=' + productId + '#qa';
         }
     </script>
 
@@ -68,11 +68,11 @@
         </div>
         <hr>
         <div class="text-right">
-            <input type="hidden" name="productQaId" value="${qa.productQaId}">
-            <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="redirectToProductInfo('${param.productQaId}');">목록</button>
+            <input type="hidden" name="productId" value="${qa.productId}">
+            <button type="button" style="margin-bottom: 30px;" class="btn btn-dark" onclick="redirectToProductInfo('${param.productId}');">목록</button>
             <c:if test="${loginUser.role == '1'}">
                 <form action="${pageContext.request.contextPath}/qa/qaDelete.do" method="post" style="display:inline;">
-                    <input type="hidden" name="id" value="${qa.productQaId}">
+                    <input type="hidden" name="id" value="${qa.productId}">
                     <button type="submit" style="margin-bottom: 30px;" class="btn btn-light" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
                 </form>
             </c:if>
@@ -81,7 +81,7 @@
         <%--관리자 댓글 목록--%>
         <c:forEach var="reply" items="${qa.reply}">
             <form action="${pageContext.request.contextPath}/qa/qaReplyDelete.do" method="post" style="display:inline;">
-            <input type="hidden" name="productQaId" value="${param.productQaId}">
+            <input type="hidden" name="productId" value="${param.productId}">
             <div class="card mt-3" style="margin-bottom: 50px;">
                 <div class="card-body" style="height: 180px;">
                         <%--            <h5 class="card-title">${qa.name}</h5>--%>
@@ -99,13 +99,13 @@
 
             <form id="replyForm" action="${pageContext.request.contextPath}/qa/qaReplySave.do" method="post" onsubmit="return handleSubmit(event)">
                 <input type="hidden" name="id" value="${qa.id}">
-                <input type="hidden" name="productQaId" value="${qa.productQaId}">
+                <input type="hidden" name="productId" value="${qa.productId}">
                 <div class="form-group">
                     <label for="content" style="margin-top: 30px; font-size: 18px; margin-bottom: 15px;">답변 내용</label>
                     <textarea class="form-control" style="resize: none; height: 150px;" id="content" name="content" rows="4"></textarea>
                 </div>
                 <button type="submit" style="margin-bottom: 30px; float: right" class="btn btn-dark">등록</button>
-                <button type="button" style="margin-bottom: 30px; margin-right: 10px;" class="btn btn-dark"  onclick="redirectToProductInfo(${param.productQaId});">목록</button>
+                <button type="button" style="margin-bottom: 30px; margin-right: 10px;" class="btn btn-dark"  onclick="redirectToProductInfo(${param.productId});">목록</button>
             </form>
         </c:if>
 

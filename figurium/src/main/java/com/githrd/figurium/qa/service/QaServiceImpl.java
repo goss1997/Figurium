@@ -102,10 +102,7 @@
         public List<QaVo> getQaWithPagination(int offset, int limit) {
             return qaMapper.selectAllWithPagination(Map.of("offset", offset, "limit", limit));
         }
-        @Override
-        public List<QaVo> replyQaList() {
-            return qaMapper.replyQaList();
-        }
+
 
         @Override
         public int getQaCount() {

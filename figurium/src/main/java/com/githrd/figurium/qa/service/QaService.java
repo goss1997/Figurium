@@ -23,8 +23,7 @@
 
         List<QaVo> selectProductAllWithPagination(Map<String, Object> map);
 
-        /*admin Page 미답변 List 조회*/
-        List<QaVo> replyQaList();
+
 
         int getQaCount();
 

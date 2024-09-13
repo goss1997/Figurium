@@ -79,7 +79,7 @@
             </thead>
             <tbody style="text-align: center;">
             <c:forEach var="qa" items="${productQaList}" varStatus="status">
-                <tr onclick="location.href='${pageContext.request.contextPath}/qa/productQaSelect.do?id=${qa.id}&productQaId=${qa.productQaId}'" style="cursor: pointer;">
+                <tr onclick="location.href='${pageContext.request.contextPath}/qa/productQaSelect.do?id=${qa.id}&productId=${qa.productId}'" style="cursor: pointer;">
                     <td>${status.index + 1}</td>
                     <td class="truncate-title" style="text-align: left;">
                         <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>

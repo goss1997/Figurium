@@ -37,7 +37,7 @@
     <h1 style="margin-bottom: 15px">게시글 작성</h1>
     <hr>
     <form action="${pageContext.request.contextPath}/qa/productQaSave.do" method="GET">
-        <input type="hidden" name="productQaId" value="${productQaId}">
+        <input type="hidden" name="productId" value="${productQaId}">
         <div class="form-group">
             <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
         </div>

@@ -24,7 +24,8 @@ public interface QaMapper {
 
     int selectRowTotal(Map<String, Object> map); // 총 게시물 수 조회// 페이징 처리된 게시글 조회
 
-    List<QaVo> replyQaList();
+    List<QaVo> adminReplyQaList();
+    List<QaVo> adminPaymentWithQaSeletOne(int orderId);
 
     int getQaCount();
 

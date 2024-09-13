@@ -22,13 +22,13 @@
     </select>
 
     <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
-        INSERT INTO qa (user_id, title, content, reply)
-        VALUES (#{userId}, #{title}, #{content}, #{reply})
+        INSERT INTO qa (user_id, title, content, reply, orders_id)
+        VALUES (#{userId}, #{title}, #{content}, #{reply}, #{ordersId})
     </insert>
 
     <insert id="product_insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
         INSERT INTO qa (user_id, product_id,title, content, reply)
-        VALUES (#{userId}, #{productQaId},#{title}, #{content}, #{reply})
+        VALUES (#{userId}, #{productId},#{title}, #{content}, #{reply})
     </insert>
 
 
@@ -84,7 +84,7 @@
 
 
     <!--  admin Qa 미답변 List  -->
-    <select id="replyQaList" resultType="com.githrd.figurium.qa.vo.QaVo">
+    <select id="adminReplyQaList" resultType="com.githrd.figurium.qa.vo.QaVo">
         select q.*, u.name
         from (select rank() over(order by id desc) as no,
         i.*
@@ -93,6 +93,28 @@
         left join users u on q.user_id = u.id
         where replyStatus = '답변준비중'
         ORDER BY id DESC
+    </select>
+
+    <!-- admin 반품건 환불 후 Qa이동-->
+    <select id="adminPaymentWithQaSeletOne" resultType="com.githrd.figurium.qa.vo.QaVo" parameterType="int">
+        SELECT
+            q.id AS qaId,
+            q.user_id AS userId,
+            q.orders_id AS ordersId,
+            q.product_id AS productId,
+            q.title,
+            q.content,
+            q.reply,
+            q.created,
+            q.updated,
+            q.replyStatus,
+            u.name AS userName
+        FROM
+            qa q
+                LEFT JOIN
+            order_history_refund_view oh ON q.orders_id = oh.id -- orders_id로 조인
+        WHERE
+            oh.id = #{orderId} -- 전달된 orderId를 사용하여 필터링
     </select>
 
     <select id="getQaCount" resultType="int">
@@ -105,6 +127,6 @@
     <select id="getProductQaCount" parameterType="map" resultType="int">
         SELECT COUNT(*)
         FROM qa
-        WHERE product_id = #{productId} <!-- 컬럼명을 실제 데이터베이스에 맞게 수정 -->
+        WHERE product_id = #{productId}
     </select>
 </mapper>

@@ -150,7 +150,7 @@ public class QaController {
     public String save(@RequestParam("title") String title,
                        @RequestParam("content") String content,
                        @RequestParam("category") String category,
-                       @RequestParam(value = "orderId", required = false) String orderId,
+                       @RequestParam(value = "orderId", required = false) int orderId,
                        @RequestParam(value = "reply", required = false) String reply) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인
@@ -173,6 +173,7 @@ public class QaController {
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);
+        qaVo.setOrdersId(orderId);
 
         qaService.saveQa(qaVo);
 
@@ -185,7 +186,7 @@ public class QaController {
                                 @RequestParam("content") String content,
                                 @RequestParam("category") String category,
                                 @RequestParam(value = "reply", required = false) String reply,
-                                @RequestParam(value = "productQaId") int productQaId) {
+                                @RequestParam(value = "productId") int productId) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인
         if (loginUser == null) {
@@ -208,11 +209,11 @@ public class QaController {
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);
-        qaVo.setProductQaId(productQaId);
+        qaVo.setProductId(productId);
         qaService.saveProductQa(qaVo);
 
         // 상품 상세 페이지로 리디렉션하며 해당 상품의 Q&A 목록도 함께 포함
-        return "redirect:/productInfo.do?id=" + productQaId + "&showQa=true";
+        return "redirect:/productInfo.do?id=" + productId + "&showQa=true";
     }
 
     @GetMapping("/qaSelect.do")
@@ -251,7 +252,7 @@ public class QaController {
 
     @GetMapping("/productQaSelect.do")
     public String selectQa(@RequestParam("id") int id,
-                           @RequestParam("productQaId") int productId,
+                           @RequestParam("productId") int productId,
                            Model model, RedirectAttributes redirectAttributes) {
         User loginUser = (User) session.getAttribute("loginUser");
         QaVo qaVo = qaService.getQaById(id);

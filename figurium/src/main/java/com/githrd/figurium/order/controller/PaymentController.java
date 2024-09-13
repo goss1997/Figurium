@@ -167,7 +167,8 @@ public class PaymentController {
         String status = orderMapper.selectOneByStatus(id);
 
         if(status.equals("입금대기")) {
-            orderMapper.selectOneByStatus(id);
+            int res = orderMapper.updateByRefund(id);
+            
             // response로 알림창 넘겨주기
             ra.addFlashAttribute("message","결제가 정상적으로 취소되었습니다.");
             return "redirect:/";

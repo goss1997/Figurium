@@ -3432,21 +3432,21 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 /*Sold Out*/
-.block2-pic {
+/*.block2-pic {
   position: relative;
   display: inline-block;
-}
+}*/
 
 .block2-pic img {
   display: block;
-  width: 100%;
-  height: auto;
+  /*width: 100%;
+  height: auto;*/
 }
 
 .sold-out-overlay {
-  position: absolute;
+  /*position: absolute;
   width: 525px;
-  height: 525px;
+  height: 525px;*/
   top: 0;
   left: 0;
   right: 0;

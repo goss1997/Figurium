@@ -25,7 +25,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -376,7 +378,13 @@ public class UserController {
     @GetMapping("refundReasonResult.do")
     public String refundReasonResult(@RequestParam int orderId, @RequestParam String name) {
 
-        int res = orderMapper.insertRfreasons(name, orderId);
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("name",name);
+        map.put("orderId",orderId);
+
+
+        int res = orderMapper.insertRfreasons(map);
 
         return "redirect:order-list.do";
     }

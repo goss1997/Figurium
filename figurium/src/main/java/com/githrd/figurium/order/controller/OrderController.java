@@ -180,9 +180,7 @@ public class OrderController {
     }
     
     
-    /*
-     *   inicis 결제 요청 처리하기 (PaymentRequest => DTO로 사용)
-     */
+
     @RequestMapping(value = "inicisPay.do")
     @ResponseBody
     public String inicisPay(int price, String paymentType, Integer userId, String merchantUid) {
@@ -195,9 +193,7 @@ public class OrderController {
     }
 
 
-    /*
-     *   결제 성공시 주문 데이터 저장
-     */
+
     @PostMapping(value = "insertInformation.do")
     @ResponseBody
     public String insertInformation(int loginUserId, String name, String phone, String email,

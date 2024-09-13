@@ -45,27 +45,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectListByUserId" resultType="myOrders" parameterType="int">
         select
-            id,
-            max(payment_type) as payment_type,
-            max(name) as name,
-            sum(IFNULL(price, 0)) as price,
-            date_format(max(created_at), '%Y/%m/%d') as created_at,
-            max(product_name) as product_name,
-            count(distinct product_name)-1 as product_count,
-            -- product_name과 일치하는 대표 이미지 가져오기
-            (select image_url
-             from order_history_refund_view ohrv
-             where ohrv.id = order_history_refund_view.id
-               and ohrv.product_name = max(order_history_refund_view.product_name)
-             limit 1) as image_url,
-            max(status) as status,
-            max(valid) as valid,
-            max(refund_reason) as refund_reason,
-            sum(IFNULL(price, 0) * IFNULL(quantity, 1)) as total_value
-        from order_history_refund_view
-        where user_id = #{user_id}
-        group by id
-        order by max(created_at) desc
+            ohv.id,
+            max(ohv.payment_type) as payment_type,
+            max(ohv.name) as name,
+            sum(IFNULL(ohv.price, 0)) as price,
+            date_format(max(ohv.created_at), '%Y/%m/%d') as created_at,
+            max(ohv.product_name) as product_name,
+            count(distinct ohv.product_name)-1 as product_count,
+            max(img.image_url) as image_url,
+            max(ohv.status) as status,
+            max(ohv.valid) as valid,
+            max(ohv.refund_reason) as refund_reason,
+            sum(IFNULL(ohv.price, 0) * IFNULL(ohv.quantity, 1)) as total_value
+        from order_history_refund_view ohv
+                 left join (
+            select id, product_name, image_url,
+                   row_number() over (partition by id, product_name order by created_at desc) as rn
+            from order_history_refund_view
+        ) img on ohv.id = img.id and ohv.product_name = img.product_name and img.rn = 1
+        where ohv.user_id = #{user_id}
+        group by ohv.id
+        order by max(ohv.created_at) desc
     </select>
 
 

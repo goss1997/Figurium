@@ -118,6 +118,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from orders where id = #{id}
     </select>
 
+    <select id="selectOneByStatus" resultType="String">
+        select status from orders where id = #{id} limit 1
+    </select>
+
     <update id="updateByRefund" parameterType="int">
         update orders set valid = 'n', status = '환불완료'
         where id = #{ id }

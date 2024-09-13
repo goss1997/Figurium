@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,9 +29,6 @@ public class PaymentController {
 
     private final OrderMapper orderMapper;
     // iamport를 사용하기 위해서 api를 불러온다.
-    private IamportClient api;
-
-    private RefundService refundService;
 
     @Value("${imp.api.key}")
     private String apiKey;
@@ -40,9 +36,12 @@ public class PaymentController {
     @Value("${imp.api.secretkey}")
     private String secretKey;
 
+    private final RefundService refundService;
+
+    private final IamportClient api;
+
     // application.properties에 암호를 저장하여 Controller에 기록이 안되게 암호화 시킴
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
     @ResponseBody
     @RequestMapping(value="/verifyIamport.do")
@@ -57,7 +56,7 @@ public class PaymentController {
     }
 
 
-//
+
 //    @ResponseBody   // JSON 형태로 반환
 //    @RequestMapping(value="/verifyIamport.do")
 //    public ResponseEntity<?> paymentByImpUid(@RequestParam(value="imp_uid") String imp_uid,
@@ -167,6 +166,16 @@ public class PaymentController {
         String merchantUid = myOrderVo.getMerchantId();
         String reason = "단순 변심";
 
+        // 무통장입금으로 확인될 시에는 환불로직이 거치지 않고 결제취소 처리만 해줌
+        String status = orderMapper.selectOneByStatus(id);
+
+        if(status.equals("입금대기")) {
+            orderMapper.selectOneByStatus(id);
+            // response로 알림창 넘겨주기
+            ra.addFlashAttribute("message","결제가 정상적으로 취소되었습니다.");
+            return "redirect:/";
+        }
+
         try {
             refundService.refundRequest(accessToken, merchantUid, reason);
             log.info("환불 요청 성공: 주문번호 {}", merchantUid);
@@ -197,10 +206,10 @@ public class PaymentController {
 //            orderMapper.updateByRefund(id);
 //
 //            // response로 알림창 넘겨주기
-//            ra.addFlashAttribute("message","환불이 성공적으로 처리되었습니다. 결제된 금액의 환불 정산에는 결제방식에 따라 최대 영업일 기준 1일 정도가 소모됩니다.");
+//            ra.addFlashAttribute("message","결제취소가 성공적으로 처리되었습니다. 결제된 금액의 환불 정산에는 결제방식에 따라 최대 영업일 기준 1일 정도가 소모됩니다.");
 //        } catch (IOException e) {
 //            log.error("환불 요청 실패: {}", e.getMessage());
-//            ra.addFlashAttribute("error","환불이 성공적으로 처리되었습니다. 결제된 금액의 환불 정산에는 결제방식에 따라 최대 영업일 기준 1일 정도가 소모됩니다.");
+//            ra.addFlashAttribute("error","결제취소가 실패했습니다..");
 //        }
 //        return "redirect:/";
 //    }

@@ -50,4 +50,7 @@ public interface OrderMapper {
     // 관리자용 신청 리스트 카운트 조회
     Integer  getRetrunCount();
     Integer  getPaymentCount();
+
+    // 사용자 status 확인
+    String selectOneByStatus(int id);
 }

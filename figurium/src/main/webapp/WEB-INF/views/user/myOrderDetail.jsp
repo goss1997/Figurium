@@ -499,7 +499,7 @@
                         </div>
                     </div>
 
-                <button class="order-button" onclick="location.href='/qa/qaInsert.do'">모든 문의는 여기로!</button>
+                <button class="order-button" onclick="location.href='/qa/qaInsertOrderId.do?orderId=' + ${ myOrderInfo.id }">모든 문의는 여기로!</button>
 
             </div>
 

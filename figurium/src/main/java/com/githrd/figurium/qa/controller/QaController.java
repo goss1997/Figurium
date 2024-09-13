@@ -1,6 +1,5 @@
 package com.githrd.figurium.qa.controller;
 
-import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
@@ -118,6 +117,18 @@ public class QaController {
         if (loginUser == null) {
             return "redirect:/";
         }
+        return "qa/qaInsert";
+    }
+
+    //Q&A게시판에서 게시글 작성시
+    @GetMapping("/qaInsertOrderId.do")
+    public String insertFormOrderId(Model model, int orderId) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        // 로그인 상태를 확인
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("orderId", orderId);
         return "qa/qaInsert";
     }
 

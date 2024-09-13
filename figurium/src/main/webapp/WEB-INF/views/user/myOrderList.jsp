@@ -207,8 +207,16 @@
         }
 
         #productVbank {
+            margin-left: 10px;
             font-weight: bold;
             color: #0083d7;
+            animation: fade 1s infinite alternate;
+        }
+
+        #orderCancel {
+            margin-left: 10px;
+            font-weight: bold;
+            color: #d21212;
             animation: fade 1s infinite alternate;
         }
 
@@ -436,6 +444,19 @@
                                                     환불신청
                                                 </span>
                                             </c:if>
+
+                                            <c:if test="${ myOrder.status == '입금대기' || myOrder.status == '준비중' }">
+                                                <div style="margin-top: 5px">
+                                                주문상태가 배송준비중이거나, 입금대기일시에 결제취소가 가능해요.
+                                                    <span class="productPrice" id="orderCancel"
+                                                          onclick="location.href='../api/refund.do?id=${ myOrder.id }'" style="cursor: pointer;">
+                                                        결제취소
+                                                    </span>
+                                                </div>
+                                            </c:if>
+
+
+
                                         </div>
 
                                     </div>

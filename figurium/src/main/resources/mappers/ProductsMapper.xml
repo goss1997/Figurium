@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.product.dao.ProductsMapper">
+
+    <select id="selectOneGetName" resultType="products" parameterType="int">
+        select * from products where id = #{ productId }
+    </select>
+
+    <select id="selectOneCheckProduct" resultType="products" parameterType="int">
+        select * from products where id = #{ productId }
+    </select>
+
+
+    <update id="updateProductQuantity" parameterType="int">
+        UPDATE products
+        SET quantity = quantity - #{itemQuantity}
+        WHERE id = #{productId}
+        AND quantity >= #{itemQuantity}
+    </update>
+
+
+
+    <insert id="productInsert" parameterType="products">
+        INSERT INTO products (category_name, name, price, quantity, image_url)
+        VALUES (#{categoryName}, #{name}, #{price}, #{quantity}, #{imageUrl})
+    </insert>
+
+    <update id="productUpdate" parameterType="products">
+        UPDATE products
+        SET category_name = #{categoryName},
+            name = #{name},
+            price = #{price},
+            quantity = #{quantity},
+            image_url = #{imageUrl}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 상품의 카테고리별 조회 및 필터링 동적 쿼리문 -->
+    <select id="categoriesList" resultType="products" parameterType="Map">
+        <!-- 서브쿼리를 사용하여 상품 정보와 좋아요 수를 집계 -->
+        SELECT p.*, COALESCE(p.likeCount, 0) AS likeCount
+        FROM (
+        <!-- 서브쿼리 시작 -->
+        SELECT p.id, p.category_name, p.name, p.price, p.created_at, p.image_url,p.quantity,
+        COALESCE(SUM(pl.product_count), 0) AS likeCount
+        FROM products p
+        LEFT JOIN product_likes pl ON p.id = pl.product_id
+        <where>
+            <if test="categoryName != '전체 상품' and categoryName != ''">
+                p.category_name = #{categoryName}
+            </if>
+        </where>
+        <!-- 상품 정보를 기준으로 그룹화하여 좋아요 수 집계 -->
+        GROUP BY p.id, p.category_name, p.name, p.price, p.created_at, p.image_url
+        ) AS p
+        <choose>
+            <!-- 필터에 따라 정렬 방식 결정 -->
+            <when test="selectFilter == 'newProducts'">
+                <!-- 최신 상품 우선 정렬: 생성일 기준 내림차순 -->
+                ORDER BY p.created_at DESC
+            </when>
+            <when test="selectFilter == 'bestProducts'">
+                <!-- 좋아요 수 기준 정렬: 좋아요 수 기준 내림차순 -->
+                ORDER BY p.likeCount DESC
+            </when>
+            <when test="selectFilter == 'highPrice'">
+                <!-- 가격 기준 정렬: 높은 가격부터 오름차순 -->
+                ORDER BY p.price DESC
+            </when>
+            <when test="selectFilter == 'lowPrice'">
+                <!-- 가격 기준 정렬: 낮은 가격부터 오름차순 -->
+                ORDER BY p.price ASC
+            </when>
+            <otherwise>
+                <!-- 기본 정렬: 상품 ID 기준 내림차순 -->
+                ORDER BY p.created_at DESC
+            </otherwise>
+        </choose>
+        <!-- 페이징 처리를 위한 LIMIT과 OFFSET 추가 -->
+        <if test="offset != null and pageSize != null">
+            LIMIT #{pageSize} OFFSET #{offset}
+        </if>
+    </select>
+
+
+
+    <!-- 해당 카테고리의 상품의 갯수를 가져오기 -->
+    <select id="categoriesProductsCount" parameterType="Map" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+        SELECT p.id
+        FROM products p
+        LEFT JOIN product_likes pl ON p.id = pl.product_id
+        <where>
+            <if test="categoryName != '전체 상품' and categoryName != ''">
+                p.category_name = #{categoryName}
+            </if>
+        </where>
+        GROUP BY p.id
+        ) AS filteredProducts
+    </select>
+
+
+    <select id="getNextPageByCreatedAt" parameterType="Map" resultType="products">
+        SELECT p.*, COALESCE(like_count, 0) AS likeCount
+        FROM products p
+        LEFT JOIN ( SELECT product_id, COUNT(*) AS like_count
+                      FROM product_likes
+                     GROUP BY product_id ) pl ON p.id = pl.product_id
+        <where>
+            <if test="categoryName != '전체'">
+                AND category_name = #{categoryName}
+            </if>
+            <choose>
+                <when test="selectFilter == 'newProducts'">
+                    <if test="lastCreatedAt != null and lastId != null">
+                        AND ( #{lastCreatedAt} > created_at
+                        OR (created_at = #{lastCreatedAt} AND #{lastId} > id) )
+                    </if>
+                </when>
+                <when test="selectFilter == 'highPrice'">
+                    <if test="lastPrice != null and lastId != null">
+                        AND ( #{lastPrice} > price
+                        OR (price = #{lastPrice} AND #{lastId} > id) )
+                    </if>
+                </when>
+                <when test="selectFilter == 'lowPrice'">
+                    <if test="lastPrice != null and lastId != null">
+                        AND ( price > #{lastPrice}
+                        OR (price = #{lastPrice} AND #{lastId} > id ) )
+                    </if>
+                </when>
+                <when test="selectFilter == 'bestProducts'">
+                    <if test="lastLikeCount != null and lastId != null">
+                        AND ( #{lastLikeCount} > COALESCE(like_count, 0)
+                         OR ( COALESCE(like_count, 0) = #{lastLikeCount} AND #{lastId} > id) )
+                    </if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="selectFilter == 'newProducts'">
+                ORDER BY created_at DESC, id DESC
+            </when>
+            <when test="selectFilter == 'highPrice'">
+                ORDER BY price DESC, id DESC
+            </when>
+            <when test="selectFilter == 'lowPrice'">
+                ORDER BY price ASC, id DESC
+            </when>
+            <when test="selectFilter == 'bestProducts'">
+                ORDER BY likeCount DESC, id DESC
+            </when>
+            <otherwise>
+                ORDER BY created_at DESC, id DESC
+            </otherwise>
+        </choose>
+        LIMIT 20
+    </select>
+
+    <!-- 상품 검색과 필터를 위한 동적 SQL문 -->
+    <select id="searchProductsList" resultType="products" parameterType="Map">
+        SELECT p.*, COALESCE(likeCount, 0) AS likeCount
+        FROM (
+        SELECT p.id, p.name, p.price, p.created_at, p.image_url,p.category_name,p.quantity,
+        COALESCE(SUM(pl.product_count), 0) AS likeCount
+        FROM products p
+        LEFT JOIN product_likes pl ON p.id = pl.product_id
+        <where>
+            <!-- 검색어 필터링 -->
+            <if test="search != null and search != ''">
+                p.name LIKE CONCAT('%', #{search}, '%')
+            </if>
+        </where>
+        GROUP BY p.id, p.name, p.price, p.created_at
+        ) AS p
+        <choose>
+            <when test="selectFilter == 'default'">
+                ORDER BY p.id DESC
+            </when>
+            <when test="selectFilter == 'newProducts'">
+                ORDER BY p.created_at DESC
+            </when>
+            <when test="selectFilter == 'bestProducts'">
+                ORDER BY p.likeCount DESC
+            </when>
+            <when test="selectFilter == 'highPrice'">
+                ORDER BY p.price DESC
+            </when>
+            <when test="selectFilter == 'lowPrice'">
+                ORDER BY p.price ASC
+            </when>
+            <otherwise>
+                ORDER BY p.id DESC
+            </otherwise>
+        </choose>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 페이징 처리를 위해 검색된 총 상품의 수를 구해온다 -->
+    <select id="searchProductsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM products
+        WHERE products.name LIKE CONCAT('%', #{search}, '%')
+    </select>
+
+
+    <!-- 현재 검색된 상품의 히스토리를 저장 -->
+    <insert id="searchProductsNameHistory">
+        INSERT INTO product_search_history (search_name, search_count, created_at)
+        VALUES (#{searchName}, 1, NOW())
+        ON DUPLICATE KEY UPDATE search_count = search_count + 1;
+    </insert>
+
+
+    <!-- 인기 검색어 상위 5개 조회 -->
+    <select id="searchHistory" resultType="String">
+        SELECT search_name
+        FROM product_search_history
+        ORDER BY search_count DESC
+        LIMIT 5
+    </select>
+
+    <!-- 해당 상품이 존재하는지 검증 -->
+    <select id="selectSearchProductsList" resultType="products">
+        SELECT * FROM products
+        WHERE name LIKE CONCAT('%',#{search},'%')
+    </select>
+
+    <!--  Test  -->
+    <select id="getProductQuantity" parameterType="int" resultType="int">
+        SELECT quantity
+        FROM products
+        WHERE id = #{productId}
+    </select>
+
+    <!-- 상품 재고 0개 조회-->
+    <select id="searchProductsQuantityList" resultType="products">
+        SELECT *
+        FROM products
+        WHERE quantity = 0
+    </select>
+
+    <!-- 상품 재고 수정-->
+    <update id="productQuantityUpdate" parameterType="int">
+        UPDATE products
+        SET quantity = #{quantity}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 상품 재고 0개 알람-->
+    <select id="getQuantityCount" resultType="int">
+        SELECT COALESCE(COUNT(*), 0)
+        FROM products
+        where quantity = 0
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

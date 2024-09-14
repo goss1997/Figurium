@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.productLike.dao.ProductLikeMapper">
+
+    <!-- 상품 상세 페이지 로드 할 때 좋아요 확인 -->
+    <select id="isProductLikedByUser" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM product_likes
+        WHERE product_id = #{productId}
+          AND user_id = #{userId}
+    </select>
+
+
+    <!-- 사용자가 이미 해당 상품을 추천했는지 확인하는 쿼리 -->
+    <select id="isProductLiked" parameterType="com.githrd.figurium.productLike.vo.ProductLikeVo" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM product_likes
+        WHERE user_id = #{userId} AND product_id = #{productId}
+    </select>
+
+    <!-- 상품의 추천 수를 증가시키는 쿼리 -->
+    <update id="incrementLikeCount" parameterType="com.githrd.figurium.productLike.vo.ProductLikeVo">
+        UPDATE product_likes
+        SET product_count = product_count + 1
+        WHERE product_id = #{productId} AND user_id = #{userId}
+    </update>
+
+    <!-- 상품의 추천 수를 감소시키는 쿼리 -->
+    <update id="decrementLikeCount" parameterType="com.githrd.figurium.productLike.vo.ProductLikeVo">
+        UPDATE product_likes
+        SET product_count = product_count - 1
+        WHERE product_id = #{productId} AND user_id = #{userId}
+    </update>
+
+    <!-- 사용자의 추천 정보를 추가하는 쿼리 -->
+    <insert id="addLike" parameterType="com.githrd.figurium.productLike.vo.ProductLikeVo">
+        INSERT INTO product_likes (user_id, product_id)
+        VALUES (#{userId}, #{productId})
+    </insert>
+
+    <!-- 사용자의 추천 정보를 제거하는 쿼리 -->
+    <delete id="removeLike" parameterType="com.githrd.figurium.productLike.vo.ProductLikeVo">
+        DELETE FROM product_likes
+        WHERE user_id = #{userId} AND product_id = #{productId}
+    </delete>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

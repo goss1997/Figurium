@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.product.dao.CartsMapper">
+
+    <insert id="insertCarts" parameterType="Map">
+        insert into carts(user_id, product_id, quantity)
+        values(
+                #{ loginUserId },
+                #{ productId },
+                #{ quantity }
+                )
+    </insert>
+
+    <!-- 장바구니의 상품 리스트 조회 -->
+    <select id="selectList" resultType="carts" parameterType="int">
+        SELECT
+            c.id,                   -- 장바구니 ID
+            c.user_id AS userId,    -- 사용자 ID
+            c.product_id AS productId, -- 상품 ID
+            c.quantity,             -- 장바구니에 담긴 수량
+            p.name AS name,         -- 상품 이름
+            p.price AS price,       -- 상품 가격
+            p.image_url AS imageUrl, -- 상품 이미지 URL
+            p.quantity AS productQuantity -- 상품 재고 수량
+        FROM
+            carts c
+                JOIN
+            products p ON c.product_id = p.id
+        WHERE
+            c.user_id = #{loginUserId}
+    </select>
+
+    <select id="selectCartsById" resultType="carts" parameterType="int">
+        select * from carts
+        where product_id = #{ productId }
+        and user_id = #{loginUserId}
+    </select>
+
+    <delete id="deleteCartProduct" parameterType="map">
+        delete from carts where product_id = #{ productId } and
+                                user_id = #{ loginUserId }
+    </delete>
+
+    <update id="updateCartQuantity" parameterType="carts">
+        update carts
+            set quantity = #{ quantity }
+            where product_id = #{ productId }
+            and user_id = #{ userId }
+    </update>
+
+
+    <!-- 특정 사용자의 장바구니에서 주어진 상품에 대한 항목을 조회 -->
+    <select id="getCartItem" resultType="carts">
+        SELECT * FROM carts
+        WHERE user_id = #{userId} AND product_id = #{productId}
+    </select>
+
+    <!-- 사용자의 장바구니에 새로운 상품을 추가 -->
+    <insert id="insertCartItem">
+        INSERT INTO carts (user_id, product_id, quantity, added_time)
+        VALUES (#{userId}, #{productId}, #{quantity}, NOW())
+    </insert>
+
+    <!-- 장바구니의 특정 항목의 수량을 업데이트 -->
+    <update id="updateCartItemQuantity">
+        UPDATE carts
+        SET quantity = #{quantity}
+        WHERE id = #{cartId}
+    </update>
+
+    <!-- 특정 사용자의 장바구니에 담긴 모든 항목을 조회 -->
+    <select id="getCartItems" resultType="carts">
+        SELECT c.*, p.name, p.price, p.image_url
+        FROM carts c
+                 JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = #{userId}
+    </select>
+
+    <!-- 장바구니 에서 체크된 항목을 결제 폼으로 넘김 -->
+    <select id="checksCartItemList" parameterType="map" resultType="carts">
+        SELECT c.id AS id, c.product_id AS productId, c.quantity AS quantity, p.name, p.price, p.image_url AS imageUrl
+        FROM carts c
+        JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = #{userId}
+        AND c.product_id IN
+        <foreach item="productId" collection="productId" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </select>
+
+    <!-- 장바구니 즉시 구매 -->
+    <select id="checksCartItemOne" parameterType="map" resultType="carts">
+        SELECT c.id AS id, c.product_id AS productId, c.quantity AS quantity, p.name, p.price, p.image_url AS imageUrl
+        FROM carts c
+        JOIN products p ON c.product_id = p.id
+        WHERE c.product_id = #{productId}
+        AND c.user_id = #{userId}
+    </select>
+
+    <!-- 장바구니에 해당 상품이 있는지 담기전에 체크하기 -->
+    <select id="checksCartItem" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM carts
+        WHERE product_id = #{productId}
+          AND user_id = #{userId}
+    </select>
+
+    <!-- 상품의 총 재고 수량을 가져오는 쿼리 -->
+    <select id="getProductQuantity" parameterType="int" resultType="int">
+        SELECT quantity
+        FROM products
+        WHERE id = #{productId}
+    </select>
+
+    <!-- 장바구니에 담기전에 해당 상품의 재고가 있는지 확인 -->
+    <select id="checkProductQuantity" resultType="int">
+        SELECT COALESCE(SUM(quantity), 0)
+        FROM carts
+        WHERE user_id = #{userId}
+          AND product_id = #{productId}
+    </select>
+</mapper>

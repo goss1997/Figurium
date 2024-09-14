@@ -1,0 +1,110 @@
+
+
+.categories_main_box{
+    margin: auto;
+    width: 1200px;
+}
+
+.sort_box {
+    display: flex;           /* Flexbox 사용 */
+    justify-content: space-between; /* 자식 요소들을 좌우로 배치 */
+    align-items: center;     /* 수직 중앙 정렬 */
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+
+/* 필터 박스 스타일 */
+.filter_box {
+    margin: 0; /* 여백 제거 */
+    padding-left: 10px; /* 좌측 여백 추가 (필요시) */
+}
+
+/* 선택 컨테이너 스타일 */
+.select_container {
+    position: relative;
+    display: inline-block;
+}
+
+/* 선택 박스 스타일 */
+.select_filter {
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.select_filter:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.2);
+}
+
+.select_filter option {
+    padding: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #292929;
+}
+
+.pagination a:hover,
+.pagination a.active {
+    border-color: #007bff;
+}
+
+.pagination a.active {
+    font-weight: bold;
+    cursor: default;
+    color: #007bff;
+}
+
+/*Sold Out*/
+.block2-pic {
+    position: relative;
+    display: inline-block;
+}
+
+.block2-pic img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.sold-out-overlay {
+    position: absolute;
+    width: 525px;
+    height: 525px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8); /* 흐림 효과를 위한 배경 */
+    color: red; /* SOLD OUT 텍스트 색상 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    z-index: 10; /* 이미지 위에 표시되도록 설정 */
+    opacity: 0.7; /* 흐림 효과 */
+    pointer-events: none; /* 오버레이가 클릭되지 않도록 설정 */
+}

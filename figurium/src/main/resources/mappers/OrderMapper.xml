@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.order.dao.OrderMapper">
+
+    <insert id="insertOrders" parameterType="Map">
+        insert into orders(id, user_id, payment_type, price, status, created_at, valid, merchant_id)
+        values(
+                null,
+                #{ userId },
+                #{ paymentType },
+                #{ price },
+                #{ status },
+                CURRENT_TIMESTAMP,
+                'y',
+                #{ merchantUid }
+                )
+    </insert>
+
+    <select id="selectOneLast" resultType="orders">
+        select * from orders order by id desc limit 1;
+    </select>
+
+<!--    <select id="selectListByUserId" resultType="myOrders" parameterType="int">-->
+<!--        SELECT-->
+<!--            o.id AS order_id,-->
+<!--            o.user_id,-->
+<!--            o.payment_type,-->
+<!--            o.price,-->
+<!--            o.status,-->
+<!--            o.created_at,-->
+<!--            p.name AS product_name,-->
+<!--            p.image_url,-->
+<!--            (SELECT COUNT(*) - 1-->
+<!--             FROM order_items oi2-->
+<!--             WHERE oi2.order_id = o.id) AS remain_count-->
+<!--        FROM orders o-->
+<!--                 JOIN order_items oi ON o.id = oi.order_id-->
+<!--                 JOIN products p ON oi.product_id = p.id-->
+<!--        where o.user_id = #{userId}-->
+<!--        ORDER BY oi.id DESC-->
+<!--        LIMIT 1-->
+<!--    </select>-->
+
+    <select id="selectListByUserId" resultType="myOrders" parameterType="int">
+        select
+            ohv.id,
+            max(ohv.payment_type) as payment_type,
+            max(ohv.name) as name,
+            sum(IFNULL(ohv.price, 0)) as price,
+            date_format(max(ohv.created_at), '%Y/%m/%d') as created_at,
+            max(ohv.product_name) as product_name,
+            count(distinct ohv.product_name)-1 as product_count,
+            max(img.image_url) as image_url,
+            max(ohv.status) as status,
+            max(ohv.valid) as valid,
+            max(ohv.refund_reason) as refund_reason,
+            sum(IFNULL(ohv.price, 0) * IFNULL(ohv.quantity, 1)) as total_value
+        from order_history_refund_view ohv
+                 left join (
+            select id, product_name, image_url,
+                   row_number() over (partition by id, product_name order by created_at desc) as rn
+            from order_history_refund_view
+        ) img on ohv.id = img.id and ohv.product_name = img.product_name and img.rn = 1
+        where ohv.user_id = #{user_id}
+        group by ohv.id
+        order by max(ohv.created_at) desc
+    </select>
+
+
+    <select id="selectListByDetailOrder" resultType="myOrders" parameterType="int">
+        select
+            oh.*,
+            (select sum(price * quantity)
+             from order_history_view
+             where id = #{ myOrderId } and user_id = #{ userId }) as total_value
+        from order_history_view oh
+        where id = #{ myOrderId } and user_id = #{ userId }
+    </select>
+
+    <select id="selectOneOrderInfo" resultType="myOrders" parameterType="int">
+        select
+            oh.*,
+            (select sum(price * quantity)
+             from order_history_view
+             where id = #{ myOrderId } and user_id = #{ userId }) as total_value
+        from order_history_view oh
+        where id = #{ myOrderId } and user_id = #{ userId } limit 1
+    </select>
+
+
+    <select id="selectOneByMerchantUid" resultType="myOrders" parameterType="int">
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            max(valid) as valid,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            max(merchant_id) as merchant_id,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_view
+        where id = #{ id }
+        group by id;
+    </select>
+
+    <update id="updateOrderStatus" parameterType="myOrders">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectOneById" resultType="myOrders">
+        select * from orders where id = #{id}
+    </select>
+
+    <select id="selectOneByStatus" resultType="String">
+        select status from orders where id = #{id} limit 1
+    </select>
+
+    <update id="updateByRefund" parameterType="int">
+        update orders set valid = 'n', status = '환불완료'
+        where id = #{ id }
+    </update>
+
+    <select id="selectOneByProductsId" resultType="int" parameterType="int">
+        select id
+            from orders
+            where user_id = #{ userId }
+        order by created_at desc
+        limit 1
+    </select>
+
+
+
+
+
+<!--    admin       -->
+
+    <select id="viewAllList" resultType="myOrders" >
+        -- select * from order_history_view
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            max(status) as status,
+            max(valid) as valid,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_view
+        group by id
+        order by id desc;
+    </select>
+
+    <insert id="insertRfreasons" parameterType="Map">
+        insert into rfreasons (name, order_id)
+        values(
+               #{ name },
+               #{ orderId }
+              )
+    </insert>
+
+    <select id="selectListByPayment" resultType="myOrders" parameterType="int">
+        select
+            id,
+            max(payment_type) as payment_type,
+            max(name) as name,
+            sum(price) as price,
+            date_format(max(created_at), '%Y/%m/%d') as created_at,
+            max(product_name) as product_name,
+            count(distinct product_name) - 1 as product_count,
+            min(image_url) as image_url,
+            max(status) as status,
+            max(valid) as valid,
+            max(refund_reason) as refund_reason,
+            sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
+        from order_history_refund_view
+        where refund_reason IS NOT NULL
+          and valid = 'y'
+        group by id
+        order by max(created_at) desc   -- 역순 정렬
+    </select>
+
+
+    <select id="selectListByRetrun" resultType="myOrders">
+        select
+            ohv.id,                     -- 주문 ID (order_history_view의 id)
+            ohv.payment_type,           -- 결제 방식
+            ohv.user_id,                -- 사용자 ID
+            ohv.status,                 -- 주문 상태
+            ohv.created_at,             -- 주문 생성일자
+            ohv.valid,                  -- 주문의 유효성 여부 (valid)
+            ohv.merchant_id,            -- 상점 ID
+            ohv.price,                  -- 상품 가격
+            ohv.quantity,               -- 주문한 상품의 수량
+            ohv.name as customer_name,  -- 고객 이름 (customer 테이블의 name)
+            ohv.customer_phone,         -- 고객 전화번호 (customer 테이블의 phone)
+            ohv.email,                  -- 고객 이메일 (customer 테이블의 email)
+            ohv.recipient_name,         -- 배송 수취인 이름 (shipping_addresses 테이블의 recipient_name)
+            ohv.phone as shipping_phone,-- 배송지 전화번호 (shipping_addresses 테이블의 phone)
+            ohv.address,                -- 배송 주소 (shipping_addresses 테이블의 address)
+            ohv.delivery_request,       -- 배송 요청 사항 (shipping_addresses 테이블의 delivery_request)
+            ohv.product_name,           -- 주문한 상품 이름 (products 테이블의 name)
+            ohv.image_url,              -- 상품 이미지 URL (products 테이블의 image_url)
+            ohv.p_id,                   -- 상품 ID (products 테이블의 id)
+            qa.title,                   -- QA 제목 (qa 테이블의 title)
+            qa.content,                 -- QA 내용 (qa 테이블의 content)
+            qa.replyStatus,             -- QA 답변 상태 (qa 테이블의 replyStatus)
+            qa.created as qa_created    -- QA 생성일자 (qa 테이블의 created)
+        from
+            order_history_view ohv      -- order_history_view와 qa 테이블을 product_id로 조인
+                inner join
+            qa on ohv.id = qa.orders_id
+        where
+            qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
+             and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
+        order by
+            ohv.id desc                 -- 주문 ID 기준으로 정렬 (오름차순)
+
+    </select>
+
+    <select id="getRetrunCount" resultType="int">
+        select COALESCE(COUNT(*), 0)
+        from
+            order_history_view ohv      -- order_history_view와 qa 테이블을 product_id로 조인
+                inner join
+            qa on ohv.id = qa.orders_id
+        where
+            qa.title like '%[반품문의]%' -- QA 제목에 '반품문의'가 포함된 항목만 조회
+          and ohv.valid = 'y'          -- 결제완료상태 ( 환불완료 x ) 주문만 조회
+    </select>
+    <select id="getPaymentCount"  parameterType="int">
+        select COALESCE(COUNT(*), 0)
+        from order_history_refund_view
+        where refund_reason IS NOT NULL
+          and valid = 'y'
+        group by id
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.githrd.figurium.user.dao.UserMapper">
+    <insert id="insert" parameterType="UserVo">
+        insert into users
+        values ( null, #{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImgUrl},
+                 default, default, default, default)
+    </insert>
+
+    <insert id="insertSocialUser" parameterType="UserProfile" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (email, name, profile_img_url)
+        VALUES (#{email}, #{name}, #{profileImageUrl})
+    </insert>
+
+    <select id="selectByEmail" parameterType="String" resultType="UserVo">
+        select * from users where email = #{email}
+    </select>
+
+    <update id="softDelete" parameterType="int">
+        update users
+        set deleted = 1
+        where id = #{userId}
+    </update>
+
+    <delete id="deleteByUserId" parameterType="int">
+        delete
+        from users
+        where id = #{userId};
+    </delete>
+
+    <select id="findByEmailAndDeletedFalse" parameterType="String" resultType="int">
+        select count(*)
+        from users
+        where email = #{findEmail}
+          and password IS NOT NULL
+          and deleted = false
+    </select>
+
+    <update id="updateUserPassword">
+        update users
+        set password = #{encPwd}
+        where id = #{userId}
+    </update>
+
+    <select id="selectMyProductLikeList" parameterType="int" resultType="products">
+        select p.*
+        from products p
+        left join product_likes on p.id = product_likes.product_id
+        where product_likes.user_id = #{userId}
+        order by id desc
+        limit #{pageSize} offset #{offset}
+    </select>
+
+    <select id="getTotalCountByUserId" resultType="int">
+        select count(*)
+        from product_likes
+        where user_id = #{userId}
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

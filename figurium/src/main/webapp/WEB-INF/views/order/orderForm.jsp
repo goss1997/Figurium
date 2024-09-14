@@ -21,7 +21,6 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
   <%-- 결제 API --%>
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   <%-- 주소 API --%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

@@ -366,6 +366,7 @@ gradle-app.setting
 **/classes/
 .vscode/**
 /reset-database/
+/figurium/src/main/resources/application.properties
 
 
 

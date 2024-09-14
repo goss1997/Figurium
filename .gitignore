@@ -365,7 +365,7 @@ gradle-app.setting
 *.iml
 **/classes/
 .vscode/**
-git_final/reset-database/
+/reset-database/
 
 
 

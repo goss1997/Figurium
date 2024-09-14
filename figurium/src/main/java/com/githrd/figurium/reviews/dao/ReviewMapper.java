@@ -40,6 +40,9 @@ public interface ReviewMapper {
     // 페이징 처리를 한 후 리뷰의 리스트를 가져오기
     List<ReviewVo> selectAllWithPagination(Map<String, Object> map);
 
+    // 해당하는 리뷰를 작성 하기 전 해당 현재 상품이 주문이 되엇는지 확인하는 로직
+    int checkReviewProductsValid(int userId, int productId);
+
 
 
 }

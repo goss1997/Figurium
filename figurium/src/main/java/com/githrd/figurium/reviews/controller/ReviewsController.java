@@ -334,6 +334,33 @@ public class ReviewsController {
     }
 
 
+    @RequestMapping("reviewValid")
+    @ResponseBody
+    public Map<String, Object> reviewValid(@RequestParam(value = "userId") int userId,
+                                            @RequestParam(value = "productId") int productId){
+
+        int success = reviewService.checkReviewProductValid(userId, productId);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (success > 0){
+            response.put("reviewSuccess", success);
+        } else {
+            response.put("reviewFail", success);
+        }
+
+
+        return response;
+
+
+
+
+
+    }
+
+
+
+
 
 }
 

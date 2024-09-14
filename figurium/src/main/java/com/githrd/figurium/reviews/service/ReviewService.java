@@ -30,9 +30,10 @@ public interface ReviewService {
     // 페이징 처리를 한 후 리뷰의 리스트를 가져오기
     List<ReviewVo> selectAllWithPagination(Map<String, Object> map);
 
-    public List<ReviewVo> getReviewsWithPagination(int productId, int offset, int size);
+    List<ReviewVo> getReviewsWithPagination(int productId, int offset, int size);
 
-
+    // 해당 리뷰 작성 전 구매 했는지 확인
+    int checkReviewProductValid(int userId, int productId);
 
 
 

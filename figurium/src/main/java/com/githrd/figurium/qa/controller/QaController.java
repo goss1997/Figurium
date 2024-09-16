@@ -150,7 +150,7 @@ public class QaController {
     public String save(@RequestParam("title") String title,
                        @RequestParam("content") String content,
                        @RequestParam("category") String category,
-                       @RequestParam(value = "orderId", required = false) int orderId,
+                       @RequestParam(value = "orderId", required = false) String orderId,
                        @RequestParam(value = "reply", required = false) String reply) {
         User loginUser = (User) session.getAttribute("loginUser");
         // 로그인 상태를 확인
@@ -162,18 +162,28 @@ public class QaController {
         if (title != null && !title.startsWith("[" + category + "]")) {
             title = "[" + category + "] " + title;
         }
-
         QaVo qaVo = new QaVo();
+
+
+
         // User ID 처리
         if (loginUser.getId() != null) {
             // Integer 타입일 경우
             qaVo.setUserId(loginUser.getId());
         }
+        // orderId 가져온 후 "" or null 일경우 확인 후 변경
+        if (orderId != null && !orderId.isEmpty()) {
+            // null or "" 가 아니라면 String -> int로 변환 후 set
+            qaVo.setOrdersId(Integer.parseInt(orderId));
+        } else {
+            // null or "" 이라면  값을 넣는게 아닌 db에 null으로 기재
+            qaVo.setOrdersId(null); // orderId가 빈 문자열이면 null로 설정
+        }
 
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);
-        qaVo.setOrdersId(orderId);
+
 
         qaService.saveQa(qaVo);
 

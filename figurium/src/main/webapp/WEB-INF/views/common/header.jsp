@@ -241,16 +241,16 @@
                             <a href="/">Home</a>
                         </li>
                         <li>
-                            <a href="productList.do?name=전체 상품">카테고리</a>
+                            <a href="${pageContext.request.contextPath}/productList.do?name=전체 상품">카테고리</a>
                             <ul class="sub-menu">
                                 <c:forEach var="category" items="${headerCategories}">
-                                    <li><a href="productList.do?name=${category.name}">${category.name}</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a></li>
                                 </c:forEach>
                             </ul>
                         </li>
 
                         <li <%--class="label1" data-label1="hot"--%>>
-                            <a href="/CartList.do">장바구니</a>
+                            <a href="${pageContext.request.contextPath}/CartList.do">장바구니</a>
                         </li>
 
                         <li>

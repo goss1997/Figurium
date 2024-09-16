@@ -200,6 +200,11 @@
             font-size: 13px;
         }
 
+        #notification-list-area i:hover {
+            font-weight: bold;
+
+        }
+
     </style>
 
 
@@ -317,14 +322,9 @@
                                         class="sub-menu">
                                         <h2 style="text-align: center;">Notification</h2>
                                         <hr>
-                                        <%-- 데이터베이스에서 가져온 알림 데이터 리스트 출력 --%>
-                                        <c:forEach var="notification" items="${notificationList}">
-                                            <li style="font-size: 18px;">
-                                                <i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">
-                                                    ${notification.message}
-                                                </i>
-                                            </li>
-                                            </c:forEach>
+                                        <div id="notification-list-area">
+
+                                        </div>
                                         <li style="color: #ff5f5f; text-align: center; font-size: 20px;" onclick="">모든 알림 삭제</li>
                                     </ul>
                                 </li>
@@ -576,6 +576,40 @@
 <c:if test="${loginUser != null}">
     <script>
         /**
+        * 사용자 알림 리스트 가져오기
+        */
+        $(function(){
+            $.ajax({
+               url : '/api/notifications/user/${loginUser.id}',
+               method : 'GET',
+               success : function (notifications) {
+                    if(notifications.length === 0) {
+                        $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
+                    } else {
+                        let appendForm;
+                            console.log(notifications[0]);
+                            console.log(notifications[1]);
+                            console.log(notifications[2]);
+                            console.log(notifications[3]);
+                            console.log(notifications[4]);
+                        for (const notification of notifications ) {
+                            appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
+                                        '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
+                                        notification.message + '</i>' +
+                                        '</li>';
+                            // 알림 객체 알림 모달 맨위에 추가.
+                            $("#notification-list-area").append(appendForm);
+                        }
+
+                    }
+               },
+               error: function(xhr, status, error) {
+                   console.error('Error fetching data:', error);
+               }
+            });
+        });
+
+        /**
          * 로그인한 사용자면 SSE 연결
          */
 
@@ -599,6 +633,15 @@
             const notification = JSON.parse(event.data);
             console.log(notification.url);
             console.log(notification.message);
+
+            let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
+                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
+                notification.message + '</i>' +
+                '</li>';
+
+            // 알림 객체 알림 모달 맨위에 추가.
+            $("#notification-list-area").prepend(appendForm);
+
         });
 
 

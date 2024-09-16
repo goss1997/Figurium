@@ -5,6 +5,7 @@ import com.githrd.figurium.notification.vo.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -86,6 +87,7 @@ public class NotificationService {
      * 특정 사용자에게 알림을 전송
      * @param notification : db에 저장할 알림 객체
      */
+    @Transactional
     public void sendNotification(Notification notification) {
         // 해당 사용자 ID의 SseEmitter 객체 가져오기
         SseEmitter emitter = emitters.get(notification.getUserId());

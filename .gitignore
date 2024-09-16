@@ -365,7 +365,9 @@ gradle-app.setting
 *.iml
 **/classes/
 .vscode/**
+/reset-database/
 /reset-database/**
+reset-database/**
 figurium/src/main/resources/application.properties
 
 

@@ -243,7 +243,7 @@
                         <li>
                             <a href="${pageContext.request.contextPath}/productList.do?name=전체 상품">카테고리</a>
                             <ul class="sub-menu">
-                                <c:forEach var="category" items="${FigureCategories}">
+                                <c:forEach var="category" items="${figureCategories}">
                                     <li><a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a></li>
                                 </c:forEach>
                             </ul>

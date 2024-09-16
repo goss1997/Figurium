@@ -1,4 +1,4 @@
-package com.githrd.figureDataInsert.apidata.controller;
+package com.githrd.figureDataInsert.apidata.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,6 +8,7 @@ import com.githrd.figureDataInsert.apidata.repository.CategoryRepository;
 import com.githrd.figureDataInsert.apidata.repository.ProductBulkRepository;
 import com.githrd.figureDataInsert.apidata.vo.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -30,6 +31,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ApiLoader implements ApplicationRunner {
 
     @Value("${naver.client.id}")
@@ -39,6 +41,7 @@ public class ApiLoader implements ApplicationRunner {
 
     private final ProductBulkRepository productBulkRepository;
     private final CategoryRepository categoryRepository;
+    private final SqlFileExecutor sqlFileExecutor;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -47,10 +50,11 @@ public class ApiLoader implements ApplicationRunner {
         double startTime = startTimeMillis / 1000.0;
 
         List<String> categories = Arrays.asList("반프레스토", "세가", "후류", "메가하우스", "반다이");
+        log.info(" - - - - 피규어 더미 데이터 저장 실행");
 
         // db 삽입용 메소드
         for (String category : categories) {
-            System.out.println(" - - - - - "+category+" 데이터 삽입 중~ - - - - - ");
+            log.info(" - - - - - {} 데이터 저장 중", category);
 
             // db에 카테고리 저장.
             categoryRepository.insertCategory(category);
@@ -68,14 +72,20 @@ public class ApiLoader implements ApplicationRunner {
             }
 
         }
+        log.info(" - - - - 피규어 더미 데이터 저장 종료");
+
+
+        // 피규어 데이터 저장이 끝난 이후 dummy.sql 스크립트 실행
+        sqlFileExecutor.executeSqlFile();
+
 
 
         // 종료 시간 기록 (초 단위로 변환)
         long endTimeMillis = System.currentTimeMillis();
         double endTime = endTimeMillis / 1000.0;
 
-        System.out.println("실행 시간: " + String.format("%.2f", (endTime - startTime)) + " 초");
-        System.out.println(" - - - - F I N I S H - - - - ");
+        log.info("실행 시간: " + String.format("%.2f", (endTime - startTime)) + " 초");
+        log.info(" - - - - - F I N I S H");
 
         // 애플리케이션 종료
         System.exit(0);
@@ -154,7 +164,7 @@ public class ApiLoader implements ApplicationRunner {
                 productBulkRepository.bulkInsertProducts(productList);
 
             } else {
-                System.out.println("No items found.");
+                log.info("No items found.");
             }
         } catch (IOException e) {
             e.printStackTrace();

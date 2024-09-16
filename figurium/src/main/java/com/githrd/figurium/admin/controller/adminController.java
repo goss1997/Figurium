@@ -214,7 +214,7 @@ public class adminController {
         }
 
         List<MyOrderVo> listReturns = orderMapper.selectListByRetrun();
-
+        System.out.println("리스트 : " + listReturns);
         model.addAttribute("listReturns" , listReturns);
 
         return "admin/adminReturns";

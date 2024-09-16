@@ -189,7 +189,7 @@
         <form>
             <input type="hidden" name="productId" value="${product.id}">
             <span class="qaInsert_btn_box">
-             <input class="qaInsert_btn" type="button" value="질문작성" onclick="qaInsert(this.form)">
+             <input class="qaInsert_btn" type="button" value="Q&A작성" onclick="qaInsert(this.form)">
             </span>
         </form>
 
@@ -238,16 +238,13 @@
             }
         });
 
-    function qaInsert(f) {
-        f.method = "GET"
-        f.action = '/qa/productQaInsert.do';
-        f.submit();
-    }
+
 
 
     function qaInsert(f) {
-        f.method = "GET"
-        f.action = '/qa/productQaInsert.do';
+
+        f.method = "POST"
+        f.action = '/qa/qaInsert.do';
         f.submit();
     }
 

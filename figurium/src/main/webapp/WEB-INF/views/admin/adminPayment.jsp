@@ -110,6 +110,7 @@
         <td>${order.status}</td>
         <td><input class="btn btn-light" type="button" value="환불처리" onclick="ordersRefund(this);"></td>
         <input type="hidden" name="ordersId" value="${order.id}">
+        <%--현재 for문도는 상품의 id를 preID로 저장--%>
       </tr>
     </c:forEach>
     </tbody>
@@ -139,10 +140,8 @@
         if (response > 0 ){
           alert("환불처리에 성공했습니다.");
 
-          if (confirm("환불하신 상품의 QA문의에 답글 작성하시겠습니까?")){
-            window.location.href = "qaSelect.do?id=" + response; // 페이지 이동
-          }
           location.reload();
+          }
         }
       },
       error: function (xhr, status, error) {

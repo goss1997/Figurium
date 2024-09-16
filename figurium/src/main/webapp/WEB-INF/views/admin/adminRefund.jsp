@@ -103,7 +103,8 @@
     </tr>
     </thead>
     <tbody>
-      <c:forEach var="order" items="${orderList}">
+    <%--중복 ID 미노출되도록 하는 set 코드--%>
+    <c:forEach var="order" items="${orderList}">
     <tr>
       <td>${order.id}<br>${order.createdAt}</td>
       <td>${order.productName}</td>
@@ -125,7 +126,7 @@
         <input type="hidden" name="ordersId" value="${order.id}">
       </td>
     </tr>
-    </c:forEach>
+      </c:forEach>
     </tbody>
   </table>
 

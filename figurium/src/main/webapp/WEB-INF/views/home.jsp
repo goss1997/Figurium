@@ -249,7 +249,7 @@
                     <li class="nav-item product-category">
                         <a class="nav-link" href="javascript:void(0);">전체</a>
                     </li>
-                <c:forEach var="category" items="${categoriesList}">
+                <c:forEach var="category" items="${FigureCategories}">
                     <li class="nav-item product-category">
                         <a class="nav-link" href="javascript:void(0);">${category.name}</a>
                     </li>

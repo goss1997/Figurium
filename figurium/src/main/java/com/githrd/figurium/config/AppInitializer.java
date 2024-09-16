@@ -22,8 +22,8 @@ public class AppInitializer {
     public void init() {
 
         // 카테고리 application scope에 set하기.
-        List<Category> headerCategories = categoriesRepository.findAll();
-        servletContext.setAttribute("headerCategories", headerCategories);
+        List<Category> FigureCategories = categoriesRepository.findAll();
+        servletContext.setAttribute("FigureCategories", FigureCategories);
     }
 
 

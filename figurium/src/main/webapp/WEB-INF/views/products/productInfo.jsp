@@ -517,16 +517,39 @@
 
         let productId = f.productId.value;
 
-        let user = "${sessionScope.loginUser}";
+        let userId = "${sessionScope.loginUser.id}";
 
-        if (user === "null" || user === "") {
+        if (userId === "null" || userId === "") {
             alert("로그인이 필요한 서비스 입니다.");
             return;
         }
 
-        f.action = 'reviewInsertForm.do';
-        f.method = "POST";
-        f.submit();
+        $.ajax({
+            url     :   "reviewValid",
+            type    :   "POST",
+            data    :   {productId : productId , userId : userId},
+            success :   function (response){
+
+                    if (response.reviewSuccess){
+                            f.action = 'reviewInsertForm.do';
+                            f.method = "POST";
+                            f.submit();
+                    } else {
+                        alert("상품의 리뷰 작성은 해당 상품을 구입해야 가능합니다.")
+                        return false;
+                    }
+                },
+            error     :   function (error){
+                alert("현재 상품정보를 읽어오는 도중 에러가 발생 했습니다.");
+            }
+
+        });
+
+
+
+
+
+
 
     }
 

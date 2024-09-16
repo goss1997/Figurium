@@ -83,5 +83,21 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.selectAllWithPagination(map);
     }
 
+    // 리뷰 작성 전 해당 상품을 구매 했는지 확인
+    @Override
+    public int checkReviewProductValid(int userId, int productId) {
+
+        int checkProduct = reviewMapper.checkReviewProductsValid(userId, productId);
+
+        if (checkProduct > 0) {
+
+            return checkProduct;
+
+        } else {
+            return 0;
+        }
+
+    }
+
 
 }

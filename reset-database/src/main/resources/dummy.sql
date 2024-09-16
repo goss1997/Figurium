@@ -2,6 +2,7 @@
 -- 사용할 데이터베이스 지정
 USE figurium_db;
 
+-- 상품 좋아요 더미 데이터
 -- 회원1(일용자)의 좋아요한 상품 더미 데이터
 INSERT INTO product_likes VALUES (null,1,12,default);
 INSERT INTO product_likes VALUES (null,1,22,default);

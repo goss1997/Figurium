@@ -7,7 +7,7 @@
     <!-- 알림 삽입 -->
     <insert id="insertNotification">
         INSERT INTO notifications (user_id, message, url, isRead, created_at)
-        VALUES (#{userId}, #{message}, #{url}, #{isRead}, #{createdAt})
+        VALUES (#{userId}, #{message}, #{url}, default, default)
     </insert>
 
     <!-- 특정 사용자의 알림 목록 조회 -->

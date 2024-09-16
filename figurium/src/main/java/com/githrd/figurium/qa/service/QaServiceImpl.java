@@ -61,7 +61,7 @@
             Notification notification = Notification.builder()
                     .userId(qaVo.getUserId())
                     .message("관리자가 답변을 남겼습니다.")
-                    .url("/qaSelect.do?id=" + qaVo.getId())
+                    .url("/qa/qaSelect.do?id=" + qaVo.getId())
                     .build();
 
             // 사용자에게 알림 전송

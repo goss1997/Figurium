@@ -1,11 +1,7 @@
 package com.githrd.figurium.notification.vo;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.ibatis.type.Alias;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Notification {
 
     private int id; // 알림 ID (Primary Key)

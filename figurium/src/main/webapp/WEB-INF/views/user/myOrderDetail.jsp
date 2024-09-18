@@ -498,9 +498,10 @@
                             <p>제가 모두 도와드릴게요!</p>
                         </div>
                     </div>
-
-                <button class="order-button" onclick="location.href='/qa/qaInsertOrderId.do?orderId=' + ${ myOrderInfo.id }">모든 문의는 여기로!</button>
-
+                <form action="/qa/qaInsert.do" method="post">
+                <input type="hidden" name="orderId" value="${myOrderInfo.id}">
+                <button type="submit" class="order-button" >모든 문의는 여기로!</button>
+                </form>
             </div>
 
         </div>

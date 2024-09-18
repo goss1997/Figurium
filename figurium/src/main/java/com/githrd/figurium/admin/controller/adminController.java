@@ -1,6 +1,6 @@
 package com.githrd.figurium.admin.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.dao.ProductsMapper;
@@ -39,10 +39,10 @@ public class adminController {
     @GetMapping("/admin.do")
     public String admin(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -56,10 +56,10 @@ public class adminController {
     @GetMapping("/adminPayment.do")
     public String adminPayment(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -81,10 +81,10 @@ public class adminController {
     @ResponseBody
     public int ordersRefund(int id) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
 
         }
 
@@ -101,10 +101,10 @@ public class adminController {
     @ResponseBody
     public ResponseEntity<String> handleDeliveryCondition(@RequestBody Map<String, Object> data) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
 
         }
         try {
@@ -141,10 +141,10 @@ public class adminController {
     @GetMapping("/adminQaList.do")
     public String adminQaList(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -160,10 +160,10 @@ public class adminController {
     @GetMapping("/adminRefund.do")
     public String changeStatus(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
         List<MyOrderVo> orderList = orderMapper.viewAllList();
@@ -177,10 +177,10 @@ public class adminController {
     @ResponseBody
     public ResponseEntity<Map<String, Integer>> getCount() {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
 
         }
         try {
@@ -206,15 +206,15 @@ public class adminController {
     @GetMapping("/adminReturns.do")
     public String adminReturns(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
         List<MyOrderVo> listReturns = orderMapper.selectListByRetrun();
-
+        System.out.println("리스트 : " + listReturns);
         model.addAttribute("listReturns" , listReturns);
 
         return "admin/adminReturns";
@@ -227,10 +227,10 @@ public class adminController {
     @GetMapping("/adminQuantity.do")
     public String adminQuantity(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -245,10 +245,10 @@ public class adminController {
     @ResponseBody
     public int productQuantity(int id, int quantity) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
 
         }
 

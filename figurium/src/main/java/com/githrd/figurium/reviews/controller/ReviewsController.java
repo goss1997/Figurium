@@ -1,19 +1,18 @@
 package com.githrd.figurium.reviews.controller;
 
-import com.githrd.figurium.product.service.ProductsService;
+import com.githrd.figurium.common.s3.S3ImageService;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.page.CommonPage;
-import com.githrd.figurium.util.page.Paging;
-import com.githrd.figurium.util.page.reviewsCommonPage;
-import com.githrd.figurium.util.s3.S3ImageService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,7 +44,7 @@ public class ReviewsController {
                                @RequestParam(value = "productId") Integer productId,
                                Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if(loginUser == null) {
             return "redirect:/";
@@ -67,7 +66,7 @@ public class ReviewsController {
                              HttpSession session,
                              RedirectAttributes ra) {
 
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (user == null) {
             ra.addAttribute("reason", "not_session");
@@ -81,7 +80,7 @@ public class ReviewsController {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 // S3에 파일 업로드
-                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                String s3ImgUrl = s3ImageService.upload(imageFile);
                 // view에서 설정한 param명을 받아와서 imageUrl에 넣어준다.
                 reviewVo.setImageUrl(s3ImgUrl); // 업로드된 이미지의 URL을 reviewVo에 설정
             } catch (Exception e) {
@@ -196,7 +195,7 @@ public class ReviewsController {
     @ResponseBody
     public Map<String, Object> getReviewContent(@RequestParam("id") int id, HttpSession session) {
 
-        User user = (User) session.getAttribute("loginUser"); // 세션에서 현재 로그인한 사용자 가져오기
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER); // 세션에서 현재 로그인한 사용자 가져오기
 
         ReviewVo review = reviewService.getReviewById(id); // 리뷰 ID로 리뷰 조회
         Map<String, Object> result = new HashMap<>();
@@ -217,7 +216,7 @@ public class ReviewsController {
                                    Model model) {
 
         // 로그인 유저 검증
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if(loginUser == null) {
             return "redirect:/";
@@ -240,7 +239,7 @@ public class ReviewsController {
                                HttpSession session,
                                RedirectAttributes ra) {
 
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (user == null) {
             ra.addAttribute("reason", "not_session");
             return "redirect:/";
@@ -256,7 +255,7 @@ public class ReviewsController {
         // 업로드 시 이미지를 넣었을 경우 실행
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                String s3ImgUrl = s3ImageService.upload(imageFile);
                 reviewVo.setImageUrl(s3ImgUrl);
             } catch (Exception e) {
                 ra.addAttribute("reason", "image_upload_failed");
@@ -298,7 +297,7 @@ public class ReviewsController {
                                RedirectAttributes ra) {
 
         // 로그인한 사용자 확인
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (user == null) {
             return "redirect:/"; // 로그인되지 않은 경우 메인 페이지로 리다이렉트
         }

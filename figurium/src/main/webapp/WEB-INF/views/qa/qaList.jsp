@@ -51,13 +51,15 @@
         // JSP에서 로그인 상태를 JavaScript 변수로 전달
         const isUserLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 
-        function qaInsert() {
+        function qaInsert(f) {
             if (isUserLoggedIn === 'false') {
                 alert("글쓰기는 로그인 후 가능합니다.");
                 return;
             } else {
                 // 게시글 작성 폼으로 이동
-                location.href = "/qa/qaInsert.do";
+                f.method = "POST";
+                f.action = "/qa/qaInsert.do";
+                f.submit();
             }
         }
     </script>
@@ -109,8 +111,11 @@
             </tbody>
         </table>
         <hr>
-        <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="qaInsert()">글쓰기</button>
-
+        <%--POST 로 보내기위한 더미 input 생성 후 진행--%>
+        <form>
+            <input type="hidden" name="dummy" value="dummy">
+        <button type="button" style="margin-top: 16px !important;" class="btn btn-dark float-right" onclick="qaInsert(this.form);">글쓰기</button>
+        </form>
 
         <!-- 페이징 메뉴 -->
         <div style="margin-top: 30px !important;">

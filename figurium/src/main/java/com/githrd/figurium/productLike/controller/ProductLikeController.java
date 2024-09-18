@@ -1,5 +1,6 @@
 package com.githrd.figurium.productLike.controller;
 
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.productLike.service.ProductLikeService;
 import com.githrd.figurium.productLike.vo.ProductLikeVo;
 import com.githrd.figurium.user.entity.User;
@@ -34,7 +35,7 @@ public class ProductLikeController {
     @PostMapping("/deleteProductLike.do")
     public int deleteProductLike(ProductLikeVo productLikeVo) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null) {
             return 0;

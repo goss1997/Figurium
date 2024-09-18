@@ -36,7 +36,7 @@ public class MyOrderVo {
     private String productName;     // 상품이름
     private String imageUrl;        // 상품이미지
     private int productCount;       // 상품총갯수 - 1(외 1개, 외 2개 별도로 포함시키려는 컬럼)
-
+    private int qaId;               // qaId
     // sum(price * quantity) as total_value  -- 각 행의 price * quantity의 총합
     private int totalValue;         // order 번호에 대한 총가격 계산 컬럼
     private String refundReason;    // 환불사유

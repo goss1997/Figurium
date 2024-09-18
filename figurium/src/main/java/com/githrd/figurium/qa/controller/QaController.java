@@ -1,12 +1,14 @@
 package com.githrd.figurium.qa.controller;
 
+import com.githrd.figurium.common.page.CommonPage;
+import com.githrd.figurium.common.page.Paging;
+import com.githrd.figurium.common.page.ProductQaCommonPage;
+import com.githrd.figurium.common.page.ProductQaPaging;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.page.CommonPage;
-import com.githrd.figurium.util.page.Paging;
-import com.githrd.figurium.util.page.ProductQaCommonPage;
-import com.githrd.figurium.util.page.ProductQaPaging;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,11 +26,13 @@ public class QaController {
 
     private final QaService qaService;
     private final HttpSession session;
+    private final HttpServletRequest request;
 
     @Autowired
-    public QaController(QaService qaService, HttpSession session) {
+    public QaController(QaService qaService, HttpSession session, HttpServletRequest request) {
         this.qaService = qaService;
         this.session = session;
+        this.request = request;
     }
 
     @GetMapping("/qaList.do")
@@ -110,39 +114,21 @@ public class QaController {
     }
 
     //Q&A게시판에서 게시글 작성시
-    @GetMapping("/qaInsert.do")
-    public String insertForm(Model model) {
-        User loginUser = (User) session.getAttribute("loginUser");
+    @PostMapping("/qaInsert.do")
+    public String insertForm(@RequestParam(value = "productId", required = false) Integer productId,
+                             @RequestParam(value = "orderId", required = false) Integer orderId,
+                             Model model) {
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         // 로그인 상태를 확인
         if (loginUser == null) {
             return "redirect:/";
         }
-        return "qa/qaInsert";
-    }
-
-    //Q&A게시판에서 게시글 작성시
-    @GetMapping("/qaInsertOrderId.do")
-    public String insertFormOrderId(Model model, int orderId) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        // 로그인 상태를 확인
-        if (loginUser == null) {
-            return "redirect:/";
-        }
+        model.addAttribute("productId", productId);
         model.addAttribute("orderId", orderId);
+        // Referer 헤더 값 가져오기 / qa페이지 접근 / productInfo 접근 2가지 경우로 뒤로가기 시 이전페이지 이동진행시 필요
+        String referer = request.getHeader("Referer");
+        model.addAttribute("referer", referer);
         return "qa/qaInsert";
-    }
-
-    //상품상세페이지에서 게시글 작성시
-    @GetMapping("/productQaInsert.do")
-    public String productInsertForm(@RequestParam(name = "productId", required = false) Integer productQaId, Model model) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        // 로그인 상태를 확인
-        if (loginUser == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("productQaId", productQaId);
-
-        return "qa/productQaInsert";
     }
 
     //Q&A게시판에서 게시글 작성시
@@ -151,8 +137,9 @@ public class QaController {
                        @RequestParam("content") String content,
                        @RequestParam("category") String category,
                        @RequestParam(value = "orderId", required = false) String orderId,
+                       @RequestParam(value = "productId", required = false) String productId,
                        @RequestParam(value = "reply", required = false) String reply) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         // 로그인 상태를 확인
         if (loginUser == null) {
             return "redirect:/";
@@ -171,6 +158,8 @@ public class QaController {
             // Integer 타입일 경우
             qaVo.setUserId(loginUser.getId());
         }
+
+
         // orderId 가져온 후 "" or null 일경우 확인 후 변경
         if (orderId != null && !orderId.isEmpty()) {
             // null or "" 가 아니라면 String -> int로 변환 후 set
@@ -180,9 +169,20 @@ public class QaController {
             qaVo.setOrdersId(null); // orderId가 빈 문자열이면 null로 설정
         }
 
+
+        // productId 가져온 후 "" or null 일경우 확인 후 변경
+        if (productId != null && !productId.isEmpty()) {
+            // null or "" 가 아니라면 String -> int로 변환 후 set
+            qaVo.setProductId(Integer.parseInt(productId));
+        } else {
+            // null or "" 이라면  값을 넣는게 아닌 db에 null으로 기재
+            qaVo.setProductId(null); // orderId가 빈 문자열이면 null로 설정
+        }
+
         qaVo.setTitle(title);
         qaVo.setContent(content);
         qaVo.setReply(reply);
+
 
 
         qaService.saveQa(qaVo);
@@ -190,45 +190,11 @@ public class QaController {
         return "redirect:/qa/qaList.do";
     }
 
-    //상품상세페이지에서 게시글 작성시
-    @GetMapping("/productQaSave.do")
-    public String productQaSave(@RequestParam("title") String title,
-                                @RequestParam("content") String content,
-                                @RequestParam("category") String category,
-                                @RequestParam(value = "reply", required = false) String reply,
-                                @RequestParam(value = "productId") int productId) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        // 로그인 상태를 확인
-        if (loginUser == null) {
-            return "redirect:/";
-        }
 
-        // 카테고리와 제목을 처리하기 위한 코드 추가
-        if (title != null && !title.startsWith("[" + category + "]")) {
-            title = "[" + category + "] " + title;
-        }
-
-        QaVo qaVo = new QaVo();
-        // User ID 처리
-        if (loginUser.getId() != null) {
-            // Integer 타입일 경우
-            qaVo.setUserId(loginUser.getId());
-        }
-
-
-        qaVo.setTitle(title);
-        qaVo.setContent(content);
-        qaVo.setReply(reply);
-        qaVo.setProductId(productId);
-        qaService.saveProductQa(qaVo);
-
-        // 상품 상세 페이지로 리디렉션하며 해당 상품의 Q&A 목록도 함께 포함
-        return "redirect:/productInfo.do?id=" + productId + "&showQa=true";
-    }
 
     @GetMapping("/qaSelect.do")
     public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         QaVo qaVo = qaService.getQaById(id);
 
         if (qaVo == null) {
@@ -260,49 +226,11 @@ public class QaController {
         return "qa/qaSelect";
     }
 
-    @GetMapping("/productQaSelect.do")
-    public String selectQa(@RequestParam("id") int id,
-                           @RequestParam("productId") int productId,
-                           Model model, RedirectAttributes redirectAttributes) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        QaVo qaVo = qaService.getQaById(id);
-
-        if (qaVo == null) {
-            return "redirect:/qa/productQaList.do"; // 게시글이 존재하지 않을 때
-        }
-
-        // 로그인하지 않은 상태에서 게시글을 클릭한 경우
-        if (loginUser == null) {
-            // 로그인 페이지로 리디렉션하며 메시지를 전달
-            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 사용해 주세요.");
-            return "redirect:/qa/productQaList.do"; // 리스트페이지로 리다이렉트
-        }
-
-
-        // 관리자일 경우, 모든 게시글에 접근 가능
-        if (loginUser != null && (loginUser.getRole() == 1 || qaVo.getUserId().equals(loginUser.getId()))) {
-            model.addAttribute("qa", qaVo);
-            return "qa/productQaSelect";
-        }
-
-        // 관리자도 아니고, 작성자와 다를 경우
-        if (loginUser != null && !qaVo.getUserId().equals(loginUser.getId())) {
-            redirectAttributes.addFlashAttribute("message", "다른 사용자의 게시글입니다.");
-            return "redirect:/qa/productQaList.do"; // 경고 메시지와 함께 목록 페이지로 이동
-        }
-
-
-
-        // 로그인하지 않았거나, 작성자와 같을 경우
-        model.addAttribute("qa", qaVo);
-
-        return "qa/productQaSelect";
-    }
 
     @PostMapping("/qaReplySave.do")
     public String saveReply(@RequestParam("id") int id,
                             @RequestParam("content") String content) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (loginUser == null) {
             return "redirect:/";
         }
@@ -317,7 +245,7 @@ public class QaController {
 
     @PostMapping("/qaReplyDelete.do")
     public String deleteReply(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (loginUser == null || loginUser.getRole() != 1) {
             return "redirect:/";
         }

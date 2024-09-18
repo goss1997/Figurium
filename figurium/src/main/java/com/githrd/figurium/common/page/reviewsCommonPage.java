@@ -1,4 +1,4 @@
-package com.githrd.figurium.util.page;
+package com.githrd.figurium.common.page;
 
 public class reviewsCommonPage {
 

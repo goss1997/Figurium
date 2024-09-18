@@ -89,6 +89,8 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             return ErrorType.NO_RESOURCE_FOUND_EXCEPTION;
         } else if (ex instanceof OutofStockException) {
             return ErrorType.OUT_OF_STOCK_EXCEPTION;
+        } else if (ex instanceof FailToUploadByS3Exception) {
+            return ErrorType.FAIL_TO_UPLOAD_S3;
         }
 
         // 기본적으로 일반 예외로 처리

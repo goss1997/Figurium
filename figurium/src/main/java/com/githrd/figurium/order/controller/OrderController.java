@@ -1,5 +1,6 @@
 package com.githrd.figurium.order.controller;
 
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.exception.customException.OutofStockException;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.product.dao.CartsMapper;
@@ -46,7 +47,7 @@ public class OrderController {
                             HttpSession session,
                             Model model) {
 
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         // 해당 상품이 추가되어있으면 더이상 insert 하지 않기
         CartsVo checkCart = cartsMapper.selectCartsById(productId,user.getId());
@@ -85,7 +86,7 @@ public class OrderController {
                             HttpSession session,
                             Model model) {
 
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         int loginUserId = user.getId();
 
         List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
@@ -127,7 +128,7 @@ public class OrderController {
 //                            HttpSession session,
 //                            Model model) {
 //
-//        User user = (User) session.getAttribute("loginUser");
+//        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 //        int loginUserId = user.getId();
 //
 //        List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
@@ -169,7 +170,7 @@ public class OrderController {
                                        @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities) {
 
         // user session 없으면 결제 진행 불가
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if(user == null) {
             return ResponseEntity.ok("notSession");
         }

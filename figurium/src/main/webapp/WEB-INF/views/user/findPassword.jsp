@@ -10,6 +10,8 @@
 <head>
     <title>비밀번호 찾기</title>
     <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+
     <!-- TODO : 제목 과 스타일 영역 -->
     <style>
         .password-find-page * {
@@ -158,6 +160,12 @@
            method : 'post',
            data : {'findEmail':findEmail},
            success : function (result) {
+
+               // 랜덤번호 생성
+               let randomValue = Math.floor(Math.random() * 1000);
+               // 쿠키에 랜던값 저장(유효기간 1시간)
+               Cookies.set('verificationCode', randomValue, { expires: 1 / 24 }); // 1시간
+
                alert(result+' 메일을 확인해주세요!!');
                location.href="/";
            },

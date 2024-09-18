@@ -32,34 +32,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
+        }z
     </style>
 
-    <script type="text/javascript">
-        // JSP에서 로그인 상태를 JavaScript 변수로 전달
-        const isUserLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 
-        function productQaInsert() {
-            if (isUserLoggedIn === 'false') {
-                alert("글쓰기는 로그인 후 가능합니다.");
-                return;
-            } else {
-                // 게시글 작성 폼으로 이동
-                location.href = "/qa/productQaInsert.do?id=${param.id}&showQa=true";
-            }
-        }
-
-    </script>
-    <% if (request.getAttribute("message") != null) { %>
-    <script>alert("<%= request.getAttribute("message") %>");</script>
-    <% } %>
-
-    <% if (request.getAttribute("alertMessage") != null) { %>
-    <script>
-        alert("<%= request.getAttribute("alertMessage") %>");
-        location.href = "/qa/productQaList.do"; // 알림 후 리스트 페이지로 리디렉트
-    </script>
-    <% } %>
 
 </head>
 
@@ -79,7 +55,7 @@
             </thead>
             <tbody style="text-align: center;">
             <c:forEach var="qa" items="${productQaList}" varStatus="status">
-                <tr onclick="location.href='${pageContext.request.contextPath}/qa/productQaSelect.do?id=${qa.id}&productId=${qa.productId}'" style="cursor: pointer;">
+                <tr onclick="location.href='${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
                     <td>${status.index + 1}</td>
                     <td class="truncate-title" style="text-align: left;">
                         <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>

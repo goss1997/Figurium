@@ -1,6 +1,8 @@
 package com.githrd.figurium.user.service;
 
 import com.githrd.figurium.auth.dto.UserProfile;
+import com.githrd.figurium.common.s3.S3ImageService;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.dao.SocialAccountMapper;
 import com.githrd.figurium.user.dao.UserMapper;
@@ -8,7 +10,6 @@ import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.repository.UserRepository;
 import com.githrd.figurium.user.vo.SocialAccountVo;
 import com.githrd.figurium.user.vo.UserVo;
-import com.githrd.figurium.util.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class UserService {
 
         // s3에 해당 이미지 업로드 후 user에 set하고 db에 저장하기.
         if (!profileImage.isEmpty()) {
-            String profileImgUrl = s3ImageService.uploadS3(profileImage);
+            String profileImgUrl = s3ImageService.upload(profileImage);
             user.setProfileImgUrl(profileImgUrl);
         }else{
             user.setProfileImgUrl("/images/default-user-image.png");
@@ -54,7 +55,7 @@ public class UserService {
         s3ImageService.deleteImageFromS3(user.getProfileImgUrl());
 
         // s3에 수정할 이미지 업로드 후 유저에 set하기.
-        user.setProfileImgUrl(s3ImageService.uploadS3(profileImage));
+        user.setProfileImgUrl(s3ImageService.upload(profileImage));
 
         return userRepository.save(user);
     }
@@ -66,7 +67,7 @@ public class UserService {
     @Transactional
     public User updateUser(String name, String phone, String address) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         loginUser.setName(name);
         loginUser.setPhone(phone);

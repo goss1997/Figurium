@@ -101,8 +101,10 @@
             <th class="col-1">반품처리</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody><%--중복 ID 미노출되도록 하는 set 코드--%>
+        <c:set var="prevId" value="" />
         <c:forEach var="listReturns" items="${listReturns}">
+        <c:if test="${listReturns.id ne prevId}">
             <tr>
                 <td>${listReturns.id}<br>${listReturns.createdAt}</td>
                 <td>${listReturns.productName}</td>
@@ -116,7 +118,10 @@
                     </c:if>
                 </td>
                 <input type="hidden" name="returnsId" value="${listReturns.id}">
+                <input type="hidden" name="qaId" value="${listReturns.qaId}">
             </tr>
+            <c:set var="prevId" value="${listReturns.id}" />
+        </c:if>
         </c:forEach>
         </tbody>
     </table>
@@ -135,6 +140,7 @@
 
         // ordersId 값을 가져오기
         const returnsId = row.find('input[name="returnsId"]').val();
+        const qaId = row.find('input[name="qaId"]').val();
 
         $.ajax({
             url: 'api/refundAdmin.do', // 컨트롤러에서 갯수를 가져오는 URL
@@ -143,8 +149,12 @@
             dataType: 'json',
             success: function (response) {
                 if (response > 0) {
-                    alert("반품처리에 성공했습니다.");
-                    location.reload();
+
+                    if (confirm("반품처리에 성공했습니다.\n반품하신 상품의 QA문의에 답글 작성하시겠습니까?") == true) {
+                        window.location.href = "qa/qaSelect.do?id=" + qaId; // 페이지 이동
+                    } else {
+                        location.reload();
+                    }
                 }
             },
             error: function (xhr, status, error) {

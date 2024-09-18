@@ -22,8 +22,8 @@
     </select>
 
     <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
-        INSERT INTO qa (user_id, title, content, reply, orders_id)
-        VALUES (#{userId}, #{title}, #{content}, #{reply}, #{ordersId})
+        INSERT INTO qa (user_id, title, content, reply, orders_id, product_id)
+        VALUES (#{userId}, #{title}, #{content}, #{reply}, #{ordersId}, #{productId})
     </insert>
 
     <insert id="product_insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
@@ -37,7 +37,6 @@
         SET title = #{title},
         content = #{content},
         reply = #{reply},
-        updated = #{updated},
         replyStatus = #{replyStatus}
         WHERE id = #{id}
     </update>

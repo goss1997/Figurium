@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 작성</title>
+    <title>Q&A 작성</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <link rel="stylesheet"
@@ -26,6 +26,18 @@
                 titleField.value = `[${category}] ${titleValue}`;
             }
         }
+
+        function goBack(){
+
+            const refererUrl = document.getElementById('refererUrl').value;
+            if (refererUrl) {
+                window.location.href = refererUrl;
+            } else {
+                //referer가 없을때 사용
+                window.history.back();
+            }
+
+        }
     </script>
 </head>
 <jsp:include page="../common/header.jsp"/>
@@ -34,9 +46,10 @@
 
 <div id="content-wrap-area">
 <div class="container pt-3">
-    <h1 style="margin-bottom: 15px">게시글 작성</h1>
+    <h1 style="margin-bottom: 15px">Q&A 작성</h1>
     <hr>
     <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
+
         <div class="form-group">
             <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" autocomplete="off">
         </div>
@@ -57,8 +70,10 @@
             <textarea class="form-control" style="resize: none; height: 300px;" id="content" name="content"
                       placeholder="내용을 입력하세요" autocomplete="off"></textarea>
         </div>
+        <input type="hidden" name="productId" value="${productId}">
         <input type="hidden" name="orderId" value="${requestScope.orderId}">
-        <a href="${pageContext.request.contextPath}/qa/qaList.do" class="btn btn-light" role="button" style="margin-bottom: 10px; float: right;">취소</a>
+        <input type="hidden" id="refererUrl" value="${referer}">
+        <a onclick="goBack()" class="btn btn-light" role="button" style="margin-bottom: 10px; float: right;">취소</a>
         <button type="submit" class="btn btn-dark" style="margin-bottom: 10px; float: right; margin-right: 10px;">등록</button>
 
     </form>

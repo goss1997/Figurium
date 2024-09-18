@@ -232,7 +232,14 @@
                 <a href="/" class="logo" style="margin-left: -40px;">
                     <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
-
+                <script>
+                    $(function() {
+                        $('a[href="/"]').click(function() {
+                            // sessionStorage 초기화
+                            sessionStorage.clear();
+                        });
+                    });
+                </script>
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">
@@ -557,7 +564,7 @@
         const currentUrl = window.location.href;
         // 서버로 AJAX 요청 보내기
         $.ajax({
-            url: '/save-url',  // 서버의 URL (예: 서블릿 매핑)
+            url: '/url',  // 서버의 URL (예: 서블릿 매핑)
             type: 'POST',
             data: {url: currentUrl},  // URL을 데이터로 전송
             success: function () {

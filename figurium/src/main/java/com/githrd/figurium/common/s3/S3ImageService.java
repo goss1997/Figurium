@@ -1,4 +1,4 @@
-package com.githrd.figurium.util.s3;
+package com.githrd.figurium.common.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
+import com.githrd.figurium.exception.customException.FailToUploadByS3Exception;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ import java.net.URLDecoder;
 import java.util.*;
 
 @Service
-public class S3ImageService{
+@Slf4j
+public class S3ImageService {
 
     // 저장할 버킷의 폴더
     private static final String BASE_DIR = "images/";
@@ -37,28 +40,28 @@ public class S3ImageService{
     }
 
     // S3에 업로드.
-    public String uploadS3(MultipartFile image) {
+    public String upload(MultipartFile image) {
         // 가져온 이미지 파일이 빈 파일인지 검증하기.
         if (image.isEmpty() || Objects.isNull(image.getOriginalFilename())) {
-            System.out.println("파일이 없습니다.");
+            throw new FailToUploadByS3Exception("파일이 없습니다.");
         }
         // uploadImage를 호출하여 S3에 저장된 이미지의 public url을 반환한다.
         return this.uploadImage(image);
     }
 
     // S3에 다중 업로드.
-    public List<String> uploadS3(List<MultipartFile> images) {
+    public List<String> upload(List<MultipartFile> images) {
 
         List<String> imgUrlList = new ArrayList<>(); // imageUrls
 
         // 리스트가 비어있는지 검증하기.
         if (images.isEmpty()) {
-            System.out.println("업로드할 파일이 없습니다.");
+            throw new FailToUploadByS3Exception("업로드할 파일이 없습니다.");
         }
 
         // 반복문을 통해 업로드 하기.
         for (MultipartFile multipartFile : images) {
-            String fileUrl = uploadS3(multipartFile);
+            String fileUrl = upload(multipartFile);
 
             imgUrlList.add(fileUrl);
         }
@@ -75,16 +78,15 @@ public class S3ImageService{
             // 해당 이미지를 S3에 업로드하고 S3에 저장된 이미지의 public url을 반환하기.
             return this.uploadImageToS3(image);
         } catch (IOException e) {
-            System.out.println("가져올 수 없는 이미지입니다.");
+            throw new FailToUploadByS3Exception("가져올 수 없는 이미지입니다.");
         }
-        return "";
     }
 
     // 파일의 확장자 검증(jpg, jpeg, png, gif)
     private void validateImageFileExtention(String filename) {
         int lastDotIndex = filename.lastIndexOf(".");
         if (lastDotIndex == -1) {
-            System.out.println("유효하지 않은 파일 확장자입니다.");
+            throw new FailToUploadByS3Exception("유효하지 않은 파일 확장자입니다.");
         }
 
         // 파일의 확장자만 추출.
@@ -93,7 +95,7 @@ public class S3ImageService{
 
         // jpg, jpeg, png, gif 인지 검증.
         if (!allowedExtentionList.contains(extention)) {
-            System.out.println("수용할 수 없는 확장자입니다.");
+            throw new FailToUploadByS3Exception("수용할 수 없는 확장자입니다.");
         }
     }
 
@@ -127,7 +129,7 @@ public class S3ImageService{
             // S3에 이미지 데이터 추가.
             amazonS3.putObject(putObjectRequest); // put image to S3
         } catch (Exception e) {
-            System.out.println("요청 객체로 S3에 업로드 실패하였습니다.");
+            throw new FailToUploadByS3Exception("요청 객체로 S3에 업로드 실패하였습니다.");
         } finally {
             byteArrayInputStream.close();
             is.close();
@@ -142,8 +144,7 @@ public class S3ImageService{
         try {
             amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("S3에 이미지 삭제에 실패하였습니다.");
+            throw new FailToUploadByS3Exception("S3에 이미지 삭제에 실패하였습니다.");
         }
     }
 
@@ -154,9 +155,8 @@ public class S3ImageService{
             String decodingKey = URLDecoder.decode(url.getPath(), "UTF-8");
             return decodingKey.substring(1); // 맨 앞의 '/' 제거
         } catch (MalformedURLException | UnsupportedEncodingException e) {
-            System.out.println("삭제 시 key 디코딩에 실패하였습니다.");
+            throw new FailToUploadByS3Exception("삭제 시 key 디코딩에 실패하였습니다.");
         }
-        return "";
     }
 
 

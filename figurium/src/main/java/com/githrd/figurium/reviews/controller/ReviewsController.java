@@ -1,14 +1,9 @@
 package com.githrd.figurium.reviews.controller;
 
-import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.util.page.CommonPage;
-import com.githrd.figurium.util.page.Paging;
-import com.githrd.figurium.util.page.reviewsCommonPage;
-import com.githrd.figurium.util.s3.S3ImageService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.githrd.figurium.common.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -81,7 +76,7 @@ public class ReviewsController {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 // S3에 파일 업로드
-                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                String s3ImgUrl = s3ImageService.upload(imageFile);
                 // view에서 설정한 param명을 받아와서 imageUrl에 넣어준다.
                 reviewVo.setImageUrl(s3ImgUrl); // 업로드된 이미지의 URL을 reviewVo에 설정
             } catch (Exception e) {
@@ -256,7 +251,7 @@ public class ReviewsController {
         // 업로드 시 이미지를 넣었을 경우 실행
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                String s3ImgUrl = s3ImageService.uploadS3(imageFile);
+                String s3ImgUrl = s3ImageService.upload(imageFile);
                 reviewVo.setImageUrl(s3ImgUrl);
             } catch (Exception e) {
                 ra.addAttribute("reason", "image_upload_failed");

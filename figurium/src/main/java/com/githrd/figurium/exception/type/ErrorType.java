@@ -17,7 +17,8 @@ public enum ErrorType {
     GENERAL_EXCEPTION("서버 내부 오류가 발생했습니다."),
     FAIL_DELETE_USER_EXCEPTION("회원 탈퇴에 실패했습니다."),
     NO_RESOURCE_FOUND_EXCEPTION("요청하신 페이지를 찾을 수 없습니다."),
-    OUT_OF_STOCK_EXCEPTION("다른 사용자의 결제가 완료되어 상품의 재고가 부족합니다.")
+    OUT_OF_STOCK_EXCEPTION("다른 사용자의 결제가 완료되어 상품의 재고가 부족합니다."),
+    FAIL_TO_UPLOAD_S3("S3 업로드에 실패하였습니다.")
     ;
 
 

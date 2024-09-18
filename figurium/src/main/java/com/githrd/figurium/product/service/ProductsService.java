@@ -4,7 +4,7 @@ import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
 import com.githrd.figurium.product.vo.ProductsVo;
-import com.githrd.figurium.util.s3.S3ImageService;
+import com.githrd.figurium.common.s3.S3ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class ProductsService {
 
         // s3에 해당 이미지 업로드 후  set하고 db에 저장하기.
         if(!productImage.isEmpty()) {
-            String profileImgUrl = s3ImageService.uploadS3(productImage);
+            String profileImgUrl = s3ImageService.upload(productImage);
             products.setImageUrl(profileImgUrl);
             int result = productsMapper.productInsert(products);
 

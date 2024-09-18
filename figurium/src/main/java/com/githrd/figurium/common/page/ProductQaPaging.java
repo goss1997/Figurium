@@ -1,6 +1,6 @@
-package com.githrd.figurium.util.page;
+package com.githrd.figurium.common.page;
 
-public class Paging {
+public class ProductQaPaging {
 
     public static String getPaging(String pageURL,int nowPage, int rowTotal,int blockList, int blockPage){
 

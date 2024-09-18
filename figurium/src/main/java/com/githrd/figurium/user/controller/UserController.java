@@ -1,7 +1,6 @@
 package com.githrd.figurium.user.controller;
 
 import com.githrd.figurium.exception.customException.FailDeleteUserException;
-import com.githrd.figurium.notification.sevice.NotificationService;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
@@ -9,8 +8,8 @@ import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import com.githrd.figurium.user.vo.UserVo;
-import com.githrd.figurium.util.mail.service.EmailService;
-import com.githrd.figurium.util.page.Paging;
+import com.githrd.figurium.mail.service.EmailService;
+import com.githrd.figurium.common.page.Paging;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +42,6 @@ public class UserController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
     private final EmailService emailService;
-    private final NotificationService notificationService;
 
     /**
      * 로그인
@@ -446,7 +444,7 @@ public class UserController {
      * @param request
      * @return
      */
-    private String getVerificationCodeByCookie(HttpServletRequest request){
+    private String getVerificationCodeByCookie(HttpServletRequest request) {
 
         // 쿠키 배열 가져오기
         Cookie[] cookies = request.getCookies();

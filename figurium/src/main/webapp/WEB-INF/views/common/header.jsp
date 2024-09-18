@@ -232,7 +232,14 @@
                 <a href="/" class="logo" style="margin-left: -40px;">
                     <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
-
+                <script>
+                    $(function() {
+                        $('a[href="/"]').click(function() {
+                            // sessionStorage 초기화
+                            sessionStorage.clear();
+                        });
+                    });
+                </script>
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">

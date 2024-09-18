@@ -331,7 +331,7 @@
         $('.product-category > a').css('font-weight','');
         $(this).css('font-weight','bold');
         // 정렬 옵션 기본값(최신순)으로 초기화.
-        $('.select_filter').val('newProducts').selected;
+        $('.select_filter').val('newProducts');
 
 
         // 마지막 생성일자, 가격, 좋아요 수, 상품 ID 값 초기화
@@ -348,7 +348,7 @@
             itemSelector: '.isotope-item',
             layoutMode: 'fitRows'
         });
-
+        saveState();
         loadMore();
     });
 
@@ -369,13 +369,22 @@
             itemSelector: '.isotope-item',
             layoutMode: 'fitRows'
         });
-
+        saveState();
         loadMore();
     });
 
 
 
     $(document).ready(function () {
+        // 이전 상태 복원
+        restoreState();
+
+        // 상품 카테고리 글씨 css 변경.
+        $('li a').each(function() {
+            if ($(this).text().trim() === categoryName) {
+                $(this).css('font-weight', 'bold');
+            }
+        });
 
         loadMore();
 
@@ -389,6 +398,8 @@
         });
 
 
+
+
         // 무한 스크롤 이벤트 리스너 추가
         $(window).on('scroll', function () {
             // // 화면의 푸터 영역 위에 스크롤이 도달했을 경우 loadMore() 호출.
@@ -399,10 +410,11 @@
             }
         });
 
+
     });
 
     function loadMore() {
-
+        console.log(categoryName);
         // 데이터 로딩 중인 상태로 변경
         loading = true;
 
@@ -447,13 +459,13 @@
                                         <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
                                         <img src="/images/soldout3.png" alt="Sold Out" class="sold-out-overlay" id="sold-out-img" style=" \${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
                                         <a href="productInfo.do?id=\${product.id}"
-                                           class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                                           class="moveProductInfo block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                             상품 상세
                                         </a>
                                     </div>
                                     <div class="block2-txt flex-w flex-t p-t-14">
                                         <div class="block2-txt-child1 flex-col-l" id="product-name" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-                                            <a href="productInfo.do?id=\${product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                            <a href="productInfo.do?id=\${product.id}" class="moveProductInfo stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                                [\${product.categoryName}]  \${product.name}
                                             </a>
                                             <span class="stext-105 cl3" id="product-price" style="font-weight: bold; font-size: 16px;">
@@ -501,6 +513,34 @@
         });
 
     }
+
+    // 상품 상세 페이지로 가는 링크 클릭 시 상태 저장
+    $(document).on('click', '.moveProductInfo', function (event) {
+        event.preventDefault(); // 기본 동작 차단
+
+        let href = $(this).attr('href'); // 클릭한 링크의 href 값 가져오기
+
+        // 상태 저장
+        saveState();
+
+        // 상태 저장이 완료된 후 이동
+        setTimeout(function () {
+            location.href = href;
+        }, 100); // 약간의 지연을 주어 상태 저장이 완료되도록 함
+    });
+
+    // 세션 스토리지에 현재 상태 저장
+    function saveState() {
+        sessionStorage.setItem('categoryName', categoryName);
+        sessionStorage.setItem('selectFilter', selectFilter);
+    }
+
+    // 세션 스토리지에서 이전 상태 복원
+    function restoreState() {
+        categoryName = sessionStorage.getItem('categoryName') || '전체';
+        selectFilter = sessionStorage.getItem('selectFilter') || 'newProducts';
+    }
+
 
 </script>
 

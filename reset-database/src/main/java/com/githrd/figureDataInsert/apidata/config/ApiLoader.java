@@ -138,8 +138,8 @@ public class ApiLoader implements ApplicationRunner {
                     // Random 객체 생성
                     Random random = new Random();
 
-                    // 1부터 10까지의 랜덤 정수 생성
-                    int randomNumber = random.nextInt(10) + 1;
+                    // 0부터 15까지의 랜덤 정수 생성
+                    int randomNumber = random.nextInt(16);
 
                     String maker = node.get("maker").asText();
 

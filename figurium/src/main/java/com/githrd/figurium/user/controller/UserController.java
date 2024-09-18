@@ -12,7 +12,9 @@ import com.githrd.figurium.user.vo.UserVo;
 import com.githrd.figurium.util.mail.service.EmailService;
 import com.githrd.figurium.util.page.Paging;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
@@ -240,7 +242,13 @@ public class UserController {
      * 비밀번호 재설정 페이지
      */
     @PostMapping("reset-password-form.do")
-    public String resetPasswordForm(String updateEmail, Model model) {
+    public String resetPasswordForm(String updateEmail, HttpServletRequest request , Model model) {
+
+        // 쿠키에서 verificationCode 추출
+        String verificationCode = getVerificationCodeByCookie(request);
+        // 세선에 verificationCode 저장
+        session.setAttribute("verificationCode", verificationCode);
+
         model.addAttribute("updateEmail", updateEmail);
         return "user/resetPassword";
     }
@@ -249,7 +257,29 @@ public class UserController {
      * 비밀번호 재설정
      */
     @PostMapping("reset-password.do")
-    public String resetPassword(String updateEmail, String newPassword, Model model) {
+    public String resetPassword(String updateEmail, String newPassword,
+                                HttpServletRequest request, HttpServletResponse response) {
+
+        // 쿠키와 세션에서 verificationCode 가져오기
+
+        String verificationCode = getVerificationCodeByCookie(request);
+        if(verificationCode == null) {
+            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            return "redirect:/";
+        }
+
+        if(session.getAttribute("verificationCode") == null) {
+            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            return "redirect:/";
+        }
+
+        String sessionVerificationCode = session.getAttribute("verificationCode").toString();
+
+        // 쿠키의 값과 세션의 값이 같지 않을 경우 (찾을 사람과 재설정하는 사람이 다를 경우)
+        if(!verificationCode.equals(sessionVerificationCode)) {
+            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            return "redirect:/";
+        }
 
         // 해당 이메일이 탈퇴했거나 없을 경우
         if (userService.findByEmailAndDeletedFalse(updateEmail) == 0) {
@@ -265,6 +295,10 @@ public class UserController {
         int result = userService.updateUserPassword(user.getId(), encPwd);
 
         if (result > 0) {
+            // 재설정 완료 시 쿠키와 세션에서 verificationCode 제거
+            removeVerificationCodeByCookie(request,response);
+            session.removeAttribute("verificationCode");
+
             session.setAttribute("alertMsg", "비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
             return "redirect:/";
         } else {
@@ -404,6 +438,46 @@ public class UserController {
         model.addAttribute("myProductLikeList", myProductLikeList);
 
         return "user/myProductLikesForm";
+    }
+
+
+    /**
+     * 쿠키에서 verificationCode 값 가져오는 메소드
+     * @param request
+     * @return
+     */
+    private String getVerificationCodeByCookie(HttpServletRequest request){
+
+        // 쿠키 배열 가져오기
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("verificationCode")) {
+                    // 쿠키에서 verificationCode를 추출해 리턴하기
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 쿠키에서 verificationCode 제거하는 메소드
+     */
+    private void removeVerificationCodeByCookie(HttpServletRequest request, HttpServletResponse response) {
+        // 쿠키 배열 가져오기
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("verificationCode")) {
+                    // 해당 쿠키 제거를 위해 동일한 이름의 쿠키 생성하고 즉시 만료시키기.
+                    Cookie removeCookie = new Cookie("verificationCode", null);
+                    removeCookie.setMaxAge(0);
+                    removeCookie.setPath("/");
+                    response.addCookie(removeCookie);
+                }
+            }
+        }
     }
 
 }

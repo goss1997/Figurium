@@ -90,6 +90,39 @@
             text-align: center;
         }
 
+        /*Sold Out*/
+        .block2-pic {
+            position: relative;
+            display: inline-block;
+        }
+
+        .block2-pic img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .sold-out-overlay {
+            position: absolute;
+            width: 525px;
+            height: 525px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 0, 0, 0.5); /* 흐림 효과를 위한 배경 */
+            color: red; /* SOLD OUT 텍스트 색상 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 10; /* 이미지 위에 표시되도록 설정 */
+            opacity: 0; /* 흐림 효과 */
+            pointer-events: none; /* 오버레이가 클릭되지 않도록 설정 */
+        }
+
     </style>
 </head>
 <body class="animsition">
@@ -267,7 +300,6 @@
                 </select>
             </div>
         </div>
-
         <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
 
@@ -299,7 +331,7 @@
         $('.product-category > a').css('font-weight','');
         $(this).css('font-weight','bold');
         // 정렬 옵션 기본값(최신순)으로 초기화.
-        $('.select_filter').val('newProducts').change();
+        $('.select_filter').val('newProducts').selected;
 
 
         // 마지막 생성일자, 가격, 좋아요 수, 상품 ID 값 초기화
@@ -413,7 +445,7 @@
                                 <div class="block2">
                                     <div class="block2-pic hov-img0">
                                         <img src="\${product.imageUrl}" alt="IMG-PRODUCT">
-                                        <img src="/images/soldout1.png" alt="Sold Out" class="sold-out-overlay" style="\${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
+                                        <img src="/images/soldout3.png" alt="Sold Out" class="sold-out-overlay" id="sold-out-img" style=" \${product.quantity == 0 ? 'display: block;' : 'display: none;'}">
                                         <a href="productInfo.do?id=\${product.id}"
                                            class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                             상품 상세

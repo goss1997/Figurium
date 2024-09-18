@@ -247,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
         Notification notification = Notification.builder()
                 .userId(loginUserId)
                 .message("주문이 완료되었습니다.")
-                .url("/orderDetail.do?myOrderId=" + orderId)
+                .url("/user/orderDetail.do?myOrderId=" + orderId)
                 .build();
 
         notificationService.sendNotification(notification);

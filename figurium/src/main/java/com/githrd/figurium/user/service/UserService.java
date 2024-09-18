@@ -1,6 +1,8 @@
 package com.githrd.figurium.user.service;
 
 import com.githrd.figurium.auth.dto.UserProfile;
+import com.githrd.figurium.common.s3.S3ImageService;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.dao.SocialAccountMapper;
 import com.githrd.figurium.user.dao.UserMapper;
@@ -8,7 +10,6 @@ import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.repository.UserRepository;
 import com.githrd.figurium.user.vo.SocialAccountVo;
 import com.githrd.figurium.user.vo.UserVo;
-import com.githrd.figurium.common.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

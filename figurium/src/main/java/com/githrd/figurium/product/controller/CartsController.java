@@ -1,7 +1,7 @@
 package com.githrd.figurium.product.controller;
 
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.dao.CartsMapper;
-import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.service.CartService;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,10 +35,10 @@ public class CartsController {
 
     // 장바구니에 담기
     @RequestMapping("/shoppingCart.do")
-        public String shopingCart(Model model, int productId, int quantity) {
+        public String shoppingCart(Model model, int productId, int quantity) {
 
         // 세션에서 로그인 사용자 정보 가져오기
-        User loginUser = (User)session.getAttribute("loginUser");
+        User loginUser = (User)session.getAttribute(SessionConstants.LOGIN_USER);
 
         // 로그인 사용자 정보가 null인지 체크
         if (loginUser == null) {
@@ -94,7 +93,7 @@ public class CartsController {
         @RequestMapping(value = "/CartList.do")
         public String CartList( Model model) {
 
-            User loginUser = (User) session.getAttribute("loginUser");
+            User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
             List<CartsVo> cartsVo = cartsMapper.selectList(loginUser.getId());
 

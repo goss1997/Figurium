@@ -66,7 +66,7 @@ public class UserService {
     @Transactional
     public User updateUser(String name, String phone, String address) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         loginUser.setName(name);
         loginUser.setPhone(phone);

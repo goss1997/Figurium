@@ -117,7 +117,7 @@ public class QaController {
     public String insertForm(@RequestParam(value = "productId", required = false) Integer productId,
                              @RequestParam(value = "orderId", required = false) Integer orderId,
                              Model model) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         // 로그인 상태를 확인
         if (loginUser == null) {
             return "redirect:/";
@@ -138,7 +138,7 @@ public class QaController {
                        @RequestParam(value = "orderId", required = false) String orderId,
                        @RequestParam(value = "productId", required = false) String productId,
                        @RequestParam(value = "reply", required = false) String reply) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         // 로그인 상태를 확인
         if (loginUser == null) {
             return "redirect:/";
@@ -193,7 +193,7 @@ public class QaController {
 
     @GetMapping("/qaSelect.do")
     public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         QaVo qaVo = qaService.getQaById(id);
 
         if (qaVo == null) {
@@ -229,7 +229,7 @@ public class QaController {
     @PostMapping("/qaReplySave.do")
     public String saveReply(@RequestParam("id") int id,
                             @RequestParam("content") String content) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (loginUser == null) {
             return "redirect:/";
         }
@@ -244,7 +244,7 @@ public class QaController {
 
     @PostMapping("/qaReplyDelete.do")
     public String deleteReply(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (loginUser == null || loginUser.getRole() != 1) {
             return "redirect:/";
         }

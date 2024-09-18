@@ -1,5 +1,6 @@
 package com.githrd.figurium.notification.controller;
 
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.exception.customException.UserNotFoundException;
 import com.githrd.figurium.notification.sevice.NotificationService;
 import com.githrd.figurium.notification.vo.Notification;
@@ -32,7 +33,7 @@ public class NotificationController {
 
         try {
 
-            loginUser = (User) session.getAttribute("loginUser");
+            loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
             // 서비스에서 구독 처리 후 SSE 연결 반환
             return notificationService.subscribe(loginUser.getId());
 

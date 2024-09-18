@@ -1,5 +1,9 @@
 package com.githrd.figurium.product.controller;
 
+import com.githrd.figurium.common.page.CommonPage;
+import com.githrd.figurium.common.page.Paging;
+import com.githrd.figurium.common.s3.S3ImageService;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -11,9 +15,6 @@ import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.reviews.service.ReviewService;
 import com.githrd.figurium.reviews.vo.ReviewVo;
 import com.githrd.figurium.user.entity.User;
-import com.githrd.figurium.common.page.CommonPage;
-import com.githrd.figurium.common.page.Paging;
-import com.githrd.figurium.common.s3.S3ImageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -159,7 +160,7 @@ public class ProductsController {
         model.addAttribute("ratingAvg", ratingAvg);
 
         // 세션에서 사용자 정보 가져오기
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (user != null) {
             boolean isLiked = productLikeService.isProductLikedByUser(id, user.getId());
             model.addAttribute("isLiked", isLiked);
@@ -207,10 +208,10 @@ public class ProductsController {
     @GetMapping("/productInsertForm.do")
     public String productInsertForm(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -256,10 +257,10 @@ public class ProductsController {
     public String productModifyForm(@RequestParam(value = "id", required = false) Integer id,
                                     Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 
@@ -298,10 +299,10 @@ public class ProductsController {
     @DeleteMapping("/product/{id}")
     public Object productDeleteById(@PathVariable int id) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute("alertMsg", "관리자만 접속이 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
             return "redirect:/";
         }
 

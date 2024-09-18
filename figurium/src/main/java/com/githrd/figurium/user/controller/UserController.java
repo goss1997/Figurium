@@ -1,6 +1,9 @@
 package com.githrd.figurium.user.controller;
 
+import com.githrd.figurium.common.page.Paging;
+import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.exception.customException.FailDeleteUserException;
+import com.githrd.figurium.mail.service.EmailService;
 import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
@@ -8,8 +11,6 @@ import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
 import com.githrd.figurium.user.vo.UserVo;
-import com.githrd.figurium.mail.service.EmailService;
-import com.githrd.figurium.common.page.Paging;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
             }
             // 로그인 성공 시
-            session.setAttribute("loginUser", user);
+            session.setAttribute(SessionConstants.LOGIN_USER, user);
 
             return ResponseEntity.ok("Login successful");
         }
@@ -88,7 +89,7 @@ public class UserController {
     public String logout(HttpServletRequest request) {
 
         // session에 사용자의 정보 제거.
-        session.removeAttribute("loginUser");
+        session.removeAttribute(SessionConstants.LOGIN_USER);
 
         String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
         return "redirect:" + (referer == null ? "/" : referer); // 이전 페이지로 리다이렉트
@@ -138,7 +139,7 @@ public class UserController {
         int result = userService.signup(user, profileImage);
 
         if (result > 0) {
-            session.setAttribute("alertMsg", "회원가입 완료!");
+            session.setAttribute(SessionConstants.ALERT_MSG, "회원가입 완료!");
             return "redirect:/";
         } else {
             return "redirect:/user/login.do";
@@ -151,7 +152,7 @@ public class UserController {
     @GetMapping("my-page.do")
     public String myPage(Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser != null) {
 
@@ -161,7 +162,7 @@ public class UserController {
 
             return "user/myPage";
         } else {
-            session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "로그인 후 이용 가능합니다.");
             return "redirect:/";
         }
 
@@ -173,7 +174,7 @@ public class UserController {
     @PostMapping("update-profile-image.do")
     @ResponseBody
     public ResponseEntity<?> updateProfileImage(@RequestParam MultipartFile file) {
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인한 사용자만 요청 가능합니다.");
         }
@@ -192,16 +193,16 @@ public class UserController {
     @PostMapping("update.do")
     public String updateUser(String name, String phone, String address) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null) {
             return "redirect:/";
         }
 
         User updatedUser = userService.updateUser(name, phone, address);
-        session.setAttribute("loginUser", updatedUser);
+        session.setAttribute(SessionConstants.LOGIN_USER, updatedUser);
 
-        session.setAttribute("alertMsg", "수정 완료!");
+        session.setAttribute(SessionConstants.ALERT_MSG, "수정 완료!");
         return "redirect:/user/my-page.do";
     }
 
@@ -262,12 +263,12 @@ public class UserController {
 
         String verificationCode = getVerificationCodeByCookie(request);
         if(verificationCode == null) {
-            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "인증되지 않은 접근입니다.");
             return "redirect:/";
         }
 
         if(session.getAttribute("verificationCode") == null) {
-            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "인증되지 않은 접근입니다.");
             return "redirect:/";
         }
 
@@ -275,13 +276,13 @@ public class UserController {
 
         // 쿠키의 값과 세션의 값이 같지 않을 경우 (찾을 사람과 재설정하는 사람이 다를 경우)
         if(!verificationCode.equals(sessionVerificationCode)) {
-            session.setAttribute("alertMsg", "인증되지 않은 접근입니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "인증되지 않은 접근입니다.");
             return "redirect:/";
         }
 
         // 해당 이메일이 탈퇴했거나 없을 경우
         if (userService.findByEmailAndDeletedFalse(updateEmail) == 0) {
-            session.setAttribute("alertMsg", "탈퇴했거나 없는 계정입니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "탈퇴했거나 없는 계정입니다.");
             return "redirect:/";
         }
 
@@ -297,10 +298,10 @@ public class UserController {
             removeVerificationCodeByCookie(request,response);
             session.removeAttribute("verificationCode");
 
-            session.setAttribute("alertMsg", "비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
+            session.setAttribute(SessionConstants.ALERT_MSG, "비밀번호가 재설정되었습니다. 홈으로 이동합니다.");
             return "redirect:/";
         } else {
-            session.setAttribute("alertMsg", "비밀번호 재설정 실패!");
+            session.setAttribute(SessionConstants.ALERT_MSG, "비밀번호 재설정 실패!");
             return "redirect:/";
         }
     }
@@ -311,7 +312,7 @@ public class UserController {
      */
     @GetMapping("order-list.do")
     public String myOrderList(Model model) {
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null) {
             return "redirect:/";
@@ -332,7 +333,7 @@ public class UserController {
     @GetMapping("orderDetail.do")
     public String myOrderDetail(Model model, Integer myOrderId) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         int userId = loginUser.getId();
 
@@ -358,7 +359,7 @@ public class UserController {
     @PostMapping("delete.do")
     public ResponseEntity<?> delete(String password) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         User user = userService.findByEmail(loginUser.getEmail());
 
@@ -376,7 +377,7 @@ public class UserController {
             // 커스텀 예외 처리
             throw new FailDeleteUserException();
         }
-        session.removeAttribute("loginUser");
+        session.removeAttribute(SessionConstants.LOGIN_USER);
         return ResponseEntity.ok("탈퇴 완료!! 홈으로 이동합니다!");
     }
 
@@ -386,11 +387,11 @@ public class UserController {
     @PostMapping("deleteSocial.do")
     public ResponseEntity<?> deleteSocial() {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         int result = userService.deleteSocialAccount(loginUser.getId());
 
         if (result > 0) {
-            session.removeAttribute("loginUser");
+            session.removeAttribute(SessionConstants.LOGIN_USER);
             return ResponseEntity.ok("탈퇴 완료!! 홈으로 이동합니다!");
         } else {
             throw new FailDeleteUserException();
@@ -420,7 +421,7 @@ public class UserController {
     @GetMapping("myProductLikeList.do")
     public String myProductLikeListAll(@RequestParam(defaultValue = "1") int page, Model model) {
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         int userId = loginUser.getId();
 

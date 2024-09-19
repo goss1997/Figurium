@@ -189,27 +189,6 @@ CREATE TABLE notifications (
 );
 
 
-
--- 더미 데이터
--- 회원 테이블 더미데이터
--- 사용자 1
-INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
-VALUES ('user1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '일용자', 0, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/smoker-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
-
--- 사용자 2
-INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
-VALUES ('user2@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '이용자', 0,'/images/default-user-image.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
-
--- 관리자 1
-INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
-VALUES ('admin@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '관리자M', 1, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/tom-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
-
--- 관리자 2
-INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
-VALUES ('admin1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '관리자1', 1, 'https://figurium-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/akainu-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
-
-
-
 -- 회원 상품 주문 기록
 create or replace view order_history_view
 as

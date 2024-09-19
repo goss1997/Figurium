@@ -2,6 +2,24 @@
 -- 사용할 데이터베이스 지정
 USE figurium_db;
 
+-- 회원 테이블 더미데이터
+-- 사용자 1
+INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
+VALUES ('user1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '일용자', 0, '/images/smoker-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
+
+-- 사용자 2
+INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
+VALUES ('user2@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '이용자', 0,'/images/default-user-image.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
+
+-- 관리자 1
+INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
+VALUES ('admin@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '관리자M', 1, '/images/tom-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
+
+-- 관리자 2
+INSERT INTO users (email, password, name, role, profile_img_url, phone, address)
+VALUES ('admin1@example.com', '$2a$10$5mxY/PNYCL2SASBFp6ONVuKaPwiGLpRRu4rfeT5LhT0WrRtozaT/y', '관리자1', 1, '/images/akainu-smoke.png', '01015641895', '13484 경기 성남시 분당구 판교로 30');
+
+
 -- 상품 좋아요 더미 데이터
 -- 회원1(일용자)의 좋아요한 상품 더미 데이터
 INSERT INTO product_likes VALUES (null,1,12,default);

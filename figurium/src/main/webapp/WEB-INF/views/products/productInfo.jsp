@@ -193,6 +193,12 @@
             </span>
         </form>
 
+         <c:if test="${empty productQaList}">
+                <h3 style="text-align: center; color: #ff5959">현재 작성된 Q&A가 없습니다.</h3>
+         </c:if>
+
+
+
         <c:if test="${!empty productQaList}">
             <div id="productQaList">
                 <jsp:include page="../qa/productQaList.jsp"/>
@@ -234,7 +240,7 @@
                 showTab(hash);
             } else {
             // 기본 탭을 활성화합니다 (예: 'qa')
-                showTab('qa');
+                showTab('reviews');
             }
         });
 
@@ -415,7 +421,7 @@
     // 리뷰의 페이징 처리
     $(document).ready(function () {
         function loadReviews(page) {
-            const productId = ${product.id};  // 현재 페이지의 상품 ID
+            const productId = "${product.id}";  // 현재 페이지의 상품 ID
             $.ajax({
                 url: '/reviewsPaging',
                 type: 'GET',

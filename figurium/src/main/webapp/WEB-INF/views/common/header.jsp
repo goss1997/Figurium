@@ -332,7 +332,6 @@
                                         <div id="notification-list-area">
 
                                         </div>
-                                        <li style="color: #ff5f5f; text-align: center; font-size: 20px;" onclick="">모든 알림 삭제</li>
                                     </ul>
                                 </li>
                             </ul>

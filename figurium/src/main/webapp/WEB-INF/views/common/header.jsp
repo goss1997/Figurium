@@ -233,8 +233,8 @@
                     <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
                 <script>
-                    $(function() {
-                        $('a[href="/"]').click(function() {
+                    $(function () {
+                        $('a[href="/"]').click(function () {
                             // sessionStorage 초기화
                             sessionStorage.clear();
                         });
@@ -251,7 +251,9 @@
                             <a href="${pageContext.request.contextPath}/productList.do?name=전체 상품">카테고리</a>
                             <ul class="sub-menu">
                                 <c:forEach var="category" items="${figureCategories}">
-                                    <li><a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </li>
@@ -582,32 +584,37 @@
 <c:if test="${loginUser != null}">
     <script>
         /**
-        * 사용자 알림 리스트 가져오기
-        */
-        $(function(){
+         * 사용자 알림 리스트 가져오기
+         */
+        $(function () {
             $.ajax({
-               url : '/api/notifications/user/${loginUser.id}',
-               method : 'GET',
-               success : function (notifications) {
-                    if(notifications.length === 0) {
+                url: '/api/notifications/user/${loginUser.id}',
+                method: 'GET',
+                success: function (notifications) {
+                    if (notifications.length === 0) {
                         $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
                     } else {
                         let appendForm;
 
-                        for (const notification of notifications ) {
+                        for (const notification of notifications) {
+                            const createdAt = new Date(notification.createdAt);
+                            const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
+                            const time = createdAt.toTimeString().substring(0, 5); // hh:mm
+
                             appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
-                                        '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
-                                        notification.message + '</i>' +
-                                        '</li>';
+                                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
+                                notification.message + '</i>' +
+                                '<span style="font-size:14px; color:gray;">' + date + ' ' + time + '</span>' +
+                                '</li>';
                             // 알림 객체 알림 모달 맨위에 추가.
                             $("#notification-list-area").append(appendForm);
                         }
 
                     }
-               },
-               error: function(xhr, status, error) {
-                   console.error('Error fetching data:', error);
-               }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
             });
         });
 
@@ -615,7 +622,7 @@
          * 로그인한 사용자면 SSE 연결
          */
 
-        // EventSource 생성 후 SSE 연결하는 함수.
+            // EventSource 생성 후 SSE 연결하는 함수.
         const eventSource = new EventSource('/api/notifications/subscribe');
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);

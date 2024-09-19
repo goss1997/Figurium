@@ -165,10 +165,9 @@
 
     <div class="tap_box">
         <ul class="tap_detail">
-            <li class="tap_review" onclick="showTab('reviews')"><a href="#">Reviews(${reviewCount})</a></li>
-            <li class="tap_qa" onclick="showTab('qa')"><a href="#">Q&A(${productQaCount})</a></li>
+            <li class="tap_review"><a href="#reviews" onclick="switchTab(event, 'reviews')">Reviews(${reviewCount})</a></li>
+            <li class="tap_qa"><a href="#qa" onclick="switchTab(event, 'qa')">Q&A(${productQaCount})</a></li>
         </ul>
-
     </div>
 
     <!-- 리뷰영역 -->
@@ -240,6 +239,14 @@
             activeTab.style.display = 'block';
         }
     }
+
+       // 탭 전환 시 스크롤이 이동하지 않도록 처리하는 함수
+        function switchTab(event, tabId) {
+            event.preventDefault(); // 기본 앵커 동작을 방지 (스크롤 이동 방지)
+            showTab(tabId); // 탭 전환 함수 호출
+        }
+
+
 
     // 페이지 로드 시 해시 값에 따라 탭을 활성화합니다
     document.addEventListener('DOMContentLoaded',

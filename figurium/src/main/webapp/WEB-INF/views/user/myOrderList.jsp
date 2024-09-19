@@ -233,7 +233,7 @@
             }
         }
 
-        .refund-button {
+        #refund-button {
             margin: auto;
             margin-top: 30px;
             width: 250px;

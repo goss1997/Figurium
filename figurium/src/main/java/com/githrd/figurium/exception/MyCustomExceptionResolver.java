@@ -50,6 +50,13 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
     }
 
+    /**
+     *
+     * @param response
+     * @param statusCode
+     * @param errorType
+     * 비동기 요청 처리 로직
+     */
     private void handleAjaxError(HttpServletResponse response, int statusCode, ErrorType errorType) {
         response.setStatus(statusCode);
         response.setContentType("application/json; charset=UTF-8");
@@ -69,6 +76,13 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
         }
     }
 
+    /**
+     *
+     * @param statusCode
+     * @param errorType
+     * @return
+     * 동기 요청 처리 로직
+     */
     private ModelAndView handleSynchronousError(int statusCode, ErrorType errorType) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("errorMessage", errorType.getMessage());

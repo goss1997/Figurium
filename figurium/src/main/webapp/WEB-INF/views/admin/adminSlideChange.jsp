@@ -61,6 +61,64 @@
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
+           href="adminSlideChange.do">메인 슬라이드 변경</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
+           href="productInsertForm.do">상품 등록</a>
+      </li>
+      &nbsp;&nbsp;
+      <li class="nav-item">
+        <a class="nav-link" href="admin.do">주문조회</a>
+      </li>
+      &nbsp;&nbsp;
+
+      <li class="nav-item">
+        <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+      </li>
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+             id="quantity-notify"
+             data-notify="0">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="adminQuantity.do">상품 재고수정</a>
+        </div>
+      </li>
+      &nbsp;&nbsp;
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+             id="payment-notify"
+             data-notify="0">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="adminPayment.do">결제취소</a>
+        </div>
+      </li>
+      &nbsp;&nbsp;
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+             id="retrun-notify"
+             data-notify="0">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="adminReturns.do">반품승인</a>
+        </div>
+      </li>
+      &nbsp;&nbsp;
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+             id="qa-notify"
+             data-notify="0">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             id="viewQaList" href="adminQaList.do" >Q&A 미답변</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <br><br>
 
   <div class="container" style="padding: 0;width: 80%;">
     <div id="accordion">
@@ -192,6 +250,7 @@
               } else {
                 alert('이미지 적용에 실패했습니다.');
               }
+              location.reload();
             })
             .catch(error => {
               console.error('오류 발생:', error);

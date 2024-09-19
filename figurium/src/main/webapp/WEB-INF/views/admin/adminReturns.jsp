@@ -39,6 +39,10 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
+                   href="adminSlideChange.do">메인 슬라이드 변경</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
                    href="productInsertForm.do">상품 등록</a>
             </li>
             &nbsp;&nbsp;

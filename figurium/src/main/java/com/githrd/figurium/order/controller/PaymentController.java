@@ -155,6 +155,14 @@ public class PaymentController {
 //    }
 
 
+    /**
+     * 
+     * @param id
+     * @param ra
+     * @return
+     * @throws IOException
+     * 소비자 환불처리
+     */
     @GetMapping("/refund.do")
     public String requestRefund(Integer id, RedirectAttributes ra) throws IOException {
 

@@ -44,6 +44,9 @@ public interface OrderMapper {
 
     int insertRfreasons(Map<String, Object> map);
 
+    // 상품 재고 다시 추가하기 위해 만듬
+    List<MyOrderVo> selectListByIdQuantity(int id);
+
     // 관리자용 반품신청 리스트 조회
     List<MyOrderVo> selectListByRetrun();
 

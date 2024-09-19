@@ -114,8 +114,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </update>
 
-    <select id="selectOneById" resultType="myOrders">
+    <select id="selectOneById" resultType="myOrders" parameterType="int">
         select * from orders where id = #{id}
+    </select>
+
+    <select id="selectListByIdQuantity" resultType="myOrders" parameterType="int">
+        select * from order_history_view where id = #{id}
     </select>
 
     <select id="selectOneByStatus" resultType="String">

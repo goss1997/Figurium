@@ -1,6 +1,8 @@
 package com.githrd.figurium.order.service;
 
 import com.githrd.figurium.order.dao.OrderMapper;
+import com.githrd.figurium.order.vo.MyOrderVo;
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -22,6 +25,7 @@ import java.util.Collections;
 public class PaymentService {
 
     private final OrderMapper orderMapper;
+    private final ProductsMapper productsMapper;
 
     private IamportClient api;
 
@@ -77,6 +81,16 @@ public class PaymentService {
         }
 
         return ResponseEntity.ok(payment);
+    }
+
+    public void refundPlusQuantity(int id) {
+        List<MyOrderVo> myOrderList = orderMapper.selectListByIdQuantity(id);
+        for (MyOrderVo orderVo : myOrderList) {
+            int productId = orderVo.getPId();
+            int quantity = orderVo.getQuantity();
+
+            productsMapper.updateProductQuantityPlus(productId, quantity);
+        }
     }
 
 

@@ -21,6 +21,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
 
+    <update id="updateProductQuantityPlus" parameterType="int">
+        UPDATE products
+        SET quantity = quantity + #{quantity}
+        WHERE id = #{productId}
+    </update>
+
+
 
     <insert id="productInsert" parameterType="products">
         INSERT INTO products (category_name, name, price, quantity, image_url)

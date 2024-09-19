@@ -39,7 +39,7 @@
 
             // 알림 객체 생성
             Notification notification = Notification.builder()
-                    .userId(qaVo.getUserId())
+                    .userId(3)
                     .message("새로운 Q&A 게시글이 작성되었습니다.")
                     .url("/qaSelect.do?id=" + qaVo.getId())
                     .build();

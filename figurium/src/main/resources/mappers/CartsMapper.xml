@@ -121,4 +121,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE user_id = #{userId}
           AND product_id = #{productId}
     </select>
+
+    <!-- 장바구니에 담겨있는 상품의 갯수를 가져오기 -->
+    <select id="cartItemCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM carts
+        WHERE user_id = #{userId}
+    </select>
+
+
 </mapper>

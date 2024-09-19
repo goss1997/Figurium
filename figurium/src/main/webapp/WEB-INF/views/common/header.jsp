@@ -58,6 +58,7 @@
     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -205,6 +206,39 @@
 
         }
 
+        .cart-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-item-count {
+            position: absolute;
+            top: -6px; /* 아이콘 위쪽 */
+            right: -5px; /* 아이콘 오른쪽 */
+            background-color: red; /* 배경색 */
+            color: white; /* 글자색 */
+            border-radius: 50%; /* 동그란 모양 */
+            width: 16px; /* 너비 */
+            height: 16px; /* 높이 */
+            text-align: center; /* 가운데 정렬 */
+            line-height: 14px; /* 가운데 정렬 */
+            font-size: 14px; /* 폰트 크기 */
+        }
+
+        .cartImage {
+            margin-left: 10px;
+            margin-top: 2px;
+            filter: brightness(0) invert(0.2); /* #333색상 흉내 */
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover .cartImage {
+            filter: brightness(0) saturate(100%) hue-rotate(180deg) brightness(1.2); /* #157ab3 색상 흉내 */
+            transform: scale(1.1); /* 아이콘 크기 확대 */
+        }
+
+
+
     </style>
 
 
@@ -272,7 +306,7 @@
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <!-- NOTE : 로그인 아이콘 -->
                     <c:if test="${empty loginUser}">
-                        <div id="loginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+                        <div id="loginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="margin-top: 6px;">
 
                             <i class="zmdi zmdi-account-circle"></i>
                         </div>
@@ -307,14 +341,34 @@
                         </div>
                     </c:if>
 
-
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-cart"
-                    >
-                        <i class="zmdi zmdi-shopping-cart"></i>
+                    <!-- 장바구니 상품갯수 출력 -->
+                    <div class="cart-container">
+                        <a href="#" onclick="cartList();">
+                            <img class="cartImage" src="/images/icons/cartLogo.png" alt="Shopping Cart Icon" style="width: 24px; height: 24px;">
+                        </a>
+                        <span id="cart-item-count" class="cart-item-count"></span>
                     </div>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11"
-                    >
+                    <script>
+                    function cartList(){
+
+                        let user = "${sessionScope.loginUser}";
+
+                        if (user === "null" || user === "") {
+                            alert("로그인이 필요한 서비스 입니다.");
+                            return;
+                        }
+
+
+                        if (confirm("장바구니로 이동 하시겠습니까?")){
+                        location.href="${pageContext.request.contextPath}/CartList.do";
+                        }
+                    }
+
+                    </script>
+
+
+                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
 
@@ -452,7 +506,7 @@
 
 
             <li>
-                <a href="shopingCart.do">장바구니</a>
+                <a href="${pageContext.request.contextPath}/CartList.do">장바구니</a>
             </li>
 
             <li>
@@ -463,6 +517,26 @@
 
 </header>
 
+<script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/cartItemCount",
+                method: 'GET',
+                success: function(data) {
+
+                    if (data > 0) {
+                        $('#cart-item-count').text(data);
+                        $('#cart-item-count').show();
+                    } else {
+                        $('#cart-item-count').hide();
+                    }
+                },
+                error: function(err) {
+                    alert("에러 발생");
+                }
+            });
+        });
+    </script>
 
 <script>
     /**

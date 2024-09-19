@@ -131,6 +131,8 @@ pageEncoding="UTF-8" %>
 	<div>
 		<h1>장바구니</h1>
 		<div class="container">
+
+
 			<div class="row">
 				<div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
@@ -150,6 +152,8 @@ pageEncoding="UTF-8" %>
 								</tr>
 
 
+
+								<c:if test="${!empty cartsVo}">
 								<!-- td -->
 								<c:forEach var="cart" items="${ cartsVo }">
 									<input type="hidden" name="userId" value="${cart.userId}">
@@ -188,14 +192,23 @@ pageEncoding="UTF-8" %>
 								</tr>
 
 								</c:forEach>
+								</c:if>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 
+			<c:if test="${empty cartsVo}">
+				<div style="margin: auto; margin-top: 50px; margin-bottom: 50px; text-align: center">
+					<h3 style="color: red"> 현재 장바구니에 담겨있는 상품이 없습니다.</h3>
+					<a href="/" style="font-size: 20px">상품 담으러 가기</a>
+				</div>
+			</c:if>
+
 			<hr>
 
+			<c:if test="${!empty cartsVo}">
 			<div class="total-container">
 				<div class="item">
 					<span class="label">선택 상품금액</span>
@@ -236,6 +249,7 @@ pageEncoding="UTF-8" %>
 					</button>
 				</div>
 			</div>
+			</c:if>
 		</div>
 	</div>
 </form>

@@ -42,4 +42,6 @@ public interface CartsMapper {
     // 장바구니에 상품을 담기 전 해당 상품의 재고가 있는지 확인
     int checkProductQuantity(int productId, int userId);
 
+    int cartItemCount(int userId);
+
 }

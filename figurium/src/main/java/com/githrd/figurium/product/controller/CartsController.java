@@ -7,6 +7,7 @@ import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,6 +143,30 @@ public class CartsController {
 
             return response;
         }
+
+    // 장바구니 아이콘에 로그인한 사용자의 장바구니에 있는 상품의 갯수를 나타내기
+    @RequestMapping("cartItemCount")
+    @ResponseBody
+    public ResponseEntity<Integer> cartItemCount(HttpSession session) {
+
+        // 세션에서 User 객체를 가져오기
+        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+
+        // User가 세션에 존재하지 않을 경우
+        if (user == null) {
+            return ResponseEntity.ok(0); // 장바구니에 들어있는 상품의 수가 0개
+        }
+
+        // User 객체에서 userId 추출
+        Integer userId = user.getId();
+        System.out.println("userId: " + userId);
+
+        // 장바구니 상품 수를 가져오기
+        int cartItemCount = cartService.cartItemCount(userId);
+
+        return ResponseEntity.ok(cartItemCount);
+    }
+
 
 
 

@@ -59,6 +59,13 @@
         where user_id = #{userId}
     </select>
 
+    <select id="findByRoleAdmin" resultType="UserVo">
+        select *
+        from users
+        where role = 1
+    </select>
+
+
 </mapper>
 
 

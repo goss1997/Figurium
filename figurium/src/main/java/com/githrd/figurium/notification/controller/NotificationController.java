@@ -43,7 +43,7 @@ public class NotificationController {
     }
 
     /**
-     * 특정 사용자에게 알림을 전송F
+     * 특정 사용자에게 알림을 전송
      * @param userId : 알림을 받을 사용자 ID
      * @param message : 알림 메시지
      * @return : ResponseEntity : 알림 전송 상태 반환

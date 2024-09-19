@@ -148,4 +148,8 @@ public class UserService {
     public int getTotalPagesByUserId(int userId) {
         return userMapper.getTotalCountByUserId(userId);
     }
+
+    public List<UserVo> findByRoleAdmin() {
+        return userMapper.findByRoleAdmin();
+    }
 }

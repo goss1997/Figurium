@@ -4,6 +4,8 @@
     import com.githrd.figurium.notification.vo.Notification;
     import com.githrd.figurium.qa.dao.QaMapper;
     import com.githrd.figurium.qa.vo.QaVo;
+    import com.githrd.figurium.user.service.UserService;
+    import com.githrd.figurium.user.vo.UserVo;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
 
@@ -16,11 +18,13 @@
 
         private final QaMapper qaMapper;
         private final NotificationService notificationService;
+        private final UserService userService;
 
         @Autowired
-        public QaServiceImpl(QaMapper qaMapper, NotificationService notificationService) {
+        public QaServiceImpl(QaMapper qaMapper, NotificationService notificationService, UserService userService) {
             this.qaMapper = qaMapper;
             this.notificationService = notificationService;
+            this.userService = userService;
         }
 
         @Override
@@ -35,17 +39,26 @@
 
         @Override
         public void saveQa(QaVo qaVo) {
+
             qaMapper.insert(qaVo);
 
-            // 알림 객체 생성
-            Notification notification = Notification.builder()
-                    .userId(3)
-                    .message("새로운 Q&A 게시글이 작성되었습니다.")
-                    .url("/qaSelect.do?id=" + qaVo.getId())
-                    .build();
+            // user에서 role이 1번인 녀석 조회 ( 모든 관리자에게 알림 전송 )
+            List<UserVo> adminUsers = userService.findByRoleAdmin();
 
-            // 알림 전송
-            notificationService.sendNotification(notification);
+            // 반복문으로 관리자에게 알림 전송
+            for (UserVo admin : adminUsers) {
+
+                // 알림 객체 생성
+                Notification notification = Notification.builder()
+                        .userId( admin.getId())
+                        .message("새로운 Q&A 게시글이 작성되었습니다.")
+                        .url("/qa/qaSelect.do?id=" + qaVo.getId())
+                        .build();
+
+                // 알림 전송
+                notificationService.sendNotification(notification);
+            }
+
         }
         @Override
         public void saveProductQa(QaVo qaVo) {

@@ -15,11 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,27 +73,6 @@ public class adminController {
         // orderList를 JSON 형태로 반환
         return "admin/adminPayment";
     }
-
-    /*
-    결제취소 API 연동으로  해당  메서드는 미사용
-    @PostMapping("/ordersRefund.do")
-    @ResponseBody
-    public int ordersRefund(int id) {
-
-        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
-
-        if (loginUser == null || loginUser.getRole() != 1) {
-            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
-
-        }
-
-        int response = orderMapper.updateByRefund(id);
-
-        return response;
-    }
-
-*/
-
 
 
     @PostMapping("/statusChange.do")
@@ -245,6 +223,8 @@ public class adminController {
     @ResponseBody
     public int productQuantity(int id, int quantity) {
 
+
+
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         if (loginUser == null || loginUser.getRole() != 1) {
@@ -255,6 +235,58 @@ public class adminController {
         int quantityupdate = productsMapper.productQuantityUpdate(id, quantity);
 
         return quantityupdate;
+    }
+
+
+
+    @GetMapping("/adminSlideChange.do")
+    public String adminSlideChange(){
+
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
+
+        }
+
+        return "admin/adminSlideChange";
+    }
+
+    @PostMapping("/uploadSlideImage.do")
+    @ResponseBody
+    public Map<String, Object> uploadSlideImage(@RequestParam("slideImage") MultipartFile file,
+                                                @RequestParam("slideNumber") int slideNumber) {
+
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+
+        if (loginUser == null || loginUser.getRole() != 1) {
+            session.setAttribute(SessionConstants.ALERT_MSG, "관리자만 접속이 가능합니다.");
+
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 파일 저장 경로
+            String uploadDir = new File("src/main/resources/static/images").getAbsolutePath();
+            String fileName = "Slider" + slideNumber + ".jpg";
+            String savePath = uploadDir + File.separator + fileName;
+
+            // 기존 파일 삭제
+            File oldFile = new File(savePath);
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
+
+            // 새 파일 저장
+            file.transferTo(new File(savePath));
+
+            // 성공 응답
+            result.put("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+        }
+        return result;
     }
 
 

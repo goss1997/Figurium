@@ -55,6 +55,7 @@
             <div class="col-sm-7">${qa.title}</div>
             <div class="col-sm-2">작성일자</div>
             <div class="col-sm-2">${fun:substring(qa.created,0,10)} ${fun:substring(qa.created,11,16)}</div>
+
         </div>
         <hr>
         <div class="row">

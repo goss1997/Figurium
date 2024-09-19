@@ -46,7 +46,7 @@
 
     <c:if test="${!not_search}">
         <div class="Search_title_box" style="text-align: center; margin-top: 100px">
-            <h1>★ 검색결과 : ${search} ★</h1>
+            <h1>★ 검색한 상품 : ${search} ★</h1>
         </div>
     </c:if>
 

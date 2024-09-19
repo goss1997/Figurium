@@ -15,7 +15,8 @@
     <tr>
         <td class="review_number">${review.number}</td>
         <td>
-            <a href="#" class="review-title" data-id="${review.id}">${review.title}</a>
+            <a href="#" class="review-title" data-id="${review.id}">
+            </a>
         </td>
         <td class="review_name">${review.userName}</td>
         <td class="review_regdate">${fn:substring(review.createdAt,0,10)} ${fn:substring(review.createdAt,11,16)}</td>

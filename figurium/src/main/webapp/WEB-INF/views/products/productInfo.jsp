@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <title>상품상세</title>
     <link rel="stylesheet" type="text/css" href="/css/productInfo.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
     <style>
         .product_insert > input {
             background-color: transparent;
@@ -31,6 +32,17 @@
 
     </style>
 
+    <style>
+    .material-symbols-outlined {
+
+        vertical-align: sub;
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 20
+    }
+    </style>
 
 </head>
 <jsp:include page="../common/header.jsp"/>
@@ -449,12 +461,22 @@
             reviews.forEach(review => {
                 html += '<tr>';
                 html += '<td class="review_number">' + review.number + '</td>';
-                html += '<td><a href="#" class="review-title" data-id="' + review.id + '">' + review.title + '</a></td>';
+                html += '<td class="review_title">';
+
+                // 이미지 아이콘 추가 (a 태그 바깥)
+                if (review.imageUrl) {
+                    html += '<span class="material-symbols-outlined">image</span> ';
+                }
+
+               // 제목을 a 태그로 감싸기
+                html += '<a href="#" class="review-title" data-id="' + review.id + '">' + review.title + '</a>';
+
+                html += '</td>';
                 html += '<td class="review_name">' + review.userName + '</td>';
                 html += '<td class="review_regdate">' + review.createdAt.substring(0, 10) + ' ' + review.createdAt.substring(11, 16) + '</td>';
                 html += '<td class="review_star">';
 
-                // 별점 출력
+               // 별점 출력
                 for (let i = 0; i < review.rating; i++) {
                     html += '<span class="star">&#9733;</span>'; // 별점 표시
                 }
@@ -473,10 +495,11 @@
                 html += '<input type="hidden" name="productId" value="' + review.productId + '">';
                 html += '<input type="button" class="edit_button" data-id="' + review.id + '" value="수정" onclick="update_review(this.form)">';
                 html += '<input type="button" class="delete_button" data-id="' + review.id + '" value="삭제" onclick="delete_review(this.form)"></form></div></td></tr>';
-            });
-            html += '</tbody></table>';
-            return html;
-        }
+
+                });
+                html += '</tbody></table>';
+                return html;
+            }
 
         // 페이지 버튼을 HTML 형식으로 생성하는 함수
         function generatePaginationHtml(startPage, endPage, currentPage, totalPages, hasPrevious, hasNext) {
@@ -534,11 +557,18 @@
             success :   function (response){
 
                     if (response.reviewSuccess){
+
+                        if (confirm("해당 상품의 리뷰를 작성 하시겠습니까?")){
+
                             f.action = 'reviewInsertForm.do';
                             f.method = "POST";
                             f.submit();
+
+                        }
+
+
                     } else {
-                        alert("상품의 리뷰 작성은 해당 상품을 구입해야 가능합니다.")
+                        alert("상품의 리뷰 작성은 해당 상품을 구입하거나 배송이 완료되야 작성 가능합니다.")
                         return false;
                     }
                 },

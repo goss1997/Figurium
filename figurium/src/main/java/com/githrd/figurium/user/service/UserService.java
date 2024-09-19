@@ -89,7 +89,10 @@ public class UserService {
             // 자동 증가된 id
             int userId = userProfile.getId();
 
-            socialAccountMapper.insertSocialAccount(new SocialAccountVo(userId, userProfile.getProvider(), userProfile.getProviderUserId()));
+            SocialAccountVo socialAccountVo = SocialAccountVo.getInstance();
+            socialAccountVo.setSocialAccountInfo(userId, userProfile.getProvider(), userProfile.getProviderUserId());
+
+            socialAccountMapper.insertSocialAccount(socialAccountVo);
 
             return userRepository.findUserById(userId);
         }

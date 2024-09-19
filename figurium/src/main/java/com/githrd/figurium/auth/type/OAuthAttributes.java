@@ -10,7 +10,7 @@ import java.util.function.Function;
 public enum OAuthAttributes {
 
     GOOGLE("google", (attribute) -> {
-        UserProfile userProfile = new UserProfile();
+        UserProfile userProfile = UserProfile.getInstance();
         userProfile.setProviderUserId((String) attribute.get("sub"));
         userProfile.setName((String) attribute.get("name"));
         userProfile.setEmail((String) attribute.get("email"));
@@ -21,7 +21,7 @@ public enum OAuthAttributes {
     }),
 
     NAVER("naver", (attribute) -> {
-        UserProfile userProfile = new UserProfile();
+        UserProfile userProfile = UserProfile.getInstance();
 
         Map<String, String> responseValue = (Map) attribute.get("response");
         userProfile.setProviderUserId(responseValue.get("id"));
@@ -37,7 +37,7 @@ public enum OAuthAttributes {
         Map<String, Object> account = (Map) attribute.get("kakao_account");
         Map<String, String> profile = (Map) account.get("profile");
 
-        UserProfile userProfile = new UserProfile();
+        UserProfile userProfile = UserProfile.getInstance();
         userProfile.setProviderUserId(String.valueOf(attribute.get("id")));
         userProfile.setName(profile.get("nickname"));
         userProfile.setEmail((String) account.get("email"));

@@ -142,7 +142,6 @@
 
           location.reload();
           }
-        }
       },
       error: function (xhr, status, error) {
         alert("환불 처리에 실패했습니다.");

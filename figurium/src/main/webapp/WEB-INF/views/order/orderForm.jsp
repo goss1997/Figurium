@@ -561,9 +561,9 @@
             <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>
             </td>
-            <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol=""/>원</td>
+            <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol="₩"/>원</td>
             <td>${ item.quantity }</td>
-            <td><fmt:formatNumber type="currency" value="${ item.price * item.quantity }" currencySymbol=""/>원</td>
+            <td><fmt:formatNumber type="currency" value="${ item.price * item.quantity }" currencySymbol="₩"/>원</td>
           </tr>
         </c:forEach>
         </tbody>

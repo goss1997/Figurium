@@ -29,4 +29,6 @@ public interface UserMapper {
     List<ProductsVo> selectMyProductLikeList(int userId, int pageSize, int offset);
 
     int getTotalCountByUserId(int userId);
+
+    List<UserVo> findByRoleAdmin();
 }

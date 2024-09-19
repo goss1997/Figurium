@@ -444,8 +444,8 @@
 
 /* 제목 왼쪽 정렬 */
 .review-title {
-    text-align: left; /* 제목 왼쪽 정렬 */
-    display: block; /* 제목이 블록 요소로 취급되도록 */
+    text-align: left;
+    display: inline-block;
     color: #6c6c6c;
 }
 
@@ -507,11 +507,13 @@
     border-bottom: 1px solid #e6e6e6;
 }
 
+
 .review_table .review_number{
     width: 10%;
 }
 
 .review_table .review_title{
+    text-align: left;
     width: 45%;
 }
 

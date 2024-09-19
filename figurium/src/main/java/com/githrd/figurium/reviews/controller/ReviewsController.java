@@ -333,6 +333,7 @@ public class ReviewsController {
     }
 
 
+    // 리뷰를 작성하기 전 해당 상품을 구매 했는지 확인하는 로직
     @RequestMapping("reviewValid")
     @ResponseBody
     public Map<String, Object> reviewValid(@RequestParam(value = "userId") int userId,

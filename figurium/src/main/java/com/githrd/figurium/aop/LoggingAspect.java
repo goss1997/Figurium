@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 @Slf4j
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class LoggingAspect {
 
     // com.githrd.figurium 패키지 내 controller 하위 패키지의 모든 클래스와 메서드에 적용

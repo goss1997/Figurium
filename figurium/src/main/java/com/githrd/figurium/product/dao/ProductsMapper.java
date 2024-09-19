@@ -29,6 +29,8 @@ public interface ProductsMapper {
     List<String> searchHistory();
     // 검색된 상품에 해당하는 상품이 존재하는지 검증
     List<ProductsVo> selectSearchProductsList(String search);
+    // 환불처리 및 결제 취소된 상품 재고 추가
+    int updateProductQuantityPlus(int productId, int quantity);
 
     List<ProductsVo> getNextPageByCreatedAt(Map<String,Object> params);
 

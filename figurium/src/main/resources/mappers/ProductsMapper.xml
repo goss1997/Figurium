@@ -21,6 +21,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
 
+    <update id="updateProductQuantityPlus" parameterType="int">
+        UPDATE products
+        SET quantity = quantity + #{quantity}
+        WHERE id = #{productId}
+    </update>
+
+
 
     <insert id="productInsert" parameterType="products">
         INSERT INTO products (category_name, name, price, quantity, image_url)
@@ -157,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ORDER BY created_at DESC, id DESC
             </otherwise>
         </choose>
-        LIMIT 20
+        LIMIT 80
     </select>
 
     <!-- 상품 검색과 필터를 위한 동적 SQL문 -->

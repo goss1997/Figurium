@@ -332,7 +332,6 @@
                                         <div id="notification-list-area">
 
                                         </div>
-                                        <li style="color: #ff5f5f; text-align: center; font-size: 20px;" onclick="">모든 알림 삭제</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -594,11 +593,7 @@
                         $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
                     } else {
                         let appendForm;
-                            console.log(notifications[0]);
-                            console.log(notifications[1]);
-                            console.log(notifications[2]);
-                            console.log(notifications[3]);
-                            console.log(notifications[4]);
+
                         for (const notification of notifications ) {
                             appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
                                         '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
@@ -620,7 +615,7 @@
          * 로그인한 사용자면 SSE 연결
          */
 
-            // EventSource 생성 후 SSE 연결하는 함수.
+        // EventSource 생성 후 SSE 연결하는 함수.
         const eventSource = new EventSource('/api/notifications/subscribe');
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);

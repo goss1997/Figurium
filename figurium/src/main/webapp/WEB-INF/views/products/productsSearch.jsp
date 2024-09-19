@@ -46,7 +46,7 @@
 
     <c:if test="${!not_search}">
         <div class="Search_title_box" style="text-align: center; margin-top: 100px">
-            <h1>★ 검색결과 : ${search} ★</h1>
+            <h1>★ 검색한 상품 : ${search} ★</h1>
         </div>
     </c:if>
 
@@ -89,47 +89,42 @@
     <!-- 상품(피규어) 조회 -->
         <div id="productsList" class="row isotope-grid">
                 <c:forEach var="products" items="${productsSearchList}">
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" style="margin-top: 30px;">
-                    <!-- Block2 -->
-                    <div class="block2">
-                        <div class="block2-pic hov-img0" style="border: 1px solid #dcdcdc">
-                            <img src="${products.imageUrl}" alt="IMG-PRODUCT">
-                            <img src="/images/soldout1.png" alt="Sold Out" class="sold-out-overlay" style="${products.quantity == 0 ? 'display: block;' : 'display: none;'}">
-                            <a href="productInfo.do?id=${products.id}"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
-                                상품 상세
-                            </a>
-                        </div>
-                        <div class="block2-txt flex-w flex-t p-t-14">
-                            <div class="block2-txt-child1 flex-col-l ">
-                                <a href="productInfo.do?id=${products.id}"
-                                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                   ${products.name} ${products.quantity}
-                                </a>
-                    <span class="stext-105 cl3">
-                                    <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>
-                        상품 등록일 : <fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
-                    </span>
-                    <span class="stext-105 cl3">
-                        카테고리 : ${products.categoryName}
-                    </span>
-                    <span class="stext-105 cl3">
-                        상품 가격 : ${products.price}￦
-                    </span>
+                <div class='col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${products.categoryName}' style='margin-top:30px;' >
+                                <div class="block2">
+                                    <div class="block2-pic hov-img0" style="border: 1px solid #d1d1d1">
+                                        <img src="${products.imageUrl}" alt="IMG-PRODUCT">
+                                        <img src="/images/soldout3.png" alt="Sold Out" class="sold-out-overlay" id="sold-out-img" style=" ${products.quantity == 0 ? 'display: block;' : 'display: none;'}">
+                                        <!-- 현재 상품의 재고가 없을 경우 상세보기 비 활성화 -->
+                                        <c:if test="${products.quantity > 0}">
+                                            <a href="productInfo.do?id=${products.id}"
+                                               class="moveProductInfo block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                                                상품 상세
+                                            </a>
+                                        </c:if>
+                                    </div>
+                                    <div class="block2-txt flex-w flex-t p-t-14">
+                                        <div class="block2-txt-child1 flex-col-l" id="product-name" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                                            <a href="productInfo.do?id=\${product.id}" class="moveProductInfo stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                               [${products.categoryName}]  ${products.name}
+                                            </a>
+                                            <span class="stext-105 cl3" id="product-price" style="font-weight: bold; font-size: 16px;">
+                                                ${products.price}￦
+                                            </span>
+                                    <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span class="stext-105 cl3" style="margin-right: 5px;">
+                                            <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>
+                                            <fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
+                                        </span>
+                                        <span class="stext-105 cl3" id="product-like" style="font-weight: bold;">
+                                            💖${products.likeCount}
+                                        </span>
+                                    </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04"
-                                         src="/images/icons/icon-heart-01.png"
-                                         alt="ICON">
-                                    <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                         src="/images/icons/icon-heart-02.png"
-                                         alt="ICON">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 </c:forEach>
         </div>
         <div class="pagination">

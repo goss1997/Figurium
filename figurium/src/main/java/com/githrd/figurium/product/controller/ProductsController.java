@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -330,10 +331,16 @@ public class ProductsController {
 
 
         if (searchHistorySuccess < 0) {
-
-            return "redirect:/";
+            model.addAttribute("not_search", true);
+            return "home";
         }
 
+
+        // 검색 상품이 없을경우
+        if (searchHistorySuccess == 0){
+            model.addAttribute("not_search" , true);
+            return "products/productsSearch";
+        }
 
         // 한 화면에 보여질 상품의 갯수
         int pageSize = 80;

@@ -60,7 +60,9 @@ public class AuthController {
                 throw new UserNotFoundException("User not found with email: " + userProfile.getEmail());
             }
 
-            SocialAccountVo socialAccountVo = new SocialAccountVo(loginUser.getId(), userProfile.getProvider(), userProfile.getProviderUserId());
+            SocialAccountVo socialAccountVo = SocialAccountVo.getInstance();
+            socialAccountVo.setSocialAccountInfo(loginUser.getId(), userProfile.getProvider(), userProfile.getProviderUserId());
+
             socialAccountMapper.insertSocialAccount(socialAccountVo);
 
             session.removeAttribute(SessionConstants.USER_PROFILE);

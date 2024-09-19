@@ -377,8 +377,7 @@
 
                                                 <tr class="table_row" style="height: 100px;">
                                                     <td class="column-1" style="padding-bottom: 0px;">
-                                                        <div class="how-itemcart1" style="cursor: pointer;"
-                                                             onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                        <div class="how-itemcart1" style="cursor: pointer;">
                                                             <img src="${ myOrder.imageUrl }"
                                                                  alt="${ myOrder.id }" style="text-align: left;">
                                                         </div>
@@ -449,8 +448,8 @@
                                             <c:if test="${  myOrder.status == '준비중' }">
                                                 <div style="margin-top: 5px">
                                                     주문상태가 준비중일때 즉시 결제취소가 가능해요.
-                                                    <span class="productPrice orderCancel" style="cursor: pointer;
-                                                          onclick=" location.href='../api/refund.do?id=${ myOrder.id }'">
+                                                    <span class="productPrice orderCancel" style="cursor: pointer;"
+                                                          onclick="location.href='../api/refund.do?id=${ myOrder.id }'">
                                                     결제취소
                                                     </span>
                                                 </div>

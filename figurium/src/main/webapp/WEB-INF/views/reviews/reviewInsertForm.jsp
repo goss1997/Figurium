@@ -121,10 +121,16 @@
             return;
         }
 
-        // 폼 제출
-        f.method = "POST";
-        f.action = "sendReview.do";
-        f.submit(); // 폼 제출
+
+        if (confirm("해당 상품의 리뷰를 작성 하시겠습니까?")){
+
+            // 폼 제출
+            f.method = "POST";
+            f.action = "sendReview.do";
+            f.submit(); // 폼 제출
+
+        }
+
     }
 
 

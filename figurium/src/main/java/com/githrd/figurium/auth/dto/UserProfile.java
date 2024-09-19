@@ -6,8 +6,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserProfile {
 
     @JsonIgnore
@@ -18,5 +16,17 @@ public class UserProfile {
     private String email; // 사용자의 이메일
     private String profileImageUrl; // 사용자 이미지 url
     private String providerUserId; // 사용자 고유 ID(소셜 제공)
+
+    // 싱글톤 패턴
+    private static UserProfile instance;
+
+    private UserProfile() {}
+
+    public static synchronized UserProfile getInstance() {
+        if (instance == null) {
+            instance = new UserProfile();
+        }
+        return instance;
+    }
 
 }

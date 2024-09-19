@@ -157,7 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ORDER BY created_at DESC, id DESC
             </otherwise>
         </choose>
-        LIMIT 20
+        LIMIT 80
     </select>
 
     <!-- 상품 검색과 필터를 위한 동적 SQL문 -->

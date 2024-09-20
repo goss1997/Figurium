@@ -29,6 +29,4 @@ public interface QaMapper {
 
     int getQaCount();
 
-
-    int getReplyCount();
 }

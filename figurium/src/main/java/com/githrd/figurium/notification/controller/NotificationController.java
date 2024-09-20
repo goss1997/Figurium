@@ -7,12 +7,13 @@ import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -98,9 +99,4 @@ public class NotificationController {
         notificationService.updateNotificationAsRead(notificationId);
         return ResponseEntity.ok("알림이 읽음 상태로 변경되었습니다. (ID: " + notificationId + ")");
     }
-
-
-
-
-
 }

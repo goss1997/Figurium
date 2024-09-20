@@ -5,6 +5,7 @@ import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.page.ProductQaCommonPage;
 import com.githrd.figurium.common.page.ProductQaPaging;
 import com.githrd.figurium.common.session.SessionConstants;
+import com.githrd.figurium.qa.dao.QaMapper;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
@@ -30,12 +31,14 @@ public class QaController {
     private final QaService qaService;
     private final HttpSession session;
     private final HttpServletRequest request;
+    private final QaMapper qaMapper;
 
     @Autowired
-    public QaController(QaService qaService, HttpSession session, HttpServletRequest request) {
+    public QaController(QaService qaService, HttpSession session, HttpServletRequest request, QaMapper qaMapper) {
         this.qaService = qaService;
         this.session = session;
         this.request = request;
+        this.qaMapper = qaMapper;
     }
 
     @GetMapping("/qaList.do")
@@ -193,26 +196,7 @@ public class QaController {
         return "redirect:/qa/qaList.do";
     }
 
-    // ** 카운트 **
-    @GetMapping("/Count.do")
-    @ResponseBody
-    public ResponseEntity<Map<String, Integer>> getReplyCount() {
-
-        try {
-
-            int qaCount = Optional.ofNullable(qaService.getQaCount()).orElse(0);
-            int replyCount = Optional.ofNullable(qaService.getReplyCount()).orElse(0);
-
-
-            Map<String, Integer> response = new HashMap<>();
-            response.put("qaCount", qaCount);
-            response.put("replyCount", replyCount);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+    
 
     @GetMapping("/qaSelect.do")
     public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {

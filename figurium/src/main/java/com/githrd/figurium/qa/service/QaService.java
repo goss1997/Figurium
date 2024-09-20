@@ -21,7 +21,6 @@
         List<QaVo> selectAllWithPagination(Map<String, Object> map);
         List<QaVo> selectProductAllWithPagination(Map<String, Object> map);
 
-        int getReplyCount();
         int getQaCount();
 
     }

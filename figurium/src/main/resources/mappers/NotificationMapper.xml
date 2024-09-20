@@ -25,5 +25,10 @@
         WHERE id = #{notificationId}
     </update>
 
+    <!--모든 알림 조회-->
+    <select id="getAllNotifications" parameterType="map" resultType="int">
+        select count(*)
+        from notifications
+    </select>
 
 </mapper>

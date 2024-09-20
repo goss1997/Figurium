@@ -413,16 +413,13 @@
                     </script>
 
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-                        <i class="zmdi zmdi-favorite-outline"></i>
-                    </a>
-
                     <%--알림 버튼 --%>
+                    <c:if test="${not empty loginUser}">
                     <div>
                         <div style="display: inline-block">
                             <ul class="main-menu">
                                 <li style="padding : 0;">
-                                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11">
+                                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-2 p-r-11">
                                         <i class="zmdi zmdi-notifications"></i>
                                     </div>
                                     <ul id="notification"
@@ -438,6 +435,7 @@
                             </ul>
                         </div>
                     </div>
+                    </c:if>
 
                     <!-- 상품 검색 -->
                     <div class="search_box">
@@ -516,10 +514,6 @@
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
 
-            <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-               data-notify="0">
-                <i class="zmdi zmdi-favorite-outline"></i>
-            </a>
         </div>
 
         <!-- Button show menu -->
@@ -594,6 +588,30 @@
         </div>
     </div>
 </header>
+
+<script>
+$.ajax({
+    url : 'api/notifications/count.do',
+    type: 'GET',
+    dataType : 'jason',
+    success: function(response) {
+      if(response.notification !== undefined) {
+      $('#notification').attr('data-notify', response.notification)
+      }else {
+      $('#notification').attr('data-notify', '0')
+      }
+    },
+    error: function (xhr,status,error){
+    console.error('count를 가져오는데 실패했습니다.', error);
+    $('notification').attr('data-notify', '0');
+    }
+    });
+
+$(document).ready(function () {
+updateCount();
+});
+
+</script>
 
 <script>
     $(document).ready(function () {
@@ -871,7 +889,7 @@
 
             return '<li class="read" style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
                 '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-left: 10px;"></i>' +
-                '<span style="font-size:14px; background-color:gray;">' + notification.message + '</span>' +
+                '<span style="font-size:14px; background-color:gray;">' + notification.message + '<i class="zmdi zmdi-close"></i>'+ '</span>' +
                 '<span style="font-size:14px; color: lightgray;">' + date + ' ' + time + '</span>' +
                 '</li>';
         }

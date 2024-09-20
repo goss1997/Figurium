@@ -10,6 +10,17 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>회원가입</title>
     <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'Pretendard-Regular';
+        }
+
         #content-wrap-area{
             margin-top: 30px;
             margin-bottom: 30px;
@@ -47,6 +58,53 @@
             object-fit: cover;
             border: 2px solid #ddd;
         }
+
+        .selectImage {
+            border: 2px solid #3fc0e5;
+            padding: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+
+        .selectImage:hover {
+            background-color: #3fc0e5;
+            transform: scale(1.05);
+        }
+
+
+        /* 반응형을 위한 미디어 쿼리 */
+        @media (min-width: 768px) {
+
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 13px;
+            }
+            #mail-form{
+                margin-left: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                max-width: 100% !important;
+            }
+            th {
+                font-size: 13px;
+            }
+            .table input.form-control:not([type="button"]) {
+                width: 100% !important;
+                margin-bottom: 5px;
+            }
+
+            #mail-form{
+                margin-left: 20px;
+            }
+        }
+
+
     </style>
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -68,7 +126,7 @@
 
 </head>
 
-<body>
+<body class="animsition">
 <!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 
@@ -83,12 +141,17 @@
                     <span style="text-align: left; font-weight: bold; font-size: 13px; color: #b4b2b2; margin-left: 10px;">* 는 필수 입력 사항입니다.</span> <br>
                     <span style="text-align: left; font-size: 13px; color: #b4b2b2; margin-left: 10px;">휴대폰 번호와 주소를 입력하시면 주문을 원활하게 진행하실 수 있습니다.</span>
                 </div>
-                <div class="card" style="width: 50%;">
+                <div class="card">
                     <div class="card-body">
                         <h4 class="card-title text-center">프로필 이미지 업로드</h4>
                         <img id="preview" class="preview-img" src="#" alt="이미지 미리보기" style="display:none;">
                     </div>
-                    <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(this)" >
+                    <div style="text-align: center;">
+                        <label for="image">
+                            <span class="selectImage">이미지 선택</span>
+                        </label>
+                        <input style="opacity: 0;" type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(this)" >
+                    </div>
                     <script>
                         document.getElementById('image').addEventListener('change', function() {
                             document.getElementById('preview').style.display = 'block';
@@ -187,12 +250,12 @@
             dataType:	"json",
             success	:	function(res_data){
                 if(res_data.isUsed){
-                    $("#check_email_msg").html("이미 사용중입니다").css("color","red");
+                    $("#check_email_msg").html(" 이미 사용중입니다").css("color","red");
 
                 }else{
                     if(confirm('사용가능한 이메일입니다. \n 사용하시겠습니까?')) {
                         $("#signup-email").attr('readonly',true);
-                        $("#check_email_msg").html("사용가능").css("color","blue");
+                        $("#check_email_msg").html(" 사용가능!").css("color","blue");
                     }
                 }
             },
@@ -269,7 +332,7 @@
         sendEmail(email);
 
         // 인증 번호 입력 폼 만들기.
-        $("#mail-form").append('<br><br><br><h4>'+f.email.value+' 을 확인해 인증번호를 입력해주세요.</h4><br>')
+        $("#mail-form").append('<br><br><br><div> '+f.email.value+' 을 확인해 인증번호를 입력해주세요.</div><br>')
             .append('인증번호 : <input style="width:300px;" class="form-control" id="mailCode" />')
             .append(' <button class="btn btn-secondary" id="codeCheckBtn">확인</button>');
         // 스크롤 맨 위로 보내기

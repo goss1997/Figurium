@@ -87,7 +87,9 @@
 
         /* 반응형을 위한 미디어 쿼리 */
         @media (min-width: 768px) {
-
+            .mypage-sidebar {
+                margin-left: 20px;
+            }
 
             .profile-header {
                 flex-direction: row;
@@ -116,6 +118,13 @@
 
             .profile-header p {
                 font-size: 14px;
+            }
+
+            #my-likes-table th {
+                font-size: 13px;
+            }
+            .column-2 {
+                width: 100px;
             }
         }
 

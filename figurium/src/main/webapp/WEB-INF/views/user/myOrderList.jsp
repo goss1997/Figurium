@@ -275,7 +275,9 @@
 
         /* 반응형을 위한 미디어 쿼리 */
         @media (min-width: 768px) {
-
+            .mypage-sidebar {
+                margin-left: 20px;
+            }
             .total-container {
                 max-width: 100% !important;
             }
@@ -319,7 +321,9 @@
                 width: 80px;
                 height: 80px;
             }
-
+            .total-container span{
+                font-size: 13px;
+            }
 
             .profile-header h2 {
                 font-size: 16px;
@@ -384,7 +388,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-sm-12 col-md-8" style="display: inline-block;">
+            <div class="col-sm-12 col-md-8" style="display: inline-block; margin-left: 0px;">
                 <!-- 주문내역 리스트 -->
                 <div class="bg0 p-t-75 p-b-85">
 

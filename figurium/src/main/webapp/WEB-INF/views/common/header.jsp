@@ -168,7 +168,7 @@
             background-color: #45a049;
         }
 
-        #profileImg {
+        .profileImg {
             width: 35px;
             height: 35px;
             object-fit: cover;
@@ -238,6 +238,51 @@
             transform: scale(1.1); /* 아이콘 크기 확대 */
         }
 
+    /* 반응형 스타일 추가 */
+    @media only screen and (max-width: 1200px) {
+        .login-modal-content {
+            width: 40%; /* Large screens */
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+        .login-modal-content {
+            width: 50%; /* Medium screens */
+        }
+        .login-input-area input {
+            width: 80%; /* Adjust input size */
+        }
+        .login-form button {
+            width: 30%; /* Adjust button size */
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .login-modal-content {
+            width: 70%; /* Small screens */
+        }
+        .login-input-area input {
+            width: 90%; /* Adjust input size */
+        }
+        .login-form button {
+            width: 40%; /* Adjust button size */
+        }
+    }
+
+    @media only screen and (max-width: 576px) {
+        .login-modal-content {
+            width: 90%; /* Extra small screens */
+        }
+        .login-input-area input {
+            width: 100%; /* Full width input */
+        }
+        .login-form button {
+            width: 50%; /* Adjust button size */
+        }
+        .login-button img {
+            width: 30px; /* Adjust login button size */
+        }
+    }
 
     </style>
 
@@ -315,12 +360,12 @@
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img id="profileImg"
+                                    <img class="profileImg"
                                          src="${loginUser.profileImgUrl == null ? '/images/default-user-image.png' : loginUser.profileImgUrl }"
                                          width="40px;">
                                     <img class="usercard-grade" src="/images/star6.gif">
                                 </div>
-                                <div style="display: inline-block">
+                                <div style="display: inline-block; ">
                                     <ul class="main-menu">
                                         <li style="padding : 0;">
                                             <a href="#">${loginUser.name}</a>
@@ -331,7 +376,6 @@
                                                 <li><a href="/user/my-page.do">마이페이지</a></li>
                                                 <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
                                                 <li><a href="/user/order-list.do">주문 내역</a></li>
-                                                <li><a href="#">반품 내역</a></li>
                                                 <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
                                             </ul>
                                         </li>
@@ -410,51 +454,6 @@
                         <ul id="popularSearches" class="dropdown-menu" style="display:none;"></ul>
                     </div>
                 </div>
-
-                <!-- Login Modal Structure -->
-                <div id="loginModal" class="login-modal">
-                    <div class="login-modal-content">
-                        <span class="login-modal-close">&times;</span>
-
-                        <h2>Login</h2>
-                        <br>
-                        <!-- 개인 회원 로그인 폼 -->
-                        <div class="login-form">
-                            <div class="login-input-area">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                       required>
-                                <input type="password" class="form-control" id="password" name="password"
-                                       placeholder="Password" required>
-                            </div>
-                            <div class="find-password">
-                                <a href="/user/find-password-form.do">비밀번호 찾기</a>
-                            </div>
-                            <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
-                            <input type="button" class="btn btn-secondary" value="회원가입"
-                                   onclick="location.href='/user/signup-form.do';"/>
-                        </div>
-
-                        <div style="width: 100%;">――――― 간편 로그인 ―――――</div>
-                        <br>
-                        <div>
-                            <!-- Google Login Button -->
-                            <a href="/oauth2/authorization/google" class="login-button">
-                                <img src="/images/social/google_login_btn.png" alt="Google Logo">
-                            </a>
-
-                            <!-- Naver Login Button -->
-                            <a href="/oauth2/authorization/naver" class="login-button">
-                                <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
-                            </a>
-
-                            <!-- Kakao Login Button -->
-                            <a href="/oauth2/authorization/kakao" class="login-button">
-                                <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
-                            </a>
-                        </div>
-                        <br>
-                    </div>
-                </div>
             </nav>
         </div>
     </div>
@@ -463,16 +462,50 @@
     <div class="wrap-header-mobile">
         <!-- Logo moblie -->
         <div class="logo-mobile">
-            <a href="#" class="logo">
+            <a href="${pageContext.request.contextPath}/" class="logo">
                 <img src="/images/FiguiumLOGO3.png" alt="LOGO">
             </a>
         </div>
 
+
+
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+
+        <!-- NOTE : 로그인 아이콘 -->
+        <c:if test="${empty loginUser}">
+            <div id="mobileLoginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style=" font-size: 24px;">
                 <i class="zmdi zmdi-account-circle"></i>
             </div>
+        </c:if>
+        <c:if test="${not empty loginUser}">
+            <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
+                <div>
+                    <div style="display: inline-block">
+                        <img class="profileImg"
+                             src="${loginUser.profileImgUrl == null ? '/images/default-user-image.png' : loginUser.profileImgUrl }"
+                             width="40px;">
+                        <img class="usercard-grade" src="/images/star6.gif">
+                    </div>
+                    <div style="display: inline-block">
+                        <ul class="main-menu" style="position: relative; z-index: 1050;">
+                            <li style="padding : 0;">
+                                <a href="#">${loginUser.name}</a>
+                                <ul style="margin-top: 15px;" class="sub-menu">
+                                    <c:if test="${loginUser.role == '1'}">
+                                        <li><a href="/admin.do">관리자페이지</a></li>
+                                    </c:if>
+                                    <li><a href="/user/my-page.do">마이페이지</a></li>
+                                    <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
+                                    <li><a href="/user/order-list.do">주문 내역</a></li>
+                                    <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </c:if>
 
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 js-show-modal-search">
                 <i class="zmdi zmdi-search"></i>
@@ -516,6 +549,50 @@
         </ul>
     </div>
 
+    <!-- Login Modal Structure -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-modal-content">
+            <span class="login-modal-close">&times;</span>
+
+            <h2>Login</h2>
+            <br>
+            <!-- 개인 회원 로그인 폼 -->
+            <div class="login-form">
+                <div class="login-input-area">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           required>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="Password" required>
+                </div>
+                <div class="find-password">
+                    <a href="/user/find-password-form.do">비밀번호 찾기</a>
+                </div>
+                <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
+                <input type="button" class="btn btn-secondary" value="회원가입"
+                       onclick="location.href='/user/signup-form.do';"/>
+            </div>
+
+            <hr>
+            <br>
+            <div>
+                <!-- Google Login Button -->
+                <a href="/oauth2/authorization/google" class="login-button">
+                    <img src="/images/social/google_login_btn.png" alt="Google Logo">
+                </a>
+
+                <!-- Naver Login Button -->
+                <a href="/oauth2/authorization/naver" class="login-button">
+                    <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
+                </a>
+
+                <!-- Kakao Login Button -->
+                <a href="/oauth2/authorization/kakao" class="login-button">
+                    <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
+                </a>
+            </div>
+            <br>
+        </div>
+    </div>
 </header>
 
 <script>
@@ -546,11 +623,19 @@
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('loginModal');
         const btn = document.getElementById('loginBtn');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
         const span = document.getElementsByClassName('login-modal-close')[0];
 
-        // Open the modal
+        // Open the modal Desktop
         if (btn) {
             btn.onclick = function () {
+                modal.style.display = 'block';
+            }
+        }
+
+        // Open the modal Mobile
+        if (mobileLoginBtn) {
+            mobileLoginBtn.onclick = function () {
                 modal.style.display = 'block';
             }
         }

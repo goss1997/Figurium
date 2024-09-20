@@ -190,6 +190,10 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
     bottom: 0px;
     right: 15px;
   }
+
+  .ltext-103 > img {
+    max-width: 100% !important;
+  }
 }
 
 

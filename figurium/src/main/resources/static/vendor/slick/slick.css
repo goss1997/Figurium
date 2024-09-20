@@ -41,6 +41,7 @@
 .slick-slider .slick-track,
 .slick-slider .slick-list
 {
+    height: 100%;
     -webkit-transform: translate3d(0, 0, 0);
        -moz-transform: translate3d(0, 0, 0);
         -ms-transform: translate3d(0, 0, 0);
@@ -50,6 +51,7 @@
 
 .slick-track
 {
+    height: 100%;
     position: relative;
     top: 0;
     left: 0;

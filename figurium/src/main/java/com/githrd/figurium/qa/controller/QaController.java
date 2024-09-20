@@ -5,12 +5,15 @@ import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.page.ProductQaCommonPage;
 import com.githrd.figurium.common.page.ProductQaPaging;
 import com.githrd.figurium.common.session.SessionConstants;
+import com.githrd.figurium.qa.dao.QaMapper;
 import com.githrd.figurium.qa.service.QaService;
 import com.githrd.figurium.qa.vo.QaVo;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/qa")
@@ -27,12 +31,14 @@ public class QaController {
     private final QaService qaService;
     private final HttpSession session;
     private final HttpServletRequest request;
+    private final QaMapper qaMapper;
 
     @Autowired
-    public QaController(QaService qaService, HttpSession session, HttpServletRequest request) {
+    public QaController(QaService qaService, HttpSession session, HttpServletRequest request, QaMapper qaMapper) {
         this.qaService = qaService;
         this.session = session;
         this.request = request;
+        this.qaMapper = qaMapper;
     }
 
     @GetMapping("/qaList.do")
@@ -190,7 +196,7 @@ public class QaController {
         return "redirect:/qa/qaList.do";
     }
 
-
+    
 
     @GetMapping("/qaSelect.do")
     public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {

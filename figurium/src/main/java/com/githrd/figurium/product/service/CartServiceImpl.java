@@ -59,4 +59,9 @@ public class CartServiceImpl implements CartService {
     public int getProductQuantity(int productId) {
         return cartsMapper.getProductQuantity(productId);
     }
+
+    @Override
+    public int cartItemCount(int userId) {
+        return cartsMapper.cartItemCount(userId);
+    }
 }

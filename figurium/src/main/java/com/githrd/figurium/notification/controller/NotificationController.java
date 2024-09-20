@@ -7,12 +7,13 @@ import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -93,46 +94,9 @@ public class NotificationController {
      * @param notificationId : 읽음 상태로 업데이트할 알림 ID
      * @return : ResponseEntity : 업데이트 상태 반환
      */
-    @PatchMapping("/read/{notificationId}")
+    @PutMapping("/read/{notificationId}")
     public ResponseEntity<?> markNotificationAsRead(@PathVariable int notificationId) {
         notificationService.updateNotificationAsRead(notificationId);
-        return ResponseEntity.ok("Notification marked as read.");
+        return ResponseEntity.ok("알림이 읽음 상태로 변경되었습니다. (ID: " + notificationId + ")");
     }
-
-    /**
-     * 특정 알림 삭제
-     * @param notificationId : 삭제할 알림 ID
-     * @return : ResponseEntity : 삭제 상태 반환
-     */
-    @DeleteMapping("/{notificationId}")
-    public ResponseEntity<?> deleteNotification(@PathVariable int notificationId) {
-        notificationService.deleteNotification(notificationId);
-        return ResponseEntity.ok("Notification deleted.");
-    }
-
-    /**
-     * 게시글 작성 시 관리자에게 알림 전송
-     * @param userId : 게시글 작성자 ID
-     * @param postTitle : 게시글 제목
-     * @return : ResponseEntity : 알림 전송 상태 반환
-     */
-    @PostMapping("/notifyAdminOnPost")
-    public ResponseEntity<?> notifyAdminOnPost(@RequestParam int userId, @RequestParam String postTitle) {
-        notificationService.notifyAdminOnPost(userId, postTitle);
-        return ResponseEntity.ok("Notification sent to admin.");
-    }
-
-    /**
-     * 게시글에 답변 작성 시 사용자에게 알림 전송
-     * @param userId : 게시글 작성자 ID
-     * @param responseTitle : 답변 제목
-     * @return : ResponseEntity : 알림 전송 상태 반환
-     */
-    @PostMapping("/notifyUserOnResponse")
-    public ResponseEntity<?> notifyUserOnResponse(@RequestParam int userId, @RequestParam String responseTitle) {
-        notificationService.notifyUserOnResponse(userId, responseTitle);
-        return ResponseEntity.ok("Notification sent to user.");
-    }
-
-
 }

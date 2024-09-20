@@ -21,9 +21,9 @@
         WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo">
-        INSERT INTO qa (user_id, title, content, reply, orders_id, product_id)
-        VALUES (#{userId}, #{title}, #{content}, #{reply}, #{ordersId}, #{productId})
+    <insert id="insert" parameterType="com.githrd.figurium.qa.vo.QaVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO qa (id, user_id, title, content, reply, orders_id, product_id)
+        VALUES (null, #{userId}, #{title}, #{content}, #{reply}, #{ordersId}, #{productId})
     </insert>
 
     <insert id="product_insert" parameterType="com.githrd.figurium.qa.vo.QaVo">

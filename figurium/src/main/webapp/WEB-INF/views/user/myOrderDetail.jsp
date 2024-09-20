@@ -182,55 +182,224 @@
         }
 
 
+
+        /* 반응형을 위한 미디어 쿼리 */
+        @media (min-width: 768px) {
+            .mypage-sidebar {
+                margin-left: 20px;
+            }
+
+            .order_box_both {
+                max-width: 100% !important;
+            }
+            .order_box_l {
+                max-width: 100% !important;
+            }
+            .form_container {
+                max-width: 100% !important;
+
+            }
+            .table {
+                margin-left: 10px !important;
+                max-width: 100% !important;
+                min-width: 0% !important;
+            }
+            #table_under_box {
+                max-width: 100% !important;
+                margin: 0;
+            }
+            .table tr {
+                max-width: 90% !important;
+            }
+            .td_content {
+                max-width: 70% !important;
+            }
+
+            .total-container {
+                max-width: 100% !important;
+            }
+
+
+            .total-container {
+                max-width: 100% !important;
+            }
+
+            .profile-header {
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+            }
+
+            .profile-header img {
+                margin-right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mypage-sidebar{
+                max-width: 100% !important;
+            }
+            .profile-header img {
+                width: 100px;
+                height: 100px;
+            }
+            .order_box_both {
+                max-width: 100% !important;
+                flex-direction: column;
+            }
+            .order_box_l {
+                max-width: 100% !important;
+            }
+            .form_container {
+                max-width: 100% !important;
+
+            }
+            .table {
+                margin-left: 10px !important;
+                max-width: 100% !important;
+                min-width: 0% !important;
+            }
+            #table_under_box {
+                max-width: 100% !important;
+                margin: 0;
+            }
+            .table tr {
+                max-width: 90% !important;
+            }
+            .td_content {
+                max-width: 70% !important;
+            }
+
+            #order_box_detail{
+                margin: auto;
+                max-width: 90% !important;
+                min-height: 500px !important;
+                margin-bottom: 50px;
+            }
+            .total-container {
+                max-width: 100% !important;
+            }
+
+
+
+            .profile-header h2 {
+                font-size: 18px;
+            }
+
+            .profile-header p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-header img {
+                width: 80px;
+                height: 80px;
+            }
+            .order_box_both {
+                max-width: 100% !important;
+                flex-direction: column;
+            }
+            .order_box_l {
+                max-width: 100% !important;
+            }
+            .form_container {
+                max-width: 100% !important;
+
+            }
+            .table {
+                margin-left: 10px !important;
+                max-width: 100% !important;
+                min-width: 0% !important;
+            }
+            #table_under_box {
+                max-width: 100% !important;
+                margin: 0;
+            }
+            .table tr {
+                max-width: 90% !important;
+            }
+            .td_content {
+                max-width: 70% !important;
+            }
+
+            #order_box_detail{
+                margin: auto;
+                max-width: 90% !important;
+                min-height: 500px !important;
+                margin-bottom: 50px;
+            }
+
+            .total-container span{
+                font-size: 13px;
+            }
+            .profile-header h2 {
+                font-size: 16px;
+            }
+
+            .profile-header p {
+                font-size: 12px;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+            }
+
+
+        }
+
     </style>
 
 </head>
 
-<body>
+<body class="animsition">
 <!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
 
     <!-- Profile Header -->
-    <div class="profile-header">
-        <div style="display: inline-block; margin-left: 70px;">
-            <img src="${loginUser.profileImgUrl}" alt="Profile Picture">
+    <div class="profile-header" style="text-align: center;">
+        <div style="display: inline-block;">
+            <div style="display: inline-block; margin-left: 70px;">
+                <img src="${loginUser.profileImgUrl}" alt="Profile Picture">
+            </div>
+            <div style="display:inline-block; width: 50px; margin-left: 10px;">
+                <label for="profileImage" class="custom-file-upload">수정</label>
+                <input type="file" id="profileImage" name="profileImage" onchange="updateProfileImage(this)"/>
+            </div>
+            <h2>${loginUser.name}</h2>
+            <p>${loginUser.email}</p>
         </div>
-        <div style="display:inline-block; width: 50px; margin-left: 10px;">
-            <label for="profileImage" class="custom-file-upload">수정</label>
-            <input type="file" id="profileImage" name="profileImage" onchange="updateProfileImage(this)"/>
-        </div>
-        <h2>${loginUser.name}</h2>
-        <p>${loginUser.email}</p>
     </div>
     <br><br>
 
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <div style="margin-left: -150px;" class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">My Page</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="/user/my-page.do">개인
-                                정보 수정</a></li>
-                            <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a
-                                    href="/user/order-list.do">내 주문 내역</a></li>
-                            <li class="list-group-item"><a href="#">반품 내역</a></li>
-                            <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
-                        </ul>
-                    </div>
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="mypage-sidebar col-sm-12 col-md-4 " style="max-width: 300px;">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Page</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/user/my-page.do">개인 정보 수정</a></li>
+                        <li class="list-group-item"><a href="/user/myProductLikeList.do">관심 상품</a></li>
+                        <li class="list-group-item"><a href="/user/order-list.do">주문 내역</a></li>
+                        <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
+                    </ul>
                 </div>
             </div>
+        </div>
 
-            <!-- Main Content -->
-            <div style="float: left; width: 80%; margin-left: 50px;">
-                <!-- 주문내역 리스트 -->
-                <div class="bg0 p-t-75 p-b-85" style="padding-bottom: 0px">
-
-                    <div class="cart_list" style="margin-left: -50px;">
+        <!-- Main Content -->
+        <div class="col-sm-12 col-md-8" style="display: inline-block;">
+            <!-- 주문내역 리스트 -->
+            <div class="bg0 p-t-75 p-b-85" style="padding-bottom: 0px">
+                <div>
+                    <div class="cart_list">
                         <!-- breadcrumb -->
                         <div class="container">
                             <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg backbtn">
@@ -250,115 +419,103 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <h1>주문상세내역</h1>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
+                                <div class="m-l-25 m-r--38 m-lr-0-xl">
+                                    <div class="wrap-table-shopping-cart">
+                                        <table class="table-shopping-cart">
 
-                    <div style="width: 1300px; margin-left: -160px">
-                        <h1>주문상세내역</h1>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
-                                    <div class="m-l-25 m-r--38 m-lr-0-xl">
-                                        <div class="wrap-table-shopping-cart">
-                                            <table class="table-shopping-cart">
+                                            <!-- th -->
+                                            <tr class="table_head">
+                                                <th class="column-1" style="text-align: center; width: 40%;">상품</th>
+                                                <th class="column-2" style="width: 7%;">수량</th>
+                                                <th class="column-3" style="width: 10%;">가격</th>
+                                                <th class="column-4" style="text-align: center;">총금액</th>
+                                                <th class="column-5" style="text-align: center; width: 8%;">결제방식</th>
+                                                <th class="column-6" style="text-align: center; ">결제일자</th>
+                                            </tr>
 
-                                                <!-- th -->
-                                                <tr class="table_head">
-                                                    <th class="column-1" style="text-align: center; width: 40%;">상품</th>
-                                                    <th class="column-2" style="width: 7%;">수량</th>
-                                                    <th class="column-3" style="width: 10%;">가격</th>
-                                                    <th class="column-4" style="text-align: center;">총금액</th>
-                                                    <th class="column-5" style="text-align: center; width: 8%;">결제방식</th>
-                                                    <th class="column-6" style="text-align: center; ">결제일자</th>
-                                                </tr>
+                                            <!-- td -->
+                                            <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
+                                            <tr class="table_row" style="height: 100px;">
+                                                <td class="column-1" style="padding-bottom: 0px;" >
+                                                    <div class="how-itemcart1 table_content_img">
+                                                        <img src="${ myOrder.imageUrl }"
+                                                             alt="${ myOrder.id }" style="text-align: left">
+                                                        <span>${ myOrder.productName }</span>
+                                                    </div>
 
-
-
-                                                <!-- td -->
-                                                <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
-                                                <tr class="table_row" style="height: 100px;">
-                                                    <td class="column-1" style="padding-bottom: 0px;" >
-                                                        <div class="how-itemcart1 table_content_img">
-                                                            <img src="${ myOrder.imageUrl }"
-                                                                 alt="${ myOrder.id }" style="text-align: left">
-                                                            <span>${ myOrder.productName }</span>
-                                                        </div>
-
+                                                </td>
+                                                    <td class="column-2" style="padding-bottom: 0px;">
+                                                        ${ myOrder.quantity }
                                                     </td>
-                                                        <td class="column-2" style="padding-bottom: 0px;">
-                                                            ${ myOrder.quantity }
-                                                        </td>
 
 
-                                                    <td class="column-3" style="padding-bottom: 0px;">
-                                                        <span class="productPrice">${ myOrder.price }원</span>
-                                                    </td>
-                                                    <td class="column-4" style="text-align: center; padding-bottom: 0px">
-                                                        <span class="productPrice">${ myOrder.price * myOrder.quantity }원</span>
-                                                    </td>
-                                                    <td class="column-5" style="text-align: center; padding-bottom: 0px">
-                                                        <c:if test="${ myOrder.paymentType == 'card' }">
-                                                            <span class="productPrice">카드</span>
-                                                        </c:if>
-                                                        <c:if test="${ myOrder.paymentType == 'vbank' }">
-                                                            <span class="productPrice">무통장입금</span>
-                                                        </c:if>
-                                                    </td>
-                                                    <td class="column-6" style="text-align: center; padding-bottom: 0px">
-                                                        <span class="productPrice">${ myOrder.createdAt }</span>
-                                                    </td>
-                                                </tr>
-                                                </c:forEach>
-                                            </table>
-                                        </div>
+                                                <td class="column-3" style="padding-bottom: 0px;">
+                                                    <span class="productPrice">${ myOrder.price }원</span>
+                                                </td>
+                                                <td class="column-4" style="text-align: center; padding-bottom: 0px">
+                                                    <span class="productPrice">${ myOrder.price * myOrder.quantity }원</span>
+                                                </td>
+                                                <td class="column-5" style="text-align: center; padding-bottom: 0px">
+                                                    <c:if test="${ myOrder.paymentType == 'card' }">
+                                                        <span class="productPrice">카드</span>
+                                                    </c:if>
+                                                    <c:if test="${ myOrder.paymentType == 'vbank' }">
+                                                        <span class="productPrice">무통장입금</span>
+                                                    </c:if>
+                                                </td>
+                                                <td class="column-6" style="text-align: center; padding-bottom: 0px">
+                                                    <span class="productPrice">${ myOrder.createdAt }</span>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-
-
-
-                            <hr id="list-hr1">
-
-                            <div class="total-container">
-                                <div class="item">
-                                    <span class="label">총상품금액</span>
-                                    <span class="amount" id="totalAmount">
-                                        <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue }" currencySymbol=""/>원
-                                    </span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">+</span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">총배송비</span>
-                                    <c:set var="finalValue"
-                                           value="${ myOrderInfo.totalValue < 100000 ? 3000 : 0}"/>
-                                    <span class="amount"><fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원</span>
-                                </div>
-                                <div class="item">
-                                    <span class="label">=</span>
-                                </div>
-                                <div class="item total">
-                                    <span class="label">TOTAL</span>
-                                    <span class="amount highlight">
-                                        <c:set var="finalValue"
-                                               value="${ myOrderInfo.totalValue < 100000 ? myOrderInfo.totalValue + 3000 : myOrderInfo.totalValue}"/>
-                                        <fmt:formatNumber type="currency" value="${ finalValue }" currencySymbol=""/>원
-                                    </span>
-                                    <span class="extra">FIGU</span>
-                                </div>
-                            </div>
-
-                            <hr id="list-hr2" style="margin-bottom: 0px">
-
-
-
                         </div>
+
+                        <hr id="list-hr1">
+
+                        <div class="total-container">
+                            <div class="item">
+                                <span class="label">총상품금액</span>
+                                <span class="amount" id="totalAmount">
+                                    <fmt:formatNumber type="currency" value="${ myOrderInfo.totalValue }" currencySymbol=""/>원
+                                </span>
+                            </div>
+                            <div class="item">
+                                <span class="label">+</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">총배송비</span>
+                                <c:set var="finalValue"
+                                       value="${ myOrderInfo.totalValue < 100000 ? 3000 : 0}"/>
+                                <span class="amount"><fmt:formatNumber type="currency" value="${finalValue}" currencySymbol=""/>원</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">=</span>
+                            </div>
+                            <div class="item total">
+                                <span class="label">TOTAL</span>
+                                <span class="amount highlight">
+                                    <c:set var="finalValue"
+                                           value="${ myOrderInfo.totalValue < 100000 ? myOrderInfo.totalValue + 3000 : myOrderInfo.totalValue}"/>
+                                    <fmt:formatNumber type="currency" value="${ finalValue }" currencySymbol=""/>원
+                                </span>
+                                <span class="extra">FIGU</span>
+                            </div>
+                        </div>
+                        <hr id="list-hr2" style="margin-bottom: 0px">
                     </div>
                 </div>
-
-
-
             </div>
         </div>
+    </div>
 
         <div class="order_box_both">
             <input type="hidden" value="${ myOrderInfo.id }" id="order_id">
@@ -505,7 +662,7 @@
             </div>
 
         </div>
-    </div>
+
 
 
 

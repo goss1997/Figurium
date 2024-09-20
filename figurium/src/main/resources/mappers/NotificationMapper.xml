@@ -19,26 +19,16 @@
     </select>
 
     <!-- 알림을 읽음 상태로 업데이트 -->
-    <update id="updateNotificationAsRead">
+    <update id="updateNotificationAsRead" parameterType="int">
         UPDATE notifications
-        SET isRead = TRUE
+        SET isRead = 1
         WHERE id = #{notificationId}
     </update>
 
-
-    <!-- 모든 알림을 조회하는 SQL 쿼리 -->
-    <select id="getAllNotifications" resultType="com.githrd.figurium.notification.vo.Notification">
-        SELECT * FROM notifications;
+    <!--모든 알림 조회-->
+    <select id="getAllNotifications" parameterType="map" resultType="int">
+        select count(*)
+        from notifications
     </select>
-
-    <!-- 특정 알림을 삭제하는 SQL 쿼리 -->
-    <delete id="deleteNotification" parameterType="int">
-        DELETE FROM notifications WHERE id = #{notificationId};
-    </delete>
-
-    <!-- 모든 알림을 삭제하는 SQL 쿼리 -->
-    <delete id="deleteAllNotifications">
-        DELETE FROM notifications;
-    </delete>
 
 </mapper>

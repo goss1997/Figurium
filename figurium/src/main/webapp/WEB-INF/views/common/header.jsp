@@ -58,6 +58,8 @@
     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -166,7 +168,7 @@
             background-color: #45a049;
         }
 
-        #profileImg {
+        .profileImg {
             width: 35px;
             height: 35px;
             object-fit: cover;
@@ -205,6 +207,83 @@
 
         }
 
+        .cart-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-item-count {
+            position: absolute;
+            top: -6px; /* 아이콘 위쪽 */
+            right: -5px; /* 아이콘 오른쪽 */
+            background-color: red; /* 배경색 */
+            color: white; /* 글자색 */
+            border-radius: 50%; /* 동그란 모양 */
+            width: 16px; /* 너비 */
+            height: 16px; /* 높이 */
+            text-align: center; /* 가운데 정렬 */
+            line-height: 14px; /* 가운데 정렬 */
+            font-size: 14px; /* 폰트 크기 */
+        }
+
+        .cartImage {
+            margin-left: 10px;
+            margin-top: 2px;
+            filter: brightness(0) invert(0.2); /* #333색상 흉내 */
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover .cartImage {
+            filter: brightness(0) saturate(100%) hue-rotate(180deg) brightness(1.2); /* #157ab3 색상 흉내 */
+            transform: scale(1.1); /* 아이콘 크기 확대 */
+        }
+
+    /* 반응형 스타일 추가 */
+    @media only screen and (max-width: 1200px) {
+        .login-modal-content {
+            width: 40%; /* Large screens */
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+        .login-modal-content {
+            width: 50%; /* Medium screens */
+        }
+        .login-input-area input {
+            width: 80%; /* Adjust input size */
+        }
+        .login-form button {
+            width: 30%; /* Adjust button size */
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .login-modal-content {
+            width: 70%; /* Small screens */
+        }
+        .login-input-area input {
+            width: 90%; /* Adjust input size */
+        }
+        .login-form button {
+            width: 40%; /* Adjust button size */
+        }
+    }
+
+    @media only screen and (max-width: 576px) {
+        .login-modal-content {
+            width: 90%; /* Extra small screens */
+        }
+        .login-input-area input {
+            width: 100%; /* Full width input */
+        }
+        .login-form button {
+            width: 50%; /* Adjust button size */
+        }
+        .login-button img {
+            width: 30px; /* Adjust login button size */
+        }
+    }
+
     </style>
 
 
@@ -233,8 +312,8 @@
                     <img src="/images/FiguiumLOGO3.png" alt="LOGO">
                 </a>
                 <script>
-                    $(function() {
-                        $('a[href="/"]').click(function() {
+                    $(function () {
+                        $('a[href="/"]').click(function () {
                             // sessionStorage 초기화
                             sessionStorage.clear();
                         });
@@ -251,7 +330,9 @@
                             <a href="${pageContext.request.contextPath}/productList.do?name=전체 상품">카테고리</a>
                             <ul class="sub-menu">
                                 <c:forEach var="category" items="${figureCategories}">
-                                    <li><a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/productList.do?name=${category.name}">${category.name}</a>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </li>
@@ -270,7 +351,7 @@
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <!-- NOTE : 로그인 아이콘 -->
                     <c:if test="${empty loginUser}">
-                        <div id="loginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+                        <div id="loginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="margin-top: 6px;">
 
                             <i class="zmdi zmdi-account-circle"></i>
                         </div>
@@ -279,12 +360,12 @@
                         <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
                             <div>
                                 <div style="display: inline-block">
-                                    <img id="profileImg"
+                                    <img class="profileImg"
                                          src="${loginUser.profileImgUrl == null ? '/images/default-user-image.png' : loginUser.profileImgUrl }"
                                          width="40px;">
                                     <img class="usercard-grade" src="/images/star6.gif">
                                 </div>
-                                <div style="display: inline-block">
+                                <div style="display: inline-block; ">
                                     <ul class="main-menu">
                                         <li style="padding : 0;">
                                             <a href="#">${loginUser.name}</a>
@@ -305,23 +386,41 @@
                         </div>
                     </c:if>
 
-
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-cart"
-                    >
-                        <i class="zmdi zmdi-shopping-cart"></i>
+                    <!-- 장바구니 상품갯수 출력 -->
+                    <div class="cart-container">
+                        <a href="#" onclick="cartList();">
+                            <img class="cartImage" src="/images/icons/cartLogo.png" alt="Shopping Cart Icon"
+                                 style="width: 24px; height: 24px;">
+                        </a>
+                        <span id="cart-item-count" class="cart-item-count"></span>
                     </div>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11"
-                    >
-                        <i class="zmdi zmdi-favorite-outline"></i>
-                    </a>
+                    <script>
+                        function cartList() {
+
+                            let user = "${sessionScope.loginUser}";
+
+                            if (user === "null" || user === "") {
+                                alert("로그인이 필요한 서비스 입니다.");
+                                return;
+                            }
+
+
+                            if (confirm("장바구니로 이동 하시겠습니까?")) {
+                                location.href = "${pageContext.request.contextPath}/CartList.do";
+                            }
+                        }
+
+                    </script>
+
 
                     <%--알림 버튼 --%>
+                    <c:if test="${not empty loginUser}">
                     <div>
                         <div style="display: inline-block">
                             <ul class="main-menu">
                                 <li style="padding : 0;">
-                                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-22 p-r-11">
+                                    <div class="icon-header-item cl2 hov-c12 trans-04 p-l-2 p-r-11">
                                         <i class="zmdi zmdi-notifications"></i>
                                     </div>
                                     <ul id="notification"
@@ -332,11 +431,13 @@
                                         <div id="notification-list-area">
 
                                         </div>
+                                        <li style="color: #ff5f5f; text-align: center; font-size: 20px;" onclick="">모든 알림 삭제</li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                    </c:if>
 
                     <!-- 상품 검색 -->
                     <div class="search_box">
@@ -353,51 +454,6 @@
                         <ul id="popularSearches" class="dropdown-menu" style="display:none;"></ul>
                     </div>
                 </div>
-
-                <!-- Login Modal Structure -->
-                <div id="loginModal" class="login-modal">
-                    <div class="login-modal-content">
-                        <span class="login-modal-close">&times;</span>
-
-                        <h2>Login</h2>
-                        <br>
-                        <!-- 개인 회원 로그인 폼 -->
-                        <div class="login-form">
-                            <div class="login-input-area">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                       required>
-                                <input type="password" class="form-control" id="password" name="password"
-                                       placeholder="Password" required>
-                            </div>
-                            <div class="find-password">
-                                <a href="/user/find-password-form.do">비밀번호 찾기</a>
-                            </div>
-                            <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
-                            <input type="button" class="btn btn-secondary" value="회원가입"
-                                   onclick="location.href='/user/signup-form.do';"/>
-                        </div>
-
-                        <div style="width: 100%;">――――― 간편 로그인 ―――――</div>
-                        <br>
-                        <div>
-                            <!-- Google Login Button -->
-                            <a href="/oauth2/authorization/google" class="login-button">
-                                <img src="/images/social/google_login_btn.png" alt="Google Logo">
-                            </a>
-
-                            <!-- Naver Login Button -->
-                            <a href="/oauth2/authorization/naver" class="login-button">
-                                <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
-                            </a>
-
-                            <!-- Kakao Login Button -->
-                            <a href="/oauth2/authorization/kakao" class="login-button">
-                                <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
-                            </a>
-                        </div>
-                        <br>
-                    </div>
-                </div>
             </nav>
         </div>
     </div>
@@ -406,16 +462,50 @@
     <div class="wrap-header-mobile">
         <!-- Logo moblie -->
         <div class="logo-mobile">
-            <a href="#" class="logo">
+            <a href="${pageContext.request.contextPath}/" class="logo">
                 <img src="/images/FiguiumLOGO3.png" alt="LOGO">
             </a>
         </div>
 
+
+
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+
+        <!-- NOTE : 로그인 아이콘 -->
+        <c:if test="${empty loginUser}">
+            <div id="mobileLoginBtn" class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style=" font-size: 24px;">
                 <i class="zmdi zmdi-account-circle"></i>
             </div>
+        </c:if>
+        <c:if test="${not empty loginUser}">
+            <div class="cl2 hov-cl1 trans-04 p-l-22 p-r-11" style="font-size: 15px; text-align: center;">
+                <div>
+                    <div style="display: inline-block">
+                        <img class="profileImg"
+                             src="${loginUser.profileImgUrl == null ? '/images/default-user-image.png' : loginUser.profileImgUrl }"
+                             width="40px;">
+                        <img class="usercard-grade" src="/images/star6.gif">
+                    </div>
+                    <div style="display: inline-block">
+                        <ul class="main-menu" style="position: relative; z-index: 1050;">
+                            <li style="padding : 0;">
+                                <a href="#">${loginUser.name}</a>
+                                <ul style="margin-top: 15px;" class="sub-menu">
+                                    <c:if test="${loginUser.role == '1'}">
+                                        <li><a href="/admin.do">관리자페이지</a></li>
+                                    </c:if>
+                                    <li><a href="/user/my-page.do">마이페이지</a></li>
+                                    <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
+                                    <li><a href="/user/order-list.do">주문 내역</a></li>
+                                    <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </c:if>
 
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 js-show-modal-search">
                 <i class="zmdi zmdi-search"></i>
@@ -426,10 +516,6 @@
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
 
-            <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-               data-notify="0">
-                <i class="zmdi zmdi-favorite-outline"></i>
-            </a>
         </div>
 
         <!-- Button show menu -->
@@ -450,7 +536,7 @@
 
 
             <li>
-                <a href="shopingCart.do">장바구니</a>
+                <a href="${pageContext.request.contextPath}/CartList.do">장바구니</a>
             </li>
 
             <li>
@@ -459,8 +545,96 @@
         </ul>
     </div>
 
+    <!-- Login Modal Structure -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-modal-content">
+            <span class="login-modal-close">&times;</span>
+
+            <h2>Login</h2>
+            <br>
+            <!-- 개인 회원 로그인 폼 -->
+            <div class="login-form">
+                <div class="login-input-area">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           required>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="Password" required>
+                </div>
+                <div class="find-password">
+                    <a href="/user/find-password-form.do">비밀번호 찾기</a>
+                </div>
+                <input type="button" class="btn btn-secondary" value="로그인" onclick="login();"/>
+                <input type="button" class="btn btn-secondary" value="회원가입"
+                       onclick="location.href='/user/signup-form.do';"/>
+            </div>
+
+            <hr>
+            <br>
+            <div>
+                <!-- Google Login Button -->
+                <a href="/oauth2/authorization/google" class="login-button">
+                    <img src="/images/social/google_login_btn.png" alt="Google Logo">
+                </a>
+
+                <!-- Naver Login Button -->
+                <a href="/oauth2/authorization/naver" class="login-button">
+                    <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
+                </a>
+
+                <!-- Kakao Login Button -->
+                <a href="/oauth2/authorization/kakao" class="login-button">
+                    <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
+                </a>
+            </div>
+            <br>
+        </div>
+    </div>
 </header>
 
+<script>
+$.ajax({
+    url : 'api/notifications/count.do',
+    type: 'GET',
+    dataType : 'jason',
+    success: function(response) {
+      if(response.notification !== undefined) {
+      $('#notification').attr('data-notify', response.notification)
+      }else {
+      $('#notification').attr('data-notify', '0')
+      }
+    },
+    error: function (xhr,status,error){
+    console.error('count를 가져오는데 실패했습니다.', error);
+    $('notification').attr('data-notify', '0');
+    }
+    });
+
+$(document).ready(function () {
+updateCount();
+});
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/cartItemCount",
+            method: 'GET',
+            success: function (data) {
+
+                if (data > 0) {
+                    $('#cart-item-count').text(data);
+                    $('#cart-item-count').show();
+                } else {
+                    $('#cart-item-count').hide();
+                }
+            },
+            error: function (err) {
+                alert("에러 발생");
+            }
+        });
+    });
+</script>
 
 <script>
     /**
@@ -469,11 +643,19 @@
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('loginModal');
         const btn = document.getElementById('loginBtn');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
         const span = document.getElementsByClassName('login-modal-close')[0];
 
-        // Open the modal
+        // Open the modal Desktop
         if (btn) {
             btn.onclick = function () {
+                modal.style.display = 'block';
+            }
+        }
+
+        // Open the modal Mobile
+        if (mobileLoginBtn) {
+            mobileLoginBtn.onclick = function () {
                 modal.style.display = 'block';
             }
         }
@@ -582,40 +764,45 @@
 <c:if test="${loginUser != null}">
     <script>
         /**
-        * 사용자 알림 리스트 가져오기
-        */
-        $(function(){
+         * 사용자 알림 리스트 가져오기
+         */
+        $(function () {
             $.ajax({
-               url : '/api/notifications/user/${loginUser.id}',
-               method : 'GET',
-               success : function (notifications) {
-                    if(notifications.length === 0) {
+                url: '/api/notifications/user/${loginUser.id}',
+                method: 'GET',
+                success: function (notifications) {
+                    if (notifications.length === 0) {
                         $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
                     } else {
-                        let appendForm;
 
-                        for (const notification of notifications ) {
-                            appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
-                                        '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
-                                        notification.message + '</i>' +
-                                        '</li>';
+                        let appendForm;
+                        for (const notification of notifications) {
+
+
+                            if (notification.isRead == 0){
+
+                            // 알림 객체를 li로 이쁘게 변환하는 함수
+                            appendForm = transNotification(notification);
+                            }else if (notification.isRead == 1){
+                                appendForm =  transReadNotification(notification);
+                            }
+
                             // 알림 객체 알림 모달 맨위에 추가.
                             $("#notification-list-area").append(appendForm);
                         }
 
                     }
-               },
-               error: function(xhr, status, error) {
-                   console.error('Error fetching data:', error);
-               }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
             });
         });
 
         /**
          * 로그인한 사용자면 SSE 연결
          */
-
-        // EventSource 생성 후 SSE 연결하는 함수.
+            // EventSource 생성 후 SSE 연결하는 함수.
         const eventSource = new EventSource('/api/notifications/subscribe');
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);
@@ -636,10 +823,9 @@
             console.log(notification.url);
             console.log(notification.message);
 
-            let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
-                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
-                notification.message + '</i>' +
-                '</li>';
+            // 알림 객체를 li로 이쁘게 변환하는 함수
+
+            let appendForm = transNotification(notification);
 
             // 알림 객체 알림 모달 맨위에 추가.
             $("#notification-list-area").prepend(appendForm);
@@ -647,42 +833,72 @@
         });
 
 
+        /**
+         * 알림의 isRead를 true로 바꾸기(ajax) + 해당 url로 이동시키기
+         */
+        function isReadTrue(notification) {
+
+            // ', ' 기준으로 왼쪽과 오른쪽 분리
+            const parts = notification.split(',');
+
+            // 왼쪽 부분 (id: ?)
+            const id = parts[0].trim();
+
+            // 오른쪽 부분 (/qa/qaSelect.do?id=?)
+            const url = parts[1].trim();
+
+            $.ajax({
+                url: '/api/notifications/read/' + id, // 알림 읽음 처리 URL
+                method: 'PUT', // PUT 메서드 사용
+                success: function () {
+                    // 성공 시 해당 url로 이동
+                    location.href = url;
+                },
+                error: function (xhr, status, error) {
+                    console.error('알림을 읽음으로 표시하는 중 오류가 발생했습니다.', error);
+                }
+            });
+        }
+
+        /**
+         * 알림 객체를 li로 변환하는 함수
+         */
+        /* 알람을 읽었을때  isRead  false*/
+        function transNotification(notification) {
+
+            const createdAt = new Date(notification.createdAt);
+            const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
+            const time = createdAt.toTimeString().substring(0, 5); // hh:mm
+            const id =  notification.id;
+            const url = notification.url;
+
+
+            let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
+                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
+                notification.message + '</i>' +
+                '<span style="font-size:14px; color:gray;">' + date + ' ' + time + '</span>' +
+                '</li>';
+
+            return appendForm;
+        }
+        /* 알람을 읽었을때  isRead  true*/
+        function transReadNotification(notification) {
+            const createdAt = new Date(notification.createdAt);
+            const date = createdAt.toISOString().substring(0, 10);
+            const time = createdAt.toTimeString().substring(0, 5);
+            const id =  notification.id;
+            const url = notification.url;
+
+            return '<li class="read" style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
+                '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-left: 10px;"></i>' +
+                '<span style="font-size:14px; background-color:gray;">' + notification.message + '<i class="zmdi zmdi-close"></i>'+ '</span>' +
+                '<span style="font-size:14px; color: lightgray;">' + date + ' ' + time + '</span>' +
+                '</li>';
+        }
+
     </script>
 </c:if>
 
-
-<%--<script>--%>
-
-<%--   eventSource.addEventListener('DOMContentLoaded', function() {--%>
-<%--            const notificationContainer = document.getElementById('notification');--%>
-
-<%--            // SSE 연결 설정--%>
-<%--            const eventSource = new EventSource('/api/notifications/subscribe');--%>
-
-<%--            eventSource.onmessage = function(event) {--%>
-<%--                const notification = JSON.parse(event.data);--%>
-
-<%--                // 새로운 알림 항목 생성--%>
-<%--                const notificationItem = document.createElement('li');--%>
-<%--                notificationItem.style.fontSize = '18px';--%>
-<%--                notificationItem.innerHTML = `<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">--%>
-<%--                    ${notification.message} ${notification.createdAt.substring(0, 10)} ${notification.createdAt.substring(11, 16)}--%>
-<%--                </i>`;--%>
-
-<%--                notificationContainer.appendChild(notificationItem);--%>
-<%--            };--%>
-
-<%--            // 모든 알림 삭제 처리--%>
-<%--            document.getElementById('deleteAllNotifications').addEventListener('click', function() {--%>
-<%--                fetch('/api/notifications/deleteAll', { method: 'DELETE' })--%>
-<%--                    .then(response => response.text())--%>
-<%--                    .then(result => {--%>
-<%--                        alert(result);--%>
-<%--                        notificationContainer.innerHTML = ''; // 알림 목록 비우기--%>
-<%--                    });--%>
-<%--            });--%>
-<%--        });--%>
-<%--</script>--%>
 
 <script>
     function searchProduct(f) {

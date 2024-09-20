@@ -496,7 +496,9 @@
     </div>
   </div>
 
-  <h1>주문서</h1>
+  <div class="ltext-103 cl5" style="width: 1400px; margin: auto;">
+    <img src="/images/주문서.png" style="width: 100%;">
+  </div>
 
 <%-- 상단 아이템 주문 리스트 --%>
     <%--  장바구니 예시 테이블 : 0828 --%>

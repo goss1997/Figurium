@@ -149,6 +149,7 @@ public class NotificationService {
      */
     public void updateNotificationAsRead(int notificationId) {
         notificationMapper.updateNotificationAsRead(notificationId);
+
     }
 
     /**

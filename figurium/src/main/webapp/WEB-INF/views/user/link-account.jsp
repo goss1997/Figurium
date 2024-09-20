@@ -12,11 +12,17 @@
     <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
     <!-- TODO : 제목 과 스타일 영역 -->
     <style>
+        @media (max-width: 576px) {
+            .container {
+                max-width: 80%;
+            }
+
+        }
 
     </style>
 </head>
 
-<body>
+<body class="animsition">
 <!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>

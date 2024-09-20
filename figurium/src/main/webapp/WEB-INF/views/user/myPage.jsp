@@ -60,35 +60,97 @@
         .list-group-item a {
             color : black;
         }
-    </style>
+
+        /* 반응형을 위한 미디어 쿼리 */
+        @media (min-width: 768px) {
+            .mypage-sidebar {
+                margin-left: 20px;
+            }
+
+            .profile-header {
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+            }
+
+            .profile-header img {
+                margin-right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .mypage-sidebar{
+                max-width: 100% !important;
+            }
+
+            .profile-header h2 {
+                font-size: 18px;
+            }
+
+            .profile-header p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-header img {
+                width: 80px;
+                height: 80px;
+            }
+
+
+            .profile-header h2 {
+                font-size: 16px;
+            }
+
+            .profile-header p {
+                font-size: 12px;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+            }
+
+
+        }
 
     </style>
 </head>
 
-<body>
+<body class="animsition">
 <!-- NOTE : 메뉴바 -->
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
 
     <!-- Profile Header -->
-    <div class="profile-header">
-        <div style="display: inline-block; margin-left: 70px;">
-            <img src="${user.profileImgUrl}" alt="Profile Picture">
+    <div class="profile-header" style="text-align: center;">
+        <div style="display: inline-block;">
+            <div style="display: inline-block; margin-left: 70px;">
+                <img src="${user.profileImgUrl}" alt="Profile Picture">
+            </div>
+            <div style="display:inline-block; width: 50px; margin-left: 10px;">
+                <label for="profileImage" class="custom-file-upload">수정</label>
+                <input type="file" id="profileImage" name="profileImage" onchange="updateProfileImage(this)"/>
+            </div>
+            <h2>${user.name}</h2>
+            <p>${user.email}</p>
         </div>
-        <div style="display:inline-block; width: 50px; margin-left: 10px;">
-            <label for="profileImage" class="custom-file-upload">수정</label>
-            <input type="file" id="profileImage" name="profileImage" onchange="updateProfileImage(this)"/>
-        </div>
-        <h2>${user.name}</h2>
-        <p>${user.email}</p>
     </div>
     <br><br>
 
-    <div class="container mt-4">
         <div class="row">
             <!-- Sidebar -->
-            <div style="margin-left: -150px;" class="col-md-3">
+            <div class="mypage-sidebar col-sm-12 col-md-4 " style="max-width: 300px;">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">My Page</h5>
@@ -96,7 +158,6 @@
                             <li style="font-weight: bold; font-size: 16px;" class="list-group-item"><a href="/user/my-page.do">개인 정보 수정</a></li>
                             <li class="list-group-item"><a href="/user/myProductLikeList.do">관심 상품</a></li>
                             <li class="list-group-item"><a href="/user/order-list.do">주문 내역</a></li>
-                            <li class="list-group-item"><a href="#">반품 내역</a></li>
                             <li class="list-group-item"><a style="color: red;" href="/user/deleteForm.do">회원 탈퇴</a></li>
                         </ul>
                     </div>
@@ -104,7 +165,7 @@
             </div>
 
             <!-- Main Content -->
-            <div style="float: left; width: 80%; margin-left: 50px;">
+            <div class="col-sm-12 col-md-8" style="display: inline-block;">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">개인 정보 수정</h5>
@@ -132,6 +193,7 @@
             </div>
         </div>
     </div>
+
     <script>
         $(function () {
             if(${empty loginUser}) {
@@ -169,7 +231,6 @@
     }
 </script>
 
-</div>
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>
 </body>

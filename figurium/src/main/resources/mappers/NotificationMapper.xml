@@ -19,9 +19,9 @@
     </select>
 
     <!-- 알림을 읽음 상태로 업데이트 -->
-    <update id="updateNotificationAsRead">
+    <update id="updateNotificationAsRead" parameterType="int">
         UPDATE notifications
-        SET isRead = TRUE
+        SET isRead = 1
         WHERE id = #{notificationId}
     </update>
 

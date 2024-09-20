@@ -93,7 +93,7 @@ public class NotificationController {
      * @param notificationId : 읽음 상태로 업데이트할 알림 ID
      * @return : ResponseEntity : 업데이트 상태 반환
      */
-    @PatchMapping("/read/{notificationId}")
+    @PutMapping("/read/{notificationId}")
     public ResponseEntity<?> markNotificationAsRead(@PathVariable int notificationId) {
         notificationService.updateNotificationAsRead(notificationId);
         return ResponseEntity.ok("알림이 읽음 상태로 변경되었습니다. (ID: " + notificationId + ")");

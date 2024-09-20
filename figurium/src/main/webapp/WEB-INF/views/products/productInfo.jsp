@@ -157,7 +157,12 @@
                     <input class="price_cart_btn" type="button" value="장바구니"
                            onclick="addToCart(this.form)">
                 </div>
+
             </div>
+
+                <div style="text-align: center; margin-top: 150px;">
+                    <img src="/images/경고문.png">
+                </div>
 
         </div>
     </form>

@@ -18,13 +18,10 @@
 
         List<QaVo> getQaWithPagination(int offset, int limit); // 페이징 처리된 게시글 조회
         int selectRowTotal(Map<String, Object> map); // 총 게시물 수 조회
-
         List<QaVo> selectAllWithPagination(Map<String, Object> map);
-
         List<QaVo> selectProductAllWithPagination(Map<String, Object> map);
 
-
-
+        int getReplyCount();
         int getQaCount();
 
     }

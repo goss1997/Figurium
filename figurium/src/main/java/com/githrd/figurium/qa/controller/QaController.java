@@ -11,6 +11,8 @@ import com.githrd.figurium.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/qa")
@@ -190,7 +193,26 @@ public class QaController {
         return "redirect:/qa/qaList.do";
     }
 
+    // ** 카운트 **
+    @GetMapping("/Count.do")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> getReplyCount() {
 
+        try {
+
+            int qaCount = Optional.ofNullable(qaService.getQaCount()).orElse(0);
+            int replyCount = Optional.ofNullable(qaService.getReplyCount()).orElse(0);
+
+
+            Map<String, Integer> response = new HashMap<>();
+            response.put("qaCount", qaCount);
+            response.put("replyCount", replyCount);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @GetMapping("/qaSelect.do")
     public String select(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {

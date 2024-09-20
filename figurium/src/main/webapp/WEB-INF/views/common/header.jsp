@@ -58,7 +58,8 @@
     <!--===============================================================================================-->
     <!-- bootstrap4 & jquery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -238,7 +239,6 @@
         }
 
 
-
     </style>
 
 
@@ -344,26 +344,27 @@
                     <!-- 장바구니 상품갯수 출력 -->
                     <div class="cart-container">
                         <a href="#" onclick="cartList();">
-                            <img class="cartImage" src="/images/icons/cartLogo.png" alt="Shopping Cart Icon" style="width: 24px; height: 24px;">
+                            <img class="cartImage" src="/images/icons/cartLogo.png" alt="Shopping Cart Icon"
+                                 style="width: 24px; height: 24px;">
                         </a>
                         <span id="cart-item-count" class="cart-item-count"></span>
                     </div>
 
                     <script>
-                    function cartList(){
+                        function cartList() {
 
-                        let user = "${sessionScope.loginUser}";
+                            let user = "${sessionScope.loginUser}";
 
-                        if (user === "null" || user === "") {
-                            alert("로그인이 필요한 서비스 입니다.");
-                            return;
+                            if (user === "null" || user === "") {
+                                alert("로그인이 필요한 서비스 입니다.");
+                                return;
+                            }
+
+
+                            if (confirm("장바구니로 이동 하시겠습니까?")) {
+                                location.href = "${pageContext.request.contextPath}/CartList.do";
+                            }
                         }
-
-
-                        if (confirm("장바구니로 이동 하시겠습니까?")){
-                        location.href="${pageContext.request.contextPath}/CartList.do";
-                        }
-                    }
 
                     </script>
 
@@ -518,25 +519,25 @@
 </header>
 
 <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/cartItemCount",
-                method: 'GET',
-                success: function(data) {
+    $(document).ready(function () {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/cartItemCount",
+            method: 'GET',
+            success: function (data) {
 
-                    if (data > 0) {
-                        $('#cart-item-count').text(data);
-                        $('#cart-item-count').show();
-                    } else {
-                        $('#cart-item-count').hide();
-                    }
-                },
-                error: function(err) {
-                    alert("에러 발생");
+                if (data > 0) {
+                    $('#cart-item-count').text(data);
+                    $('#cart-item-count').show();
+                } else {
+                    $('#cart-item-count').hide();
                 }
-            });
+            },
+            error: function (err) {
+                alert("에러 발생");
+            }
         });
-    </script>
+    });
+</script>
 
 <script>
     /**
@@ -668,18 +669,12 @@
                     if (notifications.length === 0) {
                         $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
                     } else {
+
                         let appendForm;
-
                         for (const notification of notifications) {
-                            const createdAt = new Date(notification.createdAt);
-                            const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
-                            const time = createdAt.toTimeString().substring(0, 5); // hh:mm
+                            // 알림 객체를 li로 이쁘게 변환하는 함수
+                            appendForm = transNotification(notification);
 
-                            appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
-                                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
-                                notification.message + '</i>' +
-                                '<span style="font-size:14px; color:gray;">' + date + ' ' + time + '</span>' +
-                                '</li>';
                             // 알림 객체 알림 모달 맨위에 추가.
                             $("#notification-list-area").append(appendForm);
                         }
@@ -695,7 +690,6 @@
         /**
          * 로그인한 사용자면 SSE 연결
          */
-
             // EventSource 생성 후 SSE 연결하는 함수.
         const eventSource = new EventSource('/api/notifications/subscribe');
         eventSource.addEventListener('SSE-Connect', event => {
@@ -717,10 +711,8 @@
             console.log(notification.url);
             console.log(notification.message);
 
-            let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="location.href=\'' + notification.url + '\'">' +
-                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
-                notification.message + '</i>' +
-                '</li>';
+            // 알림 객체를 li로 이쁘게 변환하는 함수
+            let appendForm = transNotification(notification);
 
             // 알림 객체 알림 모달 맨위에 추가.
             $("#notification-list-area").prepend(appendForm);
@@ -728,42 +720,56 @@
         });
 
 
+        /**
+         * 알림의 isRead를 true로 바꾸기(ajax) + 해당 url로 이동시키기
+         */
+        function isReadTrue(notificationId, url) {
+            $.ajax({
+                url: '/api/notifications/read/' + notificationId, // 알림 읽음 처리 URL
+                method: 'PUT', // PUT 메서드 사용
+                success: function () {
+                    // 성공 시 해당 url로 이동
+                    location.href = url;
+                },
+                error: function (xhr, status, error) {
+                    console.error('알림을 읽음으로 표시하는 중 오류가 발생했습니다.', error);
+                }
+            });
+        }
+
+        /**
+         * 알림 객체를 li로 변환하는 함수
+         */
+        function transNotification(notification) {
+
+            const createdAt = new Date(notification.createdAt);
+            const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
+            const time = createdAt.toTimeString().substring(0, 5); // hh:mm
+
+            let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + notification.url + '\');">' +
+                '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
+                notification.message + '</i>' +
+                '<span style="font-size:14px; color:gray;">' + date + ' ' + time + '</span>' +
+                '</li>';
+
+            return appendForm;
+        }
+
+        function transReadNotification(notification) {
+            const createdAt = new Date(notification.createdAt);
+            const date = createdAt.toISOString().substring(0, 10);
+            const time = createdAt.toTimeString().substring(0, 5);
+
+            return '<li class="read" style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + notification.url + '\');">' +
+                '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-left: 10px;"></i>' +
+                '<span style="font-size:14px; background-color:gray;">' + notification.message + '</span>' +
+                '<span style="font-size:14px; color: lightgray;">' + date + ' ' + time + '</span>' +
+                '</li>';
+        }
+
     </script>
 </c:if>
 
-
-<%--<script>--%>
-
-<%--   eventSource.addEventListener('DOMContentLoaded', function() {--%>
-<%--            const notificationContainer = document.getElementById('notification');--%>
-
-<%--            // SSE 연결 설정--%>
-<%--            const eventSource = new EventSource('/api/notifications/subscribe');--%>
-
-<%--            eventSource.onmessage = function(event) {--%>
-<%--                const notification = JSON.parse(event.data);--%>
-
-<%--                // 새로운 알림 항목 생성--%>
-<%--                const notificationItem = document.createElement('li');--%>
-<%--                notificationItem.style.fontSize = '18px';--%>
-<%--                notificationItem.innerHTML = `<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;">--%>
-<%--                    ${notification.message} ${notification.createdAt.substring(0, 10)} ${notification.createdAt.substring(11, 16)}--%>
-<%--                </i>`;--%>
-
-<%--                notificationContainer.appendChild(notificationItem);--%>
-<%--            };--%>
-
-<%--            // 모든 알림 삭제 처리--%>
-<%--            document.getElementById('deleteAllNotifications').addEventListener('click', function() {--%>
-<%--                fetch('/api/notifications/deleteAll', { method: 'DELETE' })--%>
-<%--                    .then(response => response.text())--%>
-<%--                    .then(result => {--%>
-<%--                        alert(result);--%>
-<%--                        notificationContainer.innerHTML = ''; // 알림 목록 비우기--%>
-<%--                    });--%>
-<%--            });--%>
-<%--        });--%>
-<%--</script>--%>
 
 <script>
     function searchProduct(f) {

@@ -123,4 +123,6 @@
             return qaMapper.getQaCount();
         }
 
+        @Override
+        public int getReplyCount() {return qaMapper.getReplyCount();}
     }

@@ -572,17 +572,17 @@
             <br>
             <div>
                 <!-- Google Login Button -->
-                <a href="/oauth2/authorization/google" class="login-button">
+                <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="login-button">
                     <img src="/images/social/google_login_btn.png" alt="Google Logo">
                 </a>
 
                 <!-- Naver Login Button -->
-                <a href="/oauth2/authorization/naver" class="login-button">
+                <a href="${pageContext.request.contextPath}/oauth2/authorization/naver" class="login-button">
                     <img src="/images/social/naver_login_btn.png" alt="Naver Logo">
                 </a>
 
                 <!-- Kakao Login Button -->
-                <a href="/oauth2/authorization/kakao" class="login-button">
+                <a href="${pageContext.request.contextPath}/oauth2/authorization/kakao" class="login-button">
                     <img src="/images/social/kakao_login_btn.png" alt="Kakao Logo">
                 </a>
             </div>
@@ -611,6 +611,7 @@ $.ajax({
 
 $(document).ready(function () {
 updateCount();
+console.log('domain : ${pageContext.request.contextPath}');
 });
 
 </script>

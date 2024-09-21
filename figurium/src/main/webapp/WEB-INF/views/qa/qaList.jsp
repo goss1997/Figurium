@@ -45,6 +45,94 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
+        /* 테이블 스타일 */
+        .responsive-table {
+            width: 100%; /* 테이블을 100% 너비로 설정 */
+            table-layout: auto; /* 셀의 너비를 자동으로 조정 */
+        }
+
+        .responsive-table th, .responsive-table td {
+            padding: 8px; /* 패딩 추가 */
+            overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
+            text-overflow: ellipsis; /* 텍스트가 넘칠 경우 생략 부호 추가 */
+            white-space: nowrap; /* 줄바꿈 방지 */
+        }
+
+        /* 모바일 화면 */
+        @media (max-width: 576px) {
+            .truncate-title {
+                max-width: 200px; /* 모바일에서는 제목 너비를 줄임 */
+                font-size: 14px; /* 폰트 크기 조정 */
+            }
+
+            h1 {
+                font-size: 18px; /* 제목 크기 조정 */
+            }
+
+            .responsive-table th, .responsive-table td {
+                font-size: 12px; /* 테이블 폰트 크기 조정 */
+            }
+
+            .btn {
+                width: auto; /* 버튼 너비를 자동으로 조정 */
+                margin-top: 10px; /* 마진 추가 */
+                padding: 5px 10px; /* 패딩 조정 */
+            }
+
+            .paging {
+                font-size: 12px; /* 페이징 아이콘 크기 조정 */
+            }
+        }
+
+        /* 태블릿 화면 */
+        @media (min-width: 577px) and (max-width: 768px) {
+            .truncate-title {
+                max-width: 300px; /* 태블릿에서는 제목 너비 조정 */
+                font-size: 16px; /* 폰트 크기 조정 */
+            }
+
+            h1 {
+                font-size: 22px; /* 제목 크기 조정 */
+            }
+
+            .responsive-table th, .responsive-table td {
+                font-size: 14px; /* 테이블 폰트 크기 조정 */
+            }
+
+            .btn {
+                padding: 6px 10px; /* 태블릿에서 패딩 조정 */
+            }
+
+            .paging {
+                font-size: 13px; /* 태블릿에서 폰트 크기 조정 */
+            }
+        }
+
+        /* 컴퓨터 화면 */
+        @media (min-width: 769px) {
+            .truncate-title {
+                max-width: 400px; /* 컴퓨터에서는 제목 너비 기본값 */
+                font-size: 18px; /* 폰트 크기 조정 */
+            }
+
+            h1 {
+                font-size: 26px; /* 제목 크기 조정 */
+            }
+
+            .responsive-table th, .responsive-table td {
+                font-size: 16px; /* 테이블 폰트 크기 조정 */
+            }
+            .btn {
+                padding: 8px 12px; /* PC에서 패딩 조정 */
+            }
+
+            .paging {
+                font-size: 14px; /* PC에서 폰트 크기 조정 */
+            }
+        }
+
+
     </style>
 
     <script type="text/javascript">
@@ -83,9 +171,9 @@
 
 <div id="content-wrap-area">
     <div class="container pt-3">
-        <h1 style="margin-bottom: 15px">Q&A 게시판</h1>
+        <h1 class="qalist-title" style="margin-bottom: 15px">Q&A 게시판</h1>
         <hr>
-        <table class="table table-hover">
+        <table class="responsive-table table table-hover">
             <thead class="thead-light">
             <tr style="text-align: center">
                 <th>번호</th>
@@ -118,7 +206,7 @@
         </form>
 
         <!-- 페이징 메뉴 -->
-        <div style="margin-top: 30px !important;">
+        <div class="paging" style="margin-top: 30px !important;">
             ${pageMenu}
         </div>
 

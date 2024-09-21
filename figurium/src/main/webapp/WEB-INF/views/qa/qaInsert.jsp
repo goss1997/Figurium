@@ -39,6 +39,38 @@
 
         }
     </script>
+
+    <style>
+        /* 반응형을 위한 미디어 쿼리 */
+        @media (min-width: 768px) {
+            .qainsert_title {
+                font-size: 30px;
+            }
+            .form-group {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .qainsert_title {
+                font-size: 28px;
+            }
+            .form-group {
+                font-size: 14px;
+            }
+
+        }
+
+        @media (max-width: 576px) {
+            .qainsert_title {
+                font-size: 24px;
+            }
+
+            .form-group {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
@@ -46,7 +78,7 @@
 
 <div id="content-wrap-area">
 <div class="container pt-3">
-    <h1 style="margin-bottom: 15px">Q&A 작성</h1>
+    <h1 class="qainsert_title" style="margin-bottom: 15px">Q&A 작성</h1>
     <hr>
     <form action="${pageContext.request.contextPath}/qa/qaSave.do" method="post">
 

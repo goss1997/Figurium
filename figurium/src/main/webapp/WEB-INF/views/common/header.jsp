@@ -424,7 +424,7 @@
                                         <i class="zmdi zmdi-notifications"></i>
                                     </div>
                                     <ul id="notification"
-                                        style="margin-top: 15px; max-width: 800px!important; width: 500px !important; max-height: 600px !important; overflow: scroll !important; height: 600px !important; border-radius: 15px;"
+                                        style="margin-top: 15px; max-width: 800px!important; width: 600px !important; max-height: 600px !important; overflow-y: scroll !important; height: 600px !important; border-radius: 15px;"
                                         class="sub-menu">
                                         <h2 style="text-align: center;">Notification</h2>
                                         <hr>
@@ -540,7 +540,7 @@
             </li>
 
             <li>
-                <a href=${pageContext.request.contextPath}qaList.do">Q&A</a>
+                <a href="${pageContext.request.contextPath}/qa/qaList.do">Q&A</a>
             </li>
         </ul>
     </div>
@@ -881,6 +881,7 @@ updateCount();
 
             return appendForm;
         }
+
         /* 알람을 읽었을때  isRead  true*/
         function transReadNotification(notification) {
             const createdAt = new Date(notification.createdAt);
@@ -889,14 +890,26 @@ updateCount();
             const id =  notification.id;
             const url = notification.url;
 
-            return '<li class="read" style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
-                '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-left: 10px;"></i>' +
-                '<span style="font-size:14px; background-color:gray;">' + notification.message + '<i class="zmdi zmdi-close"></i>'+ '</span>' +
-                '<span style="font-size:14px; color: lightgray;">' + date + ' ' + time + '</span>' +
-                '</li>';
-        }
+            return'<li class="dropdown-item dropdown-item-style read" style="cursor: pointer; width: calc(500px + 70px); position: relative; background-color: lightgray;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
+    '<div class="d-flex align-items-center" style="width: 100%;">' +
+        '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-right: 10px;"></i>' +
+        '<div class="flex-grow-1">' +
+            '<span class="highlight" style="font-size: 18px;">' + notification.message + '</span>' +
+            '<small class="text-muted" style="font-size: 12px; color: lightgray;">' + date + ' ' + time + '</small>' +
+        '</div>' +
+        '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this)"></i>' +
+    '</div>' +
+'</li>';
+}
 
-    </script>
+
+    function deleteNotification(element) {
+         const li = element.closest('li'); // li 요소 찾기
+        if (li) {
+            li.remove();
+        }
+    }
+</script>
 </c:if>
 
 

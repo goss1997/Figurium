@@ -18,7 +18,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- TODO : 제목 과 스타일 영역 -->
     <style>
+        @media (max-width: 576px) {
+            .qaselect-title {
+                font-size: 90%; /* 줄임 */
+            }
+            .col-sm-1, .col-sm-7, .col-sm-2 {
+                font-size: 80%; /* 줄임 */
+            }
+        }
 
+        @media (min-width: 577px) and (max-width: 768px) {
+            .qaselect-title {
+                font-size: 95%; /* 줄임 */
+            }
+            .col-sm-1, .col-sm-7, .col-sm-2 {
+                font-size: 85%; /* 줄임 */
+            }
+        }
+
+        @media (min-width: 769px) {
+            .qaselect-title {
+                font-size: 100%; /* 기본 크기 유지 */
+            }
+            .col-sm-1, .col-sm-7, .col-sm-2 {
+                font-size: 90%; /* 줄임 */
+            }
+        }
 
     </style>
 
@@ -49,7 +74,7 @@
 <div id="content-wrap-area">
     <!-- TODO : 컨텐츠 영역(당신이 사용할 공간) -->
     <div class="container mt-3">
-        <h1 style="margin-bottom: 50px;">Q&A게시판</h1>
+        <h1 class="qaselect-title" style="margin-bottom: 50px;">Q&A게시판</h1>
         <div class="row">
             <div class="col-sm-1">제목</div>
             <div class="col-sm-7">${qa.title}</div>

@@ -611,7 +611,6 @@ $.ajax({
 
 $(document).ready(function () {
 updateCount();
-console.log('domain : ${pageContext.request.contextPath}');
 });
 
 </script>

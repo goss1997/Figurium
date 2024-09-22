@@ -7,15 +7,17 @@
 <head>
   <title>메인 슬라이드 변경</title>
   <style>
-    .thead-light>tr>th{
+    .thead-light > tr > th {
       text-align: center;
       vertical-align: middle !important;
     }
-    tbody>tr>td{
+
+    tbody > tr > td {
       text-align: center;
       vertical-align: middle !important;
     }
-    .nav-link:hover{
+
+    .nav-link:hover {
       cursor: pointer;
     }
 
@@ -30,7 +32,7 @@
 
     /* 파일 선택 버튼 커스텀 */
     .custom-file-label {
-      width: 200px;
+      width: 150px;
       margin-left: 150px;
       margin-top: 4px;
       padding: 10px 20px;
@@ -51,8 +53,37 @@
       background-position: center;
     }
 
+    .card-body {
+      aspect-ratio: 3.8 / 1;
+    }
 
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      .custom-file-label {
+        position: relative !important;
+        width: 100%; /* 모바일에서 버튼 너비를 100%로 */
+        margin-left: 0; /* 모바일에서 왼쪽 여백 제거 */
+        margin-top: 10px; /* 버튼 간격 조정 */
+      }
 
+      .card-header {
+        flex-direction: column; /* 카드 헤더 세로 정렬 */
+        align-items: flex-start; /* 왼쪽 정렬 */
+      }
+
+      .item-slick1 {
+        aspect-ratio: 3 / 1; /* 모바일에서 비율 조정 */
+        max-height: 300px; /* 높이 조정 */
+      }
+
+      .apply-btn {
+        width: 100%; /* 버튼 너비를 100%로 */
+        margin-top: 10px; /* 버튼 간격 조정 */
+      }
+      .card-body {
+        aspect-ratio: auto;
+      }
+    }
   </style>
 </head>
 
@@ -61,25 +92,37 @@
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 <div id="content-wrap-area">
+
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
-           href="adminSlideChange.do">메인 슬라이드 변경</a>
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="adminSlideChange.do">메인 슬라이드 변경</a>
+        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
-           href="productInsertForm.do">상품 등록</a>
-      </li>
-      &nbsp;&nbsp;
-      <li class="nav-item">
-        <a class="nav-link" href="admin.do">주문조회</a>
-      </li>
-      &nbsp;&nbsp;
 
       <li class="nav-item">
-        <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="productInsertForm.do">상품 등록</a>
+        </div>
       </li>
+
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             href="admin.do">주문조회</a>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+          <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+             id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+        </div>
+      </li>
+
       <li class="nav-item">
         <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
              id="quantity-notify"
@@ -88,7 +131,7 @@
              href="adminQuantity.do">상품 재고수정</a>
         </div>
       </li>
-      &nbsp;&nbsp;
+
       <li class="nav-item">
         <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
              id="payment-notify"
@@ -97,7 +140,7 @@
              href="adminPayment.do">결제취소</a>
         </div>
       </li>
-      &nbsp;&nbsp;
+
       <li class="nav-item">
         <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
              id="retrun-notify"
@@ -106,7 +149,7 @@
              href="adminReturns.do">반품승인</a>
         </div>
       </li>
-      &nbsp;&nbsp;
+
       <li class="nav-item">
         <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
              id="qa-notify"
@@ -120,21 +163,21 @@
 
   <br><br>
 
-  <div class="container" style="padding: 0;width: 80%;">
+  <div class="container" style="padding: 0; max-width: 80%; margin: auto;">
     <div id="accordion">
       <div class="card">
         <div class="card-header">
           <a class="card-link" data-toggle="collapse" href="#collapseOne">
             1번 슬라이드
           </a>
-          <label class="custom-file-label" for="slideImage1Input">파일 선택</label>
+          <label class="custom-file-label" for="slideImage1Input">선택</label>
           <input type="file" id="slideImage1Input" name="slideImage" accept="image/*" onchange="previewImage1(this)">
           <button class="apply-btn btn btn-info" onclick="applySlide(1)" style="float: right;">적용</button>
         </div>
         <div id="collapseOne" class="collapse show" data-parent="#accordion">
           <div class="card-body">
             <div class="item-slick1" id="slideImage1"
-                 style="max-height: 500px; background-image: url(/images/Slider1.jpg);">
+                 style="max-height: 500px; background-image: url(/images/Slider1.jpg); height: 100%; position: relative; background-size: cover; background-position: center;">
               <div class="container"></div>
             </div>
           </div>
@@ -145,14 +188,14 @@
           <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
             2번 슬라이드
           </a>
-          <label class="custom-file-label" for="slideImage2Input">파일 선택</label>
+          <label class="custom-file-label" for="slideImage2Input">선택</label>
           <input type="file" id="slideImage2Input" name="slideImage" accept="image/*" onchange="previewImage2(this)">
           <button class="apply-btn btn btn-info" onclick="applySlide(2)" style="float: right;">적용</button>
         </div>
         <div id="collapseTwo" class="collapse" data-parent="#accordion">
           <div class="card-body">
             <div class="item-slick1" id="slideImage2"
-                 style="max-height: 500px; background-image: url(/images/Slider2.jpg);">
+                 style="max-height: 500px; background-image: url(/images/Slider2.jpg); height: 100%; position: relative; background-size: cover; background-position: center;">
               <div class="container"></div>
             </div>
           </div>
@@ -163,14 +206,14 @@
           <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
             3번 슬라이드
           </a>
-          <label class="custom-file-label" for="slideImage3Input">파일 선택</label>
+          <label class="custom-file-label" for="slideImage3Input">선택</label>
           <input type="file" id="slideImage3Input" name="slideImage" accept="image/*" onchange="previewImage3(this)">
           <button class="apply-btn btn btn-info" onclick="applySlide(3)" style="float: right;">적용</button>
         </div>
         <div id="collapseThree" class="collapse" data-parent="#accordion">
           <div class="card-body">
             <div class="item-slick1" id="slideImage3"
-                 style="max-height: 500px; background-image: url(/images/Slider3.jpg);">
+                 style="max-height: 500px; background-image: url(/images/Slider3.jpg); height: 100%; position: relative; background-size: cover; background-position: center;">
               <div class="container"></div>
             </div>
           </div>
@@ -178,6 +221,9 @@
       </div>
     </div>
   </div>
+
+
+
 
   <br><br>
 

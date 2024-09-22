@@ -32,22 +32,33 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
-                   href="adminSlideChange.do">메인 슬라이드 변경</a>
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="adminSlideChange.do">메인 슬라이드 변경</a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" style="font-size: 16px; vertical-align: middle !important;"
-                   href="productInsertForm.do">상품 등록</a>
-            </li>
-            &nbsp;&nbsp;
-            <li class="nav-item">
-                <a class="nav-link" href="admin.do">주문조회</a>
-            </li>
-            &nbsp;&nbsp;
 
             <li class="nav-item">
-                <a class="nav-link" id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="productInsertForm.do">상품 등록</a>
+                </div>
             </li>
+
+            <li class="nav-item">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       href="admin.do">주문조회</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti">
+                    <a class="nav-link" style="font-size: 16px; vertical-align: middle !important; margin-top: 3px;"
+                       id="changeStatus" href="adminRefund.do">배송상태 변경</a>
+                </div>
+            </li>
+
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="quantity-notify"
@@ -56,7 +67,7 @@
                        href="adminQuantity.do">상품 재고수정</a>
                 </div>
             </li>
-            &nbsp;&nbsp;
+
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="payment-notify"
@@ -65,7 +76,7 @@
                        href="adminPayment.do">결제취소</a>
                 </div>
             </li>
-            &nbsp;&nbsp;
+
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="retrun-notify"
@@ -74,7 +85,7 @@
                        href="adminReturns.do">반품승인</a>
                 </div>
             </li>
-            &nbsp;&nbsp;
+
             <li class="nav-item">
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                      id="qa-notify"

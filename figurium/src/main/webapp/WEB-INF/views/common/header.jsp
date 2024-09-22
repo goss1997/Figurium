@@ -590,30 +590,6 @@
 </header>
 
 <script>
-$.ajax({
-    url : 'api/notifications/count.do',
-    type: 'GET',
-    dataType : 'jason',
-    success: function(response) {
-      if(response.notification !== undefined) {
-      $('#notification').attr('data-notify', response.notification)
-      }else {
-      $('#notification').attr('data-notify', '0')
-      }
-    },
-    error: function (xhr,status,error){
-    console.error('count를 가져오는데 실패했습니다.', error);
-    $('notification').attr('data-notify', '0');
-    }
-    });
-
-$(document).ready(function () {
-updateCount();
-});
-
-</script>
-
-<script>
     $(document).ready(function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/cartItemCount",
@@ -769,10 +745,18 @@ updateCount();
                 url: '/api/notifications/user/${loginUser.id}',
                 method: 'GET',
                 success: function (notifications) {
+                              // 알림이 없으면
                     if (notifications.length === 0) {
                         $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
+                        $(".icon-header-item").removeClass('has-notifications');
                     } else {
-
+                        // 알림이 있는 경우
+                        let hasUnread = notifications.some(notification => notification.isRead == 0);
+                        if (hasUnread) {
+                            $(".icon-header-item").addClass('has-notifications'); // 안 읽은 알림이 있을 시 점 표시
+                        } else {
+                            $(".icon-header-item").removeClass('has-notifications'); // 모든 알림이 읽음
+                        }
                         let appendForm;
                         for (const notification of notifications) {
 
@@ -888,7 +872,7 @@ updateCount();
             const id =  notification.id;
             const url = notification.url;
 
-            return'<li class="dropdown-item dropdown-item-style read" style="cursor: pointer; width: calc(500px + 70px); position: relative; background-color: lightgray;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
+            return'<li class="dropdown-item dropdown-item-style read" style="cursor: pointer; width: calc(100%); position: relative; background-color: lightgray;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
     '<div class="d-flex align-items-center" style="width: 100%;">' +
         '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-right: 10px;"></i>' +
         '<div class="flex-grow-1">' +

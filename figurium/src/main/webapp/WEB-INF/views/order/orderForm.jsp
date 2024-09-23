@@ -110,6 +110,7 @@
         }
         .table tr {
             max-width: 100% !important;
+            overflow: auto !important;
         }
 
         .profile-header img {
@@ -161,6 +162,7 @@
         }
         .table tr {
             max-width: 100% !important;
+            overflow: auto !important;
         }
 
         .profile-header h2 {
@@ -181,6 +183,10 @@
         #form {
             max-width: 100% !important;
             margin: auto;
+        }
+
+        .item_list_table {
+            overflow: auto !important;
         }
 
         .profile-header img {
@@ -235,6 +241,27 @@
         }
 
 
+    }
+
+    /* 모바일 화면에서 테이블을 스크롤 가능하게 설정 */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    /* 테이블 이미지 크기 조정 */
+    .table_content_img img {
+      width: 50px; /* 이미지 크기 조정 */
+      height: auto;
+    }
+
+    /* 작은 화면에서 텍스트 크기 조정 */
+    @media (max-width: 768px) {
+      .table_content_img_text {
+        font-size: 12px; /* 텍스트 크기 조정 */
+      }
+      .table_content td {
+        padding: 0.5rem; /* 패딩 조정 */
+      }
     }
   </style>
 
@@ -778,7 +805,8 @@
 
       </script>
 
-
+  <div class="container">
+    <div class="table-responsive">
       <table class="table item_list_table" style="width: 100%">
           <thead>
           <tr class="table-light">
@@ -802,6 +830,8 @@
         </c:forEach>
         </tbody>
       </table>
+    </div>
+  </div>
 
     </c:if>
 

@@ -1,7 +1,7 @@
 
 /* Home > 상품상세   디자인 */
 .info_title{
-    height: 100px;
+    height: 50px;
     margin-left: 150px;
     margin-top: 30px;
 }
@@ -16,26 +16,51 @@
 
 /* 상품에 대한 상세보기 이미지와 설명*/
 
-.product_img_box{
+.product_img_box {
     width: 550px;
     height: 550px;
     border: 1px solid silver;
     padding: 10px;
     float: left;
+    margin: 0 auto; /* 중앙 정렬을 위한 추가 */
 }
 
-.product_img{
+.product_img {
     width: 525px;
     height: 525px;
     position: relative;
 }
-/* 상품에 대한 모든 이미지는 부모크기의 100프로 만큼 사진이 확대 */
-.product_img img{
+
+/* 상품에 대한 모든 이미지는 부모 크기의 100% 만큼 사진이 확대 */
+.product_img img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
+/* 반응형 스타일 추가 */
+@media (max-width: 1024px) {
+    .product_img_box {
+        width: 100%; /* 전체 너비 사용 */
+        height: auto; /* 높이 자동 조정 */
+        padding: 5px; /* 패딩 조정 */
+        margin: 20px auto; /* 여백 추가 및 중앙 정렬 */
+    }
+
+    .product_img {
+        width: 100%; /* 전체 너비 사용 */
+        height: auto; /* 높이 자동 조정 */
+    }
+}
+
+@media (max-width: 768px) {
+    .product_img_box {
+        padding: 5px; /* 모바일에서 패딩 줄이기 */
+    }
+}
+
+
 
 /* SOLD OUT 처리 */
 .sold-out-overlay {
@@ -92,9 +117,14 @@
 
 /* 좋아요 버튼 */
 
-.block2-txt-child2{
-    display: inline-block;
-    margin-left: 240px;
+.parent-container {
+    display: flex;
+    justify-content: space-between; /* 왼쪽과 오른쪽 끝에 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.block2-txt-child2 {
+    margin-left: auto; /* 자동 여백으로 오른쪽 끝으로 이동 */
 }
 .icon-heart {
     width: 24px;
@@ -288,53 +318,50 @@
 
 /* Review or Q&A Tap */
 
-.tap_box{
+.tap_box {
     margin-top: 150px;
     border-bottom: 1px solid #d6d6d6;
-
 }
 
-
-.tap_detail{
+.tap_detail {
     margin-right: 35px;
     margin-bottom: 0;
     padding: 0;
     text-align: center;
+    display: flex; /* 가로 정렬 */
+    justify-content: center; /* 중앙 정렬 */
 }
 
-.tap_detail li{
+.tap_detail li {
     display: inline-block;
     width: 200px;
     font-weight: bold;
     font-size: 26px;
     padding: 0 40px;
     text-decoration: none;
-
 }
 
-.tap_review li{
+.tap_review li {
     display: inline-block;
     width: 200px;
     font-weight: bold;
     font-size: 26px;
     padding: 0 40px;
     text-decoration: none;
-
 }
 
-.tap_review a{
+.tap_review a {
     display: block;
     color: #717171;
     width: 200px;
     padding-bottom: 15px;
 }
 
-.tap_review a:hover{
+.tap_review a:hover {
     color: #393838;
     text-decoration: none;
     border-bottom: 3px solid #ff6623;
 }
-
 
 .tap_qa a {
     display: block;
@@ -344,11 +371,26 @@
     border-bottom: 3px solid white;
 }
 
-.tap_qa a:hover{
+.tap_qa a:hover {
     color: #393838;
     text-decoration: none;
     border-bottom: 3px solid #ff6623;
 }
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .tap_detail {
+        flex-wrap: nowrap; /* 줄바꿈 방지 */
+        gap: 20px; /* 작은 화면에서 아이템 간격 조정 */
+    }
+
+    .tap_review a, .tap_qa a {
+        font-size: 20px; /* 작은 화면에서 글자 크기 조정 */
+    }
+}
+
+
+
 
 
 
@@ -362,12 +404,13 @@
 }
 
 /* 리뷰 작성 버튼 */
-.reviewInsert_btn_box{
+.reviewInsert_btn_box {
     display: flex;
-    flex-direction: row-reverse;
+    justify-content: flex-end; /* 항상 오른쪽 끝에 배치 */
+    margin-top: 20px;
 }
 
-.reviewInsert_btn{
+.reviewInsert_btn {
     width: 100px;
     height: 30px;
     background-color: #232323;
@@ -376,9 +419,14 @@
     font-weight: bold;
 }
 
-.reviewInsert_btn:hover{
+.reviewInsert_btn:hover {
     background-color: #404040;
 }
+
+
+
+
+
 
 .pagination-button {
     padding: 5px 10px;
@@ -576,4 +624,123 @@
     background-color: white;
     margin-top: 10px;
     cursor: pointer;
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 1024px) {
+    .info_title {
+        margin-left: 20px;
+    }
+
+    .block2-txt-child2 {
+        margin-left: auto;
+    }
+    .reviews_box{
+        padding: 10px;
+    }
+    .product_title {
+        width: 100%;
+        padding: 10px;
+        margin-left: 0;
+    }
+
+    .product_img_box {
+        width: 100%;
+        height: auto;
+        float: none;
+        padding: 10px;
+    }
+
+
+    .product_info {
+        width: 100%;
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .reviews_box,
+    .qa_box {
+        width: 100%; /* 전체 너비 사용 */
+    }
+
+    .review_table {
+        width: 100%; /* 전체 너비 사용 */
+    }
+
+    .review_buttons {
+        flex-direction: column; /* 세로로 쌓이게 */
+        align-items: center; /* 중앙 정렬 */
+    }
+}
+
+@media (max-width: 768px) {
+    .product_title,
+    .reviews_box,
+    .qa_box {
+        width: 100%; /* 전체 너비 사용 */
+    }
+
+    .block2-txt-child2 {
+        margin-left: auto;
+    }
+
+    .review_table {
+        font-size: 14px; /* 폰트 크기 조정 */
+    }
+
+    .info_table th,
+    .info_table td {
+        font-size: 16px; /* 폰트 크기 조정 */
+        padding: 10px; /* 패딩 조정 */
+    }
+
+    .reviewInsert_btn_box,
+    .qaInsert_btn_box {
+        flex-direction: column; /* 세로로 쌓이게 */
+        align-items: center; /* 중앙 정렬 */
+    }
+
+    .review_buttons .edit_button,
+    .review_buttons .delete_button {
+        width: 80%; /* 버튼 너비 조정 */
+        margin-bottom: 10px; /* 버튼 간격 조정 */
+    }
+}
+
+.warning-box {
+    margin-top: 150px; /* 기본 여백 */
+    text-align: center;
+}
+
+.warning-box img {
+    width: 80%; /* 이미지의 너비를 80%로 설정하여 반응형 조정 */
+    max-width: 1400px; /* 최대 너비 제한 */
+    height: auto; /* 비율에 맞게 높이 자동 조정 */
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+    .warning-box {
+        margin-top: 50px; /* 여백 조정 */
+    }
+
+    .warning-box img {
+        width: 90%; /* 화면 크기가 작을 때 이미지 너비를 90%로 증가 */
+    }
+}
+
+
+/* Reviews,Q&A 버튼 반응형 */
+@media (max-width: 768px) {
+    .reviewInsert_btn_box{
+        justify-content: flex-end; /* 작은 화면에서도 오른쪽 끝 유지 */
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 768px) {
+    .qaInsert_btn_box{
+        justify-content: flex-end; /* 작은 화면에서도 오른쪽 끝 유지 */
+        flex-direction: row;
+    }
 }

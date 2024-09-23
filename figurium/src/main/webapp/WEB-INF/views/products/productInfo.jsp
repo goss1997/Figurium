@@ -47,7 +47,7 @@
 </head>
 <jsp:include page="../common/header.jsp"/>
 <body>
-<div style="height: 90px"></div>
+<div style="height: 10px"></div>
 <div id="content-wrap-area">
     <div style="height: 50px;"></div>
 
@@ -160,7 +160,7 @@
 
             </div>
 
-                <div style="text-align: center; margin-top: 150px;">
+                <div class="warning-box">
                     <img src="/images/경고문.png">
                 </div>
 
@@ -412,6 +412,7 @@
                     if (confirm("해당 상품은 이미 장바구니에 등록되어 있습니다. \n수량을 추가 하시겠습니까?\n") === false) {
                         return;
                     }
+
 
                     // 장바구니 업데이트
                     f.action = "shoppingCart.do";

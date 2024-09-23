@@ -771,6 +771,7 @@
 
                             // 알림 객체 알림 모달 맨위에 추가.
                             $("#notification-list-area").append(appendForm);
+
                         }
 
                     }
@@ -812,6 +813,8 @@
             // 알림 객체 알림 모달 맨위에 추가.
             $("#notification-list-area").prepend(appendForm);
 
+            $(".icon-header-item").addClass('has-notifications');
+
         });
 
 
@@ -833,6 +836,7 @@
                 url: '/api/notifications/read/' + id, // 알림 읽음 처리 URL
                 method: 'PUT', // PUT 메서드 사용
                 success: function () {
+                    $(".icon-header-item").removeClass('has-notifications');
                     // 성공 시 해당 url로 이동
                     location.href = url;
                 },

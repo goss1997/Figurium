@@ -166,7 +166,7 @@ td > img {
 }
 
 .table {
-    width: 90% !important;
+    width: 100% !important;
     max-width: 1300px !important;
     min-width: 800px !important;
 }

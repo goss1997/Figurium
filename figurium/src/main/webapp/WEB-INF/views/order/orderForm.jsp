@@ -39,6 +39,171 @@
     #table_under_box {
       margin-right: 63px !important;
     }
+
+    /* 반응형을 위한 미디어 쿼리 */
+    @media (min-width: 768px) {
+
+        #form {
+            max-width: 100% !important;
+            margin: auto;
+        }
+
+        #content_title {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .text-103 > img {
+            max-width: 100% !important;
+        }
+
+        .order_box_both {
+            max-width: 100% !important;
+        }
+        .order_box_l {
+            max-width: 100% !important;
+        }
+        .form_container {
+            max-width: 100% !important;
+
+        }
+        .table {
+            margin-left: 10px !important;
+            max-width: 100% !important;
+            min-width: 0% !important;
+        }
+        #table_under_box {
+            max-width: 100% !important;
+            margin: 0;
+        }
+        .table tr {
+            max-width: 100% !important;
+        }
+
+        .profile-header img {
+            margin-right: 20px;
+        }
+
+        .item_list_table {
+            max-width: 100% !important;
+            margin: auto !important;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        #form {
+            max-width: 100% !important;
+            margin: auto;
+        }
+
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+        }
+        .order_box_both {
+            max-width: 100% !important;
+            flex-direction: column;
+        }
+        .order_box_l {
+            max-width: 100% !important;
+        }
+
+        #order_box {
+            margin: auto !important;
+        }
+
+        .form_container {
+            max-width: 100% !important;
+
+        }
+        .table {
+            margin-left: 10px !important;
+            max-width: 100% !important;
+            min-width: 0% !important;
+        }
+        #table_under_box {
+            max-width: 100% !important;
+            margin: 0;
+        }
+        .table tr {
+            max-width: 100% !important;
+        }
+
+        .profile-header h2 {
+            font-size: 18px;
+        }
+
+        .profile-header p {
+            font-size: 14px;
+        }
+
+        .item_list_table {
+            max-width: 100% !important;
+            margin: auto !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        #form {
+            max-width: 100% !important;
+            margin: auto;
+        }
+
+        .profile-header img {
+            width: 80px;
+            height: 80px;
+        }
+        .order_box_both {
+            max-width: 100% !important;
+            flex-direction: column;
+        }
+        .order_box_l {
+            max-width: 100% !important;
+        }
+
+        #order_box {
+            margin: auto !important;
+        }
+
+        .form_container {
+            max-width: 100% !important;
+
+        }
+
+        .table {
+            margin-left: 10px !important;
+            max-width: 100% !important;
+            min-width: 0% !important;
+        }
+
+        #table_under_box {
+            max-width: 100% !important;
+            margin: 0;
+        }
+
+        .table tr {
+            max-width: 100% !important;
+        }
+
+        .total-container span{
+            font-size: 13px;
+        }
+        .profile-header h2 {
+            font-size: 16px;
+        }
+
+        .profile-header p {
+            font-size: 12px;
+        }
+
+        .form-control {
+            font-size: 14px;
+        }
+
+
+    }
   </style>
 
   <script>
@@ -157,12 +322,11 @@
 
     window.onload = function() {
       var fullAddress = "${sessionScope.loginUser.address}";
-      var zipcode = fullAddress.substring(0, 5);
-      var remainingAddress = fullAddress.substring(6); // 우편번호 다음의 공백을 제거하기 위해 6부터 시작
+      var remainingAddress = fullAddress.split(", ");
 
       document.getElementById('shipping_address').value = fullAddress;
-      document.getElementById('mem_zipcode1').value = remainingAddress;
-      document.getElementById('address').value = zipcode;
+      document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
+      document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
     }
 
 
@@ -206,11 +370,10 @@
 
       let shipping_name = $("#shipping_name").val();
       let shipping_phone = $("#shipping_phone").val();
-      let address = $("#address").val();
       let mem_zipcode1 = $("#mem_zipcode1").val();
       let mem_zipcode2 = $("#mem_zipcode2").val();
       if(shipping_name == "" || shipping_phone == ""
-              || address == "" || mem_zipcode1 == "" || mem_zipcode2 == ""
+              || mem_zipcode1 == "" || mem_zipcode2 == ""
               || !phone_pattern.test(shipping_phone)) {
         Swal.fire({
           icon: 'error',
@@ -402,11 +565,10 @@
 
 
       // 받는 사람 주소
-      let memZipcode0 = document.getElementById('address').value;
       let memZipcode1 = document.getElementById('mem_zipcode1').value;
       let memZipcode2 = document.getElementById('mem_zipcode2').value;
 
-      let address = memZipcode0 + ' ' + memZipcode1 + ' ' + memZipcode2;
+      let address = memZipcode1 + ' ' + memZipcode2;
 
       let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
       let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
@@ -496,7 +658,7 @@
     </div>
   </div>
 
-  <div class="ltext-103 cl5" style="width: 1400px; margin: auto;">
+  <div class="ltext-103 cl5" style="width: 100%; margin: auto;">
     <img src="/images/주문서.png" style="width: 100%;">
   </div>
 
@@ -527,7 +689,7 @@
   </c:if>
 
     <%-- form 시작 지점 --%>
-    <form>
+    <form id="form" style="width: 100%;">
 
     <%-- 만약에 장바구니에 담겼던 item 값이 넘어왔다면 list에 호출 : 0828 --%>
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
@@ -547,7 +709,7 @@
       </script>
 
 
-      <table class="table item_list_table">
+      <table class="table item_list_table" style="width: 100%">
           <thead>
           <tr class="table-light">
             <th class="item_list_table_name">상품명</th>
@@ -670,7 +832,7 @@
       <tr>
         <td class="td_title">기존 배송지</td>
         <td><input type="text" class="form-control" value="${ sessionScope.loginUser.address }"
-                   id="shipping_address" placeholder="기본 배송지" name="shipping_address">
+                   id="shipping_address" placeholder="기본 배송지" name="shipping_address" readonly>
         </td>
       </tr>
       <tr>

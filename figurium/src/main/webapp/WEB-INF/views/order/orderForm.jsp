@@ -268,12 +268,28 @@
   <script>
 
     window.onload = function() {
-      var fullAddress = "${sessionScope.loginUser.address}";
-      var remainingAddress = fullAddress.split(", ");
 
-      document.getElementById('shipping_address').value = fullAddress;
-      document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
-      document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
+      if (params.get('paymentSuccess') === 'true') {
+
+        const params = new URLSearchParams(window.location.search);
+
+        // imp_uid와 merchant_uid 값 추출
+        const impUid = params.get('imp_uid');
+
+        // sessionStorage에 주소 저장
+        document.getElementById('mem_zipcode1').value = sessionStorage.getItem('mem_zipcode1') || '';
+        document.getElementById('mem_zipcode2').value = sessionStorage.getItem('mem_zipcode2') || '';
+        document.getElementById('delivery_request').value = sessionStorage.getItem('delivery_request') || '';
+      } else {
+        var fullAddress = "${sessionScope.loginUser.address}";
+        var remainingAddress = fullAddress.split(", ");
+
+        document.getElementById('shipping_address').value = fullAddress;
+        document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
+        document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
+
+      }
+
     }
 
     var currentUrl = window.location.href;
@@ -418,14 +434,18 @@
       // 입력 필드의 값을 가져오기
       let memZipcode1 = document.getElementById('mem_zipcode1').value;
       let memZipcode2 = document.getElementById('mem_zipcode2').value;
+      let deliveryRequest = document.getElementById('delivery_request').value;
+
+      // 세션 스토리지에 값 저장
+      sessionStorage.setItem('mem_zipcode1', memZipcode1);
+      sessionStorage.setItem('mem_zipcode2', memZipcode2);
+      sessionStorage.setItem('delivery_request', deliveryRequest);
 
       // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       var paymentType = $("input[name='payment']:checked").val();
 
       var m_redirect_url = currentUrl + '&paymentSuccess=true' +
-              '&payment_type=' + paymentType +
-              '&mem_zipcode1=' + encodeURIComponent(memZipcode1) +
-              '&mem_zipcode2=' + encodeURIComponent(memZipcode2);
+              '&payment_type=' + paymentType
 
       // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
       let order_name = $("#order_name").val();
@@ -828,7 +848,6 @@
     const impUid = params.get('imp_uid');
     const merchantUid = params.get('merchant_uid');
     const paymentType = params.get('payment_type');
-
     // 결제검증
     $.ajax({
       type : "GET",
@@ -869,14 +888,14 @@
 
 
               // 받는 사람 주소
-              let memZipcode1 = document.getElementById('mem_zipcode1').value;
-              let memZipcode2 = document.getElementById('mem_zipcode2').value;
+              let memZipcode1 = sessionStorage.getItem('mem_zipcode1') || '';
+              let memZipcode2 = sessionStorage.getItem('mem_zipcode2') || '';
+              let deliveryRequest = sessionStorage.getItem('delivery_request') || '';
 
               let address = memZipcode1 + ' ' + memZipcode2;
 
               let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
               let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
-              let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
 
               $.ajax({
                 type : "POST",

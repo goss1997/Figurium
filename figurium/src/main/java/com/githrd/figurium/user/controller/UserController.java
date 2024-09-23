@@ -191,7 +191,7 @@ public class UserController {
      * 사용자 정보 수정
      */
     @PostMapping("update.do")
-    public String updateUser(String name, String phone, String address) {
+    public String updateUser(String name, String phone, String address, String detailAddress) {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
@@ -199,7 +199,7 @@ public class UserController {
             return "redirect:/";
         }
 
-        User updatedUser = userService.updateUser(name, phone, address);
+        User updatedUser = userService.updateUser(name, phone, address, detailAddress);
         session.setAttribute(SessionConstants.LOGIN_USER, updatedUser);
 
         session.setAttribute(SessionConstants.ALERT_MSG, "수정 완료!");

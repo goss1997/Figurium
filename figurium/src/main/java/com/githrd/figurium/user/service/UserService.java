@@ -65,13 +65,13 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(String name, String phone, String address) {
+    public User updateUser(String name, String phone, String address, String detailAddress) {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
         loginUser.setName(name);
         loginUser.setPhone(phone);
-        loginUser.setAddress(address);
+        loginUser.setAddress(address + ',' + detailAddress);
 
         return userRepository.save(loginUser);
     }

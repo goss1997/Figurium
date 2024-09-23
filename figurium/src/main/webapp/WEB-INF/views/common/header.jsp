@@ -82,7 +82,7 @@
         .login-modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            z-index: 2000; /* Sit on top */
             left: 0;
             top: 0;
             width: 100%; /* Full width */
@@ -882,7 +882,7 @@
     '<div class="d-flex align-items-center" style="width: 100%;">' +
         '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-right: 10px;"></i>' +
         '<div class="flex-grow-1">' +
-            '<span class="highlight" style="font-size: 18px;">' + notification.message + '</span>' +
+            '<span class="highlight-notification" style="font-size: 18px;">' + notification.message + '</span>' +
             '<small class="text-muted" style="font-size: 12px; color: lightgray;">' + date + ' ' + time + '</small>' +
         '</div>' +
         '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this)"></i>' +

@@ -27,6 +27,38 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
   <style>
+
+    .modal-backdrop {
+      display: none; /* 배경을 아예 없애기 */
+    }
+
+    .modal-header {
+      background: #9acfec;
+    }
+
+    /* 모달을 상단에 위치시키기 위한 스타일 */
+    .modal-dialog {
+      margin-top: 0; /* 상단 여백을 없앰 */
+      position: absolute; /* 절대 위치 설정 */
+      top: 5%; /* 상단에 고정 */
+      left: 0%; /* 중앙 정렬을 위한 왼쪽 위치 */
+      transform: translateX(-50%); /* 중앙 정렬 */
+    }
+
+    .btn-secondary, #snoozeButton {
+      background: #9acfec !important;
+      color: white;
+      border: 0px !important;
+    }
+
+    .modal {
+      z-index: 1000;
+      margin-right: 500px !important;
+      margin-top: 35px;
+      width: 600px;  /* 너비 설정 */
+      height: 900px; /* 높이 설정 */
+    }
+
     .table {
       max-width: 1400px !important;
     }
@@ -78,6 +110,7 @@
         }
         .table tr {
             max-width: 100% !important;
+            overflow: auto !important;
         }
 
         .profile-header img {
@@ -129,6 +162,7 @@
         }
         .table tr {
             max-width: 100% !important;
+            overflow: auto !important;
         }
 
         .profile-header h2 {
@@ -149,6 +183,10 @@
         #form {
             max-width: 100% !important;
             margin: auto;
+        }
+
+        .item_list_table {
+            overflow: auto !important;
         }
 
         .profile-header img {
@@ -203,6 +241,27 @@
         }
 
 
+    }
+
+    /* 모바일 화면에서 테이블을 스크롤 가능하게 설정 */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    /* 테이블 이미지 크기 조정 */
+    .table_content_img img {
+      width: 50px; /* 이미지 크기 조정 */
+      height: auto;
+    }
+
+    /* 작은 화면에서 텍스트 크기 조정 */
+    @media (max-width: 768px) {
+      .table_content_img_text {
+        font-size: 12px; /* 텍스트 크기 조정 */
+      }
+      .table_content td {
+        padding: 0.5rem; /* 패딩 조정 */
+      }
     }
   </style>
 
@@ -627,6 +686,44 @@
 <jsp:include page="../common/header.jsp"/>
 <div style="height: 90px"></div>
 
+<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="alertModalLabel" style="color: white;">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="/images/주문결제창알림.png" width="100%">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-warning" id="snoozeButton">1일간 보지 않기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    // 로컬 스토리지에서 'modalDismissed' 값을 확인
+    if (!localStorage.getItem('modalDismissed')) {
+      setTimeout(function() {
+        $('#alertModal').modal('show');
+      }, 500); // 0.5초 후에 모달 표시
+    }
+
+    // '1일간 보지 않기' 버튼 클릭 시
+    $('#snoozeButton').click(function() {
+      // 로컬 스토리지에 'modalDismissed' 값을 설정 (1일 후 만료)
+      localStorage.setItem('modalDismissed', 'true');
+      $('#alertModal').modal('hide');
+    });
+  });
+</script>
+
 
 <%-- 구글 관리자 이메일로 보내는 로직 --%>
 
@@ -708,7 +805,8 @@
 
       </script>
 
-
+  <div class="container">
+    <div class="table-responsive">
       <table class="table item_list_table" style="width: 100%">
           <thead>
           <tr class="table-light">
@@ -732,6 +830,8 @@
         </c:forEach>
         </tbody>
       </table>
+    </div>
+  </div>
 
     </c:if>
 

@@ -91,7 +91,7 @@ public class S3ImageService {
 
         // 파일의 확장자만 추출.
         String extention = filename.substring(lastDotIndex + 1).toLowerCase();
-        List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif");
+        List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif" ,"webp");
 
         // jpg, jpeg, png, gif 인지 검증.
         if (!allowedExtentionList.contains(extention)) {

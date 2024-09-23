@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: 14A
@@ -11,6 +12,8 @@
 <head>
     <title>개인 정보 수정</title>
     <link rel="icon" type="image/png" href="/images/FiguriumHand.png"/>
+    <!-- 주소검색 API  -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         @font-face {
             font-family: 'Pretendard-Regular';
@@ -170,30 +173,37 @@
                     <div class="card-body">
                         <h5 class="card-title">개인 정보 수정</h5>
                     </div>
+                    <div><p style="font-size: 11px; margin-left: 20px;"> * 개인정보 수정 시 모두 입력해주세요!!</p></div>
                     <div style="width: 80%; margin: auto;">
                         <form method="post" action="update.do">
                             <div class="form-group">
-                                <label for="name">Name</label>
+                                <label for="name">이름</label>
                                 <input type="text" class="form-control" id="name" name="name" value="${user.name}" minlength="3" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone Number</label>
+                                <label for="phone">휴대폰 번호</label>
                                 <input type="tel" class="form-control" id="phone" name="phone" value="${user.phone}" maxlength="15" required>
                             </div>
+
+                            <label for="address">주소</label>
                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" value="${user.address}" required>
+                                <input style="width: 70%; float:left;" type="text" class="form-control" id="address" name="address" value="${fn:substringBefore(user.address,',')}" required>
+                                <input style="margin-left: 10px;" class="btn  btn-secondary"  type="button"  value="주소검색"  onclick="find_addr();">
                             </div>
+                            <div class="form-group">
+                                <label for="address">상세 주소</label>
+                                <input style="width: 70%;" class="form-control" id="detail-address" name="detailAddress" value="${fn:substringAfter(user.address,',')}">
+                            </div>
+                            <br>
                             <button type="submit" class="btn btn-secondary">Save Changes</button>
                         </form>
                         <br>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
+<br><br>
     <script>
         $(function () {
             if(${empty loginUser}) {
@@ -229,6 +239,26 @@
 
         }
     }
+
+    // 주소 api
+    function find_addr(){
+
+        var themeObj = {
+            bgColor: "#B51D1D" //바탕 배경색
+        };
+
+        new daum.Postcode({
+            theme: themeObj,
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+                $("#address").val(data.address);     //주소넣기
+
+            }
+        }).open();
+
+    }//end:find_addr()
+
 </script>
 
 <!-- NOTE : 푸터바 -->

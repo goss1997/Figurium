@@ -220,7 +220,16 @@
             alert('메인페이지로 이동합니다.');
             location.href = "/";
         }
+
+        // 주소 입력 시 ',' 입력 방지
+        $('#address, #detail-address').on('keypress', function(event) {
+            if (event.key === ',') {
+                event.preventDefault(); // 콤마 입력 방지
+            }
+        });
+
     });
+
 </script>
 
 <script>
@@ -290,7 +299,7 @@
         let email = f.email.value.trim();
         let name 	= f.name.value.trim();
         let password  	= f.password.value.trim();
-        let address = f.address.value.trim() + " , " + $("#detail-address").val();
+        let address = f.address.value.trim() + "," + $("#detail-address").val();
 
         if(email==''){
             alert("이메일을 입력하세요");

@@ -55,17 +55,17 @@ public class EmailService {
         // 서버 경로 가져오기
         String scheme = request.getScheme(); // http or https
         String serverName = request.getServerName(); // server host name
-
-        // 실서버일 경우 https로 변경
-        if(serverName.equals("www.figurium.shop")) {
-            scheme = "https";
-        }
-        
         int serverPort = request.getServerPort(); // port number
 
-        // Build the base URL
-        String baseUrl = scheme + "://" + serverName + ":" + serverPort + request.getContextPath();
+        String baseUrl;
 
+        // 실서버일 경우 도메인(https://www.figurium.shop)으로 https 요청하기.
+        if(serverName.equals("www.figurium.shop")) {
+            baseUrl = "https://www.figurium.shop"+ request.getContextPath();
+        }else{
+            // Build the base URL
+            baseUrl = scheme + "://" + serverName + ":" + serverPort + request.getContextPath();
+        }
         // 이메일 메시지 작성
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);

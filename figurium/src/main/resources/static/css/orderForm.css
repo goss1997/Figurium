@@ -113,7 +113,7 @@ td > img {
 
 .form_container > .table {
     font-size: 12px;
-    width: 900px !important; /* 필요에 따라 조정 */
+    width: 100% !important; /* 필요에 따라 조정 */
     border-bottom: 0.2px solid #d9d9d9 !important;
 }
 
@@ -233,7 +233,7 @@ td > input {
 }
 
 #delivery_request {
-    width: 500px !important;
+    width: 80% !important;
     height: 100px !important;
     margin-left: 10px;
 }

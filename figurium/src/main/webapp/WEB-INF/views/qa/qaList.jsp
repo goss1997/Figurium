@@ -49,7 +49,7 @@
         /* 테이블 스타일 */
         .responsive-table {
             width: 100%; /* 테이블을 100% 너비로 설정 */
-            table-layout: auto; /* 셀의 너비를 자동으로 조정 */
+            table-layout: fixed; /* 셀의 너비를 자동으로 조정 */
         }
 
         .responsive-table th, .responsive-table td {
@@ -187,7 +187,7 @@
             <c:forEach var="qa" items="${qaList}" varStatus="status" >
                 <tr onclick="location.href='${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
                     <td>${status.index+1}</td>
-                    <td class="truncate-title" style="text-align: left;">
+                    <td class="truncate-title" style="text-align: left; overflow: hidden; text-overflow: ellipsis;">
                         <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
                         ${qa.title}
                     </td>

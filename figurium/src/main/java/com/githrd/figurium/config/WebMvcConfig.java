@@ -52,7 +52,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/user/deleteForm.do",
                         "/user/delete.do",
                         "/user/deleteSocial.do",
-                        "/user/myProductLikeList.do"
+                        "/user/myProductLikeList.do",
+                        "/order/orderFormRight.do",
+                        "/order/orderForm.do",
+                        "/reviewInsertForm.do"
                 )
                 // 인증을 제외할 url
                 .excludePathPatterns(

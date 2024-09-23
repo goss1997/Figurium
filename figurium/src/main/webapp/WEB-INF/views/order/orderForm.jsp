@@ -304,7 +304,7 @@
             buyer_email: $("#order_email").val(),
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
-            buyer_addr: $("#address").val() + $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
+            buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
             buyer_postcode: '123-456'
           }, function (rsp) { // callback
             console.log(rsp);
@@ -694,12 +694,11 @@
         <td>
           <div class="address-container">
             <div class="address-inputs">
-              <input type="text" class="form-control" id="address" placeholder="우편번호" name="address">
-              <button id="a_search" type="button" onclick="find_addr();">우편번호 찾기</button>
+                <button id="a_search" type="button" onclick="find_addr();">주소 찾기</button>
             </div>
             <div class="zipcode-container">
-              <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
-              <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
+                <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode1" placeholder="주소">
+                <input type="text" class="form-control addr_text" name="mem_zipcode" id="mem_zipcode2" placeholder="상세주소">
             </div>
           </div>
         </td>

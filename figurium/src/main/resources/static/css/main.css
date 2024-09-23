@@ -494,7 +494,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 
 /* 아이콘 스타일 */
-#loginBtn i{
+#loginBtn i {
   font-size: 24px;
 }
 .icon-header-item i {
@@ -513,10 +513,12 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   top: 0px;
   right: 7px;
   border: 1px solid #fff;
-  /* 기본 상태에서는 알림 숫자를 숨기지 않음 */
-  visibility: visible;
+  visibility: hidden;
 }
 
+.icon-header-item.has-notifications::after {
+  visibility: visible;
+}
 
 /*---------------------------------------------*/
 .wrap-header-mobile .wrap-icon-header {

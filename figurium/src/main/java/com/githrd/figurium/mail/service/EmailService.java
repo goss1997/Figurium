@@ -55,6 +55,12 @@ public class EmailService {
         // 서버 경로 가져오기
         String scheme = request.getScheme(); // http or https
         String serverName = request.getServerName(); // server host name
+
+        // 실서버일 경우 https로 변경
+        if(serverName.equals("www.figurium.shop")) {
+            scheme = "https";
+        }
+        
         int serverPort = request.getServerPort(); // port number
 
         // Build the base URL

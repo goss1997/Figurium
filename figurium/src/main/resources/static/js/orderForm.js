@@ -13,7 +13,6 @@ function find_addr(){
         theme: themeObj,
         oncomplete: function(data) {
             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분
-            $("#address").val(data.zonecode);		// 우편번호 넣기
             $("#mem_zipcode1").val(data.address);			// 주소 넣기
         }
     }).open();

@@ -304,7 +304,7 @@
 
     }
 
-    var currentUrl = window.location.href;
+    var currentUrl = "${redirectUrl}";
 
 
     $(function () {

@@ -7,6 +7,7 @@ import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,8 @@ public class OrderController {
     public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
                             @RequestParam(required = false) List<Integer> productId,
                             HttpSession session,
-                            Model model) {
+                            Model model,
+                            HttpServletRequest request) {
 
         User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         int loginUserId = user.getId();
@@ -111,6 +113,20 @@ public class OrderController {
         for(CartsVo products:cartsList) {
             totalPrice += products.getPrice() * products.getQuantity();
         }
+
+        // 리다이렉트 URL 생성
+        String redirectUrl = request.getRequestURL().toString();
+        redirectUrl += "?";
+        for (int i = 0; i < productId.size(); i++) {
+            redirectUrl += "productId=" + productId.get(i) + "&";
+            redirectUrl += "cartQuantities=" + cartQuantities.get(i) + "&";
+        }
+        // 마지막 '&' 제거
+        redirectUrl = redirectUrl.substring(0, redirectUrl.length() - 1);
+        log.info("작성된주소명 : {}", redirectUrl);
+
+        model.addAttribute("redirectUrl", redirectUrl);
+
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);

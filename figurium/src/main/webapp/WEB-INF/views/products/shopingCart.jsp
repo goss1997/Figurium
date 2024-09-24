@@ -235,14 +235,14 @@ pageEncoding="UTF-8" %>
 
 			<div class="orders_btn" style="text-align: center;">
 				<div style="display: inline-block;margin: auto; padding: 10px">
-					<button class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
+					<button type="button" class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
 							style="width: 400px; padding: 10px; height: 50px" onclick="checkProductOrder(this.form)">
 						선택상품 결제
 					</button>
 				</div>
 
 				<div style="display: inline-block; margin: auto; padding: 10px">
-					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+					<button type="button" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
 							style="width: 400px; padding: 10px; height: 50px"
 							onclick="allProductsOrder(this.form)">
 						전체상품 결제
@@ -356,7 +356,10 @@ pageEncoding="UTF-8" %>
 
 			if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
 
-			f.method = "POST";
+			// 기존의 quantity[] input 필드 제거
+			f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
+
+			f.method = "get";
 			f.action = "order/orderForm.do";
 			f.submit();
 		}
@@ -371,6 +374,9 @@ pageEncoding="UTF-8" %>
 
 		console.log("productIds = " + productIds);
 		console.log("cartQuantities = " + cartQuantities);
+
+		// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
+		f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
 
 		if (!confirm("전체상품 결제를 위해 결제 페이지로 이동 하시겠습니까?")) return;
 
@@ -389,7 +395,10 @@ pageEncoding="UTF-8" %>
 			f.appendChild(inputQuantity);
 		});
 
-		f.method = "POST";
+		// 기존의 quantity[] input 필드 제거
+		f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
+
+		f.method = "get";
 		f.action = "order/orderForm.do";
 		f.submit();
 	}

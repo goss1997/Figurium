@@ -1,3 +1,10 @@
+* {
+    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
+    margin: 0;
+    padding: 0;
+}
+
+
 
 /* Home > 상품상세   디자인 */
 .info_title{
@@ -196,32 +203,53 @@
 
 
 /* 결제 관련 요소 */
-.total_price_box{
+.total_price_box {
+    display: flex;
+    justify-content: space-between; /* 좌우로 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
     margin-top: 30px;
     font-weight: bold;
     font-size: 20px;
+    flex-wrap: nowrap; /* 한 줄에 배치 */
 }
 
-.total_price{
-    display: inline-block;
-    width: 200px;
+.total_price {
     margin-left: 15px;
-
+    font-weight: bold;
 }
 
-#total_price{
-    width: 150px;
-}
-
-
-.product_info p{
+.total_price_right {
+    display: flex;
+    align-items: center;
     text-align: right;
-    display: inline-block;
-    width: 100px;
+}
+
+#total_price {
     font-size: 26px;
     font-weight: bold;
     color: #ff6623;
+    margin-right: 5px;
+    margin-top: 10px;
 }
+
+.won {
+    font-size: 20px;
+    text-align: right;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+    .total_price_box {
+        flex-direction: row;
+        justify-content: space-between; /* 좌우로 유지 */
+    }
+
+    .total_price_right {
+        justify-content: flex-end; /* 작은 화면에서도 오른쪽 배치 */
+    }
+}
+
+
 
 /* 결제 or 장바구니 버튼 요소 */
 .price_bye input{
@@ -400,7 +428,7 @@
     margin: auto;
     margin-top: 50px;
     width: 1300px;
-    margin-bottom: 200px;
+    margin-bottom: 50px;
 }
 
 /* 리뷰 작성 버튼 */
@@ -423,7 +451,9 @@
     background-color: #404040;
 }
 
-
+#productQaPaging{
+    margin-bottom: 100px;
+}
 
 
 
@@ -461,6 +491,7 @@
     color: white;
     border-radius: 25px;
     font-weight: bold;
+    margin: 10px;
 }
 
 .qaInsert_btn:hover{
@@ -583,6 +614,41 @@
 }
 
 /* 리뷰의 별점 */
+
+
+.stars-container {
+    display: flex;
+    justify-content: space-between; /* 별과 하트를 양쪽으로 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    width: 100%; /* 부모 요소의 너비에 맞춤 */
+}
+
+/*.stars {
+    display: flex;
+    gap: 5px; !* 별 사이의 간격 조절 *!
+}*/
+
+.icon-heart {
+    width: 24px; /* 하트 아이콘 크기 설정 */
+    height: 24px;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .stars-container {
+        flex-wrap: nowrap; /* 줄바꿈 방지 */
+    }
+
+    .star {
+        font-size: 20px; /* 작은 화면에서 별 크기 조정 */
+    }
+
+    .icon-heart {
+        width: 20px; /* 작은 화면에서 하트 아이콘 크기 조정 */
+        height: 20px;
+    }
+}
+
 .star {
     color: #ff3d3d;  /* 채워진 별의 색상 */
     font-size: 20px;
@@ -631,10 +697,6 @@
     .info_title {
         margin-left: 20px;
     }
-
-    .block2-txt-child2 {
-        margin-left: auto;
-    }
     .reviews_box{
         padding: 10px;
     }
@@ -678,10 +740,6 @@
     .reviews_box,
     .qa_box {
         width: 100%; /* 전체 너비 사용 */
-    }
-
-    .block2-txt-child2 {
-        margin-left: auto;
     }
 
     .review_table {
@@ -735,6 +793,7 @@
     .reviewInsert_btn_box{
         justify-content: flex-end; /* 작은 화면에서도 오른쪽 끝 유지 */
         flex-direction: row;
+        margin-top: -30px;
     }
 }
 
@@ -743,4 +802,10 @@
         justify-content: flex-end; /* 작은 화면에서도 오른쪽 끝 유지 */
         flex-direction: row;
     }
+}
+
+/* 추가 스타일 - 여백 방지 */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden; /* 좌우 스크롤 방지 */
 }

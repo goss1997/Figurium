@@ -143,7 +143,7 @@
                     </div>
                     <div class="block2-txt flex-w flex-t p-t-14">
                         <div class="block2-txt-child1 flex-col-l" id="product-name" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-                            <a href="productInfo.do?id=${product.id}" class="moveProductInfo stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                            <a href="productInfo.do?id=${products.id}" class="moveProductInfo stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                 [${products.categoryName}] ${products.name}
                             </a>
                             <span class="stext-105 cl3" id="product-price" style="font-weight: bold; font-size: 16px;">

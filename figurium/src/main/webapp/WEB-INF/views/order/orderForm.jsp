@@ -282,6 +282,9 @@
         document.getElementById('delivery_request').value = sessionStorage.getItem('delivery_request') || '';
         document.getElementById('shipping_name').value = sessionStorage.getItem('shipping_name') || '';
         document.getElementById('shipping_phone').value = sessionStorage.getItem('shipping_phone') || '';
+        document.getElementById('order_name').value = sessionStorage.getItem('order_name') || '';
+        document.getElementById('order_phone').value = sessionStorage.getItem('order_phone') || '';
+        document.getElementById('order_email').value = sessionStorage.getItem('order_email') || '';
       } else {
         var fullAddress = "${sessionScope.loginUser.address}";
         var remainingAddress = fullAddress.split(", ");
@@ -447,12 +450,20 @@
       let shippingName = document.getElementById('shipping_name').value;
       let shippingPhone = document.getElementById('shipping_phone').value;
 
+      let orderName = document.getElementById('order_name').value;
+      let orderPhone = document.getElementById('order_phone').value;
+      let orderEmail = document.getElementById('order_email').value;
+
       // 세션 스토리지에 값 저장
       sessionStorage.setItem('mem_zipcode1', memZipcode1);
       sessionStorage.setItem('mem_zipcode2', memZipcode2);
       sessionStorage.setItem('delivery_request', deliveryRequest);
       sessionStorage.setItem('shipping_name', shippingName);
       sessionStorage.setItem('shipping_phone', shippingPhone);
+
+      sessionStorage.setItem('order_name', orderName);
+      sessionStorage.setItem('order_phone', orderPhone);
+      sessionStorage.setItem('order_email', orderEmail);
 
       var paymentType = $("input[name='payment']:checked").val();
 
@@ -775,10 +786,10 @@
 
             success: function (res_data){
               let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
-              let name = document.getElementById("order_name").value;         // 보낸 사람 이름
-              let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
-              let email = document.getElementById("order_email").value;       // 이메일
-
+              // 보내는 사람 정보
+              let name = sessionStorage.getItem('order_name') || '';
+              let phone = sessionStorage.getItem('order_phone') || '';
+              let email = sessionStorage.getItem('order_email') || '';
 
               // 받는 사람 주소
               let memZipcode1 = sessionStorage.getItem('mem_zipcode1') || '';

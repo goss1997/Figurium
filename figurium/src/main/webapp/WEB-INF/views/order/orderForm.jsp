@@ -284,6 +284,13 @@
         var fullAddress = "${sessionScope.loginUser.address}";
         var remainingAddress = fullAddress.split(", ");
 
+        // 로컬 스토리지에서 'modalDismissed' 값을 확인
+        if (!localStorage.getItem('modalDismissed')) {
+          setTimeout(function () {
+            $('#alertModal').modal('show');
+          }, 500); // 0.5초 후에 모달 표시
+        }
+
         document.getElementById('shipping_address').value = fullAddress;
         document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
         document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
@@ -824,13 +831,6 @@
 
 <script>
   $(document).ready(function() {
-    // 로컬 스토리지에서 'modalDismissed' 값을 확인
-    if (!localStorage.getItem('modalDismissed')) {
-      setTimeout(function() {
-        $('#alertModal').modal('show');
-      }, 500); // 0.5초 후에 모달 표시
-    }
-
     // '1일간 보지 않기' 버튼 클릭 시
     $('#snoozeButton').click(function() {
       // 로컬 스토리지에 'modalDismissed' 값을 설정 (1일 후 만료)

@@ -267,6 +267,34 @@
 
   <script>
 
+    window.onload = function() {
+
+      if (params.get('paymentSuccess') === 'true') {
+
+        const params = new URLSearchParams(window.location.search);
+
+        // imp_uid와 merchant_uid 값 추출
+        const impUid = params.get('imp_uid');
+
+        // sessionStorage에 주소 저장
+        document.getElementById('mem_zipcode1').value = sessionStorage.getItem('mem_zipcode1') || '';
+        document.getElementById('mem_zipcode2').value = sessionStorage.getItem('mem_zipcode2') || '';
+        document.getElementById('delivery_request').value = sessionStorage.getItem('delivery_request') || '';
+      } else {
+        var fullAddress = "${sessionScope.loginUser.address}";
+        var remainingAddress = fullAddress.split(", ");
+
+        document.getElementById('shipping_address').value = fullAddress;
+        document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
+        document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
+
+      }
+
+    }
+
+    var currentUrl = window.location.href;
+
+
     $(function () {
 
       // 로그인 사용자 확인
@@ -379,15 +407,6 @@
 
       }
 
-    window.onload = function() {
-      var fullAddress = "${sessionScope.loginUser.address}";
-      var remainingAddress = fullAddress.split(", ");
-
-      document.getElementById('shipping_address').value = fullAddress;
-      document.getElementById('mem_zipcode1').value = remainingAddress[0].trim();
-      document.getElementById('mem_zipcode2').value = remainingAddress[1].trim();
-    }
-
 
 
 
@@ -411,6 +430,22 @@
   var merchantUid;
 
     function buyItems() {
+
+      // 입력 필드의 값을 가져오기
+      let memZipcode1 = document.getElementById('mem_zipcode1').value;
+      let memZipcode2 = document.getElementById('mem_zipcode2').value;
+      let deliveryRequest = document.getElementById('delivery_request').value;
+
+      // 세션 스토리지에 값 저장
+      sessionStorage.setItem('mem_zipcode1', memZipcode1);
+      sessionStorage.setItem('mem_zipcode2', memZipcode2);
+      sessionStorage.setItem('delivery_request', deliveryRequest);
+
+      // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
+      var paymentType = $("input[name='payment']:checked").val();
+
+      var m_redirect_url = currentUrl + '&paymentSuccess=true' +
+              '&payment_type=' + paymentType
 
       // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
       let order_name = $("#order_name").val();
@@ -447,9 +482,6 @@
 
 
 
-
-      // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
-      let paymentType = $("input[name='payment']:checked").val();
       if (paymentType == null) {
         Swal.fire({
           icon: 'info',
@@ -476,7 +508,7 @@
 
       $.ajax({
         type : "POST",
-        url : "checkProduct.do",
+        url : "/order/checkProduct.do",
         data : {
           productIds : productIds,
           itemQuantities : itemQuantities
@@ -527,7 +559,8 @@
             buyer_name: '피규리움 기술지원팀',
             buyer_tel: $("#order_phone").val(),
             buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
-            buyer_postcode: '123-456'
+            buyer_postcode: '123-456',
+            m_redirect_url: m_redirect_url
           }, function (rsp) { // callback
             console.log(rsp);
 
@@ -550,7 +583,88 @@
                     // });
                     console.log(res_data);
                     merchantUid = rsp.merchant_uid;
-                    sil();
+
+                    let paymentType = $("input[name='payment']:checked").val();
+                    let userId = document.getElementById("order_id").value;    // 보낸 사람 id
+
+                    //결제 완료된 주문 데이터 저장
+                    $.ajax({
+                      type : "POST",
+                      url  : "/order/inicisPay.do",
+                      data : {
+                        price: <c:out value="${totalPrice+3000}" />,
+                        //price: 200,
+                        paymentType: paymentType,
+                        userId: userId,
+                        merchantUid: merchantUid
+                      },
+
+                      success: function (res_data){
+                        let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
+                        let name = document.getElementById("order_name").value;         // 보낸 사람 이름
+                        let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
+                        let email = document.getElementById("order_email").value;       // 이메일
+
+
+                        // 받는 사람 주소
+                        let memZipcode1 = document.getElementById('mem_zipcode1').value;
+                        let memZipcode2 = document.getElementById('mem_zipcode2').value;
+
+                        let address = memZipcode1 + ' ' + memZipcode2;
+
+                        let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
+                        let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
+                        let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
+
+                        $.ajax({
+                          type : "POST",
+                          url : "insertInformation.do",
+                          data : {
+                            loginUserId : loginUserId,
+                            name : name,
+                            phone : phone,
+                            email : email,
+                            address : address,
+                            recipientName : recipientName,
+                            shippingPhone : shippingPhone,
+                            deliveryRequest : deliveryRequest,
+                            productIds : productIds,
+                            itemPrices : itemPrices,
+                            itemQuantities : itemQuantities
+                          },
+                          success: function(res_data){
+                            Toast.fire({
+                              icon: 'success',
+                              title: '주문이 정상적으로 처리되었습니다.'
+                            });
+                            // 2초 후에 페이지 이동
+                            setTimeout(function () {
+                              location.href="../user/order-list.do";
+                            }, 2500);
+                          },
+                          error: function(xhr){
+                            // 오류 발생 시
+                            try {
+                              const response = JSON.parse(xhr.responseText); // JSON 파싱
+                              if (response.message) {
+                                alert(response.message); // 메시지 표시
+                                // 어디로 가야 하오...
+                              } else {
+                                alert('알 수 없는 오류가 발생했습니다.');
+                              }
+                            } catch (e) {
+                              alert('응답 형식 오류가 발생했습니다.');
+                            }
+                          }
+                        });
+                      },
+
+                      error: function(err){
+                        alert(err.responseText);
+                      }
+                    });
+
+
                   } else if (res_data.failReason != null) {
                     // 결제 상태가 'paid'가 아닌 경우
                     Swal.fire({
@@ -579,6 +693,8 @@
         },
       });
     }
+
+
 
 
     function sil() {
@@ -722,6 +838,139 @@
       $('#alertModal').modal('hide');
     });
   });
+
+  const params = new URLSearchParams(window.location.search);
+
+
+  if (params.get('paymentSuccess') === 'true') {
+
+    // imp_uid와 merchant_uid 값 추출
+    const impUid = params.get('imp_uid');
+    const merchantUid = params.get('merchant_uid');
+    const paymentType = params.get('payment_type');
+    // 결제검증
+    $.ajax({
+      type : "GET",
+      url  : "../api/verifyIamport.do",
+      data : {
+        imp_uid : impUid,
+        merchantUid : merchantUid
+      },
+      success : function (res_data) {
+        if (res_data.failReason == null) {
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: '결제 성공',
+          //   text: '결제가 완료되었습니다.',
+          //   confirmButtonText: '확인'
+          // });
+          console.log(res_data);
+
+          let userId = document.getElementById("order_id").value;    // 보낸 사람 id
+
+          //결제 완료된 주문 데이터 저장
+          $.ajax({
+            type : "POST",
+            url  : "/order/inicisPay.do",
+            data : {
+              price: <c:out value="${totalPrice+3000}" />,
+              //price: 200,
+              paymentType: paymentType,
+              userId: userId,
+              merchantUid: merchantUid
+            },
+
+            success: function (res_data){
+              let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
+              let name = document.getElementById("order_name").value;         // 보낸 사람 이름
+              let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
+              let email = document.getElementById("order_email").value;       // 이메일
+
+
+              // 받는 사람 주소
+              let memZipcode1 = sessionStorage.getItem('mem_zipcode1') || '';
+              let memZipcode2 = sessionStorage.getItem('mem_zipcode2') || '';
+              let deliveryRequest = sessionStorage.getItem('delivery_request') || '';
+
+              let address = memZipcode1 + ' ' + memZipcode2;
+
+              let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
+              let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
+
+              $.ajax({
+                type : "POST",
+                url : "insertInformation.do",
+                data : {
+                  loginUserId : loginUserId,
+                  name : name,
+                  phone : phone,
+                  email : email,
+                  address : address,
+                  recipientName : recipientName,
+                  shippingPhone : shippingPhone,
+                  deliveryRequest : deliveryRequest,
+                  productIds : productIds,
+                  itemPrices : itemPrices,
+                  itemQuantities : itemQuantities
+                },
+                success: function(res_data){
+                  Toast.fire({
+                    icon: 'success',
+                    title: '주문이 정상적으로 처리되었습니다.'
+                  });
+                  // 2초 후에 페이지 이동
+                  setTimeout(function () {
+                    location.href="../user/order-list.do";
+                  }, 2500);
+                },
+                error: function(xhr){
+                  // 오류 발생 시
+                  try {
+                    const response = JSON.parse(xhr.responseText); // JSON 파싱
+                    if (response.message) {
+                      alert(response.message); // 메시지 표시
+                      // 어디로 가야 하오...
+                    } else {
+                      alert('알 수 없는 오류가 발생했습니다.');
+                    }
+                  } catch (e) {
+                    alert('응답 형식 오류가 발생했습니다.');
+                  }
+                }
+              });
+            },
+
+            error: function(err){
+              alert(err.responseText);
+            }
+          });
+
+
+        } else if (res_data.failReason != null) {
+          // 결제 상태가 'paid'가 아닌 경우
+          Swal.fire({
+            icon: 'warning',
+            title: '결제 상태',
+            text: '결제 상태가 확인되지 않았습니다.',
+            confirmButtonText: '확인'
+          });
+          console.log(res_data);
+          return;
+        }
+      },
+      error : function (jqXHR) {
+        const errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : '결제에 실패했습니다. 관리자에게 문의해주세요.';
+        Swal.fire({
+          icon: 'error',
+          title: '결제 실패',
+          text: errorMessage,
+          confirmButtonText: '확인'
+        }); // 결제검증이 실패하면 이뤄지는 실패 로직
+        return;
+      }
+    });
+
+  }
 </script>
 
 
@@ -805,7 +1054,7 @@
 
       </script>
 
-  <div class="container">
+  <div style="width: 100%;">
     <div class="table-responsive">
       <table class="table item_list_table" style="width: 100%">
           <thead>

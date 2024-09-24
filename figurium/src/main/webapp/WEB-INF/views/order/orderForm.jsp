@@ -448,7 +448,6 @@
       sessionStorage.setItem('mem_zipcode2', memZipcode2);
       sessionStorage.setItem('delivery_request', deliveryRequest);
 
-      // 만약에 결제 방식을 선택하지 않았다면, return되게 한다.
       var paymentType = $("input[name='payment']:checked").val();
 
       var m_redirect_url = currentUrl + '&paymentSuccess=true' +

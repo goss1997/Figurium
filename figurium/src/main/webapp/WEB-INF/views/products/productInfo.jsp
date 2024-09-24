@@ -92,20 +92,22 @@
             <!-- 상품의 이름이나 가격 결제 금액 등 들어 갈 곳 -->
             <div class="product_info">
                 <h3>${product.name}</h3>
-                <div class="stars">
-                    <c:forEach var="i" begin="1" end="${ratingAvg}">
-                        <span class="star">&#9733;</span> <!-- 채워진 별 -->
-                    </c:forEach>
-                    <c:forEach var="i" begin="${ratingAvg + 1}" end="5">
-                        <span class="star">&#9734;</span> <!-- 빈 별 -->
-                    </c:forEach>
-                </div>
-                <div class="block2-txt-child2">
-                    <a href="#" id="product_like" class="btn-addwish-b2">
-                        <img id="heart-icon" class="icon-heart"
-                             src="${isLiked ? '/images/icons/icon-heart-02.png' : '/images/icons/icon-heart-01.png'}"
-                             alt="Heart Icon">
-                    </a>
+                <div class="stars-container">
+                    <div class="stars">
+                        <c:forEach var="i" begin="1" end="${ratingAvg}">
+                            <span class="star">&#9733;</span> <!-- 채워진 별 -->
+                        </c:forEach>
+                        <c:forEach var="i" begin="${ratingAvg + 1}" end="5">
+                            <span class="star">&#9734;</span> <!-- 빈 별 -->
+                        </c:forEach>
+                    </div>
+                    <div class="block2-txt-child2">
+                        <a href="#" id="product_like" class="btn-addwish-b2">
+                            <img id="heart-icon" class="icon-heart"
+                                 src="${isLiked ? '/images/icons/icon-heart-02.png' : '/images/icons/icon-heart-01.png'}"
+                                 alt="Heart Icon">
+                        </a>
+                    </div>
                 </div>
                 <h5>${product.price}￦</h5>
 
@@ -141,10 +143,14 @@
                 </table>
 
                 <hr>
-                <div class="total_price_box">
+               <div class="total_price_box">
                     <span class="total_price">총 결제금액</span>
-                    <p id="total_price">${product.price}</p>원
+                    <div class="total_price_right">
+                        <p id="total_price">${product.price}</p>
+                        <span class="won">원</span>
+                    </div>
                 </div>
+
 
                 <div class="price_bye">
                     <input class="price_bye_btn" type="button" value="바로구매"
@@ -186,7 +192,7 @@
             </form>
 
             <c:if test="${empty reviewList}">
-                <h3 style="text-align: center; color: #ff5959">현재 작성된 리뷰가 없습니다.</h3>
+                <h3 style="text-align: center; color: #ff5959; margin-top: 30px">현재 작성된 리뷰가 없습니다.</h3>
             </c:if>
 
 
@@ -210,7 +216,7 @@
         </form>
 
          <c:if test="${empty productQaList}">
-                <h3 style="text-align: center; color: #ff5959">현재 작성된 Q&A가 없습니다.</h3>
+                <h3 style="text-align: center; color: #ff5959; margin-top: 20px">현재 작성된 Q&A가 없습니다.</h3>
          </c:if>
 
 

@@ -43,6 +43,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--        LIMIT 1-->
 <!--    </select>-->
 
+<!--    <select id="selectListByUserId" resultType="myOrders" parameterType="int">-->
+<!--        select-->
+<!--            ohv.id,-->
+<!--            max(ohv.payment_type) as payment_type,-->
+<!--            max(ohv.name) as name,-->
+<!--            sum(IFNULL(ohv.price, 0)) as price,-->
+<!--            date_format(max(ohv.created_at), '%Y/%m/%d') as created_at,-->
+<!--            max(ohv.product_name) as product_name,-->
+<!--            count(distinct ohv.product_name)-1 as product_count,-->
+<!--            max(img.image_url) as image_url,-->
+<!--            max(ohv.status) as status,-->
+<!--            max(ohv.valid) as valid,-->
+<!--            max(ohv.refund_reason) as refund_reason,-->
+<!--            sum(IFNULL(ohv.price, 0) * IFNULL(ohv.quantity, 1)) as total_value-->
+<!--        from order_history_refund_view ohv-->
+<!--                 left join (-->
+<!--            select id, product_name, image_url,-->
+<!--                   row_number() over (partition by id, product_name order by created_at desc) as rn-->
+<!--            from order_history_refund_view-->
+<!--        ) img on ohv.id = img.id and ohv.product_name = img.product_name and img.rn = 1-->
+<!--        where ohv.user_id = #{user_id}-->
+<!--        group by ohv.id-->
+<!--        order by max(ohv.created_at) desc-->
+<!--    </select>    -->
+
     <select id="selectListByUserId" resultType="myOrders" parameterType="int">
         select
             ohv.id,
@@ -50,22 +75,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             max(ohv.name) as name,
             sum(IFNULL(ohv.price, 0)) as price,
             date_format(max(ohv.created_at), '%Y/%m/%d') as created_at,
-            max(ohv.product_name) as product_name,
-            count(distinct ohv.product_name)-1 as product_count,
-            max(img.image_url) as image_url,
+            min(img.product_name) as product_name,
+            count(distinct ohv.product_name) - 1 as product_count,
+            min(img.image_url) as image_url,
             max(ohv.status) as status,
             max(ohv.valid) as valid,
             max(ohv.refund_reason) as refund_reason,
             sum(IFNULL(ohv.price, 0) * IFNULL(ohv.quantity, 1)) as total_value
         from order_history_refund_view ohv
                  left join (
-            select id, product_name, image_url,
-                   row_number() over (partition by id, product_name order by created_at desc) as rn
-            from order_history_refund_view
-        ) img on ohv.id = img.id and ohv.product_name = img.product_name and img.rn = 1
+            select id, product_name, image_url
+            from (
+                     select id, product_name, image_url,
+                            row_number() over (partition by id order by created_at asc) as rn
+                     from order_history_refund_view
+                 ) as sub
+            where rn = 1
+        ) img on ohv.id = img.id and ohv.product_name = img.product_name
         where ohv.user_id = #{user_id}
         group by ohv.id
-        order by max(ohv.created_at) desc
+        order by max(ohv.created_at) desc;
     </select>
 
 

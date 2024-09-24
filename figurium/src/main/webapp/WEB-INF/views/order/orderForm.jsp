@@ -276,10 +276,12 @@
         // imp_uid와 merchant_uid 값 추출
         const impUid = params.get('imp_uid');
 
-        // sessionStorage에 주소 저장
+        // sessionStorage에 주문 정보 저장
         document.getElementById('mem_zipcode1').value = sessionStorage.getItem('mem_zipcode1') || '';
         document.getElementById('mem_zipcode2').value = sessionStorage.getItem('mem_zipcode2') || '';
         document.getElementById('delivery_request').value = sessionStorage.getItem('delivery_request') || '';
+        document.getElementById('shipping_name').value = sessionStorage.getItem('shipping_name') || '';
+        document.getElementById('shipping_phone').value = sessionStorage.getItem('shipping_phone') || '';
       } else {
         var fullAddress = "${sessionScope.loginUser.address}";
         var remainingAddress = fullAddress.split(", ");
@@ -442,11 +444,15 @@
       let memZipcode1 = document.getElementById('mem_zipcode1').value;
       let memZipcode2 = document.getElementById('mem_zipcode2').value;
       let deliveryRequest = document.getElementById('delivery_request').value;
+      let shippingName = document.getElementById('shipping_name').value;
+      let shippingPhone = document.getElementById('shipping_phone').value;
 
       // 세션 스토리지에 값 저장
       sessionStorage.setItem('mem_zipcode1', memZipcode1);
       sessionStorage.setItem('mem_zipcode2', memZipcode2);
       sessionStorage.setItem('delivery_request', deliveryRequest);
+      sessionStorage.setItem('shipping_name', shippingName);
+      sessionStorage.setItem('shipping_phone', shippingPhone);
 
       var paymentType = $("input[name='payment']:checked").val();
 
@@ -571,7 +577,7 @@
             console.log(rsp);
 
 
-            // 결제검증
+            // 웹 사이트 환경에서의 결제
             $.ajax({
               type : "GET",
               url  : "../api/verifyIamport.do",
@@ -581,12 +587,6 @@
               },
               success : function (res_data) {
                 if (res_data.failReason == null) {
-                    // Swal.fire({
-                    //   icon: 'success',
-                    //   title: '결제 성공',
-                    //   text: '결제가 완료되었습니다.',
-                    //   confirmButtonText: '확인'
-                    // });
                     console.log(res_data);
                     merchantUid = rsp.merchant_uid;
 
@@ -599,7 +599,6 @@
                       url  : "/order/inicisPay.do",
                       data : {
                         price: <c:out value="${totalPrice+3000}" />,
-                        //price: 200,
                         paymentType: paymentType,
                         userId: userId,
                         merchantUid: merchantUid
@@ -653,8 +652,7 @@
                             try {
                               const response = JSON.parse(xhr.responseText); // JSON 파싱
                               if (response.message) {
-                                alert(response.message); // 메시지 표시
-                                // 어디로 가야 하오...
+                                alert(response.message);
                               } else {
                                 alert('알 수 없는 오류가 발생했습니다.');
                               }
@@ -702,104 +700,6 @@
 
 
 
-
-    function sil() {
-
-      let paymentType = $("input[name='payment']:checked").val();
-      let userId = document.getElementById("order_id").value;    // 보낸 사람 id
-
-
-      console.log(paymentType);
-
-      //결제 완료된 주문 데이터 저장
-      $.ajax({
-        type : "POST",
-        url  : "/order/inicisPay.do",
-        data : {
-          price: <c:out value="${totalPrice+3000}" />,
-          //price: 200,
-          paymentType: paymentType,
-          userId: userId,
-          merchantUid: merchantUid
-        },
-
-        success: function (res_data){
-          insertInformation();
-        },
-
-        error: function(err){
-          alert(err.responseText);
-        }
-      });
-
-    }
-
-
-    function insertInformation() {
-
-      // 주문 리스트에 저장될 값들 전부 변수로 저장
-
-      let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
-      let name = document.getElementById("order_name").value;         // 보낸 사람 이름
-      let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
-      let email = document.getElementById("order_email").value;       // 이메일
-
-
-      // 받는 사람 주소
-      let memZipcode1 = document.getElementById('mem_zipcode1').value;
-      let memZipcode2 = document.getElementById('mem_zipcode2').value;
-
-      let address = memZipcode1 + ' ' + memZipcode2;
-
-      let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
-      let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
-      let deliveryRequest = document.getElementById("delivery_request").value;   // 배송 요청 사항
-
-      $.ajax({
-        type : "POST",
-        url : "insertInformation.do",
-        data : {
-          loginUserId : loginUserId,
-          name : name,
-          phone : phone,
-          email : email,
-          address : address,
-          recipientName : recipientName,
-          shippingPhone : shippingPhone,
-          deliveryRequest : deliveryRequest,
-          productIds : productIds,
-          itemPrices : itemPrices,
-          itemQuantities : itemQuantities
-        },
-        success: function(res_data){
-          Toast.fire({
-            icon: 'success',
-            title: '주문이 정상적으로 처리되었습니다.'
-          });
-          // 2초 후에 페이지 이동
-          setTimeout(function () {
-            location.href="../user/order-list.do";
-          }, 2500);
-        },
-        error: function(xhr){
-          // 오류 발생 시
-          try {
-            const response = JSON.parse(xhr.responseText); // JSON 파싱
-            if (response.message) {
-              alert(response.message); // 메시지 표시
-              // 어디로 가야 하오...
-            } else {
-              alert('알 수 없는 오류가 발생했습니다.');
-            }
-          } catch (e) {
-            alert('응답 형식 오류가 발생했습니다.');
-          }
-        }
-      });
-
-
-    }
-
   </script>
 
 
@@ -838,8 +738,10 @@
     });
   });
 
-  const params = new URLSearchParams(window.location.search);
 
+
+  // 모바일 결제
+  const params = new URLSearchParams(window.location.search);
 
   if (params.get('paymentSuccess') === 'true') {
 
@@ -857,14 +759,7 @@
       },
       success : function (res_data) {
         if (res_data.failReason == null) {
-          // Swal.fire({
-          //   icon: 'success',
-          //   title: '결제 성공',
-          //   text: '결제가 완료되었습니다.',
-          //   confirmButtonText: '확인'
-          // });
           console.log(res_data);
-
           let userId = document.getElementById("order_id").value;    // 보낸 사람 id
 
           //결제 완료된 주문 데이터 저장
@@ -873,7 +768,6 @@
             url  : "/order/inicisPay.do",
             data : {
               price: <c:out value="${totalPrice+3000}" />,
-              //price: 200,
               paymentType: paymentType,
               userId: userId,
               merchantUid: merchantUid
@@ -890,11 +784,10 @@
               let memZipcode1 = sessionStorage.getItem('mem_zipcode1') || '';
               let memZipcode2 = sessionStorage.getItem('mem_zipcode2') || '';
               let deliveryRequest = sessionStorage.getItem('delivery_request') || '';
+              let recipientName = sessionStorage.getItem('shipping_name') || '';
+              let shippingPhone = sessionStorage.getItem('shipping_phone') || '';
 
               let address = memZipcode1 + ' ' + memZipcode2;
-
-              let recipientName = document.getElementById("shipping_name").value;         // 받는 사람 이름
-              let shippingPhone = document.getElementById("shipping_phone").value;       // 받는 사람 주소
 
               $.ajax({
                 type : "POST",
@@ -1083,44 +976,7 @@
 
     </c:if>
 
-
-
-<%--    <c:if test="${ requestScope.cartsList.size() < 2 }">--%>
-<%--      <script type="text/javascript">--%>
-<%--        let productIds = ${ item.productId };--%>
-<%--        let itemPrices = ${ item.price };--%>
-<%--        let itemQuantities = ${ item.quantity };--%>
-<%--      </script>--%>
-
-
-<%--      <table class="table item_list_table">--%>
-<%--        <thead>--%>
-<%--        <tr class="table-light">--%>
-<%--          <th class="item_list_table_name">상품명</th>--%>
-<%--          <th>가격</th>--%>
-<%--          <th>수량</th>--%>
-<%--          <th>총 금액</th>--%>
-<%--        </tr>--%>
-<%--        </thead>--%>
-
-<%--        <tbody>--%>
-<%--          <tr class="table_content">--%>
-<%--            <td class="table_content_img"><img src="${ cartsList.imageUrl }" alt="IMG">--%>
-<%--              <span class="table_content_img_text">${ cartsList.name }</span>--%>
-<%--            </td>--%>
-<%--            <td><fmt:formatNumber type="currency" value="${ cartsList.price }" currencySymbol=""/>원</td>--%>
-<%--            <td>${ cartsList.quantity }</td>--%>
-<%--            <td><fmt:formatNumber type="currency" value="${ cartsList.price * cartsList.quantity }" currencySymbol=""/>원</td>--%>
-<%--          </tr>--%>
-<%--        </tbody>--%>
-<%--      </table>--%>
-<%--    </c:if>--%>
-
-
-
 </div>
-
-
 
 <div class="order_box_both">
   <input type="hidden" value="${ sessionScope.loginUser.id }" id="order_id">
@@ -1220,7 +1076,6 @@
         <td>
           <textarea class="form-control" rows="5" id="delivery_request" placeholder="배송시 요청사항" placeholer="배송시 요청사항을 적어주세요."></textarea>
         </td>
-        <%--<td><textarea class="form-control" id="delivery_request" placeholder="배송시 요청사항" name="delivery_request"></td>--%>
       </tr>
       </tbody>
     </table>

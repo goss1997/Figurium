@@ -42,28 +42,23 @@
             display: block; /* 여백 없애기 */
         }
 
-        /* 미디어 쿼리 */
-        @media (max-width: 1200px) {
-            .item-slick1 img {
-                height: 500px; /* 고정 높이 */
-            }
-        }
+        /* 화면이 줄어들면 슬라이더 숨김 */
 
         @media (max-width: 992px) {
-            .item-slick1 img {
-                height: 450px; /* 조금 낮춘 높이 */
+            .bg0,.headers{
+                display: none;
             }
         }
 
         @media (max-width: 768px) {
-            .item-slick1 img {
-                height: 350px; /* 중간 높이 */
+            .bg0,.headers{
+                display: none;
             }
         }
 
         @media (max-width: 576px) {
-            .item-slick1 img {
-                height: 250px; /* 모바일용 낮은 높이 */
+            .bg0,.headers{
+                display: none;
             }
         }
 
@@ -75,30 +70,30 @@
 </head>
 <%@ include file="../common/header.jsp" %>
 <body>
-<div style="height: 90px"></div>
+<div style="height: 90px" class="headers"></div>
 <div id="content-wrap-area">
 
 <!-- Slider -->
-<div class="bg0 p-t-23 p-b-140">
+<div class="bg0 p-t-23 p-b-140" style="margin-bottom: -200px">
     <div style="width: 100%">
         <!-- Slider -->
         <div style="width: 100%">
             <div class="container-fluid" style="padding: 0;">
                 <section class="section-slide">
-    <div class="wrap-slick1">
-    <div class="slick1">
-        <div class="item-slick1">
-            <img src="/images/Slider1.jpg" alt="Slider Image 1">
-        </div>
-        <div class="item-slick1">
-            <img src="/images/Slider2.jpg" alt="Slider Image 2">
-        </div>
-        <div class="item-slick1">
-            <img src="/images/Slider3.jpg" alt="Slider Image 3">
-        </div>
-    </div>
-</div>
-</section>
+                    <div class="wrap-slick1">
+                    <div class="slick1">
+                        <div class="item-slick1">
+                            <img src="/images/Slider1.jpg" alt="Slider Image 1">
+                        </div>
+                        <div class="item-slick1">
+                            <img src="/images/Slider2.jpg" alt="Slider Image 2">
+                        </div>
+                        <div class="item-slick1">
+                            <img src="/images/Slider3.jpg" alt="Slider Image 3">
+                        </div>
+                    </div>
+                </div>
+                </section>
             </div>
         </div>
         <br>

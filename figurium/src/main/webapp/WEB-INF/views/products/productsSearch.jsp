@@ -42,13 +42,13 @@
         <!-- Filter -->
         <div class="filter_box">
         <form action="/searchProductsList.do" method="get"  class="d-inline">
-        <input type="hidden" name="name" value="${search}">
-            <select class="select_filter" name="selectFilter" onchange="this.form.submit()">
-                <option value="newProducts" ${selectFilter == 'newProducts' ? 'selected' : ''}>신상품</option>
-                <option value="bestProducts" ${selectFilter == 'bestProducts' ? 'selected' : ''}>추천★상품</option>
-                <option value="highPrice" ${selectFilter == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
-                <option value="lowPrice" ${selectFilter == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
-            </select>
+            <input type="hidden" name="search" value="${search}">
+                        <select class="select_filter" name="selectFilter" onchange="this.form.submit()">
+                            <option value="newProducts" ${selectFilter == 'newProducts' ? 'selected' : ''}>신상품</option>
+                            <option value="bestProducts" ${selectFilter == 'bestProducts' ? 'selected' : ''}>추천★상품</option>
+                            <option value="highPrice" ${selectFilter == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+                            <option value="lowPrice" ${selectFilter == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
+                        </select>
         </form>
         </div>
     </div>

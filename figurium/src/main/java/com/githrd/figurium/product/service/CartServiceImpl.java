@@ -4,6 +4,7 @@ import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CartServiceImpl implements CartService {
 
     // 장바구니에 상품 추가 또는 상품 수량을 업데이트
     @Override
+    @Transactional
     public void addProductCart(int userId, int productId, int quantity) {
 
         CartsVo cartItem = cartsMapper.getCartItem(userId, productId);
@@ -38,11 +40,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public List<CartsVo> checksCartItemList(int userId, List<Integer> productId) {
         return cartsMapper.checksCartItemList(userId, productId);
     }
 
     @Override
+    @Transactional
     public int checksCartItem(int productId, int userId) {
         Map<String,Object> params = new HashMap<>();
         params.put("productId", productId);
@@ -51,16 +55,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public int checkProductQuantity(int productId, int userId) {
         return cartsMapper.checkProductQuantity(productId, userId);
     }
 
     @Override
+    @Transactional
     public int getProductQuantity(int productId) {
         return cartsMapper.getProductQuantity(productId);
     }
 
     @Override
+    @Transactional
     public int cartItemCount(int userId) {
         return cartsMapper.cartItemCount(userId);
     }

@@ -82,8 +82,8 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품의 결제폼 이동 전 동시성 검사
     @Override
     @Transactional
-    public synchronized List<Integer> checkProductStock(List<Map<String, Integer>> items) {
-        List<Integer> outOfStockProductIds = new ArrayList<>();
+    public synchronized Map<Integer,Integer> checkProductStock(List<Map<String, Integer>> items) {
+        Map<Integer,Integer> outOfStockProducts = new HashMap<>();
 
         for (Map<String, Integer> item : items) {
 
@@ -97,11 +97,12 @@ public class CartServiceImpl implements CartService {
             // 재고가 부족한 경우
             if (cartQuantity > stockQuantity) {
                 // 재고가 부족한 상품의 아이디 저장
-                outOfStockProductIds.add(productId);
+                outOfStockProducts.put(productId,stockQuantity);
+
             }
         }
 
-        return outOfStockProductIds;
+        return outOfStockProducts;
     }
 
 

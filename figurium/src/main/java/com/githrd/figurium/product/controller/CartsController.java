@@ -170,14 +170,13 @@ public class CartsController {
     @PostMapping("/checkProductStock")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkProductStock(@RequestBody List<Map<String, Integer>> items) {
-        List<Integer> outOfStockProductIds = cartService.checkProductStock(items);
+        Map<Integer, Integer> outOfStockProducts = cartService.checkProductStock(items);
         Map<String, Object> response = new HashMap<>();
 
-        if (!outOfStockProductIds.isEmpty()) {
-
+        if (!outOfStockProducts.isEmpty()) {
             response.put("status", "error");
             response.put("message", "재고가 부족한 상품이 있습니다.");
-            response.put("outOfStockProductIds", outOfStockProductIds);
+            response.put("outOfStockProducts", outOfStockProducts);
         } else {
             response.put("status", "success");
             response.put("message", "모든 상품의 재고가 충분합니다.");
@@ -185,6 +184,7 @@ public class CartsController {
 
         return ResponseEntity.ok(response);
     }
+
 
 
 

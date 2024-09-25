@@ -288,7 +288,7 @@
         document.getElementById('order_email').value = sessionStorage.getItem('order_email') || '';
       } else {
         var fullAddress = "${sessionScope.loginUser.address}";
-        var remainingAddress = fullAddress.split(", ");
+        var remainingAddress = fullAddress.split(",");
 
         // 로컬 스토리지에서 'modalDismissed' 값을 확인
         if (!localStorage.getItem('modalDismissed')) {
@@ -305,16 +305,32 @@
 
     }
 
-    // cookie
-    function getCookie(name) {
-      let matches = document.cookie.match(new RegExp(
-              "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-
-
     $(function () {
+
+      $("#id_msg").html("이름을 2~5자리로 넣어주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#phone_msg").html("'-'를 제외한 휴대전화 번호 11자리를 입력해주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#email_msg").html("영문자와 숫자로 시작하고, @ 기호 뒤에 영문자로 표기하며, .com 또는 .net으로 끝나야 합니다.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#shipping_name_msg").html("이름을 2~5자리로 넣어주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#shipping_phone_msg").html("'-'를 제외한 휴대전화 번호 11자리를 입력해주세요.")
+              .css({
+                "margin-left": "10px"
+              });
 
       // 로그인 사용자 확인
       if (${empty loginUser}) {
@@ -332,13 +348,8 @@
 
         let order_name = $("#order_name").val();
 
-        if(order_name.length==0) {
-          $("#id_msg").html("");
-          return;
-        }
-
         if(order_name.length<2 || 5<order_name.length) {
-          $("#id_msg").html("주문자명이 올바른 형식이 아닙니다.").css("color","red");
+          $("#id_msg").html("주문자명이 올바른 형식이 아닙니다. 이름을 2~5자리로 넣어주세요.").css("color","red");
           return;
         } else {
           $("#id_msg").html("주문자명이 올바른 형식입니다.").css("color","blue");
@@ -352,17 +363,11 @@
 
         let order_phone = $("#order_phone").val();
 
-
-        if(order_phone.length==0) {
-          $("#phone_msg").html("");
-          return;
-        }
-
         if(phone_pattern.test(order_phone)) {
           $("#phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          $("#phone_msg").html("휴대전화 번호 형식이 올바르지 않습니다. '-'를 제외한 휴대전화 번호 11자리를 입력해주세요.").css("color","red");
           return;
         }
 
@@ -382,7 +387,7 @@
           $("#email_msg").html("이메일이 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#email_msg").html("이메일 형식이 올바르지 않습니다.").css("color","red");
+          $("#email_msg").html("이메일 형식이 올바르지 않습니다. 올바른 예시) abc@naver.com , abc@daum.net").css("color","red");
           return;
         }
 
@@ -392,13 +397,8 @@
 
         let shipping_name = $("#shipping_name").val();
 
-        if(shipping_name.length==0) {
-          $("#shipping_name_msg").html("");
-          return;
-        }
-
         if(shipping_name.length<2 || 5<shipping_name.length) {
-          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식이 아닙니다.").css("color","red");
+          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식이 아닙니다. 이름을 2~5자리로 넣어주세요.").css("color","red");
           return;
         } else {
           $("#shipping_name_msg").html("받는 사람이름이 올바른 형식입니다.").css("color","blue");
@@ -417,10 +417,10 @@
         }
 
         if(phone_pattern.test(shipping_phone)) {
-          $("#shipping_phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
+          $("#shipping_phone_msg").html("휴대전화 번호가 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#shipping_phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          $("#shipping_phone_msg").html("휴대전화 번호 형식이 올바르지 않습니다. '-'를 제외한 휴대전화 번호 11자리를 입력해주세요.").css("color","red");
           return;
         }
 
@@ -1068,7 +1068,7 @@
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="number" class="form-control" value="${ sessionScope.loginUser.phone }"
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }"
                    id="shipping_phone" placeholder="전화번호" name="shipping_phone" onkeyup="check_phone2();">
           <span id="shipping_phone_msg"></span>
         </td>

@@ -51,6 +51,7 @@ CREATE TABLE products
     price       INT          NOT NULL COMMENT '상품 가격',
     quantity    INT          NOT NULL COMMENT '상품 재고 수량',
     image_url   VARCHAR(255) COMMENT '상품 이미지 URL',
+    is_deleted  TINYINT(1)   DEFAULT 0 COMMENT '상품 삭제 여부(1: 삭제)',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '상품 등록 시간',
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '상품 수정 시간',
     FOREIGN KEY (category_name) REFERENCES categories (name)

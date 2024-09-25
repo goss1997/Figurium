@@ -208,8 +208,8 @@ pageEncoding="UTF-8" %>
 										<th style="padding: 0px; margin: 0px; width: 1%;">
 											<input id="selectAll" type="checkbox" style="margin-left: 20px;">
 										</th>
-										<th class="column-0">번호</th>
-										<th class="column-1">상품</th>
+										<th class="column-0" style="padding-left: 10px;">번호</th>
+										<th class="column-1" style="padding: 0!important;"></th>
 										<th class="column-2" style="width: 35%;">이름</th>
 										<th class="column-3">가격</th>
 										<th class="column-4" style="text-align: center;">수량</th>
@@ -225,13 +225,17 @@ pageEncoding="UTF-8" %>
 												<td style="padding: 0px; margin: 0px; width: 1%;">
 													<input class="itemCheckbox" type="checkbox" style="margin-left: 20px;">
 												</td>
-												<td class="column-0"  style="padding-bottom: 0px;">${cart.productId}</td>
+												<td class="column-0"  style="padding-bottom: 0px; padding-left: 20px ">${cart.productId}</td>
 												<td class="column-1"  style="padding-bottom: 0px;">
 													<div class="how-itemcart1" onclick="itemCartDelete(this)">
 														<img src="${ cart.imageUrl }" alt="${ cart.productId }">
 													</div>
 												</td>
-												<td class="column-2" style="padding-bottom: 0px;">${ cart.name }</td>
+												<td class="column-2" style="padding-bottom: 0px;">
+													<a href="productInfo.do?id=${cart.productId}" style="color: #515050">
+															${ cart.name }
+													</a>
+												</td>
 												<td class="column-3" style="padding-bottom: 0px;">
 													<span id="productPrice">${ cart.price }원</span>
 												</td>
@@ -419,15 +423,15 @@ pageEncoding="UTF-8" %>
 				// 응답에서 재고 부족 상품 확인
 				if (response.status === "error") {
 					let outOfStockMsg = '[ ';
-					let outOfStockProductIds = response.outOfStockProductIds;
-					for (const outOfStockProductId of outOfStockProductIds) {
-						outOfStockMsg += outOfStockProductId+'번 ';
-
+					let outOfStockProducts = response.outOfStockProducts;
+					for (const [productId, stockQuantity] of Object.entries(outOfStockProducts)) {
+						outOfStockMsg += productId + '번 (남은 재고: ' + stockQuantity + ') ';
 					}
 					outOfStockMsg += ']';
-					alert(outOfStockMsg+' 상품의 재고가 부족합니다.');
+					alert(outOfStockMsg + ' 상품의 재고가 부족합니다.');
 					return; // 결제 페이지로 이동하지 않음
 				}
+
 
 				// 재고가 충분한 경우에만 결제 페이지로 이동
 				if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
@@ -469,7 +473,7 @@ pageEncoding="UTF-8" %>
 
 <script>
 	// 장바구니에 담긴 상품 전체를 결제 폼으로 넘김
-	function allProductsOrder(f){
+	function allProductsOrder(f) {
 		// 리스트를 넘겨줄 값을 배열로 가져오기
 		let productIds = Array.from(f.querySelectorAll('input[name="productId[]"]')).map(input => input.value);
 		let cartQuantities = Array.from(f.querySelectorAll('input[name="quantity[]"]')).map(input => input.value);
@@ -478,32 +482,69 @@ pageEncoding="UTF-8" %>
 		console.log("cartQuantities = " + cartQuantities);
 
 		// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
-		f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
+		/*f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());*/
 
-		if (!confirm("전체상품 결제를 위해 결제 페이지로 이동 하시겠습니까?")) return;
-
-		// productId와 quantity 필드를 폼에 추가 (이거 안하면 데이터 안넘어감)
-		productIds.forEach((productId, index) => {
-			let inputProductId = document.createElement('input');
-			inputProductId.type = 'hidden';
-			inputProductId.name = 'productId';
-			inputProductId.value = productId;
-			f.appendChild(inputProductId);
-
-			let inputQuantity = document.createElement('input');
-			inputQuantity.type = 'hidden';
-			inputQuantity.name = 'cartQuantities';
-			inputQuantity.value = cartQuantities[index] || 0; // 없는 경우 0으로 설정
-			f.appendChild(inputQuantity);
+		// 동시성 검사를 위한 데이터 준비
+		let itemsToCheck = productIds.map((productId, index) => {
+			return {
+				productId: productId,
+				quantity: cartQuantities[index]
+			};
 		});
 
-		// 기존의 quantity[] input 필드 제거
-		f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
+		// Ajax로 동시성 검사 요청
+		$.ajax({
+			type: "POST",
+			url: "/checkProductStock", // 서버의 동시성 검사 엔드포인트
+			data: JSON.stringify(itemsToCheck),
+			contentType: "application/json",
+			success: function(response) {
+				console.log("응답:", response.status); // 응답을 확인
 
-		f.method = "get";
-		f.action = "order/orderForm.do";
-		f.submit();
+				// 응답에서 재고 부족 상품 확인
+				if (response.status === "error") {
+					let outOfStockMsg = '[ ';
+					let outOfStockProducts = response.outOfStockProducts;
+					for (const [productId, stockQuantity] of Object.entries(outOfStockProducts)) {
+						outOfStockMsg += productId + '번 (남은 재고: ' + stockQuantity + ') ';
+					}
+					outOfStockMsg += ']';
+					alert(outOfStockMsg + ' 상품의 재고가 부족합니다.');
+					return; // 결제 페이지로 이동하지 않음
+				}
+
+				// 재고가 충분한 경우에만 결제 페이지로 이동
+				if (!confirm("전체 상품 결제를 위해 결제 페이지로 이동 하시겠습니까?")) return;
+
+				// productId와 quantity 필드를 폼에 추가
+				productIds.forEach((productId, index) => {
+					let inputProductId = document.createElement('input');
+					inputProductId.type = 'hidden';
+					inputProductId.name = 'productId';
+					inputProductId.value = productId;
+					f.appendChild(inputProductId);
+
+					let inputQuantity = document.createElement('input');
+					inputQuantity.type = 'hidden';
+					inputQuantity.name = 'cartQuantities';
+					inputQuantity.value = cartQuantities[index] || 0; // 없는 경우 0으로 설정
+					f.appendChild(inputQuantity);
+				});
+
+				// 기존의 quantity[] input 필드 제거
+				f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
+
+				f.method = "get";
+				f.action = "order/orderForm.do";
+				f.submit();
+			},
+
+			error: function() {
+				alert("동시성 검사 중 오류가 발생했습니다.");
+			}
+		});
 	}
+
 </script>
 
 

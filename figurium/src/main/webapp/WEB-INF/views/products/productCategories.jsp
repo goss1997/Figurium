@@ -60,11 +60,16 @@
             .bg0,.headers{
                 display: none;
             }
+            .product-category {
+                max-width: 30%;
+            }
+            .product-category img {
+                max-width: 100%;
+            }
+            .isotope-item{
+                max-width: 50%;
+            }
         }
-
-
-
-
 
     </style>
 </head>

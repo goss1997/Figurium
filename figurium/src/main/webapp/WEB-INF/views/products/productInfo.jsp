@@ -138,7 +138,7 @@
                             <div class="quantity-box">
                                 <button type="button" class="quantity-btn decrease" onclick="decreaseQuantity()">-
                                 </button>
-                                <input type="text" id="quantity" name="quantity" value="1" readonly>
+                                <input type="text" id="quantity" name="quantity" value="<c:out value="1"/>" readonly>
                                 <button type="button" class="quantity-btn increase" onclick="increaseQuantity()">+
                                 </button>
                             </div>
@@ -159,7 +159,7 @@
 
                 <div class="price_bye">
                     <input class="price_bye_btn" type="button" value="바로구매"
-                           onclick="location.href='/order/orderFormRight.do?quantity='+ $('#quantity').val() + '&productId=' + ${product.id}">
+                           onclick="priceBye();">
                 </div>
 
 
@@ -380,6 +380,18 @@
 </script>
 
 <script>
+    // 바로 구매 클릭 시 실행될 함수
+    function priceBye() {
+      if($('#quantity').val() > ${product.quantity}) {
+          alert('수량이 남은 재고를 초과할 수 없습니다!');
+          $('#quantity').val(1);
+          return;
+      }
+      location.href='/order/orderFormRight.do?quantity='+ $('#quantity').val() + '&productId=' + ${product.id}
+
+    }
+
+
     // 장바구니에 상품 추가 함수
     function addToCart(f) {
         let quantity = f.quantity.value;  // 해당 상품의 수량 가져오기

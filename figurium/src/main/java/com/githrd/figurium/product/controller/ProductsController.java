@@ -5,6 +5,7 @@ import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.s3.S3ImageService;
 import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.dao.CartsMapper;
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -43,6 +44,7 @@ public class ProductsController {
     private final S3ImageService s3ImageService;
     private final QaMapper qaMapper;
     private final CartsMapper cartsMapper;
+    private final ProductsMapper productsMapper;
 
     // 해당 카테고리의 필터 처리와 페이징 처리
     @GetMapping("/productList.do")
@@ -246,6 +248,8 @@ public class ProductsController {
         }
 
         save = productsService.ImageSave(products, productImage);
+
+
         if (save == null) {
             System.out.println("저장실패");
             return "redirect:/"; // 저장 실패 시 리다이렉션
@@ -282,10 +286,25 @@ public class ProductsController {
 
         Products productById = productsService.getProductById(products.getId());
         String oldImageUrl = productById.getImageUrl();
-        products.setImageUrl(oldImageUrl);
+        int save = 0;
+        String newImageName = productImage.getOriginalFilename();
 
+        System.out.println("기존 이미지 : " + oldImageUrl);
+        System.out.println("새로운 이미지 : " + newImageName);
 
-        int save = productsService.updateProductsImage(products, productImage);
+        if (!oldImageUrl.equals("/images/noImage1.png")){
+            System.out.println("노이미지가 아님");
+            save = productsService.updateProductsImage(products, productImage);
+        }else {
+            if (productImage == null){
+                System.out.println("이미지가 null 이다");
+                products.setImageUrl("/images/noImage1.png");
+            }else if (productImage != null){
+                System.out.println("이미지가 null 이 아니다");
+            products.setImageUrl(oldImageUrl);
+            }
+        save = productsMapper.productUpdate(products);
+        }
 
         if (save == 0) {
             System.out.println("저장실패");

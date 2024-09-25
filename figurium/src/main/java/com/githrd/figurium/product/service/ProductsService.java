@@ -61,10 +61,17 @@ public class ProductsService {
 
     // 업로드된 프로필 이미지 수정
     public int updateProductsImage(ProductsVo products, MultipartFile productImage) {
-        return 0;
+
+        // s3에서 상품의 이미지 제거.
+        s3ImageService.deleteImageFromS3(products.getImageUrl());
+        // s3에 수정할 이미지 업로드 후 상품에 이미지 기재하기.
+        products.setImageUrl(s3ImageService.upload(productImage));
+
+        return productsMapper.productUpdate(products);
     }
 
 
+/*
     @Transactional
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {
@@ -77,6 +84,7 @@ public class ProductsService {
             throw new EntityNotFoundException("Entity with id " + id + " not found");
         }
     }
+*/
 
 
     public int productSave(ProductsVo products) {

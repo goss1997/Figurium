@@ -40,6 +40,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </update>
 
+    <update id="productUpdate" parameterType="products">
+        UPDATE products
+        SET category_name = #{categoryName},
+            name = #{name},
+            price = #{price},
+            quantity = #{quantity},
+            image_url = #{imageUrl}
+        WHERE id = #{id}
+    </update>
+
     <!-- 상품의 카테고리별 조회 및 필터링 동적 쿼리문 -->
     <select id="categoriesList" resultType="products" parameterType="Map">
         <!-- 서브쿼리를 사용하여 상품 정보와 좋아요 수를 집계 -->

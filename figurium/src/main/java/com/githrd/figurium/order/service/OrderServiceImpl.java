@@ -143,22 +143,6 @@ public class OrderServiceImpl implements OrderService {
         return productsMapper.updateProductQuantity(productId, itemQuantity) > 0;
     }
 
-
-    /**
-     *  Lock를 이용한 동기화 처리
-     */
-//    @Override
-//    @Transactional
-//    public int updateProductQuantity(int productId, int itemQuantity) {
-//        lock.lock();
-//        try {
-//            return productsMapper.updateProductQuantity(productId, itemQuantity);
-//        } finally {
-//            lock.unlock();
-//        }
-//    }
-
-
     /**
      *  장바구니 상품 삭제, 구매 상품 정보 저장
      */

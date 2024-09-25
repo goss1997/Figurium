@@ -64,6 +64,7 @@ public class ProductsService {
         return 0;
     }
 
+
     @Transactional
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {
@@ -128,4 +129,7 @@ public class ProductsService {
         return productsMapper.getNextPageByCreatedAt(params);
     }
 
+    public void productDeleteUpdate(Products selectOne) {
+        productsMapper.productDeleteUpdate(selectOne);
+    }
 }

@@ -42,6 +42,7 @@ public class ProductsController {
     private final ProductLikeService productLikeService;
     private final S3ImageService s3ImageService;
     private final QaMapper qaMapper;
+    private final CartsMapper cartsMapper;
 
     // 해당 카테고리의 필터 처리와 페이징 처리
     @GetMapping("/productList.do")
@@ -300,8 +301,8 @@ public class ProductsController {
     }
 
 
-    @DeleteMapping("/product/{id}")
-    public Object productDeleteById(@PathVariable int id) {
+    @PostMapping("/productDelete.do")
+    public Object productDeleteById(@RequestParam int id) {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
@@ -311,13 +312,9 @@ public class ProductsController {
         }
 
         Products selectOne = productsService.getProductById(id);
-        String imageUrl = selectOne.getImageUrl();
 
-
-
-        s3ImageService.deleteImageFromS3(imageUrl);
-
-        productsService.deleteById(id);
+        productsService.productDeleteUpdate(selectOne);
+        cartsMapper.deleteCartProductAll(id);
 
         return ResponseEntity.noContent().build();
 

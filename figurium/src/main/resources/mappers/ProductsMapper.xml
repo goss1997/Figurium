@@ -34,13 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         VALUES (#{categoryName}, #{name}, #{price}, #{quantity}, #{imageUrl})
     </insert>
 
-    <update id="productUpdate" parameterType="products">
+    <update id="productDeleteUpdate" parameterType="products">
         UPDATE products
-        SET category_name = #{categoryName},
-            name = #{name},
-            price = #{price},
-            quantity = #{quantity},
-            image_url = #{imageUrl}
+        SET is_deleted = 1
         WHERE id = #{id}
     </update>
 
@@ -268,6 +264,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products
         where quantity = 0
     </select>
+
+
 
 </mapper>
 

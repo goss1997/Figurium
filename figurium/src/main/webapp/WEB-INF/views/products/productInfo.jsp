@@ -713,13 +713,16 @@
 
     $('.product-delete-button').on('click', function () {
 
+        var productId = $(this).data('product-id');
+        console.log("상품 ID : " + productId);
         if (confirm('정말 삭제하시겠습니까?')) {
             $.ajax({
-                url: "/product/" + ${product.id},
-                type: 'delete',
-                headers: {
+                url: "productDelete.do",
+                type: 'POST',
+                data : {id : productId},
+/*                headers: {
                     'Content-Type': 'application/json',
-                },
+                },*/
                 success: function (response) {
                     console.log(response);
                     // 삭제 성공 후 홈으로 이동

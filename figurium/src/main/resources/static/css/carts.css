@@ -1,3 +1,4 @@
+/* 기존 스타일 유지 */
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -14,13 +15,11 @@ body, .container {
     height: 100px;
     margin: auto;
     padding: 10px 0;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* 무지개 만들기 치트키 */
 @keyframes shine {
     0% { color: red; }
     14% { color: orange; }
@@ -103,3 +102,4 @@ h1 {
 #productPrice {
     text-align: center;
 }
+

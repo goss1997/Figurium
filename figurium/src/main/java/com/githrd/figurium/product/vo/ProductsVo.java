@@ -14,6 +14,7 @@ public class ProductsVo {
     int price;
     int quantity;
     String imageUrl;
+    int isDeleted;
     String createdAt;
     String updatedAt;
     int likeCount;

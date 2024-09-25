@@ -4,6 +4,7 @@ import com.githrd.figurium.auth.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,6 +30,10 @@ public class SecurityConfig {
         // 기존 메소드 체이닝 방식을 사용했더니 에러남.
         // spring boot 3.xx 이후 람다식으로 전달하도록 바뀜.
        return http
+               .authorizeRequests(authorizeRequests ->
+                       authorizeRequests
+                               .requestMatchers(HttpMethod.DELETE, "/product/**").permitAll() // DELETE 허용
+               )
                .csrf(AbstractHttpConfigurer::disable)       // csrf 보안 설정 사용을 안 할 것이다.
                .httpBasic(httpb->httpb.disable())     // http basic 미사용.
                .logout(AbstractHttpConfigurer::disable)     // 로그아웃 사용을 안 할 것이다.

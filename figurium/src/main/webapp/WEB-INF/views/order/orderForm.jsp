@@ -269,6 +269,7 @@
 
     window.onload = function() {
 
+      // 현재 URL 가져오기
       if (params.get('paymentSuccess') === 'true') {
 
         const params = new URLSearchParams(window.location.search);
@@ -282,9 +283,12 @@
         document.getElementById('delivery_request').value = sessionStorage.getItem('delivery_request') || '';
         document.getElementById('shipping_name').value = sessionStorage.getItem('shipping_name') || '';
         document.getElementById('shipping_phone').value = sessionStorage.getItem('shipping_phone') || '';
+        document.getElementById('order_name').value = sessionStorage.getItem('order_name') || '';
+        document.getElementById('order_phone').value = sessionStorage.getItem('order_phone') || '';
+        document.getElementById('order_email').value = sessionStorage.getItem('order_email') || '';
       } else {
         var fullAddress = "${sessionScope.loginUser.address}";
-        var remainingAddress = fullAddress.split(", ");
+        var remainingAddress = fullAddress.split(",");
 
         // 로컬 스토리지에서 'modalDismissed' 값을 확인
         if (!localStorage.getItem('modalDismissed')) {
@@ -301,10 +305,32 @@
 
     }
 
-    var currentUrl = window.location.href;
-
-
     $(function () {
+
+      $("#id_msg").html("이름을 2~5자리로 넣어주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#phone_msg").html("'-'를 제외한 휴대전화 번호 11자리를 입력해주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#email_msg").html("영문자와 숫자로 시작하고, @ 기호 뒤에 영문자로 표기하며, .com 또는 .net으로 끝나야 합니다.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#shipping_name_msg").html("이름을 2~5자리로 넣어주세요.")
+              .css({
+                "margin-left": "10px"
+              });
+
+      $("#shipping_phone_msg").html("'-'를 제외한 휴대전화 번호 11자리를 입력해주세요.")
+              .css({
+                "margin-left": "10px"
+              });
 
       // 로그인 사용자 확인
       if (${empty loginUser}) {
@@ -322,13 +348,8 @@
 
         let order_name = $("#order_name").val();
 
-        if(order_name.length==0) {
-          $("#id_msg").html("");
-          return;
-        }
-
         if(order_name.length<2 || 5<order_name.length) {
-          $("#id_msg").html("주문자명이 올바른 형식이 아닙니다.").css("color","red");
+          $("#id_msg").html("주문자명이 올바른 형식이 아닙니다. 이름을 2~5자리로 넣어주세요.").css("color","red");
           return;
         } else {
           $("#id_msg").html("주문자명이 올바른 형식입니다.").css("color","blue");
@@ -342,17 +363,11 @@
 
         let order_phone = $("#order_phone").val();
 
-
-        if(order_phone.length==0) {
-          $("#phone_msg").html("");
-          return;
-        }
-
         if(phone_pattern.test(order_phone)) {
           $("#phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          $("#phone_msg").html("휴대전화 번호 형식이 올바르지 않습니다. '-'를 제외한 휴대전화 번호 11자리를 입력해주세요.").css("color","red");
           return;
         }
 
@@ -372,7 +387,7 @@
           $("#email_msg").html("이메일이 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#email_msg").html("이메일 형식이 올바르지 않습니다.").css("color","red");
+          $("#email_msg").html("이메일 형식이 올바르지 않습니다. 올바른 예시) abc@naver.com , abc@daum.net").css("color","red");
           return;
         }
 
@@ -382,13 +397,8 @@
 
         let shipping_name = $("#shipping_name").val();
 
-        if(shipping_name.length==0) {
-          $("#shipping_name_msg").html("");
-          return;
-        }
-
         if(shipping_name.length<2 || 5<shipping_name.length) {
-          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식이 아닙니다.").css("color","red");
+          $("#shipping_name_msg").html("받는 사람이름이 올바른 형식이 아닙니다. 이름을 2~5자리로 넣어주세요.").css("color","red");
           return;
         } else {
           $("#shipping_name_msg").html("받는 사람이름이 올바른 형식입니다.").css("color","blue");
@@ -407,10 +417,10 @@
         }
 
         if(phone_pattern.test(shipping_phone)) {
-          $("#shipping_phone_msg").html("전화번호가 올바른 형식입니다.").css("color","blue");
+          $("#shipping_phone_msg").html("휴대전화 번호가 올바른 형식입니다.").css("color","blue");
           return;
         } else {
-          $("#shipping_phone_msg").html("전화번호 형식이 올바르지 않습니다.").css("color","red");
+          $("#shipping_phone_msg").html("휴대전화 번호 형식이 올바르지 않습니다. '-'를 제외한 휴대전화 번호 11자리를 입력해주세요.").css("color","red");
           return;
         }
 
@@ -447,6 +457,10 @@
       let shippingName = document.getElementById('shipping_name').value;
       let shippingPhone = document.getElementById('shipping_phone').value;
 
+      let orderName = document.getElementById('order_name').value;
+      let orderPhone = document.getElementById('order_phone').value;
+      let orderEmail = document.getElementById('order_email').value;
+
       // 세션 스토리지에 값 저장
       sessionStorage.setItem('mem_zipcode1', memZipcode1);
       sessionStorage.setItem('mem_zipcode2', memZipcode2);
@@ -454,10 +468,11 @@
       sessionStorage.setItem('shipping_name', shippingName);
       sessionStorage.setItem('shipping_phone', shippingPhone);
 
-      var paymentType = $("input[name='payment']:checked").val();
+      sessionStorage.setItem('order_name', orderName);
+      sessionStorage.setItem('order_phone', orderPhone);
+      sessionStorage.setItem('order_email', orderEmail);
 
-      var m_redirect_url = currentUrl + '&paymentSuccess=true' +
-              '&payment_type=' + paymentType
+      var paymentType = $("input[name='payment']:checked").val();
 
       // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
       let order_name = $("#order_name").val();
@@ -468,7 +483,7 @@
         Swal.fire({
           icon: 'error',
           title: '알림',
-          text: '주문자 정보는 필수적으로 기입해야 합니다.',
+          text: '주문자 정보에서 입력하지 않았거나, 입력값이 올바르지 않습니다.',
           confirmButtonText: '확인'
         }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
@@ -484,7 +499,7 @@
         Swal.fire({
           icon: 'error',
           title: '알림',
-          text: '배송지 정보는 필수적으로 기입해야 합니다.',
+          text: '배송지 정보를 입력하지 않았거나, 입력값이 올바르지 않습니다.',
           confirmButtonText: '확인'
         }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
@@ -572,7 +587,7 @@
             buyer_tel: $("#order_phone").val(),
             buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
             buyer_postcode: '123-456',
-            m_redirect_url: m_redirect_url
+            m_redirect_url: window.location.origin + window.location.pathname + '?paymentSuccess=true'
           }, function (rsp) { // callback
             console.log(rsp);
 
@@ -775,10 +790,10 @@
 
             success: function (res_data){
               let loginUserId = document.getElementById("order_id").value;    // 보낸 사람 id
-              let name = document.getElementById("order_name").value;         // 보낸 사람 이름
-              let phone = document.getElementById("order_phone").value;       // 보낸 사람 전화번호
-              let email = document.getElementById("order_email").value;       // 이메일
-
+              // 보내는 사람 정보
+              let name = sessionStorage.getItem('order_name') || '';
+              let phone = sessionStorage.getItem('order_phone') || '';
+              let email = sessionStorage.getItem('order_email') || '';
 
               // 받는 사람 주소
               let memZipcode1 = sessionStorage.getItem('mem_zipcode1') || '';
@@ -884,7 +899,7 @@
           <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
 
-        <a href="CartList.do?loginUser=${ loginUser.id }" class="stext-109 cl8 hov-cl1 trans-04">
+        <a href="${pageContext.request.contextPath}/CartList.do" class="stext-109 cl8 hov-cl1 trans-04">
           장바구니
           <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
@@ -931,14 +946,14 @@
 
     <%-- 만약에 장바구니에 담겼던 item 값이 넘어왔다면 list에 호출 : 0828 --%>
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
-    <c:if test="${ requestScope.cartsList != null }">
+    <c:if test="${ cartsList != null }">
       <script type="text/javascript">
 
         let productIds = [];
         let itemPrices = [];
         let itemQuantities = [];
 
-        <c:forEach var="item" items="${ requestScope.cartsList }">
+        <c:forEach var="item" items="${ cartsList }">
         productIds.push("${ item.productId }");
         itemPrices.push("${ item.price }");
         itemQuantities.push("${ item.quantity }");
@@ -959,7 +974,7 @@
           </thead>
 
         <tbody>
-        <c:forEach var="item" items="${ requestScope.cartsList }">
+        <c:forEach var="item" items="${ cartsList }">
           <tr class="table_content">
             <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>
@@ -1048,7 +1063,7 @@
       </tr>
       <tr>
         <td class="td_title">전화번호</td>
-        <td><input type="number" class="form-control" value="${ sessionScope.loginUser.phone }"
+        <td><input type="text" class="form-control" value="${ sessionScope.loginUser.phone }"
                    id="shipping_phone" placeholder="전화번호" name="shipping_phone" onkeyup="check_phone2();">
           <span id="shipping_phone_msg"></span>
         </td>

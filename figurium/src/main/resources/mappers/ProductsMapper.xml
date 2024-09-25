@@ -34,13 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         VALUES (#{categoryName}, #{name}, #{price}, #{quantity}, #{imageUrl})
     </insert>
 
-    <update id="productUpdate" parameterType="products">
+    <update id="productDeleteUpdate" parameterType="products">
         UPDATE products
-        SET category_name = #{categoryName},
-            name = #{name},
-            price = #{price},
-            quantity = #{quantity},
-            image_url = #{imageUrl}
+        SET is_deleted = 1
         WHERE id = #{id}
     </update>
 
@@ -55,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
                 p.category_name = #{categoryName}
             </if>
@@ -101,6 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
                 p.category_name = #{categoryName}
             </if>
@@ -117,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                       FROM product_likes
                      GROUP BY product_id ) pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체'">
                 AND category_name = #{categoryName}
             </if>
@@ -176,6 +175,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <!-- 검색어 필터링 -->
             <if test="search != null and search != ''">
                 p.name LIKE CONCAT('%', #{search}, '%')
@@ -211,6 +211,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT COUNT(*)
         FROM products
         WHERE products.name LIKE CONCAT('%', #{search}, '%')
+        and products.is_deleted = 0
     </select>
 
 
@@ -263,6 +264,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products
         where quantity = 0
     </select>
+
 
 </mapper>
 

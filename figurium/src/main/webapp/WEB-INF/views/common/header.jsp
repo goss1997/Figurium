@@ -284,6 +284,102 @@
         }
     }
 
+    /* 카테고리 드롭다운 */
+    .dropdown-categories {
+    display: none; /* 기본적으로 숨기기 */
+    }
+
+    .dropdown_categories li > a {
+        margin-left: 20px;
+        display: block; /* 블록 요소로 설정하여 간격을 조정 */
+        padding: 10px; /* 위아래 간격 */
+        padding-left: 20px;
+        color: white; /* 글자 색을 흰색으로 설정 */
+        text-decoration: none; /* 밑줄 없애기 */
+    }
+
+    .dropdown_categories li:hover {
+        text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+        font-weight: bold; /* 마우스를 가져다 대면 글씨를 볼드체로 설정 */
+    }
+
+    /* 모바일 검색기능 모달 */
+    #search-modal {
+        display: none; /* 기본적으로 숨김 */
+        position: fixed; /* 스크롤 해도 고정 */
+        z-index: 1000; /* 가장 위에 표시 */
+        left: 0;
+        top: 0;
+        width: 100%; /* 전체 너비 */
+        height: 100%; /* 전체 높이 */
+        background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    }
+
+    .modal-content {
+        background-color: white; /* 모달 배경 색 */
+        margin: 15% auto; /* 화면 중앙에 위치 */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* 모달 너비 */
+        text-align: center; /* 가운데 정렬 */
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .mobile_search {
+        border: 1px solid #c3c3c3;
+        width: 100%;
+        height: 50px;
+        padding-left: 10px;
+        border-radius: 5px 0 0 5px; /* 좌측 모서리 둥글게 */
+    }
+
+    .mobile_search_btn {
+        border: 1px solid black;
+        width: 80px; /* 버튼 너비 조정 */
+        height: 50px; /* 버튼 높이 조정 */
+        margin-left: -5px; /* 검색 필드와 버튼의 경계 겹치기 */
+        background-color: black; /* 배경색 */
+        color: white; /* 글자색 */
+        border-radius: 0 5px 5px 0; /* 우측 모서리 둥글게 */
+        cursor: pointer; /* 커서 변경 */
+    }
+
+    .mobile_search_btn:hover {
+        background-color: #444; /* 마우스 오버 시 색상 변경 */
+    }
+
+    .search-modal {
+        display: none; /* 기본적으로 숨김 */
+        position: fixed; /* 화면에 고정 */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white; /* 모달 배경색 */
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+
     </style>
 
 
@@ -507,14 +603,37 @@
             </div>
         </c:if>
 
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 js-show-modal-search">
+            <!-- 검색 기능 -->
+            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 search_products">
                 <i class="zmdi zmdi-search"></i>
             </div>
 
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-                 data-notify="2">
-                <i class="zmdi zmdi-shopping-cart"></i>
+            <!-- 검색 모달 -->
+           <div class="search-modal" id="search-modal" style="display: none;">
+               <form>
+                    <div class="modal-content" style="border-radius: 10px; padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h2>상품 검색</h2>
+                            <span class="close-button" style="cursor: pointer;">&times;</span>
+                        </div>
+                        <div style="display: flex; margin-top: 20px;">
+                            <input class="mobile_search" type="text" placeholder="Search..." name="search"  />
+                            <input type="button" class="mobile_search_btn" value="Search" onclick="searchProduct(this.form)">
+                        </div>
+                    </div>
+                </form>
             </div>
+
+
+
+
+             <!-- 장바구니 아이콘 -->
+                    <div class="cart-container">
+                        <a href="#" onclick="cartList();">
+                            <img class="cartImage" src="/images/icons/cartLogo.png" alt="Shopping Cart Icon"
+                                 style="width: 24px; height: 24px;">
+                        </a>
+                    </div>
 
         </div>
 
@@ -533,8 +652,29 @@
             <li>
                 <a href="/">Home</a>
             </li>
-
-
+            <li class="dropdown_categories">
+                <a href="#" class="categories-toggle">카테고리</a>
+                <ul class="dropdown-categories">
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=전체 상품">전체 상품</a>
+                    </li>
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=메가하우스">메가하우스</a>
+                    </li>
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=반다이">반다이</a>
+                    </li>
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=반프레스토">반프레스토</a>
+                    </li>
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=세가">세가</a>
+                    </li>
+                    <li class="dropdown_subcategories">
+                        <a href="${pageContext.request.contextPath}/productList.do?name=후류">후류</a>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <a href="${pageContext.request.contextPath}/CartList.do">장바구니</a>
             </li>
@@ -544,6 +684,19 @@
             </li>
         </ul>
     </div>
+
+    <script>
+    $(document).ready(function() {
+    // 카테고리 메뉴 클릭 시 드롭다운 토글
+    $('.categories-toggle').click(function(event) {
+        event.preventDefault(); // 기본 링크 동작 방지
+        $(this).siblings('.dropdown-categories').slideToggle(); // 서브 메뉴 토글
+    });
+});
+
+</script>
+
+
 
     <!-- Login Modal Structure -->
     <div id="loginModal" class="login-modal">
@@ -591,7 +744,9 @@
     </div>
 </header>
 
+
 <script>
+    // 장바구니에 담겨있는 상품 수 나타내기
     $(document).ready(function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/cartItemCount",
@@ -965,6 +1120,27 @@
     });
 </script>
 
+<script>
+    // 검색 기능 모달
+    $(document).ready(function() {
+        $(".search_products").on("click", function() {
+            $("#search-modal").show(); // 모달 보여주기
+        });
+
+        $(".close-button").on("click", function() {
+            $("#search-modal").hide(); // 모달 닫기
+        });
+
+        $(window).on("click", function(event) {
+            if (event.target.id === "search-modal") {
+                $("#search-modal").hide();
+            }
+        });
+    });
+
+
+
+</script>
 
 </body>
 </html>

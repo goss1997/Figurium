@@ -7,6 +7,7 @@ import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +43,25 @@ public class OrderController {
      *   바로구매창
      */
     @RequestMapping("orderFormRight.do")
-    public String orderFormRight(@RequestParam(required = false) int quantity,
-                            @RequestParam(required = false) int productId,
+    public String orderFormRight(@RequestParam(required = false) Integer quantity,
+                            @RequestParam(required = false) Integer productId,
                             HttpSession session,
                             Model model) {
 
         User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+
+        // 모바일 결제에서 session을 받아서 다시 값을 redirect 시켜주는 경우
+        if (productId == null) {
+
+            // 처음에 결제/주문 페이지로 넘어갈때 저장한 session 값 가져오기
+            List<CartsVo> cartsList = (List<CartsVo>) session.getAttribute("sessionCartsList");
+            int totalPrice = (int) session.getAttribute("sessionTotalPrice");
+
+            model.addAttribute("cartsList", cartsList);
+            model.addAttribute("totalPrice", totalPrice);
+            session.setAttribute("sessionTotalPrice", totalPrice);
+            return "order/orderForm";
+        }
 
         // 해당 상품이 추가되어있으면 더이상 insert 하지 않기
         CartsVo checkCart = cartsMapper.selectCartsById(productId,user.getId());
@@ -72,6 +86,7 @@ public class OrderController {
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionCartsList", cartsList);
         session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
@@ -84,10 +99,25 @@ public class OrderController {
     public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
                             @RequestParam(required = false) List<Integer> productId,
                             HttpSession session,
-                            Model model) {
+                            Model model,
+                            HttpServletRequest request) {
 
         User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         int loginUserId = user.getId();
+
+
+        // 모바일 결제에서 session을 받아서 다시 값을 redirect 시켜주는 경우
+        if (productId == null || productId.isEmpty()) {
+
+            // 처음에 결제/주문 페이지로 넘어갈때 저장한 session 값 가져오기
+            List<CartsVo> cartsList = (List<CartsVo>) session.getAttribute("sessionCartsList");
+            int totalPrice = (int) session.getAttribute("sessionTotalPrice");
+
+            model.addAttribute("cartsList", cartsList);
+            model.addAttribute("totalPrice", totalPrice);
+            session.setAttribute("sessionTotalPrice", totalPrice);
+            return "order/orderForm";
+        }
 
         List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
 
@@ -112,53 +142,26 @@ public class OrderController {
             totalPrice += products.getPrice() * products.getQuantity();
         }
 
+        // 리다이렉트 URL 생성
+        String redirectUrl = request.getRequestURL().toString();
+        redirectUrl += "?";
+        for (int i = 0; i < productId.size(); i++) {
+            redirectUrl += "productId=" + productId.get(i) + "&";
+            redirectUrl += "cartQuantities=" + cartQuantities.get(i) + "&";
+        }
+        // 마지막 '&' 제거
+        redirectUrl = redirectUrl.substring(0, redirectUrl.length() - 1);
+        log.info("작성된주소명 : {}", redirectUrl);
+
+        model.addAttribute("redirectUrl", redirectUrl);
+
+
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionCartsList", cartsList);
         session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
-
-
-    /*
-     *   주문/결제창
-     */
-//    @RequestMapping("orderForm.do")
-//    public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
-//                            @RequestParam(required = false) List<Integer> productId,
-//                            HttpSession session,
-//                            Model model) {
-//
-//        User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
-//        int loginUserId = user.getId();
-//
-//        List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
-//
-//        // 기존 수량 체크
-//        for (int i = 0; i < cartsList.size(); i++) {
-//            CartsVo cartsVo = cartsList.get(i);
-//            int existingQuantity = cartsVo.getQuantity();
-//            int newQuantity = cartQuantities.get(i);
-//
-//            if(existingQuantity != newQuantity) {
-//                cartsVo.setQuantity(newQuantity); // 새로운 수량으로 업데이트
-//                // 수량을 가져와서 수량이 변경되었다면, 변경된 수량 반영
-//                int res = cartsMapper.updateCartQuantity(cartsVo);
-//            }
-//        }
-//
-//
-//        // JSP에서 계산 이뤄지게 하는 방식은 권장되지 않아서 서버딴에서 결제 처리
-//        int totalPrice = 0;
-//
-//        for(CartsVo products:cartsList) {
-//            totalPrice += products.getPrice() * products.getQuantity();
-//        }
-//
-//        model.addAttribute("cartsList", cartsList);
-//        model.addAttribute("totalPrice", totalPrice);
-//        session.setAttribute("sessionTotalPrice", totalPrice);
-//        return "order/orderForm";
-//    }
 
 
     /*
@@ -187,8 +190,6 @@ public class OrderController {
     public String inicisPay(int price, String paymentType, Integer userId, String merchantUid) {
 
         orderService.insertOrder(price, paymentType, userId, merchantUid);
-
-        System.out.println("결제성공");
 
         return "map";
     }
@@ -227,88 +228,5 @@ public class OrderController {
         }
 
     }
-//
-//
-//    /*
-//     *   결제 성공시 주문 데이터 저장
-//     */
-//    @PostMapping(value = "insertInformation.do")
-//    @ResponseBody
-//    @Transactional
-//    public String insertInformation(int loginUserId, String name, String phone, String email,
-//                                    String address, String recipientName,
-//                                    String shippingPhone, String deliveryRequest,
-//                                    @RequestParam(value="productIds[]") List<Integer> productIds,
-//                                    @RequestParam(value="itemPrices[]") List<Integer> itemPrices,
-//                                    @RequestParam(value="itemQuantities[]") List<Integer> itemQuantities
-//                                    ) {
-//
-//        try {
-//            // Customers insert
-//            // 최근에 생성된 order_id의 idx 주입
-//            int orderId = orderMapper.selectOneLast().getId();
-//
-//
-//            for(int i = 0; i < productIds.toArray().length; i++) {
-//
-//                OrderItems orderItems = new OrderItems();
-//                orderItems.setOrderId(orderId);
-//
-//                int productId = productIds.get(i);
-//                int itemPrice = itemPrices.get(i);
-//                int itemQuantity = itemQuantities.get(i);
-//
-//                // 각 값을 저장
-//                orderItems.setProductId(productId);
-//                orderItems.setItemPrice(itemPrice);
-//                orderItems.setItemQuantity(itemQuantity);
-//
-//                // 장바구니에 입력되어 있는 정보 중 구매한 상품 전부 삭제
-//                cartsMapper.deleteCartProduct(productId, loginUserId);
-//
-//                orderItemsMapper.insertOrderItems(orderItems);
-//
-//                // 처음에 재고 확인 후 시간차 주문공격 체크
-//                ProductsVo productsVo = productsMapper.selectOneCheckProduct(productId, itemQuantity);
-//                int itemQuantityCheck = productsVo.getQuantity();
-//                // 상품 정보에 재고 업데이트
-//                // TODO 귀여미 Exception 처리
-//                if(itemQuantityCheck-itemQuantity<0) {
-//                    log.error("There is insufficient stock due to someone else's purchase.: {}", "재고수량부족");
-//                    throw new OutofStockException("Insufficient stock: 재고가 부족합니다.");
-//                }
-//
-//                int res = productsMapper.updateProductQuantity(productId, itemQuantity);
-//            }
-//
-//            Customers customers = new Customers();
-//
-//            customers.setOrderId(orderId);
-//            customers.setName(name);
-//            customers.setPhone(phone);
-//            customers.setEmail(email);
-//
-//            int res = customersMapper.insertCustomers(customers);
-//
-//            // Shipping_addresses insert
-//            ShippingAddresses shippingAddresses = new ShippingAddresses();
-//
-//            shippingAddresses.setOrderId(orderId);
-//            shippingAddresses.setRecipientName(recipientName);
-//            shippingAddresses.setShippingPhone(shippingPhone);
-//            shippingAddresses.setAddress(address);
-//            shippingAddresses.setDeliveryRequest(deliveryRequest);
-//
-//            // 매핑 생성
-//            int res2 = shippingAddressesMapper.insertShippingAddresses(shippingAddresses);
-//
-//            return "success";
-//
-//        } catch (Exception e) {
-//            log.error("Error occurred while linking account: ", e);
-//            throw new OutofStockException("Failed to link account: " + e.getMessage());
-//        }
-//
-//    }
 
 }

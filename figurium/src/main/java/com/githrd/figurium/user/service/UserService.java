@@ -28,6 +28,7 @@ public class UserService {
     private final S3ImageService s3ImageService;
     private final HttpSession session;
 
+    @Transactional
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
 
@@ -60,6 +61,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public User findUserById(int id) {
         return userRepository.findUserById(id);
     }
@@ -106,6 +108,7 @@ public class UserService {
     }
 
     // 유저id와 provider로 소셜 회원 조회
+    @Transactional
     public SocialAccountVo selectSocialAccountOne(int userId, String provider) {
         return socialAccountMapper.selectSocialAccountOne(userId, provider);
     }
@@ -133,7 +136,7 @@ public class UserService {
         return userMapper.deleteByUserId(userId);
     }
 
-
+    @Transactional
     public int findByEmailAndDeletedFalse(String findEmail) {
         return userMapper.findByEmailAndDeletedFalse(findEmail);
     }
@@ -143,15 +146,18 @@ public class UserService {
         return userMapper.updateUserPassword(userId,encPwd);
     }
 
+    @Transactional
     public List<ProductsVo> selectMyProductLikeList(int userId, int pageSize,int offset) {
 
         return userMapper.selectMyProductLikeList(userId, pageSize,offset);
     }
 
+    @Transactional
     public int getTotalPagesByUserId(int userId) {
         return userMapper.getTotalCountByUserId(userId);
     }
 
+    @Transactional
     public List<UserVo> findByRoleAdmin() {
         return userMapper.findByRoleAdmin();
     }

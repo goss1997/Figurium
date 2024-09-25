@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -167,6 +165,26 @@ public class CartsController {
         return ResponseEntity.ok(cartItemCount);
     }
 
+
+    /*장바구니 에서 동시성 검사*/
+    @PostMapping("/checkProductStock")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkProductStock(@RequestBody List<Map<String, Integer>> items) {
+        List<Integer> outOfStockProductIds = cartService.checkProductStock(items);
+        Map<String, Object> response = new HashMap<>();
+
+        if (!outOfStockProductIds.isEmpty()) {
+
+            response.put("status", "error");
+            response.put("message", "재고가 부족한 상품이 있습니다.");
+            response.put("outOfStockProductIds", outOfStockProductIds);
+        } else {
+            response.put("status", "success");
+            response.put("message", "모든 상품의 재고가 충분합니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
 
 

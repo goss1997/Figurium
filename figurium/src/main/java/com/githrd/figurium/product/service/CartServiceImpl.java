@@ -1,11 +1,13 @@
 package com.githrd.figurium.product.service;
 
 import com.githrd.figurium.product.dao.CartsMapper;
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +15,14 @@ import java.util.Map;
 @Service
 public class CartServiceImpl implements CartService {
 
+
     private final CartsMapper cartsMapper;
+    private final ProductsMapper productsMapper;
 
     @Autowired
-    public CartServiceImpl(CartsMapper cartsMapper) {
+    public CartServiceImpl(CartsMapper cartsMapper,ProductsMapper productsMapper) {
         this.cartsMapper = cartsMapper;
+        this.productsMapper = productsMapper;
     }
 
 
@@ -71,4 +76,33 @@ public class CartServiceImpl implements CartService {
     public int cartItemCount(int userId) {
         return cartsMapper.cartItemCount(userId);
     }
+
+
+
+    // 장바구니 상품의 결제폼 이동 전 동시성 검사
+    @Override
+    @Transactional
+    public synchronized List<Integer> checkProductStock(List<Map<String, Integer>> items) {
+        List<Integer> outOfStockProductIds = new ArrayList<>();
+
+        for (Map<String, Integer> item : items) {
+
+            int cartQuantity = item.get("quantity");
+            int productId = item.get("productId");
+
+
+            // 해당 상품의 재고 확인
+            int stockQuantity = productsMapper.getProductQuantity(productId);
+
+            // 재고가 부족한 경우
+            if (cartQuantity > stockQuantity) {
+                // 재고가 부족한 상품의 아이디 저장
+                outOfStockProductIds.add(productId);
+            }
+        }
+
+        return outOfStockProductIds;
+    }
+
+
 }

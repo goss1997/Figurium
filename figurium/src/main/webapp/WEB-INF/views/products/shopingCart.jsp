@@ -208,6 +208,7 @@ pageEncoding="UTF-8" %>
 										<th style="padding: 0px; margin: 0px; width: 1%;">
 											<input id="selectAll" type="checkbox" style="margin-left: 20px;">
 										</th>
+										<th class="column-0">번호</th>
 										<th class="column-1">상품</th>
 										<th class="column-2" style="width: 35%;">이름</th>
 										<th class="column-3">가격</th>
@@ -224,7 +225,8 @@ pageEncoding="UTF-8" %>
 												<td style="padding: 0px; margin: 0px; width: 1%;">
 													<input class="itemCheckbox" type="checkbox" style="margin-left: 20px;">
 												</td>
-												<td class="column-1"  style="padding-bottom: 0px";>
+												<td class="column-0"  style="padding-bottom: 0px;">${cart.productId}</td>
+												<td class="column-1"  style="padding-bottom: 0px;">
 													<div class="how-itemcart1" onclick="itemCartDelete(this)">
 														<img src="${ cart.imageUrl }" alt="${ cart.productId }">
 													</div>
@@ -378,54 +380,91 @@ pageEncoding="UTF-8" %>
 <script>
 	// 장바구니에 담긴 상품을 선택해 결제 폼으로 넘김
 
-		function checkProductOrder(f) {
+	function checkProductOrder(f) {
+		// 선택된 체크박스 요소가 무엇이 있는지 확인한다.
+		let checkedItems = Array.from(f.querySelectorAll('input.itemCheckbox:checked'));
 
-			// 선택된 체크박스 요소가 무엇이 있는지 확인한다.
-			let checkedItems = Array.from(f.querySelectorAll('input.itemCheckbox:checked'));
+		// 리스트를 넘겨줄 input name 태그들의 값을 배열로 받아준다.
+		let productId = Array.from(f.querySelectorAll('input[name="productId[]"]')).map(input => input.value);
+		let cartQuantities = Array.from(f.querySelectorAll('input[name="quantity[]"]')).map(input => input.value);
 
-			// 리스트를 넘겨줄 input name 태그들의 값을 배열로 받아준다.
-			let productId = Array.from(f.querySelectorAll('input[name="productId[]"]')).map(input => input.value);
-			let cartQuantities = Array.from(f.querySelectorAll('input[name="quantity[]"]')).map(input => input.value);
-
-
-			// 체크된 항목이 없으면 경고 메시지
-			if (checkedItems.length === 0) {
-				alert("선택된 상품이 없습니다.");
-				return;
-			}
-
-			// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
-			f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
-
-			// 체크된 요소들을 반복해서 돌림
-			checkedItems.forEach(item => {
-			// 체크박스 요소의 인덱스를 찾기 위해 전체 체크박스 요소들을 배열로 변환하며 체크된 항목의 배열 인덱스를 찾는다
-				let index = Array.from(f.querySelectorAll('input.itemCheckbox')).indexOf(item);
-
-				// 다시 체크된 요소들을 ID에 추가하고 input 태그를 생성
-				let inputProductId = document.createElement('input');
-				inputProductId.type = 'hidden';
-				inputProductId.name = 'productId';
-				inputProductId.value = productId[index];
-				f.appendChild(inputProductId);
-
-				let inputQuantity = document.createElement('input');
-				inputQuantity.type = 'hidden';
-				inputQuantity.name = 'cartQuantities';
-				inputQuantity.value = cartQuantities[index];
-				f.appendChild(inputQuantity);
-			});
-
-
-			if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
-
-			// 기존의 quantity[] input 필드 제거
-			f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
-
-			f.method = "get";
-			f.action = "order/orderForm.do";
-			f.submit();
+		// 체크된 항목이 없으면 경고 메시지
+		if (checkedItems.length === 0) {
+			alert("선택된 상품이 없습니다.");
+			return;
 		}
+
+		// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
+		/*f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());*/
+
+		// 동시성 검사를 위한 데이터 준비
+		let itemsToCheck = checkedItems.map(item => {
+			let index = Array.from(f.querySelectorAll('input.itemCheckbox')).indexOf(item);
+			return {
+				productId: productId[index],
+				quantity: cartQuantities[index]
+			};
+		});
+
+
+		// Ajax로 동시성 검사 요청
+		$.ajax({
+			type: "POST",
+			url: "/checkProductStock", // 서버의 동시성 검사 엔드포인트
+			data: JSON.stringify(itemsToCheck),
+			contentType: "application/json",
+			success: function(response) {
+				console.log("응답:", response.status); // 응답을 확인
+
+				// 응답에서 재고 부족 상품 확인
+				if (response.status === "error") {
+					let outOfStockMsg = '[ ';
+					let outOfStockProductIds = response.outOfStockProductIds;
+					for (const outOfStockProductId of outOfStockProductIds) {
+						outOfStockMsg += outOfStockProductId+'번 ';
+
+					}
+					outOfStockMsg += ']';
+					alert(outOfStockMsg+' 상품의 재고가 부족합니다.');
+					return; // 결제 페이지로 이동하지 않음
+				}
+
+				// 재고가 충분한 경우에만 결제 페이지로 이동
+				if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
+
+				// 체크된 요소들을 반복해서 돌림
+				checkedItems.forEach(item => {
+					// 체크박스 요소의 인덱스를 찾기 위해 전체 체크박스 요소들을 배열로 변환하며 체크된 항목의 배열 인덱스를 찾는다
+					let index = Array.from(f.querySelectorAll('input.itemCheckbox')).indexOf(item);
+
+					// 다시 체크된 요소들을 ID에 추가하고 input 태그를 생성
+					let inputProductId = document.createElement('input');
+					inputProductId.type = 'hidden';
+					inputProductId.name = 'productId';
+					inputProductId.value = productId[index];
+					f.appendChild(inputProductId);
+
+					let inputQuantity = document.createElement('input');
+					inputQuantity.type = 'hidden';
+					inputQuantity.name = 'cartQuantities';
+					inputQuantity.value = cartQuantities[index];
+					f.appendChild(inputQuantity);
+				});
+
+				// 기존의 quantity[] input 필드 제거
+				f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
+
+				f.method = "get";
+				f.action = "order/orderForm.do";
+				f.submit();
+			},
+
+			error: function() {
+				alert("동시성 검사 중 오류가 발생했습니다.");
+			}
+		});
+	}
+
 </script>
 
 <script>

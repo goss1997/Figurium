@@ -43,12 +43,25 @@ public class OrderController {
      *   바로구매창
      */
     @RequestMapping("orderFormRight.do")
-    public String orderFormRight(@RequestParam(required = false) int quantity,
-                            @RequestParam(required = false) int productId,
+    public String orderFormRight(@RequestParam(required = false) Integer quantity,
+                            @RequestParam(required = false) Integer productId,
                             HttpSession session,
                             Model model) {
 
         User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+
+        // 모바일 결제에서 session을 받아서 다시 값을 redirect 시켜주는 경우
+        if (productId == null) {
+
+            // 처음에 결제/주문 페이지로 넘어갈때 저장한 session 값 가져오기
+            List<CartsVo> cartsList = (List<CartsVo>) session.getAttribute("sessionCartsList");
+            int totalPrice = (int) session.getAttribute("sessionTotalPrice");
+
+            model.addAttribute("cartsList", cartsList);
+            model.addAttribute("totalPrice", totalPrice);
+            session.setAttribute("sessionTotalPrice", totalPrice);
+            return "order/orderForm";
+        }
 
         // 해당 상품이 추가되어있으면 더이상 insert 하지 않기
         CartsVo checkCart = cartsMapper.selectCartsById(productId,user.getId());
@@ -73,6 +86,7 @@ public class OrderController {
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionCartsList", cartsList);
         session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
@@ -90,6 +104,20 @@ public class OrderController {
 
         User user = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         int loginUserId = user.getId();
+
+
+        // 모바일 결제에서 session을 받아서 다시 값을 redirect 시켜주는 경우
+        if (productId == null || productId.isEmpty()) {
+
+            // 처음에 결제/주문 페이지로 넘어갈때 저장한 session 값 가져오기
+            List<CartsVo> cartsList = (List<CartsVo>) session.getAttribute("sessionCartsList");
+            int totalPrice = (int) session.getAttribute("sessionTotalPrice");
+
+            model.addAttribute("cartsList", cartsList);
+            model.addAttribute("totalPrice", totalPrice);
+            session.setAttribute("sessionTotalPrice", totalPrice);
+            return "order/orderForm";
+        }
 
         List<CartsVo> cartsList = cartsMapper.checksCartItemList(user.getId(),productId);
 
@@ -130,6 +158,7 @@ public class OrderController {
 
         model.addAttribute("cartsList", cartsList);
         model.addAttribute("totalPrice", totalPrice);
+        session.setAttribute("sessionCartsList", cartsList);
         session.setAttribute("sessionTotalPrice", totalPrice);
         return "order/orderForm";
     }
@@ -203,8 +232,6 @@ public class OrderController {
     public String inicisPay(int price, String paymentType, Integer userId, String merchantUid) {
 
         orderService.insertOrder(price, paymentType, userId, merchantUid);
-
-        System.out.println("결제성공");
 
         return "map";
     }

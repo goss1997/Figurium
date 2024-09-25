@@ -5,7 +5,6 @@ import com.githrd.figurium.order.service.PaymentService;
 import com.githrd.figurium.order.service.RefundService;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.dao.ProductsMapper;
-import com.siot.IamportRestClient.IamportClient;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +35,6 @@ public class PaymentController {
     private String secretKey;
 
     private final RefundService refundService;
-
-    private final IamportClient api;
 
     // application.properties에 암호를 저장하여 Controller에 기록이 안되게 암호화 시킴
     private final PaymentService paymentService;

@@ -270,10 +270,6 @@
     window.onload = function() {
 
       // 현재 URL 가져오기
-      let currentUrl = window.location.href;
-      document.cookie = "lastVisitedUrl=" + encodeURIComponent(currentUrl) + "; path=/; max-age=86400"; // 24시간 동안 유효
-      console.log("URL이 쿠키에 저장됨:", currentUrl);
-
       if (params.get('paymentSuccess') === 'true') {
 
         const params = new URLSearchParams(window.location.search);
@@ -596,7 +592,7 @@
             buyer_tel: $("#order_phone").val(),
             buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
             buyer_postcode: '123-456',
-            m_redirect_url: 'http://localhost:8080/order/orderForm.do?productId=3644&cartQuantities=2&productId=3349&cartQuantities=1'
+            m_redirect_url: window.location.origin + window.location.pathname + '?paymentSuccess=true'
           }, function (rsp) { // callback
             console.log(rsp);
 
@@ -955,14 +951,14 @@
 
     <%-- 만약에 장바구니에 담겼던 item 값이 넘어왔다면 list에 호출 : 0828 --%>
     <%-- itemNames라는 배열을 생성해서 for문안에 넣어 이름을 추가 --%>
-    <c:if test="${ requestScope.cartsList != null }">
+    <c:if test="${ cartsList != null }">
       <script type="text/javascript">
 
         let productIds = [];
         let itemPrices = [];
         let itemQuantities = [];
 
-        <c:forEach var="item" items="${ requestScope.cartsList }">
+        <c:forEach var="item" items="${ cartsList }">
         productIds.push("${ item.productId }");
         itemPrices.push("${ item.price }");
         itemQuantities.push("${ item.quantity }");
@@ -983,7 +979,7 @@
           </thead>
 
         <tbody>
-        <c:forEach var="item" items="${ requestScope.cartsList }">
+        <c:forEach var="item" items="${ cartsList }">
           <tr class="table_content">
             <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>

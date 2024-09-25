@@ -474,11 +474,6 @@
 
       var paymentType = $("input[name='payment']:checked").val();
 
-      var lastVisitedUrl = getCookie("lastVisitedUrl");
-
-      var m_redirect_url = lastVisitedUrl + '&paymentSuccess=true' +
-              '&payment_type=' + paymentType
-
       // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
       let order_name = $("#order_name").val();
       let order_phone = $("#order_phone").val();
@@ -488,7 +483,7 @@
         Swal.fire({
           icon: 'error',
           title: '알림',
-          text: '주문자 정보는 필수적으로 기입해야 합니다.',
+          text: '주문자 정보에서 입력하지 않았거나, 입력값이 올바르지 않습니다.',
           confirmButtonText: '확인'
         }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
@@ -504,7 +499,7 @@
         Swal.fire({
           icon: 'error',
           title: '알림',
-          text: '배송지 정보는 필수적으로 기입해야 합니다.',
+          text: '배송지 정보를 입력하지 않았거나, 입력값이 올바르지 않습니다.',
           confirmButtonText: '확인'
         }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;

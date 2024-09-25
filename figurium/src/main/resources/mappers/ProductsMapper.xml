@@ -55,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
                 p.category_name = #{categoryName}
             </if>
@@ -101,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
                 p.category_name = #{categoryName}
             </if>
@@ -117,6 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                       FROM product_likes
                      GROUP BY product_id ) pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <if test="categoryName != '전체'">
                 AND category_name = #{categoryName}
             </if>
@@ -176,6 +179,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM products p
         LEFT JOIN product_likes pl ON p.id = pl.product_id
         <where>
+            p.is_deleted = 0
             <!-- 검색어 필터링 -->
             <if test="search != null and search != ''">
                 p.name LIKE CONCAT('%', #{search}, '%')
@@ -211,6 +215,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT COUNT(*)
         FROM products
         WHERE products.name LIKE CONCAT('%', #{search}, '%')
+        and products.is_deleted = 0
     </select>
 
 

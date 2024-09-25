@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
-                p.category_name = #{categoryName}
+                AND p.category_name = #{categoryName}
             </if>
         </where>
         <!-- 상품 정보를 기준으로 그룹화하여 좋아요 수 집계 -->
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             p.is_deleted = 0
             <if test="categoryName != '전체 상품' and categoryName != ''">
-                p.category_name = #{categoryName}
+                AND p.category_name = #{categoryName}
             </if>
         </where>
         GROUP BY p.id
@@ -178,7 +178,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             p.is_deleted = 0
             <!-- 검색어 필터링 -->
             <if test="search != null and search != ''">
-                p.name LIKE CONCAT('%', #{search}, '%')
+                AND p.name LIKE CONCAT('%', #{search}, '%')
             </if>
         </where>
         GROUP BY p.id, p.name, p.price, p.created_at

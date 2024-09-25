@@ -129,5 +129,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE user_id = #{userId}
     </select>
 
+    <delete id="deleteCartProductAll" parameterType="int">
+        delete from carts where product_id = #{ productId }
+    </delete>
+
 
 </mapper>

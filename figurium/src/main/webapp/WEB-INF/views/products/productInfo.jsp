@@ -62,17 +62,7 @@
                 상품상세
             </span>
             <br>
-            <c:if test="${loginUser.role == '1'}">
-                <div style="margin-left : 60%">
-                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                        <input type="button" value="상품수정"
-                               onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do?id=${product.id}'">
-                    </div>
-                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert">
-                        <button class="product-delete-button" data-product-id="${product.id}">상품삭제</button>
-                    </div>
-                </div>
-            </c:if>
+
         </div>
     </div>
 
@@ -110,6 +100,20 @@
                     </div>
                 </div>
                 <h5>${product.price}￦</h5>
+                <c:if test="${loginUser.role == '1'}">
+            &nbsp;&nbsp;
+                <div style="display: inline-block;">
+                    <div class="flex-c-m  cl6  bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert btn btn-info"
+                    style="display: inline-block; font-size: 12px; line-height: 1.833333;">
+                        <input type="button" value="상품수정"
+                               onclick="if(confirm('정말 수정하시겠습니까?')) location.href='productModifyForm.do?id=${product.id}'">
+                    </div>
+                    <div class="flex-c-m  cl6  bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 product_insert btn btn-danger "
+                    style="display: inline-block; font-size: 12px; line-height: 1.833333;">
+                        <button type="button" class="product-delete-button" data-product-id="${product.id}">상품삭제</button>
+                    </div>
+                </div>
+            </c:if>
 
                 <hr>
                 <table class="info_table">
@@ -148,6 +152,7 @@
                     <div class="total_price_right">
                         <p id="total_price">${product.price}</p>
                         <span class="won">원</span>
+
                     </div>
                 </div>
 
@@ -706,28 +711,26 @@
 
 <script>
 
-    $(document).ready(function () {
-        $('.product-delete-button').on('click', function () {
-            var productId = $(this).data('product-id');
+    $('.product-delete-button').on('click', function () {
 
-            if (confirm('정말 삭제하시겠습니까?')) {
-                $.ajax({
-                    url: "/product/" + productId,
-                    type: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    success: function (response) {
-                        // 삭제 성공 후 페이지 새로 고침
-                        window.location.href = "/";
-                    },
-                    error: function (error) {
-                        alert('상품 삭제에 실패했습니다.');
-                        console.error('Error:', error);
-                    }
-                });
-            }
-        });
+        if (confirm('정말 삭제하시겠습니까?')) {
+            $.ajax({
+                url: "/product/" + ${product.id},
+                type: 'delete',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                success: function (response) {
+                    console.log(response);
+                    // 삭제 성공 후 홈으로 이동
+                    location.href = "/";
+                },
+                error: function (error) {
+                    alert('상품 삭제에 실패했습니다.');
+                    console.error('Error:', error);
+                }
+            });
+        }
     });
 
 

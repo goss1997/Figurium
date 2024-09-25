@@ -1,5 +1,6 @@
 package com.githrd.figurium.product.service;
 
+import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.ProductRepository;
@@ -21,14 +22,16 @@ public class ProductsService {
     private final ProductRepository productRepository;
     private final S3ImageService s3ImageService;
     private final ProductsMapper productsMapper;
+    private final CartsMapper cartsMapper;
 
 
 
     @Autowired
-    ProductsService(ProductRepository productRepository, S3ImageService s3ImageService, ProductsMapper productsMapper) {
+    ProductsService(ProductRepository productRepository, S3ImageService s3ImageService, ProductsMapper productsMapper, CartsMapper cartsMapper) {
         this.productRepository = productRepository;
         this.s3ImageService = s3ImageService;
         this.productsMapper = productsMapper;
+        this.cartsMapper = cartsMapper;
     }
 
 
@@ -61,9 +64,14 @@ public class ProductsService {
         return 0;
     }
 
+    @Transactional
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {
+
+            cartsMapper.deleteCartProductAll(id);
+
             productRepository.deleteById(id);
+
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found");
         }

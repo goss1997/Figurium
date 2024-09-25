@@ -4,6 +4,7 @@ import com.githrd.figurium.common.page.CommonPage;
 import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.s3.S3ImageService;
 import com.githrd.figurium.common.session.SessionConstants;
+import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
@@ -287,9 +288,11 @@ public class ProductsController {
 
         if (save == 0) {
             System.out.println("저장실패");
+            session.setAttribute(SessionConstants.ALERT_MSG, "상품 수정이 실패하였습니다.");
             return "redirect:/"; // 저장 실패 시 리다이렉션
         } else {
             System.out.println("등록성공");
+            session.setAttribute(SessionConstants.ALERT_MSG, "상품 수정이 성공하였습니다.");
             return "redirect:/productInfo.do?id=" + products.getId(); // 저장 성공 시 리다이렉션
         }
 
@@ -310,8 +313,9 @@ public class ProductsController {
         Products selectOne = productsService.getProductById(id);
         String imageUrl = selectOne.getImageUrl();
 
-        s3ImageService.deleteImageFromS3(imageUrl);
 
+
+        s3ImageService.deleteImageFromS3(imageUrl);
 
         productsService.deleteById(id);
 

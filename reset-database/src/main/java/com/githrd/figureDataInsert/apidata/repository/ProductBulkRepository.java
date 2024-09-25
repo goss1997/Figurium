@@ -19,7 +19,8 @@ public class ProductBulkRepository {
     public void bulkInsertProducts(List<Product> products) {
         String sql = "INSERT INTO products (category_name, name, price, quantity, image_url, created_at, updated_at)" +
                 " VALUES (?, ?, ?, ?, ?," +
-                " @random_date := DATE_ADD('2024-08-01 00:00:00', INTERVAL FLOOR(RAND() * 31) DAY)," + // create_at
+                " @random_date := DATE_ADD(CONCAT('2024-', IF(FLOOR(RAND() * 2) = 0, '07', '08'), '-01 00:00:00')," +
+                " INTERVAL FLOOR(RAND() * 31) DAY)," + // create_at( 7~8월 1~31일 랜덤 날짜 )
                 " @random_date)" ;  // update_at
 
         jdbcTemplate.batchUpdate(sql,

@@ -198,7 +198,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <hr>
+        
         <%--POST 로 보내기위한 더미 input 생성 후 진행--%>
         <form>
             <input type="hidden" name="dummy" value="dummy">

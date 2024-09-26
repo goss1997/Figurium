@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.RedirectException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -21,6 +22,27 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+
+        // 핸들러가 내 패키지에 속하는지 확인
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+
+            if (!handlerMethod.getBeanType().getPackage().getName().startsWith("com.githrd.figurium")) {
+                // 핸들러가 내 패키지가 아니면 null 반환 (다른 리졸버에 처리 맡김)
+                return null;
+            }
+        }
+
+        // .php 요청 무시
+        if(request.getRequestURI().endsWith(".php")){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404 응답
+            return new ModelAndView();
+        }
+        // /vendor 요청 무시
+        if(request.getRequestURI().startsWith("/vendor/")){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new ModelAndView();
+        }
 
         // 예외에 대한 로그 기록
         ErrorType errorType = determineErrorType(ex);

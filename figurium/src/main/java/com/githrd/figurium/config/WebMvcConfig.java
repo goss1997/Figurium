@@ -5,6 +5,7 @@ import com.githrd.figurium.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -21,21 +22,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolvers.add(new MyCustomExceptionResolver());
     }
 
+    /**
+     * 정적 리소스 Handler 추가
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 정적 리소스에 대한 핸들러 설정 (필요 시 추가)
+        registry.addResourceHandler(
+            "/resources/**",
+                        "/static/**"
+                )
+                .addResourceLocations("/");
 
+    }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        // 정적 리소스에 대한 핸들러 설정 (필요 시 추가)
-//    }
-//
-//    @Bean
-//    public InternalResourceViewResolver viewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/views/");
-//        resolver.setSuffix(".jsp");
-//        return resolver;
-//    }
-//
     /**
      * 사용자의 로그인 검증을 위한 Interceptor 추가.
      */

@@ -1,5 +1,7 @@
 package com.githrd.figurium.product.service;
 
+import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
@@ -18,11 +20,13 @@ public class CartServiceImpl implements CartService {
 
     private final CartsMapper cartsMapper;
     private final ProductsMapper productsMapper;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CartServiceImpl(CartsMapper cartsMapper,ProductsMapper productsMapper) {
+    public CartServiceImpl(CartsMapper cartsMapper, ProductsMapper productsMapper, NotificationService notificationService) {
         this.cartsMapper = cartsMapper;
         this.productsMapper = productsMapper;
+        this.notificationService = notificationService;
     }
 
 
@@ -105,5 +109,21 @@ public class CartServiceImpl implements CartService {
         return outOfStockProducts;
     }
 
+    @Override
+    public void productDeleteAlram(int productId) {
+
+        List<CartsVo> cartsList = cartsMapper.selectCartsByProductId(productId);
+
+        for (CartsVo cartsVo : cartsList) {
+
+        Notification notification = Notification.builder()
+                .userId(cartsVo.getUserId())
+                .message("장바구니에있는 상품이 판매종료되어 삭제되었습니다.")
+                .url("/CartList.do")
+                .build();
+
+        notificationService.sendNotification(notification);
+        }
+    }
 
 }

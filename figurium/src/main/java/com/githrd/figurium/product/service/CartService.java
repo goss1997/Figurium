@@ -22,4 +22,6 @@ public interface CartService {
 
     Map<Integer,Integer> checkProductStock(List<Map<String, Integer>> items);
 
+    void productDeleteAlram(int productId);
+
 }

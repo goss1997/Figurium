@@ -9,6 +9,8 @@ import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
+import com.githrd.figurium.product.service.CartService;
+import com.githrd.figurium.product.service.CartServiceImpl;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.productLike.service.ProductLikeService;
@@ -45,6 +47,7 @@ public class ProductsController {
     private final QaMapper qaMapper;
     private final CartsMapper cartsMapper;
     private final ProductsMapper productsMapper;
+    private final CartService cartService;
 
     // 해당 카테고리의 필터 처리와 페이징 처리
     @GetMapping("/productList.do")
@@ -327,10 +330,6 @@ public class ProductsController {
             save = productsService.updateProductsImage(products, productImage);
         }
 
-
-
-
-
         if (save == 0) {
             System.out.println("저장실패");
             session.setAttribute(SessionConstants.ALERT_MSG, "상품 수정이 실패하였습니다.");
@@ -346,7 +345,7 @@ public class ProductsController {
 
 
     @PostMapping("/productDelete.do")
-    public Object productDeleteById(@RequestParam int id) {
+    public String productDeleteById(@RequestParam int id) {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
@@ -358,9 +357,16 @@ public class ProductsController {
         Products selectOne = productsService.getProductById(id);
 
         productsService.productDeleteUpdate(selectOne);
+
+        // 장바구니 담았던 유저에게 삭제 알람 발송
+        cartService.productDeleteAlram(id);
+
+        // 장바구니에 있는 삭제된 상품 모두 삭제
         cartsMapper.deleteCartProductAll(id);
 
-        return ResponseEntity.noContent().build();
+
+
+        return "redirect:/";
 
     }
 

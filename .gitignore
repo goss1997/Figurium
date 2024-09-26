@@ -369,6 +369,8 @@ gradle-app.setting
 /reset-database/**
 reset-database/**
 figurium/src/main/resources/application.properties
+figurium/src/main/resources/application.yml
+figurium/src/main/resources/logback.xml
 
 
 

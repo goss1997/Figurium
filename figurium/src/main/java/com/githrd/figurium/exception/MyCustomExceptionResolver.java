@@ -21,9 +21,10 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+
         // 예외에 대한 로그 기록
         ErrorType errorType = determineErrorType(ex);
-        log.error("오류 발생: {} - 요청 URL: {}", errorType.getMessage(), request.getRequestURI(), ex);
+        log.error("오류 발생: {} \n - 요청 URL: {}", errorType.getMessage(), request.getRequestURI(), ex);
 
         // 상태 코드 가져오기 (기본값으로 500 설정)
         int statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -35,7 +36,6 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED; // 405 Method Not Allowed
         }
 
-        System.out.println("statusCode = " + statusCode);
         // 예외에 따라 적절한 상태 코드와 에러 페이지 설정
         // 비동기 요청인지 동기 요청인지 판별
         boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
@@ -90,52 +90,6 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
         mv.setViewName("errorPage/error");
         return mv;
     }
-
-//    @Override
-//    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-//        // 예외에 대한 로그 기록
-//        ErrorType errorType = determineErrorType(ex);
-//        log.error("오류 발생: {} - 요청 URL: {}", errorType.getMessage(), request.getRequestURI(), ex);
-//
-//        // 상태 코드 가져오기 (기본값으로 500 설정)
-//        int statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-//
-//        // 예외에 따라 상태 코드 설정
-//        if (ex instanceof NoHandlerFoundException || ex instanceof NoResourceFoundException) {
-//            statusCode = HttpServletResponse.SC_NOT_FOUND; // 404 Not Found
-//        } else if (ex instanceof HttpRequestMethodNotSupportedException) {
-//            statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED; // 405 Method Not Allowed
-//        }
-//
-//        System.out.println("statusCode = " + statusCode);
-//        // 예외에 따라 적절한 상태 코드와 에러 페이지 설정
-//        // 비동기 요청인지 동기 요청인지 판별
-//        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-//
-//        // 예외에 따라 적절한 상태 코드와 에러 페이지 설정
-//        if (isAjax) {
-//            response.setStatus(statusCode);
-//            response.setContentType("application/json; charset=UTF-8");
-//
-//            try {
-//                System.out.println("@@@@ 에러메세지 = " + errorType.getMessage());
-//                String jsonResponse = String.format("{\"message\": \"%s\"}", errorType.getMessage());
-//                response.getWriter().write(jsonResponse);
-//                response.getWriter().flush();
-//            } catch (IOException e) {
-//                log.error("JSON 응답 작성 중 오류 발생", e);
-//            }
-//            return new ModelAndView(); // 비동기 요청은 ModelAndView를 사용하지 않음
-//        } else {
-//            // 동기 요청인 경우 에러 페이지로 이동
-//            ModelAndView mv = new ModelAndView();
-//            mv.addObject("errorMessage", errorType.getMessage());
-//            mv.addObject("statusCode", statusCode);
-//            mv.setViewName("errorPage/error");
-//            return mv;
-//        }
-//    }
-
 
 
 

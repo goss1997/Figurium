@@ -247,7 +247,7 @@ public class ProductsController {
 
         }
 
-        save = productsService.ImageSave(products, productImage);
+        save = productsService.imageSave(products, productImage);
 
 
         if (save == null) {
@@ -287,24 +287,49 @@ public class ProductsController {
         Products productById = productsService.getProductById(products.getId());
         String oldImageUrl = productById.getImageUrl();
         int save = 0;
-        String newImageName = productImage.getOriginalFilename();
+
 
         System.out.println("기존 이미지 : " + oldImageUrl);
-        System.out.println("새로운 이미지 : " + newImageName);
+        System.out.println("새로운 이미지 : " + productImage);
 
-        if (!oldImageUrl.equals("/images/noImage1.png")){
-            System.out.println("노이미지가 아님");
-            save = productsService.updateProductsImage(products, productImage);
-        }else {
-            if (productImage == null){
-                System.out.println("이미지가 null 이다");
-                products.setImageUrl("/images/noImage1.png");
-            }else if (productImage != null){
-                System.out.println("이미지가 null 이 아니다");
-            products.setImageUrl(oldImageUrl);
-            }
-        save = productsMapper.productUpdate(products);
+
+
+        boolean isNewImageEmpty = (productImage == null || productImage.isEmpty());
+        boolean isOldImageNoImage = oldImageUrl.equals("/images/noImage1.png");
+        System.out.println(isNewImageEmpty);
+        System.out.println(isOldImageNoImage);
+
+        if (oldImageUrl.equals("null") || oldImageUrl.isEmpty()){
+            products.setImageUrl("/images/noImage1.png");
         }
+        // 1. 새로운이미지 X / 기존이미지 X   == 추가 작업 x
+        if (isNewImageEmpty && isOldImageNoImage) {
+            System.out.println("1. 새로운이미지 X / 기존이미지 X   == 추가 작업 x");
+            products.setImageUrl("/images/noImage1.png");
+            save = productsMapper.productUpdate(products);
+
+        // 2. 새로운이미지 X / 기존이미지 O   == 추가 작업 x
+        } else if (isNewImageEmpty) {
+            System.out.println("2. 새로운이미지 X / 기존이미지 O   == 추가 작업 x");
+            products.setImageUrl(oldImageUrl);
+            save = productsMapper.productUpdate(products);
+
+        // 3. 새로운이미지 O / 기존이미지 X
+        } else if (!isNewImageEmpty && isOldImageNoImage) {
+            System.out.println("3. 새로운이미지 O / 기존이미지 X   == 기존이미지 db에서만 교체 + 새로운이미지 s3넣고 db교체");
+            products.setImageUrl(s3ImageService.upload(productImage));
+            save = productsMapper.productUpdate(products);
+
+        // 4. 새로운이미지 O / 기존이미지 O
+        } else if (!isNewImageEmpty && !isOldImageNoImage) {
+            System.out.println("4. 새로운이미지 O / 기존이미지 O   == 기존 이미지 s3 삭제 + 새로운이미지 s3넣고 db교체");
+            products.setImageUrl(oldImageUrl);
+            save = productsService.updateProductsImage(products, productImage);
+        }
+
+
+
+
 
         if (save == 0) {
             System.out.println("저장실패");

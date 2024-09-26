@@ -42,24 +42,26 @@ public class ProductsService {
 
 
     @Transactional
-    public String ImageSave(ProductsVo products, MultipartFile productImage) {
+    public String imageSave(ProductsVo products, MultipartFile productImage) {
 
         // s3에 해당 이미지 업로드 후  set하고 db에 저장하기.
         if(!productImage.isEmpty()) {
             String profileImgUrl = s3ImageService.upload(productImage);
             products.setImageUrl(profileImgUrl);
+        }else{
+            products.setImageUrl("/images/noImage1.png");
+            }
             int result = productsMapper.productInsert(products);
-
-            if(result > 0){
+            if(result > 0) {
                 return "/";
             }
-        }
 
 
         return "";
     }
 
-    // 업로드된 프로필 이미지 수정
+    // 업로드된 상품 이미지 수정
+    @Transactional
     public int updateProductsImage(ProductsVo products, MultipartFile productImage) {
 
         // s3에서 상품의 이미지 제거.
@@ -69,22 +71,6 @@ public class ProductsService {
 
         return productsMapper.productUpdate(products);
     }
-
-
-/*
-    @Transactional
-    public void deleteById(int id) {
-        if (productRepository.existsById(id)) {
-
-            cartsMapper.deleteCartProductAll(id);
-
-            productRepository.deleteById(id);
-
-        } else {
-            throw new EntityNotFoundException("Entity with id " + id + " not found");
-        }
-    }
-*/
 
 
     public int productSave(ProductsVo products) {

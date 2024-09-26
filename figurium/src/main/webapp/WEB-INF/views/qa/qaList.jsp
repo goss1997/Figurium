@@ -175,19 +175,19 @@
         <hr>
         <table class="responsive-table table table-hover">
             <thead class="thead-light">
-            <tr style="text-align: center">
-                <th>번호</th>
-                <th>제목</th>
-                <th>답변여부</th>
-                <th>작성자</th>
-                <th>작성일</th>
+            <tr style="text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <th style="width: 100px;">번호</th>
+                <th style="width: 400px; white-space: nowrap; text-align: left; overflow: hidden; text-overflow: ellipsis;">제목</th>
+                <th style="width: 150px;">답변여부</th>
+                <th style="width: 230px;">작성자</th>
+                <th style="width: 232px;">작성일</th>
             </tr>
             </thead>
             <tbody style="text-align: center;">
             <c:forEach var="qa" items="${qaList}" varStatus="status" >
                 <tr onclick="location.href='${pageContext.request.contextPath}/qa/qaSelect.do?id=${qa.id}'" style="cursor: pointer;">
                     <td>${status.index+1}</td>
-                    <td class="truncate-title" style="text-align: left; overflow: hidden; text-overflow: ellipsis;">
+                    <td class="truncate-title" style="text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                         <span style="font-size: 18px; vertical-align: -3px;" class="material-symbols-outlined">lock</span>
                         ${qa.title}
                     </td>
@@ -198,7 +198,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <hr>
+        
         <%--POST 로 보내기위한 더미 input 생성 후 진행--%>
         <form>
             <input type="hidden" name="dummy" value="dummy">

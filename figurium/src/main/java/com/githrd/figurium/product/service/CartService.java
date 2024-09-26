@@ -20,6 +20,8 @@ public interface CartService {
 
     int cartItemCount(int userId);
 
-    List<Integer> checkProductStock(List<Map<String, Integer>> items);
+    Map<Integer,Integer> checkProductStock(List<Map<String, Integer>> items);
+
+    void productDeleteAlram(int productId);
 
 }

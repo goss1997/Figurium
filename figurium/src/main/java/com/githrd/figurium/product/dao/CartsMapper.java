@@ -45,6 +45,8 @@ public interface CartsMapper {
     int cartItemCount(int userId);
 
     // 상품 삭제시 장바구니에 있는 모든 상품(id) 삭제
-    void deleteCartProductAll(int  productId );
+    void deleteCartProductAll(int productId );
+
+    List<CartsVo> selectCartsByProductId(int productId);
 
 }

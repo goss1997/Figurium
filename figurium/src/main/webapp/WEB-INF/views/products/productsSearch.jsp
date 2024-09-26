@@ -4,7 +4,20 @@
 <head>
     <title>상품 검색</title>
     <link rel="stylesheet" type="text/css" href="/css/searchAndCategoriesList.css">
+    <style>
+        @media (max-width: 576px) {
+            .product-category {
+                max-width: 30%;
+            }
+            .product-category img {
+                max-width: 100%;
+            }
+            .isotope-item{
+                max-width: 50%;
+            }
 
+        }
+    </style>
 
 
 </head>
@@ -26,7 +39,7 @@
                 <div class="error-container d-flex flex-column align-items-center">
                     <img src="/images/훈이.png" alt="훈이.png" class="img-fluid" style="max-width: 200px; margin-bottom: 20px;">
                     <h2>검색 결과가 없습니다.</h2>
-                    <p>죄송합니다. 현재 검색된 상품은 존재하지 않습니다.</p>
+                    <p>현재 검색된 상품은 존재하지 않습니다.</p>
                     <p>다른 상품 검색을 해 주시거나, 아래의 링크를 통해 다른 페이지로 이동해 주세요.</p>
                     <a href="<c:url value='/' />">홈으로 돌아가기</a>
                 </div>

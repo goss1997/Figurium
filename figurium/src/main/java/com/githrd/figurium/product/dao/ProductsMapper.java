@@ -15,6 +15,7 @@ public interface ProductsMapper {
     int updateProductQuantity(int productId, int itemQuantity);
     int productInsert(ProductsVo vo);
     int productDeleteUpdate(Products vo);
+    int productUpdate(ProductsVo vo);
 
     // 카테고리 리스트의 필터 처리
     List<ProductsVo> categoriesList(Map<String,Object> params);

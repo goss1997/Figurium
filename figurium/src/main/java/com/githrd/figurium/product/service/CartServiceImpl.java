@@ -1,5 +1,7 @@
 package com.githrd.figurium.product.service;
 
+import com.githrd.figurium.notification.sevice.NotificationService;
+import com.githrd.figurium.notification.vo.Notification;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.vo.CartsVo;
@@ -18,11 +20,13 @@ public class CartServiceImpl implements CartService {
 
     private final CartsMapper cartsMapper;
     private final ProductsMapper productsMapper;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CartServiceImpl(CartsMapper cartsMapper,ProductsMapper productsMapper) {
+    public CartServiceImpl(CartsMapper cartsMapper, ProductsMapper productsMapper, NotificationService notificationService) {
         this.cartsMapper = cartsMapper;
         this.productsMapper = productsMapper;
+        this.notificationService = notificationService;
     }
 
 
@@ -82,8 +86,8 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품의 결제폼 이동 전 동시성 검사
     @Override
     @Transactional
-    public synchronized List<Integer> checkProductStock(List<Map<String, Integer>> items) {
-        List<Integer> outOfStockProductIds = new ArrayList<>();
+    public synchronized Map<Integer,Integer> checkProductStock(List<Map<String, Integer>> items) {
+        Map<Integer,Integer> outOfStockProducts = new HashMap<>();
 
         for (Map<String, Integer> item : items) {
 
@@ -97,12 +101,29 @@ public class CartServiceImpl implements CartService {
             // 재고가 부족한 경우
             if (cartQuantity > stockQuantity) {
                 // 재고가 부족한 상품의 아이디 저장
-                outOfStockProductIds.add(productId);
+                outOfStockProducts.put(productId,stockQuantity);
+
             }
         }
 
-        return outOfStockProductIds;
+        return outOfStockProducts;
     }
 
+    @Override
+    public void productDeleteAlram(int productId) {
+
+        List<CartsVo> cartsList = cartsMapper.selectCartsByProductId(productId);
+
+        for (CartsVo cartsVo : cartsList) {
+
+        Notification notification = Notification.builder()
+                .userId(cartsVo.getUserId())
+                .message("장바구니에있는 상품이 판매종료되어 삭제되었습니다.")
+                .url("/CartList.do")
+                .build();
+
+        notificationService.sendNotification(notification);
+        }
+    }
 
 }

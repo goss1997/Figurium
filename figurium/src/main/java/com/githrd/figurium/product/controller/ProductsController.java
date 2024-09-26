@@ -5,9 +5,12 @@ import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.s3.S3ImageService;
 import com.githrd.figurium.common.session.SessionConstants;
 import com.githrd.figurium.product.dao.CartsMapper;
+import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
 import com.githrd.figurium.product.entity.Products;
 import com.githrd.figurium.product.repository.CategoriesRepository;
+import com.githrd.figurium.product.service.CartService;
+import com.githrd.figurium.product.service.CartServiceImpl;
 import com.githrd.figurium.product.service.ProductsService;
 import com.githrd.figurium.product.vo.ProductsVo;
 import com.githrd.figurium.productLike.service.ProductLikeService;
@@ -43,6 +46,8 @@ public class ProductsController {
     private final S3ImageService s3ImageService;
     private final QaMapper qaMapper;
     private final CartsMapper cartsMapper;
+    private final ProductsMapper productsMapper;
+    private final CartService cartService;
 
     // 해당 카테고리의 필터 처리와 페이징 처리
     @GetMapping("/productList.do")
@@ -245,7 +250,9 @@ public class ProductsController {
 
         }
 
-        save = productsService.ImageSave(products, productImage);
+        save = productsService.imageSave(products, productImage);
+
+
         if (save == null) {
             System.out.println("저장실패");
             return "redirect:/"; // 저장 실패 시 리다이렉션
@@ -282,10 +289,46 @@ public class ProductsController {
 
         Products productById = productsService.getProductById(products.getId());
         String oldImageUrl = productById.getImageUrl();
-        products.setImageUrl(oldImageUrl);
+        int save = 0;
 
 
-        int save = productsService.updateProductsImage(products, productImage);
+        System.out.println("기존 이미지 : " + oldImageUrl);
+        System.out.println("새로운 이미지 : " + productImage);
+
+
+
+        boolean isNewImageEmpty = (productImage == null || productImage.isEmpty());
+        boolean isOldImageNoImage = oldImageUrl.equals("/images/noImage1.png");
+        System.out.println(isNewImageEmpty);
+        System.out.println(isOldImageNoImage);
+
+        if (oldImageUrl.equals("null") || oldImageUrl.isEmpty()){
+            products.setImageUrl("/images/noImage1.png");
+        }
+        // 1. 새로운이미지 X / 기존이미지 X   == 추가 작업 x
+        if (isNewImageEmpty && isOldImageNoImage) {
+            System.out.println("1. 새로운이미지 X / 기존이미지 X   == 추가 작업 x");
+            products.setImageUrl("/images/noImage1.png");
+            save = productsMapper.productUpdate(products);
+
+        // 2. 새로운이미지 X / 기존이미지 O   == 추가 작업 x
+        } else if (isNewImageEmpty) {
+            System.out.println("2. 새로운이미지 X / 기존이미지 O   == 추가 작업 x");
+            products.setImageUrl(oldImageUrl);
+            save = productsMapper.productUpdate(products);
+
+        // 3. 새로운이미지 O / 기존이미지 X
+        } else if (!isNewImageEmpty && isOldImageNoImage) {
+            System.out.println("3. 새로운이미지 O / 기존이미지 X   == 기존이미지 db에서만 교체 + 새로운이미지 s3넣고 db교체");
+            products.setImageUrl(s3ImageService.upload(productImage));
+            save = productsMapper.productUpdate(products);
+
+        // 4. 새로운이미지 O / 기존이미지 O
+        } else if (!isNewImageEmpty && !isOldImageNoImage) {
+            System.out.println("4. 새로운이미지 O / 기존이미지 O   == 기존 이미지 s3 삭제 + 새로운이미지 s3넣고 db교체");
+            products.setImageUrl(oldImageUrl);
+            save = productsService.updateProductsImage(products, productImage);
+        }
 
         if (save == 0) {
             System.out.println("저장실패");
@@ -302,7 +345,7 @@ public class ProductsController {
 
 
     @PostMapping("/productDelete.do")
-    public Object productDeleteById(@RequestParam int id) {
+    public String productDeleteById(@RequestParam int id) {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
 
@@ -314,9 +357,16 @@ public class ProductsController {
         Products selectOne = productsService.getProductById(id);
 
         productsService.productDeleteUpdate(selectOne);
+
+        // 장바구니 담았던 유저에게 삭제 알람 발송
+        cartService.productDeleteAlram(id);
+
+        // 장바구니에 있는 삭제된 상품 모두 삭제
         cartsMapper.deleteCartProductAll(id);
 
-        return ResponseEntity.noContent().build();
+
+
+        return "redirect:/";
 
     }
 

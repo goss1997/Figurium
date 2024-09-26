@@ -133,4 +133,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from carts where product_id = #{ productId }
     </delete>
 
+
+    <select id="selectCartsByProductId" parameterType="int" resultType="carts">
+        SELECT *
+        FROM carts
+        WHERE product_id = #{productId}
+    </select>
+
 </mapper>

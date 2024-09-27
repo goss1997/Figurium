@@ -52,8 +52,13 @@ public class UserService {
     @Transactional
     public User updateProfileImage(User user, MultipartFile profileImage) {
 
-        // s3에서 사용자의 프로필 이미지 제거.
-        s3ImageService.deleteImageFromS3(user.getProfileImgUrl());
+        boolean isExistByS3 = s3ImageService.doesImageUrlExist(user.getProfileImgUrl());
+
+        // s3에 이미지가 있을 경우에만 이미지 제거.
+        if (isExistByS3) {
+            // s3에서 사용자의 프로필 이미지 제거.
+            s3ImageService.deleteImageFromS3(user.getProfileImgUrl());
+        }
 
         // s3에 수정할 이미지 업로드 후 유저에 set하기.
         user.setProfileImgUrl(s3ImageService.upload(profileImage));

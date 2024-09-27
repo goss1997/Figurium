@@ -1,5 +1,6 @@
 package com.githrd.figurium.product.service;
 
+import com.githrd.figurium.exception.customException.ProductNotFoundException;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Products;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 
@@ -37,7 +39,16 @@ public class ProductsService {
 
 
     public Products getProductById(int id) {
-        return productRepository.findById(id);
+
+        Optional<Products> productOptional = Optional.ofNullable(productRepository.findById(id));
+
+        if (productOptional.isPresent()) {
+            return productOptional.get();
+        } else {
+            throw new ProductNotFoundException("해당 상품이 없거나 삭제 되었습니다.");
+        }
+
+        //return productRepository.findById(id);
     }
 
 

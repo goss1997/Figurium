@@ -29,6 +29,7 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
             if (!handlerMethod.getBeanType().getPackage().getName().startsWith("com.githrd.figurium")) {
                 // 핸들러가 내 패키지가 아니면 null 반환 (다른 리졸버에 처리 맡김)
+                log.warn("not my pakage handler");
                 return null;
             }
         }
@@ -49,6 +50,27 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             return new ModelAndView();
         }
 
+        // 요청 URL에 대해 핸들러가 존재하지 않는 경우
+        if (ex instanceof NoHandlerFoundException) {
+            // exception 처리하지 않기
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("message", ex.getMessage());
+            mv.addObject("statusCode", HttpServletResponse.SC_NOT_FOUND);
+            return mv;
+        }
+        // 요청한 resource가 존재하지 않는 경우
+        if (ex instanceof NoResourceFoundException) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("message", ex.getMessage());
+            mv.addObject("statusCode", HttpServletResponse.SC_NOT_FOUND);
+            return mv;
+        }
+
+
+
         // 예외에 대한 로그 기록
         ErrorType errorType = determineErrorType(ex);
         log.error("오류 발생: {} \n - 요청 URL: {}", errorType.getMessage(), request.getRequestURI(), ex);
@@ -56,13 +78,7 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
         // 상태 코드 가져오기 (기본값으로 500 설정)
         int statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-        // 예외에 따라 상태 코드 설정
-        if (ex instanceof NoHandlerFoundException || ex instanceof NoResourceFoundException) {
-            // 요청 URL에 대해 핸들러가 존재하지 않는 경우
-            // 요청한 resource가 존재하지 않는 경우
-            // exception 처리하지 않고 null 반환.
-            return null;
-        } else if (ex instanceof HttpRequestMethodNotSupportedException) {
+        if (ex instanceof HttpRequestMethodNotSupportedException) {
             statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED; // 405 Method Not Allowed
         }
 

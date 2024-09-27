@@ -44,6 +44,11 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
             return new ModelAndView();
         }
 
+        // 구독 관련 Exception 무시
+        if(request.getRequestURI().startsWith("/api/notifications")){
+            return new ModelAndView();
+        }
+
         // 예외에 대한 로그 기록
         ErrorType errorType = determineErrorType(ex);
         log.error("오류 발생: {} \n - 요청 URL: {}", errorType.getMessage(), request.getRequestURI(), ex);

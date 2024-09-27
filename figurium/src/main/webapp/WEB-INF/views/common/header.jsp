@@ -943,7 +943,7 @@
         /**
          * 로그인한 사용자면 SSE 연결
          */
-            // EventSource 생성 후 SSE 연결하는 함수.
+        // EventSource 생성 후 SSE 연결하는 함수.
         const eventSource = new EventSource('/api/notifications/subscribe');
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);

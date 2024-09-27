@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,9 @@ public class NotificationService {
     private final Map<Integer, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     private final NotificationMapper notificationMapper;
+
+    // 스케줄링을 위한 ScheduledExecutorService 설정 (주기적인 이벤트 전송)
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
     /**
@@ -56,6 +62,18 @@ public class NotificationService {
             // 전송 실패 시 해당 사용자의 구독 해제
             emitters.remove(userId);
         }
+
+        // 주기적으로 더미 이벤트 전송 (예: 20분마다 "ping" 이벤트 전송)
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("ping")
+                        .data("keep-alive")); // 더미 이벤트 (클라이언트에서 따로 처리 필요 없음)
+            } catch (IOException e) {
+                log.error("Error sending keep-alive event to user: " + userId, e);
+                emitter.completeWithError(e); // 오류 발생 시 emitter를 완성으로 처리
+            }
+        }, 0, 20, TimeUnit.MINUTES);  // 20분 간격으로 더미 이벤트 전송
 
         return emitter; // SSE 연결 반환
     }

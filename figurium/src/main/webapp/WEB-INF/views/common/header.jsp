@@ -473,7 +473,6 @@
                                                 <li><a href="/user/my-page.do">마이페이지</a></li>
                                                 <li><a href="/user/myProductLikeList.do">관심 상품</a></li>
                                                 <li><a href="/user/order-list.do">주문 내역</a></li>
-                                                <li><a href="#">반품 내역</a></li>
                                                 <li style="font-weight: bold;"><a href="/user/logout.do">로그아웃</a></li>
                                             </ul>
                                         </li>

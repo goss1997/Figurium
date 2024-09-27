@@ -58,7 +58,10 @@ public class MyCustomExceptionResolver implements HandlerExceptionResolver {
 
         // 예외에 따라 상태 코드 설정
         if (ex instanceof NoHandlerFoundException || ex instanceof NoResourceFoundException) {
-            statusCode = HttpServletResponse.SC_NOT_FOUND; // 404 Not Found
+            // 요청 URL에 대해 핸들러가 존재하지 않는 경우
+            // 요청한 resource가 존재하지 않는 경우
+            // exception 처리하지 않고 null 반환.
+            return null;
         } else if (ex instanceof HttpRequestMethodNotSupportedException) {
             statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED; // 405 Method Not Allowed
         }

@@ -21,11 +21,7 @@
         where user_id = #{userId}
     </select>
 
-    <delete id="deleteSocialAccountByUserId" parameterType="int">
-        delete
-        from social_accounts
-        where user_id = #{userId};
-    </delete>
+
 
 </mapper>
 

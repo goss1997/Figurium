@@ -24,6 +24,12 @@
         where id = #{userId}
     </update>
 
+    <delete id="deleteSocialAccountByUserId" parameterType="int">
+        delete
+        from social_accounts
+        where user_id = #{userId};
+    </delete>
+
     <delete id="deleteByUserId" parameterType="int">
         delete
         from users

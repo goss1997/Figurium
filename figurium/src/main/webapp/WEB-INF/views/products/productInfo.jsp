@@ -12,6 +12,27 @@
     <link rel="stylesheet" type="text/css" href="/css/productInfo.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
     <style>
+        .wrap-menu-desktop {
+            position: fixed;         /* 헤더를 고정 */
+                top: 0;
+                left: 0;
+                width: 100%;             /* 헤더를 전체 너비로 */
+                background-color: #fff !important;  /* 배경을 흰색으로 설정 */
+                z-index: 9999;           /* 다른 콘텐츠보다 위에 오도록 설정 */
+            }
+        .limiter-menu-desktop.container {
+                background-color: #fff;  /* 배경을 흰색으로 설정 */
+                z-index: 10000;          /* 다른 요소 위에 오도록 설정 */
+            }
+
+        .limiter-menu-desktop.container nav {
+                background-color: #fff;  /* nav 내부도 배경색을 흰색으로 설정 */
+                z-index: 10000;          /* 다른 콘텐츠와 겹치지 않게 z-index 설정 */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가로 구분감 제공 */
+            }
+
+
+
         .product_insert > input {
             background-color: transparent;
         }

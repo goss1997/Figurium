@@ -941,23 +941,20 @@
             });
         });
 
-        /**
-         * 로그인한 사용자면 SSE 연결
-         */
-        // EventSource 생성 후 SSE 연결하는 함수.
+    // EventSource 생성 함수
+    function createEventSource() {
         const eventSource = new EventSource('/api/notifications/subscribe');
+
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);
         });
 
-        // 알림 이벤트 읽는 함수(message용)
         eventSource.addEventListener('message', event => {
             // JSON 파싱
             console.log('[단순 메세지 알림]');
             console.log(event.data);
         });
 
-        // 알림 이벤트 읽는 함수(Notification 객체용)
         eventSource.addEventListener('notification', event => {
             console.log('[알림]');
             // JSON 파싱
@@ -966,15 +963,34 @@
             console.log(notification.message);
 
             // 알림 객체를 li로 이쁘게 변환하는 함수
-
             let appendForm = transNotification(notification);
 
             // 알림 객체 알림 모달 맨위에 추가.
             $("#notification-list-area").prepend(appendForm);
 
             $(".icon-header-item").addClass('has-notifications');
-
         });
+
+        // 타임아웃 이벤트 처리
+        eventSource.addEventListener('error', event => {
+            if (event.readyState === EventSource.CLOSED) {
+                console.log('Connection was closed. Reconnecting...');
+                clearInterval(reconnectInterval); // 연결 종료 시 재연결 중단
+            }
+        });
+
+        return eventSource;
+    }
+
+    // 20분(1200초)마다 새로 연결
+    let reconnectInterval = setInterval(() => {
+        eventSource.close(); // 기존 연결 종료
+        createEventSource(); // 새 연결 생성
+        console.log('Reconnecting EventSource...');
+    }, 20 * 60 * 1000); // 20분
+
+    // 처음에 연결을 생성
+    let eventSource = createEventSource();
 
 
         /**

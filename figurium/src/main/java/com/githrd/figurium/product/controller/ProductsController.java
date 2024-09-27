@@ -4,6 +4,7 @@ import com.githrd.figurium.common.page.CommonPage;
 import com.githrd.figurium.common.page.Paging;
 import com.githrd.figurium.common.s3.S3ImageService;
 import com.githrd.figurium.common.session.SessionConstants;
+import com.githrd.figurium.exception.customException.ProductNotFoundException;
 import com.githrd.figurium.product.dao.CartsMapper;
 import com.githrd.figurium.product.dao.ProductsMapper;
 import com.githrd.figurium.product.entity.Category;
@@ -137,11 +138,18 @@ public class ProductsController {
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "showQa", defaultValue = "false") String showQa,
                        HttpSession session,
+                       RedirectAttributes ra,
                        Model model, Map map) {
 
-        // 해상 상품에 해당하는 ID를 받아옴
-        Products selectOne = productsService.getProductById(id);
-        model.addAttribute("product", selectOne);
+        // 해당 상품에 해당하는 ID를 받아옴
+        try {
+            Products selectOne = productsService.getProductById(id);
+            model.addAttribute("product", selectOne);
+        } catch (ProductNotFoundException e) {
+            // 상품이 없을 경우 예외 발생
+            ra.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/"; // 상품이 없을 경우 리다이렉트할 페이지
+        }
 
         // 페이지 설정
         int pageSize = 5;

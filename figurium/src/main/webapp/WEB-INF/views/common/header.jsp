@@ -213,6 +213,7 @@
         }
 
         .cart-item-count {
+            display: none;
             position: absolute;
             top: -6px; /* 아이콘 위쪽 */
             right: -5px; /* 아이콘 오른쪽 */
@@ -746,6 +747,8 @@
 <script>
     // 장바구니에 담겨있는 상품 수 나타내기
     $(document).ready(function () {
+
+
         $.ajax({
             url: "${pageContext.request.contextPath}/cartItemCount",
             method: 'GET',

@@ -78,7 +78,7 @@ pageEncoding="UTF-8" %>
 
 
 </head>
-<jsp:include page="../common/header.jsp"/>
+
 <script>
 
 
@@ -174,9 +174,11 @@ pageEncoding="UTF-8" %>
 </script>
 
 <body class="animsition">
+<jsp:include page="../common/header.jsp"/>
+<div style="height: 90px;"></div>
 
 <!-- 장바구니 리스트 -->
-<div class="bg0 p-t-75 p-b-85">
+<div class="bg0 p-t-75 p-b-85" style=" min-height: 800px;">
 	<div class="cart_list" style="margin: 20px;">
 		<!-- breadcrumb -->
 		<div class="container">

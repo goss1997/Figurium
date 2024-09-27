@@ -52,7 +52,7 @@
     <div style="height: 50px;"></div>
 
     <div class="info_title">
-        <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <div class="bread-crumb ex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
             <a href="../" class="stext-109 cl8 hov-cl1 trans-04">
                 Home
                 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
@@ -216,7 +216,7 @@
         <form>
             <input type="hidden" name="productId" value="${product.id}">
             <span class="qaInsert_btn_box">
-             <input class="qaInsert_btn" type="button" value="Q&A작성" onclick="qaInsert(this.form)">
+             <input class="qaInsert_btn" type="button" value="Q&A작성" onclick="qaInsert(event, this.form)">
             </span>
         </form>
 
@@ -238,6 +238,25 @@
 
 <jsp:include page="../common/footer.jsp"/>
 
+<script type="text/javascript">
+    // JSP에서 로그인 상태와 상품 ID를 JavaScript 변수로 전달
+    const isUserLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+    const productId = "${product.id}"; // 상품 ID를 JSP에서 JavaScript로 전달
+
+    function qaInsert(event, f) {
+        if (isUserLoggedIn === 'false') {
+            alert("로그인 후 Q&A를 작성하실 수 있습니다.");
+            // 상품 상세페이지 URL로 리다이렉트 (상품 ID 포함)
+            window.location.href = `/productInfo.do?id=${product.id}`; // 상품 상세페이지로 리다이렉트
+            return;
+        } else {
+            // 게시글 작성 폼으로 이동
+            f.method = "POST";
+            f.action = "/qa/qaInsert.do";
+            f.submit();
+        }
+    }
+</script>
 
 <script>
 
@@ -281,13 +300,6 @@
 
 
 
-
-    function qaInsert(f) {
-
-        f.method = "POST"
-        f.action = '/qa/qaInsert.do';
-        f.submit();
-    }
 
     $(document).ready(function () {
         // 서버에서 전달된 하트 상태를 기반으로 초기화

@@ -940,40 +940,59 @@
             });
         });
 
-        /**
-         * 로그인한 사용자면 SSE 연결
-         */
-            // EventSource 생성 후 SSE 연결하는 함수.
+    // SSE 연결 함수
+    function connectSSE() {
         const eventSource = new EventSource('/api/notifications/subscribe');
+
+        // SSE 연결 성공 이벤트
         eventSource.addEventListener('SSE-Connect', event => {
             console.log(event.data);
         });
 
-        // 알림 이벤트 읽는 함수(message용)
+        // 단순 메세지 알림 이벤트
         eventSource.addEventListener('message', event => {
-            // JSON 파싱
             console.log('[단순 메세지 알림]');
             console.log(event.data);
         });
 
-        // 알림 이벤트 읽는 함수(Notification 객체용)
+        // 알림 객체 처리 이벤트
         eventSource.addEventListener('notification', event => {
             console.log('[알림]');
-            // JSON 파싱
             const notification = JSON.parse(event.data);
             console.log(notification.url);
             console.log(notification.message);
 
-            // 알림 객체를 li로 이쁘게 변환하는 함수
-
+            // 알림 객체를 li로 변환하는 함수 호출
             let appendForm = transNotification(notification);
 
-            // 알림 객체 알림 모달 맨위에 추가.
+            // 알림 리스트 맨 위에 추가
             $("#notification-list-area").prepend(appendForm);
-
             $(".icon-header-item").addClass('has-notifications');
-
         });
+
+        // 타임아웃 발생 시 5초 후 재연결 시도
+        eventSource.addEventListener('timeout', function(event) {
+            console.error("SSE connection timed out, attempting to reconnect...");
+            eventSource.close();
+            setTimeout(() => {
+                console.log("Reconnecting...");
+                connectSSE();  // 5초 후 재연결 시도
+            }, 5000);
+        });
+
+        // 에러 발생 시 5초 후 재연결 시도
+        eventSource.onerror = function(event) {
+            console.error("SSE connection error, attempting to reconnect...");
+            eventSource.close();
+            setTimeout(() => {
+                console.log("Reconnecting...");
+                connectSSE();  // 5초 후 재연결 시도
+            }, 5000);
+        };
+    }
+
+    // 처음 SSE 연결 시도
+    connectSSE();
 
 
         /**

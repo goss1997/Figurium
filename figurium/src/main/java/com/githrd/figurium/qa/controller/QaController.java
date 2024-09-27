@@ -127,10 +127,7 @@ public class QaController {
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
         // 로그인 상태를 확인
         if (loginUser == null) {
-            session.setAttribute(SessionConstants.ALERT_MSG,"로그인 후 작성 가능합니다.");
-            String referer = request.getHeader("Referer"); // Referer URL 가져오기
-
-            return "redirect:" + referer;
+            return"redirect:/";
         }
         model.addAttribute("productId", productId);
         model.addAttribute("orderId", orderId);

@@ -90,9 +90,9 @@
             <div class="col-sm-2">${qa.replyStatus}</div>
         </div>
         <hr>
-        <div class="row" style="min-height: 300px;">
+        <div class="row" style="min-height: 500px;">
             <div class="col-sm-1">내용</div>
-            <div class="col-sm-11">${qa.content}</div>
+            <div class="col-sm-11" style="white-space: pre-wrap;">${qa.content}</div>
         </div>
         <hr>
         <div class="text-right">

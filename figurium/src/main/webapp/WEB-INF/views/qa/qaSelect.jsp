@@ -74,7 +74,7 @@
 <div id="content-wrap-area">
     <!-- TODO : 컨텐츠 영역(당신이 사용할 공간) -->
     <div class="container mt-3">
-        <h1 class="qaselect-title" style="margin-bottom: 50px;">Q&A게시판</h1>
+        <h1 class="qaList-title" style="margin-bottom: 50px;">Q&A게시판</h1>
         <div class="row">
             <div class="col-sm-1">제목</div>
             <div class="col-sm-7">${qa.title}</div>

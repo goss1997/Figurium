@@ -42,7 +42,16 @@ public class NotificationService {
         emitter.onCompletion(() -> emitters.remove(userId));
 
         // 연결이 중단된 경우 구독 목록에서 제거
-        emitter.onTimeout(() -> emitters.remove(userId));
+        emitter.onTimeout(() -> {
+            log.warn("SSE connection timeout for user: {}", userId);
+            emitters.remove(userId);  // 타임아웃 발생 시 emitter 삭제
+            try {
+                // 타임아웃 처리 메시지 전송 (클라이언트가 이를 감지하고 재연결 가능)
+                emitter.send(SseEmitter.event().name("timeout").data("Connection timed out. Please reconnect."));
+            } catch (IOException e) {
+                log.error("Error sending timeout message to user: {}", userId, e);
+            }
+        });
 
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         try {

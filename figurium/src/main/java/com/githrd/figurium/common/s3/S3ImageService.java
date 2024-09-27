@@ -1,10 +1,7 @@
 package com.githrd.figurium.common.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import com.githrd.figurium.exception.customException.FailToUploadByS3Exception;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -156,6 +154,19 @@ public class S3ImageService {
             return decodingKey.substring(1); // 맨 앞의 '/' 제거
         } catch (MalformedURLException | UnsupportedEncodingException e) {
             throw new FailToUploadByS3Exception("삭제 시 key 디코딩에 실패하였습니다.");
+        }
+    }
+
+    // s3에 해당 url을 가진 이미지가 존재하는지 검증
+    public boolean doesImageUrlExist(String imageUrl) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(imageUrl).openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(5000); // 타임아웃 설정
+            connection.setReadTimeout(5000);
+            return connection.getResponseCode() == HttpURLConnection.HTTP_OK; // HTTP 200 응답 코드 확인
+        } catch (Exception e) {
+            return false; // 예외 발생 시 이미지가 존재하지 않음
         }
     }
 

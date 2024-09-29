@@ -79,99 +79,7 @@ pageEncoding="UTF-8" %>
 
 </head>
 
-<script>
 
-
-	$(document).ready(function() {
-		const shippingCost = 3000;
-
-		function updateTotalPrice(item) {
-			const priceElement = item.find('#productPrice');
-			const quantityInput = item.find('.num-product');
-			const totalPriceElement = item.find('#totalPrice');
-
-			const price = parseInt(priceElement.text().replace(/원/g, '').replace(/,/g, ''));
-			const quantity = parseInt(quantityInput.val());
-
-			if (!isNaN(price) && !isNaN(quantity)) {
-				const totalPrice = price * quantity;
-				totalPriceElement.text(totalPrice.toLocaleString() + '원');
-				totalPriceElement.addClass('shine');
-
-				setTimeout(() => {
-					totalPriceElement.removeClass('shine');
-				}, 2000);
-			}
-		}
-
-		function updateGrandTotal() {
-			let grandTotal = 0;
-
-			$('.itemCheckbox:checked').each(function() {
-				const item = $(this).closest('.table_row');
-				const totalPrice = parseInt(item.find('#totalPrice').text().replace(/원/g, '').replace(/,/g, ''));
-				grandTotal += totalPrice;
-			});
-
-			$('#totalAmount').text(grandTotal.toLocaleString() + '원');
-			const finalTotal = grandTotal + shippingCost >= 100000 ? grandTotal : grandTotal + shippingCost;
-
-			if (grandTotal >= 100000) {
-				$('.shipping_fee').text('0원'); // 배송비 0원으로 표시
-			} else {
-				$('.shipping_fee').text(shippingCost.toLocaleString() + '원'); // 배송비 3,000원으로 표시
-			}
-
-			$('.total .amount.highlight').text(finalTotal.toLocaleString() + '원');
-		}
-
-		$('.btn-num-product-up').on('click', function() {
-			const item = $(this).closest('.table_row');
-			const quantityInput = item.find('.num-product');
-			const productQuantity = parseInt(item.find('.productQuantity').val()); // 현재 상품의 재고 수량
-
-
-			// 현재 상품의 재고 수량을 초과하여 장바구니에 담을 수 없음
-			if (parseInt(quantityInput.val()) >= productQuantity) {
-				alert("현재 재고 수량을 넘길 수 없습니다.");
-				return;
-			}
-
-
-			quantityInput.val(parseInt(quantityInput.val()) + 1);
-			updateTotalPrice(item);
-			updateGrandTotal();
-		});
-
-		$('.btn-num-product-down').on('click', function() {
-			const item = $(this).closest('.table_row');
-			const quantityInput = item.find('.num-product');
-			const currentQuantity = parseInt(quantityInput.val());
-			if (currentQuantity > 1) {
-				quantityInput.val(currentQuantity - 1);
-			}
-			updateTotalPrice(item);
-			updateGrandTotal();
-		});
-
-		$('.itemCheckbox').on('change', updateGrandTotal);
-
-		$('#selectAll').on('change', function() {
-			const isChecked = $(this).is(':checked');
-			$('.itemCheckbox').prop('checked', isChecked);
-			updateGrandTotal();
-		});
-
-		// 초기 총 가격 계산
-		$('.table_row').each(function() {
-			updateTotalPrice($(this));
-		});
-		updateGrandTotal();
-	});
-
-
-
-</script>
 
 <body class="animsition">
 <jsp:include page="../common/header.jsp"/>
@@ -339,6 +247,102 @@ pageEncoding="UTF-8" %>
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 </div>
+
+<script>
+
+
+	$(document).ready(function() {
+		const shippingCost = 3000;
+
+		function updateTotalPrice(item) {
+			const priceElement = item.find('#productPrice');
+			const quantityInput = item.find('.num-product');
+			const totalPriceElement = item.find('#totalPrice');
+
+			const price = parseInt(priceElement.text().replace(/원/g, '').replace(/,/g, ''));
+			const quantity = parseInt(quantityInput.val());
+
+			if (!isNaN(price) && !isNaN(quantity)) {
+				const totalPrice = price * quantity;
+				totalPriceElement.text(totalPrice.toLocaleString() + '원');
+				totalPriceElement.addClass('shine');
+
+				setTimeout(() => {
+					totalPriceElement.removeClass('shine');
+				}, 2000);
+			}
+		}
+
+		function updateGrandTotal() {
+			let grandTotal = 0;
+
+			$('.itemCheckbox:checked').each(function() {
+				const item = $(this).closest('.table_row');
+				const totalPrice = parseInt(item.find('#totalPrice').text().replace(/원/g, '').replace(/,/g, ''));
+				grandTotal += totalPrice;
+			});
+
+			$('#totalAmount').text(grandTotal.toLocaleString() + '원');
+			const finalTotal = grandTotal + shippingCost >= 100000 ? grandTotal : grandTotal + shippingCost;
+
+			if (grandTotal >= 100000) {
+				$('.shipping_fee').text('0원'); // 배송비 0원으로 표시
+			} else {
+				$('.shipping_fee').text(shippingCost.toLocaleString() + '원'); // 배송비 3,000원으로 표시
+			}
+
+			$('.total .amount.highlight').text(finalTotal.toLocaleString() + '원');
+		}
+
+		$('.btn-num-product-up').on('click', function() {
+			const item = $(this).closest('.table_row');
+			const quantityInput = item.find('.num-product');
+			const productQuantity = parseInt(item.find('.productQuantity').val()); // 현재 상품의 재고 수량
+
+
+			// 현재 상품의 재고 수량을 초과하여 장바구니에 담을 수 없음
+			if (parseInt(quantityInput.val()) >= productQuantity) {
+				alert("현재 재고 수량을 넘길 수 없습니다.");
+				return;
+			}
+
+
+			quantityInput.val(parseInt(quantityInput.val()) + 1);
+			updateTotalPrice(item);
+			updateGrandTotal();
+		});
+
+		$('.btn-num-product-down').on('click', function() {
+			const item = $(this).closest('.table_row');
+			const quantityInput = item.find('.num-product');
+			const currentQuantity = parseInt(quantityInput.val());
+			if (currentQuantity > 1) {
+				quantityInput.val(currentQuantity - 1);
+			}
+			updateTotalPrice(item);
+			updateGrandTotal();
+		});
+
+		$('.itemCheckbox').on('change', updateGrandTotal);
+
+		$('#selectAll').on('change', function() {
+			const isChecked = $(this).is(':checked');
+			$('.itemCheckbox').prop('checked', isChecked);
+			updateGrandTotal();
+		});
+
+		// 초기 총 가격 계산
+		$('.table_row').each(function() {
+			updateTotalPrice($(this));
+		});
+		updateGrandTotal();
+	});
+
+
+
+</script>
+
+
 
 
 <script>

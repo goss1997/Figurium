@@ -27,6 +27,6 @@ public interface QaMapper {
     List<QaVo> adminReplyQaList();
     List<QaVo> adminPaymentWithQaSeletOne(int orderId);
 
-    int getQaCount();
+    Integer getQaCount();
 
 }

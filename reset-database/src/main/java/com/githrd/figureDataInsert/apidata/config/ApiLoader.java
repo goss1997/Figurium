@@ -159,7 +159,6 @@ public class ApiLoader implements ApplicationRunner {
                 }
 
                 // Bulk insert all product to database
-                // insert 묶음으로 날린다. 성능향상.
                 // 대량의 더미 데이터 삽입을 위해 bulk insert 하기
                 productBulkRepository.bulkInsertProducts(productList);
 

@@ -36,6 +36,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
 
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 사용자가 가지고 있는 정보
 
+        // 소셜에서 제공한 정보들을 Enum 클래스로 객체화
         UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
         userProfile.setProvider(registrationId);
 

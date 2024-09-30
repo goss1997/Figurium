@@ -30,7 +30,6 @@ public class adminController {
 
     private final HttpSession session;
     private final OrderMapper orderMapper;
-    private final QaService qaService;
     private final ProductsMapper productsMapper;
     private final QaMapper qaMapper;
 
@@ -165,7 +164,7 @@ public class adminController {
             int quantityCount = Optional.ofNullable(productsMapper.getQuantityCount()).orElse(0);;  // 재고 카운트
             int paymentCount = Optional.ofNullable(orderMapper.getPaymentCount()).orElse(0);;       // 결제취소 카운트
             int retrunCount = Optional.ofNullable(orderMapper.getRetrunCount()).orElse(0);;         // 반품 카운트
-            int qaCount = Optional.ofNullable(qaService.getQaCount()).orElse(0);;                   // Qa 카운트
+            int qaCount = Optional.ofNullable(qaMapper.getQaCount()).orElse(0);;                   // Qa 카운트
 
 
 

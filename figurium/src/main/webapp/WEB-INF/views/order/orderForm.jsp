@@ -21,7 +21,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
   <%-- 결제 API --%>
-  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript"	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   <%-- 주소 API --%>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -979,9 +979,9 @@
             <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>
             </td>
-            <td><fmt:formatNumber type="currency" value="${ item.price }" currencySymbol="₩"/>원</td>
+            <td><fmt:formatNumber value="${ item.price }"/>원</td>
             <td>${ item.quantity }</td>
-            <td><fmt:formatNumber type="currency" value="${ item.price * item.quantity }" currencySymbol="₩"/>원</td>
+            <td><fmt:formatNumber value="${ item.price * item.quantity }"/>원</td>
           </tr>
         </c:forEach>
         </tbody>

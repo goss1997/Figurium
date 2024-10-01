@@ -904,6 +904,9 @@
         });
 
         function getNotifications(){
+            // 한번 비워주기
+            $("#notification-list-area").html('');
+
             $.ajax({
                 url: '/api/notifications/user/${loginUser.id}',
                 method: 'GET',
@@ -965,7 +968,7 @@
             const notification = JSON.parse(event.data);
             console.log(notification.url);
             console.log(notification.message);
-            $("#notification-list-area").html('');
+
             getNotifications();
             // 알림 객체를 li로 이쁘게 변환하는 함수
             // let appendForm = transNotification(notification);
@@ -1063,17 +1066,27 @@
             '<span class="highlight-notification" style="font-size: 18px;">' + notification.message + '</span>' +
             '<small class="text-muted" style="font-size: 12px; color: lightgray;">' + date + ' ' + time + '</small>' +
         '</div>' +
-        '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this)"></i>' +
+        '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this,'+id+')"></i>' +
     '</div>' +
 '</li>';
 }
 
 
-    function deleteNotification(element) {
-         const li = element.closest('li'); // li 요소 찾기
-        if (li) {
-            li.remove();
-        }
+    function deleteNotification(element, id) {
+        let notificationId = id;
+
+        // 알림 삭제 ajax
+        $.ajax({
+            url: '/api/notifications/' + notificationId, // 알림 읽음 처리 URL
+            method: 'PUT', // PUT 메서드 사용
+            success: function () {
+                // 삭제 성공 시 다시 조회
+                getNotifications();
+            },
+            error: function (xhr, status, error) {
+                console.error('알림을 삭제하는 중 오류가 발생했습니다.', error);
+            }
+        });
     }
 </script>
 </c:if>
@@ -1095,7 +1108,7 @@
         }
 
         f.method = "GET";
-        f.action = "searchProductsList.do?search=" + search;
+        f.action = "${pageContext.request.contextPath}/searchProductsList.do?search=" + search;
         f.submit();
 
 

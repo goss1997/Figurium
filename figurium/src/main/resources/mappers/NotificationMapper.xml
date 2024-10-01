@@ -31,4 +31,10 @@
         from notifications
     </select>
 
+    <!-- 알림 삭제 -->
+    <delete id="deleteNotification" parameterType="int" >
+        DELETE FROM notifications
+        WHERE id = #{notificationId}
+    </delete>
+
 </mapper>

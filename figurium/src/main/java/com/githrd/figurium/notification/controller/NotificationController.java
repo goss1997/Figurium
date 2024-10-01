@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.PutExchange;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.*;
@@ -99,4 +100,12 @@ public class NotificationController {
         notificationService.updateNotificationAsRead(notificationId);
         return ResponseEntity.ok("알림이 읽음 상태로 변경되었습니다. (ID: " + notificationId + ")");
     }
+
+
+    @PutMapping("/{notificationId}")
+    public ResponseEntity<?> deleteNotification(@PathVariable int notificationId) {
+        notificationService.deleteNotification(notificationId);
+        return ResponseEntity.ok("삭제 성공");
+    }
+
 }

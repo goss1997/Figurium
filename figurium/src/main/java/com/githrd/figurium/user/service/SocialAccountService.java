@@ -19,4 +19,7 @@ public class SocialAccountService {
     }
 
 
+    public SocialAccountVo findByEmail(int userId) {
+        return socialAccountMapper.findByEmail(userId);
+    }
 }

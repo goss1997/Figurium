@@ -21,7 +21,11 @@
         where user_id = #{userId}
     </select>
 
-
+    <select id="findByEmail" parameterType="int" resultType="SocialAccountVo">
+        select *
+        from social_accounts
+        where user_id = #{userId}
+    </select>
 
 </mapper>
 

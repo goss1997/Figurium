@@ -8,8 +8,11 @@ import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.vo.ProductsVo;
+import com.githrd.figurium.user.entity.SocialAccount;
 import com.githrd.figurium.user.entity.User;
+import com.githrd.figurium.user.service.SocialAccountService;
 import com.githrd.figurium.user.service.UserService;
+import com.githrd.figurium.user.vo.SocialAccountVo;
 import com.githrd.figurium.user.vo.UserVo;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
@@ -29,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,6 +42,7 @@ public class UserController {
     private static final int PAGE_SIZE = 5;    // 페이지 사이즈
 
     private final UserService userService;
+    private final SocialAccountService socialAccountService;
     private final HttpSession session;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrderService orderService;
@@ -117,9 +122,18 @@ public class UserController {
 
         // null이 아니면 사용중인 이메일 > isUsed = true
         boolean isUsed = (userService.findByEmail(email) != null);
-
+        String provider = "";
+        if(isUsed){
+            User user = userService.findByEmail(email);
+            SocialAccountVo socialAccount = socialAccountService.findByEmail(user.getId());
+            if(socialAccount != null) {
+                provider = socialAccount.getProvider();
+            }
+        }
+        
         JSONObject json = new JSONObject();
         json.put("isUsed", isUsed);
+        json.put("provider",provider);
 
         return json.toString();
 

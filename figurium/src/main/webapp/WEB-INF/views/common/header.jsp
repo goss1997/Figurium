@@ -1094,7 +1094,7 @@
         }
 
         f.method = "GET";
-        f.action = "searchProductsList.do?search=" + search;
+        f.action = "${pageContext.request.contextPath}/searchProductsList.do?search=" + search;
         f.submit();
 
 

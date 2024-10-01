@@ -900,6 +900,10 @@
          * 사용자 알림 리스트 가져오기
          */
         $(function () {
+            getNotifications();
+        });
+
+        function getNotifications(){
             $.ajax({
                 url: '/api/notifications/user/${loginUser.id}',
                 method: 'GET',
@@ -939,7 +943,7 @@
                     console.error('Error fetching data:', error);
                 }
             });
-        });
+        }
 
     // EventSource 생성 함수
     function createEventSource() {
@@ -961,14 +965,15 @@
             const notification = JSON.parse(event.data);
             console.log(notification.url);
             console.log(notification.message);
-
+            $("#notification-list-area").html('');
+            getNotifications();
             // 알림 객체를 li로 이쁘게 변환하는 함수
-            let appendForm = transNotification(notification);
-
+            // let appendForm = transNotification(notification);
+            //
             // 알림 객체 알림 모달 맨위에 추가.
-            $("#notification-list-area").prepend(appendForm);
-
-            $(".icon-header-item").addClass('has-notifications');
+            // $("#notification-list-area").prepend(appendForm);
+            //
+            // $(".icon-header-item").addClass('has-notifications');
         });
 
         // 타임아웃 이벤트 처리

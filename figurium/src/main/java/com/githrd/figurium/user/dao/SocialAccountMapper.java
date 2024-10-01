@@ -13,4 +13,6 @@ public interface SocialAccountMapper {
     SocialAccountVo selectSocialAccountOne(int userId, String provider);
 
     int existsByUserId(int userId);
+
+    SocialAccountVo findByEmail(int userId);
 }

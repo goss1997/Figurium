@@ -260,7 +260,9 @@
             success	:	function(res_data){
                 if(res_data.isUsed){
                     $("#check_email_msg").html(" 이미 사용중입니다").css("color","red");
-
+                    if(res_data.provider){
+                        $("#check_email_msg").html(" 이미 사용중입니다.<br>"+res_data.provider+" 소셜 회원이신가요?");
+                    }
                 }else{
                     if(confirm('사용가능한 이메일입니다. \n 사용하시겠습니까?')) {
                         $("#signup-email").attr('readonly',true);

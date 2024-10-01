@@ -51,6 +51,7 @@ public class PaymentService {
 
         Integer sessionTotalPrice = (Integer) session.getAttribute("sessionTotalPrice");
 
+        // 10만원 이하시에, 배송비 추가
         if(sessionTotalPrice < 100000) {
             sessionTotalPrice = sessionTotalPrice + 3000;
         }
@@ -58,6 +59,7 @@ public class PaymentService {
         log.info("넘어온 session 가격값: {}", sessionTotalPrice);
         log.info("iamport amount 값 {}", amount);
 
+        // session에 저장된 구매 가격과 결제 서버에 저장된 구매 가격이 일치하지 않을 경우에,
         if(sessionTotalPrice.intValue() != amount) {
 
             String accessToken = refundService.getToken(apiKey, secretKey);

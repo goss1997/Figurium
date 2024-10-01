@@ -22,9 +22,7 @@ public class RefundService {
     public void refundRequest(String accessToken, String merchantUid, String reason) throws IOException {
 
         URL url = new URL("https://api.iamport.kr/payments/cancel");
-        // 빨간줄 해결 단축키 (Ctrl + 1)
-        // 파일명 찾기 단축키 (Shift + Shift)
-        // 단어명 파일에서 찾기 단축키 (Ctrl + H)
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         // 요청 방식을 POST로 설정

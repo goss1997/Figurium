@@ -92,6 +92,10 @@
             qaMapper.deleteReply(id);
         }
 
+        @Override
+        public int getProductQaCount(int productId) {
+            return qaMapper.getProductQaCount(productId);
+        }
 
         @Override
         public int selectRowTotal(Map<String, Object> map) {

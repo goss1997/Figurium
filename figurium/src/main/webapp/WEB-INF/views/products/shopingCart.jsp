@@ -271,6 +271,10 @@ pageEncoding="UTF-8" %>
 					totalPriceElement.removeClass('shine');
 				}, 2000);
 			}
+
+			// 가격 표시를 천 단위 콤마로 변경
+			priceElement.text(price.toLocaleString() + '원');
+
 		}
 
 		function updateGrandTotal() {
@@ -404,9 +408,6 @@ pageEncoding="UTF-8" %>
 			return;
 		}
 
-		// 중복되는 데이터 방지를 위해 기존의 hidden input 필드 제거한다.
-		/*f.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());*/
-
 		// 동시성 검사를 위한 데이터 준비
 		let itemsToCheck = checkedItems.map(item => {
 			let index = Array.from(f.querySelectorAll('input.itemCheckbox')).indexOf(item);
@@ -425,7 +426,6 @@ pageEncoding="UTF-8" %>
 			contentType: "application/json",
 			success: function(response) {
 				console.log("응답:", response.status); // 응답을 확인
-
 				// 응답에서 재고 부족 상품 확인
 				if (response.status === "error") {
 					let outOfStockMsg = '[ ';
@@ -437,8 +437,6 @@ pageEncoding="UTF-8" %>
 					alert(outOfStockMsg + ' 상품의 재고가 부족합니다.');
 					return; // 결제 페이지로 이동하지 않음
 				}
-
-
 				// 재고가 충분한 경우에만 결제 페이지로 이동
 				if (!confirm("선택된 상품들만 결제 페이지로 이동 하시겠습니까?")) return;
 
@@ -460,7 +458,6 @@ pageEncoding="UTF-8" %>
 					inputQuantity.value = cartQuantities[index];
 					f.appendChild(inputQuantity);
 				});
-
 				// 기존의 quantity[] input 필드 제거
 				f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
 
@@ -468,7 +465,6 @@ pageEncoding="UTF-8" %>
 				f.action = "order/orderForm.do";
 				f.submit();
 			},
-
 			error: function() {
 				alert("동시성 검사 중 오류가 발생했습니다.");
 			}

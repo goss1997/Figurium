@@ -92,6 +92,9 @@ public class NotificationService {
         SseEmitter emitter = emitters.get(notification.getUserId());
         if (emitter != null) {
             try {
+                // 알림 db에 저장
+                notificationMapper.insertNotification(notification);
+
                 // 사용자에게 알림 메시지 전송
                 emitter.send(SseEmitter.event()
                         .name("notification") // 이벤트 이름 설정
@@ -101,9 +104,6 @@ public class NotificationService {
                 emitters.remove(notification.getUserId());
             }
         }
-        // 알림 전송 후 db에 저장
-        notificationMapper.insertNotification(notification);
-
     }
 
     /**

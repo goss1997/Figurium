@@ -895,68 +895,124 @@
 
 <c:if test="${loginUser != null}">
     <script>
-        $(function () {
-            fetchNotifications(); // 알림 리스트 가져오기 함수 호출
-            initializeSSE(); // SSE 초기화
-        });
-
         /**
          * 사용자 알림 리스트 가져오기
          */
-        function fetchNotifications() {
+        $(function () {
             $.ajax({
                 url: '/api/notifications/user/${loginUser.id}',
                 method: 'GET',
-                async: false, // 동기 요청으로 설정
                 success: function (notifications) {
-                    updateNotificationArea(notifications); // 알림 리스트 업데이트
+                              // 알림이 없으면
+                    if (notifications.length === 0) {
+                        $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
+                        $(".icon-header-item").removeClass('has-notifications');
+                    } else {
+                        // 알림이 있는 경우
+                        let hasUnread = notifications.some(notification => notification.isRead == 0);
+                        if (hasUnread) {
+                            $(".icon-header-item").addClass('has-notifications'); // 안 읽은 알림이 있을 시 점 표시
+                        } else {
+                            $(".icon-header-item").removeClass('has-notifications'); // 모든 알림이 읽음
+                        }
+                        let appendForm;
+                        for (const notification of notifications) {
+
+
+                            if (notification.isRead == 0){
+
+                            // 알림 객체를 li로 이쁘게 변환하는 함수
+                            appendForm = transNotification(notification);
+                            }else if (notification.isRead == 1){
+                                appendForm =  transReadNotification(notification);
+                            }
+
+                            // 알림 객체 알림 모달 맨위에 추가.
+                            $("#notification-list-area").append(appendForm);
+
+                        }
+
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching data:', error);
                 }
             });
-        }
+        });
 
-        /**
-         * 알림 리스트를 업데이트하는 함수
-         * @param {Array} notifications - 사용자 알림 목록
-         */
-        function updateNotificationArea(notifications) {
-            $("#notification-list-area").empty(); // 리스트 초기화
+    // EventSource 생성 함수
+    function createEventSource() {
+        const eventSource = new EventSource('/api/notifications/subscribe');
 
-            if (notifications.length === 0) {
-                $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
-                $(".icon-header-item").removeClass('has-notifications'); // 알림이 없을 때 아이콘 상태 변경
-            } else {
-                let hasUnread = notifications.some(notification => notification.isRead == 0);
-                $(".icon-header-item").toggleClass('has-notifications', hasUnread); // 아이콘 상태 변경
+        eventSource.addEventListener('SSE-Connect', event => {
+            console.log(event.data);
+        });
 
-                for (const notification of notifications) {
-                    // 읽지 않은 알림과 읽은 알림에 따라 다른 형식으로 추가
-                    let appendForm = notification.isRead == 0 ? transNotification(notification) : transReadNotification(notification);
-                    $("#notification-list-area").append(appendForm);
-                }
+        eventSource.addEventListener('message', event => {
+            // JSON 파싱
+            console.log('[단순 메세지 알림]');
+            console.log(event.data);
+        });
+
+        eventSource.addEventListener('notification', event => {
+            console.log('[알림]');
+            // JSON 파싱
+            const notification = JSON.parse(event.data);
+            console.log(notification.url);
+            console.log(notification.message);
+
+            // 알림 객체를 li로 이쁘게 변환하는 함수
+            let appendForm = transNotification(notification);
+
+            // 알림 객체 알림 모달 맨위에 추가.
+            $("#notification-list-area").prepend(appendForm);
+
+            $(".icon-header-item").addClass('has-notifications');
+        });
+
+        // 타임아웃 이벤트 처리
+        eventSource.addEventListener('error', event => {
+            if (event.readyState === EventSource.CLOSED) {
+                console.log('Connection was closed. Reconnecting...');
+                clearInterval(reconnectInterval); // 연결 종료 시 재연결 중단
             }
-        }
+        });
+
+        return eventSource;
+    }
+
+    // 20분(1200초)마다 새로 연결
+    let reconnectInterval = setInterval(() => {
+        eventSource.close(); // 기존 연결 종료
+        createEventSource(); // 새 연결 생성
+        console.log('Reconnecting EventSource...');
+    }, 20 * 60 * 1000); // 20분
+
+    // 처음에 연결을 생성
+    let eventSource = createEventSource();
+
 
         /**
-         * 알림의 isRead를 true로 바꾸고 URL로 이동
+         * 알림의 isRead를 true로 바꾸기(ajax) + 해당 url로 이동시키기
          */
         function isReadTrue(notification) {
+
+            // ', ' 기준으로 왼쪽과 오른쪽 분리
             const parts = notification.split(',');
+
+            // 왼쪽 부분 (id: ?)
             const id = parts[0].trim();
+
+            // 오른쪽 부분 (/qa/qaSelect.do?id=?)
             const url = parts[1].trim();
 
-            // 클릭 이벤트 전파 중지
-            event.stopPropagation();
-
             $.ajax({
-                url: '/api/notifications/read/' + id,
-                method: 'PUT',
-                async: false, // 동기 요청으로 설정
+                url: '/api/notifications/read/' + id, // 알림 읽음 처리 URL
+                method: 'PUT', // PUT 메서드 사용
                 success: function () {
-                    // 읽음 처리 후 URL로 이동
-                    window.location.href = url;
+                    $(".icon-header-item").removeClass('has-notifications');
+                    // 성공 시 해당 url로 이동
+                    location.href = url;
                 },
                 error: function (xhr, status, error) {
                     console.error('알림을 읽음으로 표시하는 중 오류가 발생했습니다.', error);
@@ -965,46 +1021,17 @@
         }
 
         /**
-         * 로그인한 사용자면 SSE 연결
-         */
-        function initializeSSE() {
-            const eventSource = new EventSource('/api/notifications/subscribe');
-
-            eventSource.addEventListener('SSE-Connect', event => {
-                console.log(event.data); // 연결 확인 메시지 출력
-            });
-
-            // 알림 이벤트 읽는 함수(message용)
-            eventSource.addEventListener('message', event => {
-                console.log('[단순 메세지 알림]');
-                console.log(event.data); // 메시지 데이터 출력
-            });
-
-            // 알림 이벤트 읽는 함수(Notification 객체용)
-            eventSource.addEventListener('notification', event => {
-                console.log('[알림]');
-                const notification = JSON.parse(event.data);
-                console.log(notification.url); // 알림 URL 출력
-                console.log(notification.message); // 알림 메시지 출력
-
-                // 알림 객체를 li로 이쁘게 변환하는 함수
-                let appendForm = transNotification(notification);
-
-                // 알림 객체 알림 모달 맨위에 추가.
-                $("#notification-list-area").prepend(appendForm);
-                $(".icon-header-item").addClass('has-notifications'); // 알림이 추가되면 아이콘 상태 변경
-            });
-        }
-
-        /**
          * 알림 객체를 li로 변환하는 함수
          */
+        /* 알람을 읽었을때  isRead  false*/
         function transNotification(notification) {
+
             const createdAt = new Date(notification.createdAt);
             const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
             const time = createdAt.toTimeString().substring(0, 5); // hh:mm
-            const id = notification.id;
+            const id =  notification.id;
             const url = notification.url;
+
 
             let appendForm = '<li style="font-size: 18px; cursor: pointer;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
                 '<i class="zmdi zmdi-comment-alert" style="font-size: 18px; margin-left: 10px;"> ' +
@@ -1015,46 +1042,35 @@
             return appendForm;
         }
 
-        /**
-         * 알림 객체를 li로 변환하는 함수 (읽은 상태)
-         */
+        /* 알람을 읽었을때  isRead  true*/
         function transReadNotification(notification) {
             const createdAt = new Date(notification.createdAt);
-            const date = createdAt.toISOString().substring(0, 10); // yyyy-mm-dd
-            const time = createdAt.toTimeString().substring(0, 5); // hh:mm
-            const id = notification.id;
+            const date = createdAt.toISOString().substring(0, 10);
+            const time = createdAt.toTimeString().substring(0, 5);
+            const id =  notification.id;
             const url = notification.url;
 
-            return '<li class="dropdown-item dropdown-item-style read" style="cursor: pointer; width: calc(100%); position: relative; background-color: lightgray;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
-                '<div class="d-flex align-items-center" style="width: 100%;">' +
-                '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-right: 10px;"></i>' +
-                '<div class="flex-grow-1">' +
-                '<span class="highlight-notification" style="font-size: 18px;">' + notification.message + '</span>' +
-                '<small class="text-muted" style="font-size: 12px; color: lightgray;">' + date + ' ' + time + '</small>' +
-                '</div>' +
-                '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this)"></i>' +
-                '</div>' +
-                '</li>';
-        }
+            return'<li class="dropdown-item dropdown-item-style read" style="cursor: pointer; width: calc(100%); position: relative; background-color: lightgray;" onclick="isReadTrue(\'' + id + ',' + url + '\');">' +
+    '<div class="d-flex align-items-center" style="width: 100%;">' +
+        '<i class="zmdi zmdi-check-circle" style="font-size: 18px; margin-right: 10px;"></i>' +
+        '<div class="flex-grow-1">' +
+            '<span class="highlight-notification" style="font-size: 18px;">' + notification.message + '</span>' +
+            '<small class="text-muted" style="font-size: 12px; color: lightgray;">' + date + ' ' + time + '</small>' +
+        '</div>' +
+        '<i class="zmdi zmdi-close" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);" onclick="event.stopPropagation(); deleteNotification(this)"></i>' +
+    '</div>' +
+'</li>';
+}
 
-        /**
-         * 알림을 삭제하는 함수
-         * @param {Element} element - 삭제할 알림의 요소
-         */
-        function deleteNotification(element) {
-            const li = element.closest('li'); // li 요소 찾기
-            if (li) {
-                li.remove(); // 알림 삭제
-                // 삭제 후 알림 리스트 체크
-                if ($("#notification-list-area").children().length === 0) {
-                    $("#notification-list-area").prepend('<h4 style="text-align: center;">알림이 없습니다.</h4>');
-                    $(".icon-header-item").removeClass('has-notifications'); // 아이콘 상태 변경
-                }
-            }
+
+    function deleteNotification(element) {
+         const li = element.closest('li'); // li 요소 찾기
+        if (li) {
+            li.remove();
         }
-    </script>
+    }
+</script>
 </c:if>
-
 
 
 <script>

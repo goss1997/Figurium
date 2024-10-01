@@ -16,12 +16,10 @@ public class SqlFileExecutor {
     private final DataSource dataSource;
 
     public void executeSqlFile() {
-        log.info(" - - - - - dummy.sql 실행");
+
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(new ClassPathResource("dummy.sql"));
         populator.execute(dataSource);
-
-        log.info(" - - - - - dummy.sql 실행 완료");
     }
 
 }

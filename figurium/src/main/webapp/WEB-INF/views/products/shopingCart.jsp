@@ -461,7 +461,7 @@ pageEncoding="UTF-8" %>
 				// 기존의 quantity[] input 필드 제거
 				f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
 
-				f.method = "get";
+				f.method = "Post";
 				f.action = "order/orderForm.do";
 				f.submit();
 			},
@@ -536,7 +536,7 @@ pageEncoding="UTF-8" %>
 				// 기존의 quantity[] input 필드 제거
 				f.querySelectorAll('input[name="quantity[]"]').forEach(input => input.remove());
 
-				f.method = "get";
+				f.method = "post";
 				f.action = "order/orderForm.do";
 				f.submit();
 			},

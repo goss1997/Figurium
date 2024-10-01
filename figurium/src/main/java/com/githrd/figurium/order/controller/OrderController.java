@@ -42,7 +42,7 @@ public class OrderController {
     /*
      *   바로구매창
      */
-    @RequestMapping("orderFormRight.do")
+    @PostMapping("orderFormRight.do")
     public String orderFormRight(@RequestParam(required = false) Integer quantity,
                             @RequestParam(required = false) Integer productId,
                             HttpSession session,
@@ -95,7 +95,7 @@ public class OrderController {
     /*
      *   주문/결제창
      */
-    @RequestMapping("orderForm.do")
+    @PostMapping("orderForm.do")
     public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
                             @RequestParam(required = false) List<Integer> productId,
                             HttpSession session,

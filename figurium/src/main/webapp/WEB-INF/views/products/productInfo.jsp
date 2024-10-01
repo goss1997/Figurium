@@ -88,7 +88,7 @@
     </div>
 
     <!-- 상품에 대한 상세 이미지, 이름 등 넣을 곳 -->
-    <form>
+    <form >
         <div class="product_title">
             <div class="product_img_box">
                 <!-- 상품의 이미지가 들어 갈 곳 -->
@@ -180,7 +180,7 @@
 
                 <div class="price_bye">
                     <input class="price_bye_btn" type="button" value="바로구매"
-                           onclick="priceBye();">
+                           onclick="priceBye(this.form);">
                 </div>
 
 
@@ -414,13 +414,16 @@
 
 <script>
     // 바로 구매 클릭 시 실행될 함수
-    function priceBye() {
+    function priceBye(f) {
       if($('#quantity').val() > ${product.quantity}) {
           alert('수량이 남은 재고를 초과할 수 없습니다!');
           $('#quantity').val(1);
           return;
       }
-      location.href='/order/orderFormRight.do?quantity='+ $('#quantity').val() + '&productId=' + ${product.id}
+
+      f.method = 'POST'
+      f.action = 'order/orderFormRight.do'
+      f.submit();
 
     }
 

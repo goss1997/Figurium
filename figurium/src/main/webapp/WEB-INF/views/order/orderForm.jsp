@@ -265,6 +265,7 @@
     }
   </style>
 
+  <%-- main script --%>
   <script>
 
     window.onload = function() {
@@ -428,11 +429,14 @@
 
 
 
+  </script>
 
-  // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
-  // 관리자 계정 정보 (결제 api 사용에 필요함)
-  var IMP = window.IMP;
-  IMP.init("imp25608413");
+  <script>
+
+    // 결제 api js 파일로 분리해놓으면 IMP 못읽어오는 현상이 있어서, 부득이하게 jsp 내부에 js 작성
+    // 관리자 계정 정보 (결제 api 사용에 필요함)
+    var IMP = window.IMP;
+    IMP.init("imp25608413");
 
     const Toast = Swal.mixin({
       toast: true,
@@ -446,7 +450,7 @@
       }
     })
 
-  var merchantUid;
+    var merchantUid;
 
     function buyItems() {
 
@@ -574,34 +578,33 @@
           }
           setTimeout(function () {
 
-          IMP.request_pay({
-            pg: 'kcp', // PG사 코드표에서 선택
-            pay_method: paymentType, // 결제 방식
-            merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
-            name: '피규리움 결제창',   // 상품명
-            // <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
-            amount: <c:out value="${amount}" />, // 가격
-            //amount : 200,
-            buyer_email: $("#order_email").val(),
-            buyer_name: '피규리움 기술지원팀',
-            buyer_tel: $("#order_phone").val(),
-            buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
-            buyer_postcode: '123-456',
-            m_redirect_url: window.location.origin + window.location.pathname + '?paymentSuccess=true'
-          }, function (rsp) { // callback
-            console.log(rsp);
+            IMP.request_pay({
+              pg: 'kcp', // PG사 코드표에서 선택
+              pay_method: paymentType, // 결제 방식
+              merchant_uid: 'merchant_' + new Date().getTime(), // 결제 고유 번호
+              name: '피규리움 결제창',   // 상품명
+              <c:set var="amount" value="${ totalPrice < 100000 ? totalPrice + 3000 : totalPrice}"/>
+              amount: <c:out value="${amount}" />, // 가격
+              buyer_email: $("#order_email").val(),
+              buyer_name: '피규리움 기술지원팀',
+              buyer_tel: $("#order_phone").val(),
+              buyer_addr: $("#mem_zipcode1").val() + $("#mem_zipcode2").val(),
+              buyer_postcode: '123-456',
+              m_redirect_url: window.location.origin + window.location.pathname + '?paymentSuccess=true'
+            }, function (rsp) { // callback
+              console.log(rsp);
 
 
-            // 웹 사이트 환경에서의 결제
-            $.ajax({
-              type : "GET",
-              url  : "../api/verifyIamport.do",
-              data : {
-                imp_uid : rsp.imp_uid,
-                merchantUid : rsp.merchant_uid
-              },
-              success : function (res_data) {
-                if (res_data.failReason == null) {
+              // 웹 사이트 환경에서의 결제
+              $.ajax({
+                type : "GET",
+                url  : "../api/verifyIamport.do",
+                data : {
+                  imp_uid : rsp.imp_uid,
+                  merchantUid : rsp.merchant_uid
+                },
+                success : function (res_data) {
+                  if (res_data.failReason == null) {
                     console.log(res_data);
                     merchantUid = rsp.merchant_uid;
 
@@ -706,15 +709,12 @@
                   }); // 결제검증이 실패하면 이뤄지는 실패 로직
                   return;
                 }
+              });
             });
-          });
-        }, 2500);
+          }, 2500);
         },
       });
     }
-
-
-
   </script>
 
 

@@ -120,7 +120,7 @@
                         </a>
                     </div>
                 </div>
-                <h5>${product.price}￦</h5>
+                <h5 id="product_price">${product.price}￦</h5>
                 <c:if test="${loginUser.role == '1'}">
             &nbsp;&nbsp;
                 <div style="display: inline-block;">
@@ -176,6 +176,8 @@
 
                     </div>
                 </div>
+
+
 
 
                 <div class="price_bye">
@@ -358,10 +360,10 @@
                 success: function (result) {
                     if (result === 1) {
                         $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-02.png');
-                        alert("해당 상품을 추천 했습니다.");
+                        alert("관심 상품에 추가되었습니다.");
                     } else if (result === 0) {
                         $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-01.png');
-                        alert("해당 상품의 추천을 취소 했습니다.");
+                        alert("관심 상품에서 삭제되었습니다.");
                     }
                     isLiked = !isLiked;  // 상태 토글
                 },
@@ -379,13 +381,21 @@
     let maxQuantity = parseInt("${product.quantity}"); // 재고 수량
     let productPrice = parseInt("${product.price}");   // 상품 가격
 
+    function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    }
+
+
     function updateTotalPrice() {
         let quantityInput = document.getElementById('quantity');
         let currentQuantity = parseInt(quantityInput.value);
         let totalPrice = productPrice * currentQuantity;
 
-        // 총 결제 금액을 업데이트
-        document.getElementById('total_price').innerText = totalPrice;
+    // 총 결제 금액을 업데이트 (콤마 추가)
+    document.getElementById('total_price').innerText = formatPrice(totalPrice);
+
+
     }
 
     function increaseQuantity() {
@@ -801,6 +811,28 @@
         }
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 숫자에 콤마 추가하는 함수
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // total_price 요소 가져오기
+        const totalPriceElement = document.getElementById('total_price');
+        const productPriceElement = document.getElementById('product_price');
+
+        // 현재 price 값을 숫자로 변환
+        const totalPrice = parseInt(totalPriceElement.textContent.replace(/,/g, ''));
+        const productPrice = parseInt(productPriceElement.textContent.replace(/,/g, '').replace('￦', '').trim());
+
+        // 포맷된 가격을 다시 HTML에 삽입
+        totalPriceElement.textContent = formatPrice(totalPrice);
+        productPriceElement.textContent = formatPrice(productPrice) + '￦';
+    });
+</script>
+
 </body>
 
 </html>

@@ -120,7 +120,7 @@
                         </a>
                     </div>
                 </div>
-                <h5>${product.price}￦</h5>
+                <h5 style="display: inline-block" id="product_price">${product.price}</h5><h5 style="display: inline-block;margin-left: -8px">￦</h5>
                 <c:if test="${loginUser.role == '1'}">
             &nbsp;&nbsp;
                 <div style="display: inline-block;">
@@ -176,6 +176,31 @@
 
                     </div>
                 </div>
+
+                <script>
+
+                    // total_price 요소 가져오기
+                    const totalPriceElement = document.getElementById('total_price');
+                    const productPriceElement = document.getElementById('product_price');
+
+                    // 현재 price 값 (예: 5000000)
+                    const price = parseInt(totalPriceElement.textContent);
+                    const productPrice = parseInt(productPriceElement.textContent);
+
+                    // 숫자에 콤마 추가하는 함수
+                    function formatPrice(price) {
+                        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                    function formatPrice2(productPrice) {
+                        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+
+
+                    // 포맷된 가격을 다시 HTML에 삽입
+                    totalPriceElement.textContent = formatPrice(price);
+                    productPriceElement.textContent = formatPrice2(productPrice);
+
+                    </script>
 
 
                 <div class="price_bye">
@@ -358,10 +383,10 @@
                 success: function (result) {
                     if (result === 1) {
                         $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-02.png');
-                        alert("해당 상품을 추천 했습니다.");
+                        alert("관심 상품에 추가되었습니다.");
                     } else if (result === 0) {
                         $('#heart-icon').attr('src', contextPath + '/images/icons/icon-heart-01.png');
-                        alert("해당 상품의 추천을 취소 했습니다.");
+                        alert("관심 상품에서 삭제되었습니다.");
                     }
                     isLiked = !isLiked;  // 상태 토글
                 },

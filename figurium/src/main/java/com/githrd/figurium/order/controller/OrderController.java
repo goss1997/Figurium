@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,7 +39,7 @@ public class OrderController {
     /*
      *   바로구매창
      */
-    @PostMapping("orderFormRight.do")
+    @RequestMapping("orderFormRight.do")
     public String orderFormRight(@RequestParam(required = false) Integer quantity,
                             @RequestParam(required = false) Integer productId,
                             HttpSession session,
@@ -95,7 +92,7 @@ public class OrderController {
     /*
      *   주문/결제창
      */
-    @PostMapping("orderForm.do")
+    @RequestMapping("orderForm.do")
     public String orderForm(@RequestParam(required = false) List<Integer> cartQuantities,
                             @RequestParam(required = false) List<Integer> productId,
                             HttpSession session,

@@ -482,8 +482,9 @@
       let order_name = $("#order_name").val();
       let order_phone = $("#order_phone").val();
       let order_email = $("#order_email").val();
+      let order_name_pattern = /^[^\s]{2,5}$/;
       if(order_name == "" || order_phone == "" || order_email == "" || !phone_pattern.test(order_phone)
-              || !email_pattern.test(order_email)) {
+              || !email_pattern.test(order_email) || !order_name_pattern.test(order_name)) {
         Swal.fire({
           icon: 'error',
           title: '알림',
@@ -497,9 +498,10 @@
       let shipping_phone = $("#shipping_phone").val();
       let mem_zipcode1 = $("#mem_zipcode1").val();
       let mem_zipcode2 = $("#mem_zipcode2").val();
+      let shipping_name_pattern = /^[^\s]{2,5}$/;
       if(shipping_name == "" || shipping_phone == ""
               || mem_zipcode1 == "" || mem_zipcode2 == ""
-              || !phone_pattern.test(shipping_phone)) {
+              || !phone_pattern.test(shipping_phone) || !shipping_name_pattern.test(shipping_name)) {
         Swal.fire({
           icon: 'error',
           title: '알림',
@@ -508,7 +510,6 @@
         }); // 결제검증이 실패하면 이뤄지는 실패 로직
         return;
       }
-      // 결제 주문자, 배송지 정보 유효한지 검증(Test시, 꺼놓는걸 추천)
 
 
 

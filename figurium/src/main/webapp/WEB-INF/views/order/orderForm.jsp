@@ -979,9 +979,9 @@
             <td class="table_content_img"><img src="${ item.imageUrl }" alt="IMG">
               <span class="table_content_img_text">${ item.name }</span>
             </td>
-            <td><fmt:formatNumber value="${ item.price }"/>원</td>
+            <td>${ item.price }원</td>
             <td>${ item.quantity }</td>
-            <td><fmt:formatNumber value="${ item.price * item.quantity }"/>원</td>
+            <td>${ item.price * item.quantity }원</td>
           </tr>
         </c:forEach>
         </tbody>

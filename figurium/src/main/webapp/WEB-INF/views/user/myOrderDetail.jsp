@@ -442,10 +442,11 @@
                                             <c:forEach var="myOrder" items="${ requestScope.myOrderDetailList }">
                                             <tr class="table_row" style="height: 100px;">
                                                 <td class="column-1" style="padding-bottom: 0px;" >
-                                                    <div class="how-itemcart1 table_content_img">
+                                                    <div class="how-itemcart1 table_content_img" onclick="location.href='/productInfo.do?id=${ myOrder.PId}'" >
                                                         <img src="${ myOrder.imageUrl }"
                                                              alt="${ myOrder.id }" style="text-align: left">
                                                         <span>${ myOrder.productName }</span>
+
                                                     </div>
 
                                                 </td>

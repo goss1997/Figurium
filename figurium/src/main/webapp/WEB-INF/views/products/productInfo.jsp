@@ -120,7 +120,7 @@
                         </a>
                     </div>
                 </div>
-                <h5 style="display: inline-block" id="product_price">${product.price}</h5><h5 style="display: inline-block;margin-left: -8px">￦</h5>
+                <h5 id="product_price">${product.price}￦</h5>
                 <c:if test="${loginUser.role == '1'}">
             &nbsp;&nbsp;
                 <div style="display: inline-block;">
@@ -177,30 +177,7 @@
                     </div>
                 </div>
 
-                <script>
 
-                    // total_price 요소 가져오기
-                    const totalPriceElement = document.getElementById('total_price');
-                    const productPriceElement = document.getElementById('product_price');
-
-                    // 현재 price 값 (예: 5000000)
-                    const price = parseInt(totalPriceElement.textContent);
-                    const productPrice = parseInt(productPriceElement.textContent);
-
-                    // 숫자에 콤마 추가하는 함수
-                    function formatPrice(price) {
-                        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
-                    function formatPrice2(productPrice) {
-                        return productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
-
-
-                    // 포맷된 가격을 다시 HTML에 삽입
-                    totalPriceElement.textContent = formatPrice(price);
-                    productPriceElement.textContent = formatPrice2(productPrice);
-
-                    </script>
 
 
                 <div class="price_bye">
@@ -348,6 +325,7 @@
 
 
     $(document).ready(function () {
+        // 서버에서 전달된 하트 상태를 기반으로 초기화
         var isLiked = "${isLiked}" === 'true';  // JSP에서 'true' 또는 'false'로 전달됨
         var userId = "${sessionScope.loginUser.id}" // 현재 로그인 유저 ID
         var productId = "${product.id}";  // 현재 보고 있는 상품 ID
@@ -403,13 +381,21 @@
     let maxQuantity = parseInt("${product.quantity}"); // 재고 수량
     let productPrice = parseInt("${product.price}");   // 상품 가격
 
+    function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    }
+
+
     function updateTotalPrice() {
         let quantityInput = document.getElementById('quantity');
         let currentQuantity = parseInt(quantityInput.value);
         let totalPrice = productPrice * currentQuantity;
 
-        // 총 결제 금액을 업데이트
-        document.getElementById('total_price').innerText = totalPrice;
+    // 총 결제 금액을 업데이트 (콤마 추가)
+    document.getElementById('total_price').innerText = formatPrice(totalPrice);
+
+
     }
 
     function increaseQuantity() {
@@ -825,6 +811,28 @@
         }
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 숫자에 콤마 추가하는 함수
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // total_price 요소 가져오기
+        const totalPriceElement = document.getElementById('total_price');
+        const productPriceElement = document.getElementById('product_price');
+
+        // 현재 price 값을 숫자로 변환
+        const totalPrice = parseInt(totalPriceElement.textContent.replace(/,/g, ''));
+        const productPrice = parseInt(productPriceElement.textContent.replace(/,/g, '').replace('￦', '').trim());
+
+        // 포맷된 가격을 다시 HTML에 삽입
+        totalPriceElement.textContent = formatPrice(totalPrice);
+        productPriceElement.textContent = formatPrice(productPrice) + '￦';
+    });
+</script>
+
 </body>
 
 </html>

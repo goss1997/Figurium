@@ -27,6 +27,8 @@
         .shopinfo .copyright * {color:#737373; font-size:13px;}
         .shopinfo .copyright a:hover,
         .shopinfo .copyright a .wisa {color:#3fc0e5;}
+
+
     </style>
 </head>
 <body>
@@ -158,6 +160,7 @@
             ps.update();
         })
     });
+
 </script>
 <!--===============================================================================================-->
 <script src="/js/main.js"></script>

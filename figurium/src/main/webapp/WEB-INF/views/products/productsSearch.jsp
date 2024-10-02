@@ -85,9 +85,10 @@
                             <a href="productInfo.do?id=${products.id}" class="moveProductInfo stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                 [${products.categoryName}] ${products.name}
                             </a>
-                            <span class="stext-105 cl3" id="product-price" style="font-weight: bold; font-size: 16px;">
+                            <span class="stext-105 cl3 product_price" id="product-price" style="font-weight: bold; font-size: 16px;">
                                 ${products.price}￦
                             </span>
+
                             <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-top: 10px;">
                                 <span class="stext-105 cl3" style="margin-right: 5px;">
                                     <fmt:parseDate var="parsedDate" value="${products.createdAt}" pattern="yyyy-MM-dd"/>
@@ -133,4 +134,35 @@
 </div>
 <jsp:include page="../common/footer.jsp"/>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // product-price 클래스 요소들을 모두 가져오기
+        const priceElements = document.querySelectorAll('.product_price');
+
+        // 숫자에 콤마 추가하는 함수
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 숫자만 추출하는 함수 (문자 제거)
+        function extractNumber(text) {
+            return text.replace(/[^0-9]/g, ""); // 숫자가 아닌 문자는 모두 제거
+        }
+
+        // 각 가격 요소에 대해 콤마 포맷 적용
+        priceElements.forEach(function(element) {
+            // 현재 product-price 값 (숫자만 추출)
+            const rawPriceText = element.textContent;
+            const price = parseInt(extractNumber(rawPriceText));
+
+            if (!isNaN(price)) {
+                // 포맷된 가격을 다시 HTML에 삽입
+                element.textContent = formatPrice(price) + '￦'; // '￦' 다시 추가
+            }
+        });
+    });
+
+</script>
+
+
 </html>

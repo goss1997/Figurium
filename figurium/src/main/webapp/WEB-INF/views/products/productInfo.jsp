@@ -348,7 +348,6 @@
 
 
     $(document).ready(function () {
-        // 서버에서 전달된 하트 상태를 기반으로 초기화
         var isLiked = "${isLiked}" === 'true';  // JSP에서 'true' 또는 'false'로 전달됨
         var userId = "${sessionScope.loginUser.id}" // 현재 로그인 유저 ID
         var productId = "${product.id}";  // 현재 보고 있는 상품 ID

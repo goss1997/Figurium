@@ -108,6 +108,47 @@
             }
 
         }
+
+        .loading-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: hidden; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+        .loading-modal-content {
+            background-color: #fefefe;
+            margin: 20% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 28%; /* Could be more or less, depending on screen size */
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #3498db;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #loadingMessage {
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -136,8 +177,17 @@
         </div>
     </div>
 
-
 </div>
+
+<!-- loading Modal Structure -->
+<div id="loadingModal" class="loading-modal">
+    <div class="loading-modal-content">
+        <div style="margin: 0 auto;" class="loading-spinner loading-spinner--js"></div>
+        <br>
+        <span id="loadingMessage">메일 전송 중 ...</span>
+    </div>
+</div>
+
 <!-- NOTE : 푸터바 -->
 <jsp:include page="../common/footer.jsp"/>
 
@@ -161,6 +211,11 @@
             return;
         }
 
+        const modal = $("#loadingModal");
+        // 로딩 on
+        modal.show();
+
+
         // 해당 이메일에 비밀번호 재설정 페이지 메일 전송
         $.ajax({
            url : "send-password-reset.do",
@@ -173,10 +228,14 @@
                // 쿠키에 랜던값 저장(유효기간 1시간)
                Cookies.set('verificationCode', randomValue, { expires: 1 / 24 }); // 1시간
 
-               alert(result+' 메일을 확인해주세요!!');
+               // 로딩 off
+               modal.hide();
+
+               alert('보안을 위해 현재 브라우저에서 \n'+result+' 메일을 확인해주세요!!');
                location.href="/";
            },
            error : function (xhr) {
+               modal.hide();
                 alert(xhr.responseText);
            }
         });

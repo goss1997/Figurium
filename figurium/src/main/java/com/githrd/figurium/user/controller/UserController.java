@@ -8,7 +8,6 @@ import com.githrd.figurium.order.dao.OrderMapper;
 import com.githrd.figurium.order.service.OrderService;
 import com.githrd.figurium.order.vo.MyOrderVo;
 import com.githrd.figurium.product.vo.ProductsVo;
-import com.githrd.figurium.user.entity.SocialAccount;
 import com.githrd.figurium.user.entity.User;
 import com.githrd.figurium.user.service.SocialAccountService;
 import com.githrd.figurium.user.service.UserService;
@@ -32,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -237,13 +235,13 @@ public class UserController {
 
         // 입력한 이메일이 존재하지 않을 경우
         if (userService.findByEmailAndDeletedFalse(findEmail) == 0) {
-            return ResponseEntity.status(400).body("회원 가입하지 않거나 탈퇴한 이메일입니다.");
+            return ResponseEntity.status(400).body("자체 회원 가입하지 않거나 탈퇴한 이메일입니다.");
         } else {
             // 존재할 경우 메일 보내기
             boolean isSended = emailService.sendPasswordResetUrl(findEmail);
             if (isSended) {
                 // send 성공 시
-                return ResponseEntity.ok("인증되었습니다.");
+                return ResponseEntity.ok(findEmail);
             } else {
                 // send 실패 시
                 return ResponseEntity.status(400).body("메일 전송에 실패하였습니다.");
@@ -402,7 +400,7 @@ public class UserController {
     public ResponseEntity<?> deleteSocial() {
 
         User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
-        int result = userService.deleteSocialAccount(loginUser.getId());
+        int result = userService.softDelete(loginUser.getId());
 
         if (result > 0) {
             session.removeAttribute(SessionConstants.LOGIN_USER);

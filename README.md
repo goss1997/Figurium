@@ -32,6 +32,7 @@
   - JSP (Java Server Pages)
 #### 6. 보안
   - Spring Security (6.1)
+  - Jasypt
 #### 7. 소셜 로그인
   - OAuth2 (Google, Naver, Kakao)
 #### 8. Storage Service
@@ -57,7 +58,7 @@
 - **실시간 알림(SSE)** : 실시간 알림 기능 [ 단방향(서버->클라이언트) ]
 - **AOP** : 요청과 응답 로깅
 - **Interceptor** : 사용자 로그인 여부, 커스텀 예외 처리
-- **Jsaypt를 이용한 설정 값 암호화** : 환경 변수 및 민감 데이터 보호
+- **Jasypt를 이용한 설정 값 암호화** : 환경 변수 및 민감 데이터 보호
 
 <hr>
 
@@ -123,4 +124,6 @@
 - 사용자 알림 저장,삭제
 
 <hr>
+
+
 

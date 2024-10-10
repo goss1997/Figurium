@@ -1,3 +1,5 @@
+![Figurium_logo image](https://github.com/user-attachments/assets/bcfc1fc3-8e4e-432a-8c2f-8dd30df43bee)
+
 ## 프로젝트 개요
 ### 주제
 피규어 쇼핑몰 웹사이트

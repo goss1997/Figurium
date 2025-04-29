@@ -83,5 +83,5 @@ jasypt:
 
 logging:
   discord:
-    webhook-url: https://discord.com/api/webhooks/1288778187882627123/11H4VJk-C8Lo1nh0jt4IW384fa1jLUtBz3GgwxLzPXmXBiNQ0NOWXqtyOjNEgShLZr98
+    webhook-url: ${DISCORD_WEBHOOK_URL}
   config: classpath:logback.xml
